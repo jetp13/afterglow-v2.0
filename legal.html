@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>使用說明與免責聲明 | Afterglow v2.0</title>
+  <link rel="stylesheet" href="./assets/layout.css" />
+</head>
+<body>
+  <div class="ag-app-frame">
+    <header class="ag-header">
+      <span class="ag-logo-dot"></span>
+      <span class="ag-title">Afterglow v2.0</span>
+      <span class="ag-subtitle">使用說明與免責聲明</span>
+    </header>
+
+    <main class="ag-main">
+      <div class="ag-card">
+        <h1>請先閱讀再繼續</h1>
+        <p>
+          Afterglow 只提供一般性教育與減害資訊，<br />
+          不構成醫療、法律或緊急處置建議。
+        </p>
+        <p>
+          若你或現場有人出現生命危險徵兆，<br />
+          請立即聯絡當地緊急醫療系統或相關專業單位。
+        </p>
+        <p>
+          進入下一步前，請確認你已理解並同意這些內容。
+        </p>
+
+        <button
+          id="ag-legal-agree"
+          style="
+            margin-top: 16px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+          "
+        >
+          我已閱讀並同意，進入 Afterglow
+        </button>
+      </div>
+    </main>
+
+    <footer class="ag-footer">
+      <small>
+        本頁僅為 v2.0 骨架版說明。正式版將補充完整法律文字。
+      </small>
+    </footer>
+  </div>
+
+  <script type="module">
+    import { setGateConsent } from "./shared/gate.js";
+
+    function getReturnUrl() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const from = params.get("from");
+        // 沒有帶 from 的時候，就回首頁
+        return from || "/";
+      } catch (e) {
+        return "/";
+      }
+    }
+
+    const agreeButton = document.querySelector("#ag-legal-agree");
+
+    if (agreeButton) {
+      agreeButton.addEventListener("click", () => {
+        // 記錄本次瀏覽已通過智慧閘門
+        setGateConsent();
+
+        // 導回原本想去的頁面
+        const target = getReturnUrl();
+        window.location.href = target;
+      });
+    }
+  </script>
+</body>
+</html>
