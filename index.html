@@ -26,5 +26,13 @@
       <small>Afterglow · v2.0 skeleton · build on GitHub</small>
     </footer>
   </div>
+<script type="module">
+  import { ensureGateOrRedirect } from "./shared/gate.js";
+
+  // 檢查是否通過智慧閘門
+  ensureGateOrRedirect({
+    legalUrl: "/legal.html", // 未來正式的免責／法律頁
+  });
+</script>
 </body>
 </html>
