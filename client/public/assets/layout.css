@@ -1,0 +1,252 @@
+/* ========================================
+   Afterglow｜Layout CSS
+   讓夜裡的光有方向
+   ======================================== */
+
+/* ========== Reset & Base ========== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  background: #000;
+  color: #ccc;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ========== Page Container ========== */
+.ag-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+
+/* ========== Home Page ========== */
+.ag-home-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+
+.ag-logo {
+  width: 320px;
+  height: auto;
+  object-fit: contain;
+  overflow: visible;
+  display: block;
+  margin: 40px auto 20px auto;
+}
+
+.ag-home-subtitle {
+  font-size: 1.25rem;
+  color: #ccc;
+  text-align: center;
+  margin: 20px 0 10px 0;
+  font-weight: 400;
+}
+
+.ag-home-tagline-en {
+  font-size: 0.875rem;
+  color: #999;
+  text-align: center;
+  letter-spacing: 0.05em;
+  margin-bottom: 20px;
+}
+
+.ag-home-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 40px 20px;
+}
+
+/* ========== Glow Capsule Buttons ========== */
+.ag-capsule {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  padding: 18px 40px;
+  text-align: center;
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: #fff;
+  border-radius: 50px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+.ag-capsule--primary {
+  background: linear-gradient(135deg, #ff6b35, #ff8c42);
+  box-shadow: 0 4px 20px rgba(255, 107, 53, 0.4);
+}
+
+.ag-capsule--primary:hover {
+  box-shadow: 0 6px 30px rgba(255, 107, 53, 0.6);
+  transform: translateY(-2px);
+}
+
+.ag-capsule--secondary {
+  background: linear-gradient(135deg, #4a90e2, #5ba3f5);
+  box-shadow: 0 4px 20px rgba(74, 144, 226, 0.4);
+}
+
+.ag-capsule--secondary:hover {
+  box-shadow: 0 6px 30px rgba(74, 144, 226, 0.6);
+  transform: translateY(-2px);
+}
+
+/* ========== About / Legal Pages ========== */
+.ag-about-header {
+  text-align: center;
+  padding: 60px 20px 40px 20px;
+}
+
+.ag-about-title {
+  font-size: 2rem;
+  color: #fff;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.ag-about-subtitle {
+  font-size: 1rem;
+  color: #999;
+  font-weight: 400;
+}
+
+.ag-about-main {
+  flex: 1;
+  max-width: 720px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 20px 24px 60px 24px;
+}
+
+.ag-about-section {
+  line-height: 1.8;
+}
+
+.ag-about-section p {
+  margin-bottom: 1.5rem;
+  color: #bbb;
+  font-size: 1rem;
+}
+
+.ag-about-section h3 {
+  font-size: 1.25rem;
+  color: #fff;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.ag-about-quote {
+  margin: 2rem 0;
+  padding: 1.5rem 1.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 4px solid #ff8c42;
+  border-radius: 4px;
+}
+
+.ag-about-quote span {
+  font-size: 1.125rem;
+  color: #fff;
+  font-weight: 500;
+  font-style: italic;
+}
+
+/* ========== Footer ========== */
+.ag-footer {
+  margin-top: auto;
+  padding: 40px 20px;
+  text-align: center;
+  color: #aaa;
+  font-size: 0.75rem;
+  line-height: 1.6;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.ag-footer__inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.ag-footer__links {
+  margin-bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+}
+
+.ag-footer__link {
+  color: #bbb;
+  transition: color 0.2s ease;
+}
+
+.ag-footer__link:hover {
+  color: #fff;
+}
+
+.ag-footer__separator {
+  color: #666;
+  user-select: none;
+}
+
+.ag-footer__copyright {
+  color: #777;
+  font-size: 0.7rem;
+}
+
+/* ========== Responsive ========== */
+@media (max-width: 480px) {
+  .ag-logo {
+    width: 240px;
+  }
+
+  .ag-home-subtitle {
+    font-size: 1.125rem;
+  }
+
+  .ag-home-tagline-en {
+    font-size: 0.75rem;
+  }
+
+  .ag-capsule {
+    max-width: 280px;
+    font-size: 1rem;
+    padding: 16px 32px;
+  }
+
+  .ag-about-title {
+    font-size: 1.75rem;
+  }
+
+  .ag-about-main {
+    padding: 20px 20px 40px 20px;
+  }
+}
