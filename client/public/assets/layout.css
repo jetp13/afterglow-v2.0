@@ -1,121 +1,254 @@
-/* ========================================
-   Afterglow v2.1.2｜Layout CSS
-   讓夜裡的光有方向
-   ======================================== */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Afterglow v2.1.2 — Layout CSS
+   深夜陪伴系統｜黑底霧霾風格
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
-/* ========== Reset & Base ========== */
+/* === Global Reset === */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-html {
-  font-size: 16px;
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+  background: #000;
+  color: #fff;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-  background: #000;
-  color: #ccc;
-  line-height: 1.6;
-  min-height: 100vh;
-}
-
-a {
-  text-decoration: none;
-  color: inherit;
-}
-
-/* ========== Page Container ========== */
 .ag-page {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  padding: 0;
 }
 
-/* ========== Logo（刻意外溢設計 - Intentional Overflow）========== */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   A. 返回首頁按鈕
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ag-back-home {
+  display: inline-block;
+  padding: 12px 20px;
+  margin: 20px 0 0 20px;
+  font-size: 14px;
+  color: #aaa;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.ag-back-home:hover {
+  color: #fff;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   B. 首頁 Logo + 副標區塊
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ag-home-header {
+  padding: 40px 20px 20px;
+}
+
+.ag-logo-block {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Logo：寬版、允許外擴、偏左 */
 .ag-logo {
-  width: 320px;
+  width: 75%;
+  max-width: 480px;
   height: auto;
   object-fit: contain;
   overflow: visible;
   display: block;
-  margin: 40px auto 20px auto;
+  margin: 0 0 0 0; /* 偏左，不置中 */
 }
 
-/* ========== Glow Buttons ========== */
-.glow-button {
+/* 副標區塊：置於 Logo 右下方 */
+.ag-subtitle-block {
+  position: absolute;
+  bottom: 10px;
+  right: 0;
+  text-align: right;
+}
+
+.ag-subtitle-zh {
+  font-size: 18px;
+  font-weight: 300;
+  color: #ccc;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.ag-subtitle-en {
+  font-size: 14px;
+  font-weight: 300;
+  color: #999;
+  letter-spacing: 1px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   C. 首頁主區域（Glow 按鈕）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ag-home-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.ag-button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 360px;
+}
+
+/* Glow 膠囊按鈕（完整效果版）*/
+.ag-glow-capsule {
   display: block;
   width: 100%;
-  padding: 14px 0;
+  padding: 16px 0;
   text-align: center;
   border-radius: 9999px;
-  font-size: 16px;
-  color: white;
-  background: linear-gradient(90deg, #ff6b4a, #ff8f6b);
-  box-shadow: 0 0 18px rgba(255, 120, 90, 0.55);
-  transition: 0.25s ease;
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: 2px;
+  color: #fff;
   text-decoration: none;
+  position: relative;
+  background: rgba(0, 0, 0, 0.15);
+  border: 2px solid;
+  transition: all 0.3s ease;
 }
 
-.glow-button:hover {
-  box-shadow: 0 0 28px rgba(255, 140, 100, 0.8);
+/* Primary（藍色 Glow）*/
+.ag-glow-capsule--primary {
+  border-color: #4ea7ff;
+  box-shadow: 
+    0 0 20px rgba(78, 167, 255, 0.6),
+    inset 0 0 15px rgba(78, 167, 255, 0.1);
 }
 
-/* Secondary Button (Blue) */
-.glow-button--secondary {
-  background: linear-gradient(90deg, #4ea7ff, #6bc8ff);
-  box-shadow: 0 0 18px rgba(100, 180, 255, 0.55);
+.ag-glow-capsule--primary:hover,
+.ag-glow-capsule--primary:active {
+  box-shadow: 
+    0 0 32px rgba(78, 167, 255, 0.85),
+    inset 0 0 25px rgba(78, 167, 255, 0.2);
+  border-color: #6bc8ff;
 }
 
-.glow-button--secondary:hover {
-  box-shadow: 0 0 28px rgba(120, 200, 255, 0.85);
+/* Secondary（桃紅 Glow）*/
+.ag-glow-capsule--secondary {
+  border-color: #ff6bd9;
+  box-shadow: 
+    0 0 20px rgba(255, 107, 217, 0.6),
+    inset 0 0 15px rgba(255, 107, 217, 0.1);
 }
 
-/* ========== About Page ========== */
+.ag-glow-capsule--secondary:hover,
+.ag-glow-capsule--secondary:active {
+  box-shadow: 
+    0 0 32px rgba(255, 107, 217, 0.85),
+    inset 0 0 25px rgba(255, 107, 217, 0.2);
+  border-color: #ff8bf1;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   D. Footer Component v2（三層結構）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ag-footer-v2 {
+  padding: 32px 24px 28px;
+  text-align: center;
+  font-weight: 300;
+}
+
+/* 上排：四個連結 */
+.ag-footer-v2__links {
+  margin-bottom: 12px;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+}
+
+.ag-footer-v2__link {
+  color: #aaa;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.ag-footer-v2__link:hover {
+  color: #fff;
+}
+
+.ag-footer-v2__separator {
+  margin: 0 8px;
+  color: #666;
+}
+
+/* 中間：即將上線訊息 */
+.ag-footer-v2__message {
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: #999;
+  letter-spacing: 0.5px;
+}
+
+/* 最下行：版權聲明 */
+.ag-footer-v2__copyright {
+  font-size: 10px;
+  color: #666;
+  letter-spacing: 1px;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   E. About 頁面
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ag-about {
   flex: 1;
-  padding: 60px 24px 40px;
+  padding: 20px 24px 40px;
 }
 
 .ag-about__container {
-  max-width: 520px;
+  max-width: 540px;
   margin: 0 auto;
 }
 
 .ag-about__title {
-  font-size: 22px;
+  font-size: 26px;
+  font-weight: 400;
   text-align: center;
   margin-bottom: 8px;
   opacity: 0.95;
-  font-weight: 500;
 }
 
 .ag-about__subtitle {
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: 300;
   text-align: center;
+  color: #aaa;
   margin-bottom: 32px;
-  opacity: 0.75;
 }
 
 .ag-about__content {
-  line-height: 1.8;
   font-size: 15px;
-  opacity: 0.92;
+  line-height: 1.8;
+  color: #ddd;
 }
 
 .ag-about__content p {
   margin-bottom: 18px;
 }
 
-/* ========== Legal Pages (Privacy, Terms, Legal) ========== */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   F. Legal 頁面（Privacy / Terms / Legal）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ag-legal {
   flex: 1;
-  padding: 60px 24px 40px;
+  padding: 20px 24px 40px;
 }
 
 .ag-legal__container {
@@ -124,117 +257,82 @@ a {
 }
 
 .ag-legal__title {
-  font-size: 22px;
+  font-size: 26px;
+  font-weight: 400;
   text-align: center;
   margin-bottom: 12px;
   opacity: 0.95;
-  font-weight: 500;
 }
 
 .ag-legal__intro {
-  font-size: 14px;
-  text-align: center;
-  margin-bottom: 32px;
-  opacity: 0.8;
+  font-size: 15px;
   line-height: 1.7;
+  text-align: center;
+  color: #bbb;
+  margin-bottom: 28px;
 }
 
 .ag-legal__content {
-  line-height: 1.75;
   font-size: 14px;
-  opacity: 0.9;
+  line-height: 1.7;
+  color: #ccc;
 }
 
 .ag-legal__content h2 {
-  margin-top: 28px;
+  font-size: 17px;
+  font-weight: 400;
+  margin-top: 24px;
   margin-bottom: 10px;
-  font-size: 15px;
   opacity: 0.95;
-  font-weight: 500;
-}
-
-.ag-legal__content p {
-  margin-bottom: 14px;
 }
 
 .ag-legal__content ul {
-  margin: 12px 0 20px 20px;
+  margin: 12px 0 16px 20px;
   list-style: disc;
 }
 
 .ag-legal__content li {
   margin-bottom: 8px;
-  padding-left: 4px;
-}
-
-.ag-legal__note {
-  margin-top: 32px;
-  padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.03);
-  border-left: 2px solid rgba(255, 255, 255, 0.2);
-  font-size: 13px;
-  opacity: 0.85;
   line-height: 1.7;
 }
 
-/* ========== Footer ========== */
-.ag-footer {
-  margin-top: auto;
-  padding: 40px 20px;
-  text-align: center;
-  color: #888;
-  font-size: 12px;
-  line-height: 1.8;
+.ag-legal__content p {
+  margin-bottom: 16px;
 }
 
-.ag-footer__inner {
-  max-width: 600px;
-  margin: 0 auto;
+.ag-legal__note {
+  margin-top: 24px;
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 2px solid rgba(255, 255, 255, 0.2);
+  font-size: 14px;
+  line-height: 1.7;
+  color: #aaa;
 }
 
-.ag-footer__message {
-  margin-bottom: 12px;
-  opacity: 0.85;
-  font-size: 13px;
-}
-
-.ag-footer__links {
-  margin-bottom: 10px;
-}
-
-.ag-footer__link {
-  margin: 0 6px;
-  color: #999;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.ag-footer__link:hover {
-  color: #fff;
-}
-
-.ag-footer__separator {
-  margin: 0 4px;
-  opacity: 0.5;
-}
-
-.ag-footer__copyright {
-  margin-top: 8px;
-  opacity: 0.7;
-}
-
-/* ========== Responsive Adjustments ========== */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   G. RWD 響應式調整
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @media (max-width: 480px) {
   .ag-logo {
-    width: 280px;
+    width: 80%;
   }
 
-  .ag-about__container,
-  .ag-legal__container {
-    padding: 0 16px;
+  .ag-subtitle-zh {
+    font-size: 16px;
   }
 
-  .ag-footer {
-    padding: 32px 16px;
+  .ag-subtitle-en {
+    font-size: 12px;
+  }
+
+  .ag-glow-capsule {
+    font-size: 17px;
+    letter-spacing: 1.5px;
+  }
+
+  .ag-legal__content,
+  .ag-about__content {
+    font-size: 14px;
   }
 }

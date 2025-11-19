@@ -175,65 +175,194 @@
     }
   }
 }
-/* Afterglow Logo */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Afterglow Custom Styles
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* 返回首頁按鈕 */
+.ag-back-home {
+  display: inline-block;
+  padding: 12px 20px;
+  margin: 20px 0 0 20px;
+  font-size: 14px;
+  color: #aaa;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.ag-back-home:hover {
+  color: #fff;
+}
+
+/* 首頁 Header */
+.ag-home-header {
+  padding: 40px 20px 20px;
+}
+
+.ag-logo-block {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Logo：寬版、允許外擴、偏左 */
 .ag-logo {
-  width: 320px;
+  width: 75%;
+  max-width: 480px;
   height: auto;
   object-fit: contain;
   overflow: visible;
   display: block;
-  margin: 40px auto 20px auto;
+  margin: 0 0 0 0;
 }
 
-/* Afterglow Footer */
-.ag-footer {
-  margin-top: 80px;
+/* 副標區塊：置於 Logo 右下方 */
+.ag-subtitle-block {
+  position: absolute;
+  bottom: 10px;
+  right: 0;
+  text-align: right;
+}
+
+.ag-subtitle-zh {
+  font-size: 18px;
+  font-weight: 300;
+  color: #ccc;
+  margin-bottom: 4px;
+  letter-spacing: 0.5px;
+}
+
+.ag-subtitle-en {
+  font-size: 14px;
+  font-weight: 300;
+  color: #999;
+  letter-spacing: 1px;
+}
+
+/* 首頁主區域 */
+.ag-home-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 40px 20px;
-  text-align: center;
-  color: #aaa;
-  font-size: 12px;
-  line-height: 1.6;
 }
 
-.ag-footer__links {
-  margin-bottom: 10px;
+.ag-button-group {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 360px;
 }
 
-.ag-footer__link {
-  margin: 0 8px;
-  color: #bbb;
-  text-decoration: none;
-}
-
-.ag-footer__link:hover {
-  color: #fff;
-}
-
-/* Glow Button */
-.glow-button {
+/* Glow 膠囊按鈕 */
+.ag-glow-capsule {
   display: block;
-  padding: 16px 32px;
+  width: 100%;
+  padding: 16px 0;
   text-align: center;
-  font-size: 16px;
-  font-weight: 500;
+  border-radius: 9999px;
+  font-size: 19px;
+  font-weight: 400;
+  letter-spacing: 2px;
   color: #fff;
-  background: linear-gradient(135deg, #ff6b35, #ff8c42);
-  border-radius: 50px;
   text-decoration: none;
-  box-shadow: 0 4px 20px rgba(255, 107, 53, 0.4);
+  position: relative;
+  background: rgba(0, 0, 0, 0.15);
+  border: 2px solid;
   transition: all 0.3s ease;
 }
 
-.glow-button:hover {
-  box-shadow: 0 6px 30px rgba(255, 107, 53, 0.6);
-  transform: translateY(-2px);
+/* Primary（藍色 Glow）*/
+.ag-glow-capsule--primary {
+  border-color: #4ea7ff;
+  box-shadow: 
+    0 0 20px rgba(78, 167, 255, 0.6),
+    inset 0 0 15px rgba(78, 167, 255, 0.1);
 }
 
-.glow-button--secondary {
-  background: linear-gradient(135deg, #4a90e2, #5ba3f5);
-  box-shadow: 0 4px 20px rgba(74, 144, 226, 0.4);
+.ag-glow-capsule--primary:hover,
+.ag-glow-capsule--primary:active {
+  box-shadow: 
+    0 0 32px rgba(78, 167, 255, 0.85),
+    inset 0 0 25px rgba(78, 167, 255, 0.2);
+  border-color: #6bc8ff;
 }
 
-.glow-button--secondary:hover {
-  box-shadow: 0 6px 30px rgba(74, 144, 226, 0.6);
+/* Secondary（桃紅 Glow）*/
+.ag-glow-capsule--secondary {
+  border-color: #ff6bd9;
+  box-shadow: 
+    0 0 20px rgba(255, 107, 217, 0.6),
+    inset 0 0 15px rgba(255, 107, 217, 0.1);
+}
+
+.ag-glow-capsule--secondary:hover,
+.ag-glow-capsule--secondary:active {
+  box-shadow: 
+    0 0 32px rgba(255, 107, 217, 0.85),
+    inset 0 0 25px rgba(255, 107, 217, 0.2);
+  border-color: #ff8bf1;
+}
+
+/* Footer v2 */
+.ag-footer-v2 {
+  padding: 32px 24px 28px;
+  text-align: center;
+  font-weight: 300;
+}
+
+.ag-footer-v2__links {
+  margin-bottom: 12px;
+  font-size: 12px;
+  letter-spacing: 0.8px;
+}
+
+.ag-footer-v2__link {
+  color: #aaa;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.ag-footer-v2__link:hover {
+  color: #fff;
+}
+
+.ag-footer-v2__separator {
+  margin: 0 8px;
+  color: #666;
+}
+
+.ag-footer-v2__message {
+  margin-bottom: 10px;
+  font-size: 13px;
+  color: #999;
+  letter-spacing: 0.5px;
+}
+
+.ag-footer-v2__copyright {
+  font-size: 10px;
+  color: #666;
+  letter-spacing: 1px;
+}
+
+/* RWD */
+@media (max-width: 480px) {
+  .ag-logo {
+    width: 80%;
+  }
+
+  .ag-subtitle-zh {
+    font-size: 16px;
+  }
+
+  .ag-subtitle-en {
+    font-size: 12px;
+  }
+
+  .ag-glow-capsule {
+    font-size: 17px;
+    letter-spacing: 1.5px;
+  }
 }
