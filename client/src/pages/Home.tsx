@@ -1,28 +1,39 @@
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
-import { APP_LOGO, APP_TITLE } from "@/const";
-import { Streamdown } from 'streamdown';
+import Footer from "@/components/Footer";
 
-/**
- * All content in this page are only for example, replace with your own feature implementation
- * When building pages, remember your instructions in Frontend Best Practices, Design Guide and Common Pitfalls
- */
 export default function Home() {
-  // If theme is switchable in App.tsx, we can implement theme toggling like this:
-  // const { theme, toggleTheme } = useTheme();
-
-  // Use APP_LOGO (as image src) and APP_TITLE if needed
-
   return (
-    <div className="min-h-screen flex flex-col">
-      <main>
-        {/* Example: lucide-react for icons */}
-        <Loader2 className="animate-spin" />
-        Example Page
-        {/* Example: Streamdown for markdown rendering */}
-        <Streamdown>Any **markdown** content</Streamdown>
-        <Button variant="default">Example Button</Button>
+    <div className="min-h-screen flex flex-col bg-black text-white">
+      <main className="flex-1 flex flex-col items-center justify-center px-6">
+        {/* Logo */}
+        <img 
+          src="/assets/afterglow-logo.png" 
+          className="ag-logo" 
+          alt="Afterglow Logo" 
+        />
+        
+        {/* 中文標語 */}
+        <p className="text-center text-lg mb-2" style={{ color: '#ccc' }}>
+          讓夜裡的光有方向
+        </p>
+        
+        {/* 英文標語 */}
+        <p className="text-center text-sm mb-12" style={{ color: '#999' }}>
+          STAY SAFE · CARE FOR YOURSELF · SEEK HELP
+        </p>
+        
+        {/* Glow 雙膠囊按鈕 */}
+        <div className="flex flex-col gap-4 w-full max-w-xs">
+          <a href="/menu.html" className="glow-button">
+            開始冥想
+          </a>
+          <a href="/support.html" className="glow-button glow-button--secondary">
+            緊急支援
+          </a>
+        </div>
       </main>
+      
+      <Footer />
     </div>
   );
 }
