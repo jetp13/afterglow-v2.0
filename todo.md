@@ -22,3 +22,14 @@
 ## Logo 更新
 
 - [x] 替換 afterglow-logo.png 為使用者提供的新 Logo
+
+## Afterglow v2.1.2 完整更新
+
+- [x] 更新 Home.tsx（保持 Logo 外溢設計）
+- [x] 更新 Footer.tsx（加入「即將上線」訊息）
+- [x] 更新 about.html（新版內容）
+- [x] 更新 privacy.html（新版內容）
+- [x] 更新 terms.html（新版內容）
+- [x] 更新 legal.html（新版內容）
+- [x] 更新 layout.css（補齊所有樣式：Logo、Glow 按鈕、Footer、Legal 頁面）
+- [x] 測試所有頁面顯示

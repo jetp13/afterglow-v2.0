@@ -1,28 +1,28 @@
-import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
     <div className="min-h-screen flex flex-col bg-black text-white">
       <main className="flex-1 flex flex-col items-center justify-center px-6">
-        {/* Logo */}
+        
+        {/* Logo - 刻意外溢設計，不可縮小或調整 */}
         <img 
           src="/assets/afterglow-logo.png" 
-          className="ag-logo" 
-          alt="Afterglow Logo" 
+          className="ag-logo"
+          alt="Afterglow Logo"
         />
-        
+
         {/* 中文標語 */}
-        <p className="text-center text-lg mb-2" style={{ color: '#ccc' }}>
+        <p className="text-center text-lg mb-2 text-[#ccc]">
           讓夜裡的光有方向
         </p>
-        
+
         {/* 英文標語 */}
-        <p className="text-center text-sm mb-12" style={{ color: '#999' }}>
+        <p className="text-center text-sm mb-12 text-[#999]">
           STAY SAFE · CARE FOR YOURSELF · SEEK HELP
         </p>
-        
-        {/* Glow 雙膠囊按鈕 */}
+
+        {/* Glow Buttons */}
         <div className="flex flex-col gap-4 w-full max-w-xs">
           <a href="/menu.html" className="glow-button">
             開始冥想
@@ -32,7 +32,7 @@ export default function Home() {
           </a>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
