@@ -18,3 +18,7 @@
 - [x] 建立 terms.html（使用條款）
 - [x] 建立 /assets/layout.css（全域樣式）
 - [x] 確保所有頁面都能正確顯示
+
+## Logo 更新
+
+- [x] 替換 afterglow-logo.png 為使用者提供的新 Logo
