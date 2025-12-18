@@ -1,4 +1,7 @@
-# afterglow-v2.2
+Afterglow v2.2 (Active Line)
+	•	Current IA = see repository tree (Gate → Home → Meditation/Support/Docs)
+	•	Rule: one change per version, then commit + tag + update version-log
+
 /
 ├── index.html                     → Gate（同意／免責／進入）
 ├── Home.html                      → 首頁（Glow Capsules）
