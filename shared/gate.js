@@ -1,44 +1,42 @@
 // Afterglow v2.0 - shared/gate.js
-// 智慧閘門骨架（Skeleton）
+// 智慧閘門（Gate）模組｜GitHub Pages 安全版
 //
-// 目前目標：
-// 1. 在「同一個開啟階段」裡，只要同意過一次，就不再重複跳出閘門。
-// 2. 關掉整個網站重新開啟後，要重新走一次閘門。
-// → 因此使用 sessionStorage，而不是 localStorage。
+// 設計原則：
+// 1. 同一個瀏覽階段（session）只需同意一次
+// 2. 關閉瀏覽器後需重新同意
+// 3. 相容 GitHub Pages（repo base path）
+// 4. 靜默失敗，不阻斷頁面
 
 const AG_GATE_KEY = "afterglow_v2_gate_consent";
 
 /**
- * 取得目前是否已經通過智慧閘門
- * 回傳：true / false
+ * 是否已通過智慧閘門
+ * @returns {boolean}
  */
 export function hasGateConsent() {
   try {
     if (typeof window === "undefined") return false;
-    const value = window.sessionStorage.getItem(AG_GATE_KEY);
-    return value === "yes";
+    return window.sessionStorage.getItem(AG_GATE_KEY) === "yes";
   } catch (e) {
-    // 若瀏覽器不支援 sessionStorage，就一律視為「尚未通過」
     return false;
   }
 }
 
 /**
  * 設定已通過智慧閘門
- * 之後在「免責／法律聲明」頁面按下同意時呼叫
+ * 在 legal.html 按下「同意」時呼叫
  */
 export function setGateConsent() {
   try {
     if (typeof window === "undefined") return;
     window.sessionStorage.setItem(AG_GATE_KEY, "yes");
   } catch (e) {
-    // 靜默失敗即可，不中斷頁面
+    // 靜默失敗
   }
 }
 
 /**
  * 清除同意狀態（預留）
- * 之後如果有「重走閘門」的需求可以使用
  */
 export function clearGateConsent() {
   try {
@@ -48,33 +46,34 @@ export function clearGateConsent() {
 }
 
 /**
- * 在需要智慧閘門的頁面呼叫此函式
+ * 確保已通過智慧閘門，否則導向 legal 頁
  *
- * options.legalUrl   → 閘門頁面（例如："/legal.html" 或 "/legal/index.html"）
- * options.onBypass   → 若已通過閘門，可以在這裡做一些初始化（可選）
+ * @param {Object} options
+ * @param {string} options.legalUrl  預設 "./legal.html"
+ * @param {Function} options.onBypass 已通過時執行（可選）
  */
 export function ensureGateOrRedirect(options = {}) {
-  const { legalUrl = "/legal.html", onBypass } = options;
+  const { legalUrl = "./legal.html", onBypass } = options;
 
   if (!hasGateConsent()) {
-    // 尚未通過：導向到閘門頁面，並帶上 from 參數
     try {
+      if (typeof window === "undefined") return;
+
       const current =
-        typeof window !== "undefined"
-          ? window.location.pathname + window.location.search
-          : "/";
-      const target =
-        legalUrl + "?from=" + encodeURIComponent(current || "/");
-      if (typeof window !== "undefined") {
-        window.location.href = target;
-      }
+        window.location.pathname + window.location.search;
+
+      // 使用 URL 物件，確保 GitHub Pages base path 正確
+      const targetUrl = new URL(legalUrl, window.location.href);
+      targetUrl.searchParams.set("from", current || "/");
+
+      window.location.assign(targetUrl.toString());
     } catch (e) {
-      // 若無法導向，就維持原頁面（最少干擾原本流程）
+      // 靜默失敗，不中斷頁面
     }
     return;
   }
 
-  // 已通過閘門：可選擇執行額外邏輯
+  // 已通過閘門，可執行額外初始化邏輯
   if (typeof onBypass === "function") {
     try {
       onBypass();
@@ -83,12 +82,27 @@ export function ensureGateOrRedirect(options = {}) {
 }
 
 /**
- * TODO（之後的版本再做）：
- * - 在 legal.html / disclaimer.html 中：
- *   - 使用 setGateConsent() 紀錄通過狀態
- *   - 讀取 URL ?from=... 決定同意後導回哪一頁
- * - 在需要被保護的頁面（例如 index.html / Support.html）：
- *   - 在 <script type="module"> 中呼叫：
- *       import { ensureGateOrRedirect } from "../shared/gate.js";
- *       ensureGateOrRedirect({ legalUrl: "/legal.html" });
+ * 使用說明（範例）：
+ *
+ * 在 index.html / 受保護頁面：
+ *
+ * <script type="module">
+ *   import { ensureGateOrRedirect } from "./shared/gate.js";
+ *   ensureGateOrRedirect({
+ *     legalUrl: "./legal.html",
+ *   });
+ * </script>
+ *
+ * 在 legal.html：
+ *
+ * <script type="module">
+ *   import { setGateConsent } from "./shared/gate.js";
+ *
+ *   document.querySelector("#agreeBtn").addEventListener("click", () => {
+ *     setGateConsent();
+ *     const params = new URLSearchParams(window.location.search);
+ *     const from = params.get("from") || "./index.html";
+ *     window.location.assign(from);
+ *   });
+ * </script>
  */
