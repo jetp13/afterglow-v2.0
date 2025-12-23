@@ -1,108 +1,89 @@
-// Afterglow v2.0 - shared/gate.js
-// 智慧閘門（Gate）模組｜GitHub Pages 安全版
-//
-// 設計原則：
-// 1. 同一個瀏覽階段（session）只需同意一次
-// 2. 關閉瀏覽器後需重新同意
-// 3. 相容 GitHub Pages（repo base path）
-// 4. 靜默失敗，不阻斷頁面
+// assets/gate.js
+// Refactored for PROD | 呼吸膠囊 Mobile v1.1
+[span_23](start_span)[span_24](start_span)//[span_23](end_span)[span_24](end_span)
 
-const AG_GATE_KEY = "afterglow_v2_gate_consent";
+(() => {
+    // 1. Config Setup
+    const cfg = window.AG_CONFIG || {};
+    const audioSrc = cfg.audioSrc;
 
-/**
- * 是否已通過智慧閘門
- * @returns {boolean}
- */
-export function hasGateConsent() {
-  try {
-    if (typeof window === "undefined") return false;
-    return window.sessionStorage.getItem(AG_GATE_KEY) === "yes";
-  } catch (e) {
-    return false;
-  }
-}
+    [span_25](start_span)// 2. DOM Elements (Mapping to Glow Naming)[span_25](end_span)
+    const sphere = document.getElementById("sphere"); // .glow-sphere
+    const btnAction = document.getElementById("btn-action"); // .glow-btn-primary
+    const btnStop = document.getElementById("btn-stop"); // .glow-btn-secondary
+    const hint = document.getElementById("hint"); // .glow-title-sub
 
-/**
- * 設定已通過智慧閘門
- * 在 legal.html 按下「同意」時呼叫
- */
-export function setGateConsent() {
-  try {
-    if (typeof window === "undefined") return;
-    window.sessionStorage.setItem(AG_GATE_KEY, "yes");
-  } catch (e) {
-    // 靜默失敗
-  }
-}
+    // 3. Audio Init
+    const audio = new Audio();
+    audio.preload = "auto";
+    let isPlaying = false;
 
-/**
- * 清除同意狀態（預留）
- */
-export function clearGateConsent() {
-  try {
-    if (typeof window === "undefined") return;
-    window.sessionStorage.removeItem(AG_GATE_KEY);
-  } catch (e) {}
-}
-
-/**
- * 確保已通過智慧閘門，否則導向 legal 頁
- *
- * @param {Object} options
- * @param {string} options.legalUrl  預設 "./legal.html"
- * @param {Function} options.onBypass 已通過時執行（可選）
- */
-export function ensureGateOrRedirect(options = {}) {
-  const { legalUrl = "./legal.html", onBypass } = options;
-
-  if (!hasGateConsent()) {
-    try {
-      if (typeof window === "undefined") return;
-
-      const current =
-        window.location.pathname + window.location.search;
-
-      // 使用 URL 物件，確保 GitHub Pages base path 正確
-      const targetUrl = new URL(legalUrl, window.location.href);
-      targetUrl.searchParams.set("from", current || "/");
-
-      window.location.assign(targetUrl.toString());
-    } catch (e) {
-      // 靜默失敗，不中斷頁面
+    // 4. State Management
+    function setState(state) {
+        // state: "rest" | "breathing"
+        if (state === "breathing") {
+            sphere.classList.add("is-breathing");
+            
+            // UI Update
+            btnAction.style.display = "none";
+            btnStop.style.display = "inline-block";
+            safeSetHint("跟隨光暈呼吸...");
+            isPlaying = true;
+        } else {
+            sphere.classList.remove("is-breathing");
+            
+            // UI Update
+            btnAction.style.display = "inline-block";
+            btnAction.innerText = "再次開始";
+            btnStop.style.display = "none";
+            safeSetHint("已完成。隨時可以再次開始。");
+            isPlaying = false;
+        }
     }
-    return;
-  }
 
-  // 已通過閘門，可執行額外初始化邏輯
-  if (typeof onBypass === "function") {
-    try {
-      onBypass();
-    } catch (e) {}
-  }
-}
+    function safeSetHint(text) {
+        if (hint) hint.innerHTML = text;
+    }
 
-/**
- * 使用說明（範例）：
- *
- * 在 index.html / 受保護頁面：
- *
- * <script type="module">
- *   import { ensureGateOrRedirect } from "./shared/gate.js";
- *   ensureGateOrRedirect({
- *     legalUrl: "./legal.html",
- *   });
- * </script>
- *
- * 在 legal.html：
- *
- * <script type="module">
- *   import { setGateConsent } from "./shared/gate.js";
- *
- *   document.querySelector("#agreeBtn").addEventListener("click", () => {
- *     setGateConsent();
- *     const params = new URLSearchParams(window.location.search);
- *     const from = params.get("from") || "./index.html";
- *     window.location.assign(from);
- *   });
- * </script>
- */
+    // 5. Core Actions
+    function startJourney() {
+        if (!audioSrc) {
+            safeSetHint("⚠️ 系統錯誤：未設定 Audio Source");
+            console.error("Missing window.AG_CONFIG.audioSrc");
+            return;
+        }
+
+        audio.src = audioSrc;
+        audio.currentTime = 0;
+
+        // 啟動視覺
+        setState("breathing");
+
+        // 啟動聽覺
+        audio.play().catch((e) => {
+            console.warn("Autoplay blocked", e);
+            safeSetHint("請點擊畫面以播放音訊");
+            setState("rest"); // Rollback if failed
+        });
+    }
+
+    function stopJourney() {
+        audio.pause();
+        audio.currentTime = 0;
+        setState("rest");
+    }
+
+    // 6. Event Listeners
+    [span_26](start_span)// 音檔自然結束時的處理[span_26](end_span)
+    audio.addEventListener("ended", () => {
+        setState("rest");
+        safeSetHint("旅程結束。");
+    });
+
+    btnAction?.addEventListener("click", startJourney);
+    btnStop?.addEventListener("click", stopJourney);
+
+    // Initial State
+    safeSetHint("點擊開始以進入旅程");
+    console.log("Glow OS | Gate Logic Loaded v1.1");
+})();
