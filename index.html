@@ -1,38 +1,43 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
-  <meta charset="UTF-8" />
-  <title>Afterglow v2.0</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="assets/layout.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PROD | 呼吸膠囊 Mobile v1.1</title>
+    <link rel="stylesheet" href="assets/layout.css">
 </head>
-<body>
-  <div class="ag-app-frame">
-    <header class="ag-header">
-      <span class="ag-logo-dot"></span>
-      <span class="ag-title">Afterglow v2.0</span>
-      <span class="ag-subtitle">骨架版本 · GitHub Skeleton</span>
-    </header>
+<body style="background-color: #000000; margin: 0;">
 
-    <main class="ag-main">
-      <div class="ag-card">
-        <h1>🪩 Afterglow v2.0</h1>
-        <p>這是骨架首頁（index.html）。</p>
-        <p>接下來會從這裡連到冥想模組與緊急支援模組。</p>
-      </div>
-    </main>
+    <div class="container-safearea">
+        
+        <header>
+            <h1 class="glow-title-main">BREATHE</h1>
+            <p class="glow-title-sub" id="hint">準備開始冥想</p>
+        </header>
 
-    <footer class="ag-footer">
-      <small>Afterglow · v2.0 skeleton · build on GitHub</small>
-    </footer>
-  </div>
-<script type="module">
-  import { ensureGateOrRedirect } from "./shared/gate.js";
+        <main>
+            <div id="sphere" class="glow-sphere">
+                <div class="sphere-core"></div>
+            </div>
+        </main>
 
-  // 檢查是否通過智慧閘門
-  ensureGateOrRedirect({
-    legalUrl: "/legal.html", // 未來正式的免責／法律頁
-  });
-</script>
+        <footer class="section-footer">
+            <button class="glow-btn-primary" id="btn-action">
+                開始旅程
+            </button>
+            
+            <button class="glow-btn-secondary" id="btn-stop" style="display:none; margin-top: 1rem;">
+                停止
+            </button>
+        </footer>
+
+    </div>
+
+    <script>
+        window.AG_CONFIG = {
+            [span_6](start_span)audioSrc: "assets/audio/guide.mp3" //[span_6](end_span)
+        };
+    </script>
+    <script src="assets/gate.js"></script>
 </body>
 </html>
