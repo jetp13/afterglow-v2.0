@@ -4,15 +4,159 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PROD | 呼吸膠囊 Mobile v1.1</title>
-    <link rel="stylesheet" href="assets/layout.css">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Orbitron:wght@500;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* -----------------------------------------------------------
+           CSS 直接內嵌：確保樣式一定載入
+        ----------------------------------------------------------- */
+        :root {
+            --glow-color-bg: #000000;
+            --glow-color-primary: #FF2D95; /* 霓虹粉 */
+            --glow-color-secondary: #7D3CFF; /* 紫藍 */
+            --glow-font-main: 'Orbitron', sans-serif;
+            --glow-font-body: 'Noto Sans TC', sans-serif;
+        }
+
+        body {
+            background-color: var(--glow-color-bg);
+            color: #FFFFFF;
+            font-family: var(--glow-font-body);
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* 2.3 Safe Area Layout */
+        .container-safearea {
+            width: 100%;
+            max-width: 450px; /* 手機模擬寬度 */
+            height: 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 60px 24px;
+            box-sizing: border-box;
+        }
+
+        /* Typography */
+        .glow-title-main {
+            font-family: var(--glow-font-main);
+            color: #FFFFFF; /* 標題改為白色，帶粉紅光暈，增加對比 */
+            text-transform: uppercase;
+            font-size: 2.5rem;
+            letter-spacing: 3px;
+            margin: 0;
+            text-shadow: 0 0 15px var(--glow-color-primary), 0 0 30px var(--glow-color-primary);
+            text-align: center;
+        }
+
+        .glow-title-sub {
+            font-size: 1rem;
+            color: #AAAAAA;
+            margin-top: 12px;
+            text-align: center;
+            letter-spacing: 1px;
+        }
+
+        /* 3.1 & 3.2 Breathing Sphere Component */
+        .glow-sphere {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            /* 修正漸層寫法，讓球體更有立體感 */
+            background: radial-gradient(circle at 30% 30%, var(--glow-color-primary), #000000 70%);
+            box-shadow: 0 0 30px var(--glow-color-primary), 0 0 60px var(--glow-color-secondary);
+            position: relative;
+            transition: all 1s ease;
+            transform: scale(0.8);
+            opacity: 0.8;
+            margin-top: -20px; /* 視覺修正 */
+        }
+
+        /* 核心光點 */
+        .sphere-core {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px; height: 10px;
+            background: #FFFFFF;
+            border-radius: 50%;
+            box-shadow: 0 0 20px #FFFFFF, 0 0 40px #FF2D95;
+        }
+
+        /* Animation State: Breathing */
+        .glow-sphere.is-breathing {
+            opacity: 1;
+            /* 4-4-4-4 Rhythm = 16s Total Cycle */
+            animation: glow-breathing 16s ease-in-out infinite; 
+        }
+
+        /* 5.1 Animation Keyframes */
+        @keyframes glow-breathing {
+            0%   { transform: scale(0.8); box-shadow: 0 0 30px var(--glow-color-primary); }  
+            25%  { transform: scale(1.3); box-shadow: 0 0 60px var(--glow-color-primary), 0 0 100px var(--glow-color-secondary); } /* 吸氣結束 */
+            50%  { transform: scale(1.3); box-shadow: 0 0 50px var(--glow-color-primary); } /* 憋氣結束 */
+            75%  { transform: scale(0.8); box-shadow: 0 0 20px var(--glow-color-primary); } /* 吐氣結束 */
+            100% { transform: scale(0.8); box-shadow: 0 0 20px var(--glow-color-primary); } /* 憋氣結束 */
+        }
+
+        /* 3.2 Buttons */
+        .glow-btn-primary {
+            background: rgba(0,0,0,0.5);
+            border: 2px solid var(--glow-color-primary);
+            color: var(--glow-color-primary);
+            padding: 16px 40px;
+            font-size: 1.1rem;
+            font-family: var(--glow-font-main);
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 0 15px rgba(255, 45, 149, 0.4);
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .glow-btn-primary:active, .glow-btn-primary:hover {
+            background: var(--glow-color-primary);
+            color: #000;
+            box-shadow: 0 0 30px var(--glow-color-primary);
+            transform: translateY(-2px);
+        }
+
+        .glow-btn-secondary {
+            background: none;
+            border: 1px solid #666;
+            color: #888;
+            padding: 10px 30px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            font-family: var(--glow-font-body);
+            transition: all 0.3s;
+        }
+        
+        .glow-btn-secondary:hover {
+            border-color: #FFF;
+            color: #FFF;
+        }
+    </style>
 </head>
-<body style="background-color: #000000; margin: 0;">
+<body>
 
     <div class="container-safearea">
         
         <header>
-            <h1 class="glow-title-main">BREATHE</h1>
-            <p class="glow-title-sub" id="hint">準備開始冥想</p>
+            <h1 class="glow-title-main">Breathe</h1>
+            <p class="glow-title-sub" id="hint">準備進入潛意識</p>
         </header>
 
         <main>
@@ -21,13 +165,13 @@
             </div>
         </main>
 
-        <footer class="section-footer">
+        <footer class="section-footer" style="display:flex; flex-direction:column; align-items:center;">
             <button class="glow-btn-primary" id="btn-action">
-                開始旅程
+                Start Journey
             </button>
             
-            <button class="glow-btn-secondary" id="btn-stop" style="display:none; margin-top: 1rem;">
-                停止
+            <button class="glow-btn-secondary" id="btn-stop" style="display:none;">
+                Stop
             </button>
         </footer>
 
@@ -35,9 +179,12 @@
 
     <script>
         window.AG_CONFIG = {
-            [span_6](start_span)audioSrc: "assets/audio/guide.mp3" //[span_6](end_span)
+            audioSrc: "assets/audio/guide.mp3" 
+            // 注意：請確認你的 GitHub Repository 裡有 assets/audio/guide.mp3 這個路徑
+            // 如果只有 guide.mp3 在根目錄，請改成 "guide.mp3"
         };
     </script>
-    <script src="assets/gate.js"></script>
-</body>
+    
+    <script src="assets/gate.js"></script> 
+    </body>
 </html>
