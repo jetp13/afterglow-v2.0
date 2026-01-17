@@ -19,6 +19,22 @@
             --glow-color-secondary: #7D3CFF; /* 紫藍 */
             --glow-font-main: 'Orbitron', sans-serif;
             --glow-font-body: 'Noto Sans TC', sans-serif;
+            
+            /* 全站導覽列高度變數（行動裝置預設） */
+            --nav-height: 56px;
+        }
+
+        /* 桌機環境：調整導覽列高度為 72px */
+        @media (min-width: 768px) {
+            :root {
+                --nav-height: 72px;
+            }
+        }
+
+        /* 全站捲動行為設定 */
+        html {
+            scroll-padding-top: var(--nav-height);
+            scroll-behavior: smooth;
         }
 
         body {
@@ -44,6 +60,11 @@
             justify-content: space-between;
             padding: 60px 24px;
             box-sizing: border-box;
+        }
+
+        /* 首頁 Hero 區塊額外留白 */
+        header.hero-header {
+            padding-top: 24px;
         }
 
         /* Typography */
@@ -154,7 +175,7 @@
 
     <div class="container-safearea">
         
-        <header>
+        <header class="hero-header">
             <h1 class="glow-title-main">Breathe</h1>
             <p class="glow-title-sub" id="hint">準備進入潛意識</p>
         </header>
