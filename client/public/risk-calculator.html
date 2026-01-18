@@ -6,35 +6,581 @@
   <title>風險計算器｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
   <style>
-    .ag-content-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
+    /* Specific Styles for Risk Calculator */
+    .ag-risk-header {
       text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .ag-risk-title {
+      font-size: 32px;
+      color: #ff6bd9;
+      font-weight: bold;
+      text-shadow: 0 0 20px rgba(255, 107, 217, 0.6);
+      margin-bottom: 20px;
+    }
+
+    .ag-harm-reduction-box {
+      border: 1px solid #ff6bd9;
+      background: rgba(255, 107, 217, 0.1);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 30px;
+      display: flex;
+      gap: 15px;
+      align-items: flex-start;
+    }
+
+    .ag-info-icon {
+      color: #ff6bd9;
+      font-size: 20px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .ag-harm-text {
+      color: #ffcae9;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .ag-harm-title {
+      font-weight: bold;
+      color: #ff6bd9;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .ag-section-label {
+      color: #ddd;
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+
+    /* Dropdown & Selection */
+    .ag-select-wrapper {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .ag-select-btn {
+      width: 100%;
+      padding: 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 30px;
+      color: white;
+      font-size: 16px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .ag-select-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 12px;
+      margin-top: 8px;
+      z-index: 100;
+      display: none;
+      max-height: 300px;
+      overflow-y: auto;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .ag-select-dropdown.show {
+      display: block;
+    }
+
+    .ag-option {
+      padding: 12px 20px;
+      color: #ddd;
+      cursor: pointer;
+      border-bottom: 1px solid #222;
+      transition: background 0.2s;
+    }
+
+    .ag-option:hover {
+      background: rgba(255, 107, 217, 0.1);
       color: #ff6bd9;
     }
-    .ag-placeholder-text {
-      font-size: 24px;
+
+    .ag-selected-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 40px;
+      min-height: 40px;
+    }
+
+    .ag-tag {
+      background: #ff6bd9;
+      color: black;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 14px;
       font-weight: bold;
-      opacity: 0.8;
-      text-shadow: 0 0 10px rgba(255, 107, 217, 0.5);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .ag-tag-remove {
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 1;
+      opacity: 0.6;
+    }
+    .ag-tag-remove:hover { opacity: 1; }
+
+    /* Result Circle */
+    .ag-result-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 40px;
+      height: 200px;
+      align-items: center;
+      position: relative;
+    }
+
+    .ag-result-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 40px;
+      color: #666;
+      transition: all 0.5s ease;
+      position: relative;
+    }
+
+    .ag-result-circle::after {
+      content: '';
+      position: absolute;
+      top: -10px; left: -10px; right: -10px; bottom: -10px;
+      border-radius: 50%;
+      background: transparent;
+      z-index: -1;
+      transition: all 0.5s ease;
+    }
+
+    /* Risk Levels */
+    .risk-low .ag-result-circle {
+      background: rgba(0, 255, 136, 0.1);
+      color: #00ff88;
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
+    }
+    .risk-medium .ag-result-circle {
+      background: rgba(255, 200, 0, 0.1);
+      color: #ffc800;
+      box-shadow: 0 0 30px rgba(255, 200, 0, 0.2);
+    }
+    .risk-high .ag-result-circle {
+      background: rgba(255, 68, 68, 0.1);
+      color: #ff4444;
+      box-shadow: 0 0 30px rgba(255, 68, 68, 0.3);
+    }
+    .risk-deadly .ag-result-circle {
+      background: rgba(139, 0, 0, 0.2);
+      color: #ff0000;
+      box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
+      animation: pulse-red 1.5s infinite;
+    }
+
+    @keyframes pulse-red {
+      0% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.4); }
+      50% { box-shadow: 0 0 60px rgba(255, 0, 0, 0.7); }
+      100% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.4); }
+    }
+
+    .ag-result-text-box {
+      border: 1px solid #333;
+      background: #111;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      min-height: 100px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .ag-result-title {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 8px;
+      color: #666;
+    }
+    .ag-result-desc {
+      font-size: 14px;
+      color: #999;
+    }
+
+    /* Warning Box */
+    .ag-warning-box {
+      border: 1px solid #ffc800;
+      background: rgba(255, 200, 0, 0.05);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 40px;
+    }
+    .ag-warning-title {
+      color: #ffc800;
+      font-weight: bold;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ag-warning-list {
+      list-style: disc;
+      padding-left: 20px;
+      color: #ddd;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .ag-warning-list li { margin-bottom: 6px; }
+
+    /* Info Cards */
+    .ag-info-card {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .ag-info-card h3 {
+      color: #aaa;
+      font-size: 16px;
+      margin-bottom: 12px;
+    }
+    .ag-info-card p {
+      color: #888;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .ag-link-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .ag-link-item {
+      color: #ff6bd9;
+      text-decoration: none;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ag-link-item:hover { text-decoration: underline; }
+
+    /* Help Section */
+    .ag-help-section {
+      background: rgba(100, 50, 100, 0.1);
+      border: 1px solid rgba(189, 0, 255, 0.2);
+      border-radius: 12px;
+      padding: 20px;
+      margin-top: 20px;
+    }
+    .ag-help-title {
+      color: #bd00ff;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+    .ag-help-row {
+      display: flex;
+      justify-content: space-between;
+      color: #ddd;
+      font-size: 14px;
+      margin-bottom: 8px;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      padding-bottom: 8px;
+    }
+    .ag-help-row:last-child { border-bottom: none; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body class="ag-page">
   
-  <!-- 返回按鈕 -->
-  <a href="/support-main.html" class="ag-back-button" style="position: fixed; top: 20px; left: 20px; color: #666; text-decoration: none; font-size: 14px;">
-    ← 返回選單
+  <!-- Back Button -->
+  <a href="/support-main.html" class="ag-back-button" style="position: fixed; top: 20px; left: 20px; color: #666; text-decoration: none; font-size: 14px; z-index: 10; padding: 8px 12px; background: rgba(0,0,0,0.5); border-radius: 20px; backdrop-filter: blur(5px);">
+    ← 返回
   </a>
 
-  <div class="ag-content-container">
-    <div class="ag-placeholder-text">風險計算器</div>
-    <p style="margin-top: 10px; color: #999; font-size: 14px;">內容建置中...</p>
+  <div class="ag-container" style="max-width: 600px; margin: 0 auto; padding: 80px 20px;">
+    
+    <div class="ag-risk-header">
+      <h1 class="ag-risk-title">風險計算器</h1>
+    </div>
+
+    <!-- Harm Reduction Disclaimer -->
+    <div class="ag-harm-reduction-box">
+      <div class="ag-info-icon">ⓘ</div>
+      <div class="ag-harm-text">
+        <span class="ag-harm-title">減害立場：</span>
+        我們理解物質使用是個人選擇。此工具旨在提供風險資訊，協助您做出更安全的決定，而非評判或禁止。如果您選擇使用，請了解風險並採取減害措施。
+      </div>
+    </div>
+
+    <div class="ag-section-label">選擇您使用或考慮使用的物質（最多 4 種）</div>
+
+    <!-- Dropdown -->
+    <div class="ag-select-wrapper">
+      <div class="ag-select-btn" id="dropdown-btn">
+        -- 選擇一種物質 --
+        <span>▼</span>
+      </div>
+      <div class="ag-select-dropdown" id="dropdown-list">
+        <!-- Options will be populated by JS -->
+      </div>
+    </div>
+
+    <!-- Selected Tags -->
+    <div class="ag-selected-tags" id="selected-tags">
+      <!-- Tags will appear here -->
+    </div>
+
+    <!-- Result Display -->
+    <div id="result-container" class="ag-result-container">
+      <div class="ag-result-circle" id="result-circle">?</div>
+    </div>
+
+    <div class="ag-result-text-box" id="result-box">
+      <div class="ag-result-title" id="result-title">請選擇物質</div>
+      <div class="ag-result-desc" id="result-desc">選擇您使用或考慮使用的物質以評估風險</div>
+    </div>
+
+    <!-- Important Warning -->
+    <div class="ag-warning-box">
+      <div class="ag-warning-title">⚠️ 重要聲明</div>
+      <ul class="ag-warning-list">
+        <li>此計算器基於現有研究與使用者回報，但每個人的體質與反應不同</li>
+        <li>風險評估無法涵蓋所有可能情況，實際風險可能更高</li>
+        <li>即使顯示「低風險」，仍可能發生不良反應或意外</li>
+        <li>如出現異常症狀（呼吸困難、胸痛、意識模糊等），請立即撥打 119</li>
+        <li>本工具不鼓勵物質使用，僅提供減害資訊</li>
+      </ul>
+    </div>
+
+    <!-- How to use -->
+    <div class="ag-info-card">
+      <h3>如何使用此工具</h3>
+      <p>從下拉選單中選擇您使用或考慮使用的物質。系統會根據 TripSit 的藥物混用風險表，評估不同物質組合的風險等級，並說明可能的危險原因。您可以選擇最多 4 種物質進行評估。</p>
+    </div>
+
+    <!-- Resources -->
+    <div class="ag-info-card">
+      <h3>資料來源與延伸閱讀</h3>
+      <div class="ag-link-list">
+        <a href="https://wiki.tripsit.me/wiki/Drug_combinations" target="_blank" class="ag-link-item">↗ TripSit - Guide to Drug Combinations</a>
+        <a href="https://tripsit.me/" target="_blank" class="ag-link-item">↗ TripSit - Drug Information & Harm Reduction</a>
+        <a href="https://psychonautwiki.org/" target="_blank" class="ag-link-item">↗ PsychonautWiki - 物質資訊百科</a>
+        <a href="https://www.erowid.org/" target="_blank" class="ag-link-item">↗ Erowid - 經驗報告與研究資料</a>
+      </div>
+    </div>
+
+    <!-- Need Help -->
+    <div class="ag-help-section">
+      <div class="ag-help-title">需要協助？</div>
+      <p style="color: #aaa; font-size: 13px; margin-bottom: 15px;">如果您或朋友正面臨物質使用相關問題，以下資源可提供協助：</p>
+      <div class="ag-help-row">
+        <span>反毒諮詢專線</span>
+        <span style="color: white; font-weight: bold;">0800-770-885</span>
+      </div>
+      <div class="ag-help-row">
+        <span>生命線</span>
+        <span style="color: white; font-weight: bold;">1995</span>
+      </div>
+      <div class="ag-help-row">
+        <span>張老師</span>
+        <span style="color: white; font-weight: bold;">1980</span>
+      </div>
+    </div>
+
   </div>
 
+  <script>
+    // Substance Data
+    const substances = [
+      { id: 'ice', name: 'Ice (甲基苯丙胺)', sub: '(Methamphetamine)' },
+      { id: 'mdma', name: 'MDMA (搖頭丸)', sub: '(MDMA)' },
+      { id: 'ghb', name: 'G水 (GHB/GBL)', sub: '(GHB/GBL)' },
+      { id: 'ket', name: 'K (K他命)', sub: '(Ketamine)' },
+      { id: 'viagra', name: '威而鋼 (威)', sub: '(Viagra)' },
+      { id: 'rush', name: 'Rush (亞硝酸鹽)', sub: '(Poppers)' },
+      { id: 'alcohol', name: '酒精', sub: '(Alcohol)' }
+    ];
+
+    // Risk Interactions Database (Simplified based on TripSit)
+    // Levels: low, medium, high, deadly
+    const interactions = [
+      // Deadly
+      { pair: ['viagra', 'rush'], level: 'deadly', title: '致命風險', desc: '極度危險！兩者皆為血管擴張劑，混用會導致血壓驟降、休克甚至死亡。' },
+      { pair: ['ghb', 'alcohol'], level: 'deadly', title: '致命風險', desc: '極度危險！兩者皆為中樞神經抑制劑，混用極易導致意識喪失、呼吸停止。' },
+      { pair: ['ket', 'alcohol'], level: 'deadly', title: '致命風險', desc: '極度危險！兩者皆為抑制劑，混用會導致嚴重的運動失調、嘔吐（可能窒息）及呼吸抑制。' },
+      { pair: ['ghb', 'ket'], level: 'deadly', title: '致命風險', desc: '極度危險！雙重抑制劑，極易導致失去意識與呼吸衰竭。' },
+      
+      // High Risk
+      { pair: ['mdma', 'ice'], level: 'high', title: '高風險', desc: '危險！兩者皆為強效興奮劑，混用會對心臟造成極大負擔，增加神經毒性風險。' },
+      { pair: ['mdma', 'viagra'], level: 'high', title: '高風險', desc: '危險！MDMA 會增加心臟負荷，威而鋼影響血壓，混用可能導致心臟問題。' },
+      { pair: ['ice', 'viagra'], level: 'high', title: '高風險', desc: '危險！興奮劑與血管擴張劑混用，對心血管系統造成極大壓力。' },
+      { pair: ['ice', 'rush'], level: 'high', title: '高風險', desc: '危險！對心臟負荷極大，可能導致心律不整或暈厥。' },
+      
+      // Medium / Unsafe
+      { pair: ['mdma', 'alcohol'], level: 'medium', title: '不安全', desc: '酒精會減弱 MDMA 效果並增加脫水風險，且加重宿醉與神經毒性。' },
+      { pair: ['ice', 'alcohol'], level: 'medium', title: '不安全', desc: '酒精會掩蓋興奮劑效果，導致過量飲酒或過量使用藥物（OD）的風險增加。' },
+      { pair: ['ket', 'mdma'], level: 'medium', title: '需謹慎', desc: '雖然常見（Kitty Flip），但會增強彼此效果，容易導致意外受傷或過度解離。' },
+      { pair: ['ghb', 'mdma'], level: 'medium', title: '需謹慎', desc: 'GHB 劑量極難控制，混用時容易因興奮劑退去而突然陷入昏迷（G-out）。' },
+    ];
+
+    let selected = [];
+
+    // Init Dropdown
+    const dropdownList = document.getElementById('dropdown-list');
+    const dropdownBtn = document.getElementById('dropdown-btn');
+    
+    substances.forEach(sub => {
+      const div = document.createElement('div');
+      div.className = 'ag-option';
+      div.innerHTML = `<div>${sub.name}</div><div style="font-size:12px;color:#666;">${sub.sub}</div>`;
+      div.onclick = () => addSubstance(sub.id);
+      dropdownList.appendChild(div);
+    });
+
+    dropdownBtn.onclick = () => {
+      dropdownList.classList.toggle('show');
+    };
+
+    // Close dropdown when clicking outside
+    window.onclick = (e) => {
+      if (!e.target.closest('.ag-select-wrapper')) {
+        dropdownList.classList.remove('show');
+      }
+    };
+
+    function addSubstance(id) {
+      if (selected.length >= 4) {
+        alert('最多只能選擇 4 種物質');
+        return;
+      }
+      if (selected.includes(id)) return;
+
+      selected.push(id);
+      renderTags();
+      calculateRisk();
+      dropdownList.classList.remove('show');
+    }
+
+    function removeSubstance(id) {
+      selected = selected.filter(s => s !== id);
+      renderTags();
+      calculateRisk();
+    }
+
+    function renderTags() {
+      const container = document.getElementById('selected-tags');
+      container.innerHTML = '';
+      selected.forEach(id => {
+        const sub = substances.find(s => s.id === id);
+        const tag = document.createElement('div');
+        tag.className = 'ag-tag';
+        tag.innerHTML = `
+          ${sub.name.split(' ')[0]}
+          <span class="ag-tag-remove" onclick="removeSubstance('${id}')">×</span>
+        `;
+        container.appendChild(tag);
+      });
+    }
+
+    function calculateRisk() {
+      const resultCircle = document.getElementById('result-circle');
+      const resultTitle = document.getElementById('result-title');
+      const resultDesc = document.getElementById('result-desc');
+      const resultContainer = document.getElementById('result-container');
+
+      // Reset classes
+      resultContainer.className = 'ag-result-container';
+      
+      if (selected.length === 0) {
+        resultCircle.textContent = '?';
+        resultTitle.textContent = '請選擇物質';
+        resultTitle.style.color = '#666';
+        resultDesc.textContent = '選擇您使用或考慮使用的物質以評估風險';
+        return;
+      }
+
+      if (selected.length === 1) {
+        resultCircle.textContent = 'ℹ️';
+        resultContainer.classList.add('risk-low');
+        resultTitle.textContent = '單一物質';
+        resultTitle.style.color = '#00ff88';
+        resultDesc.textContent = '目前僅選擇一種物質。請注意該物質本身的劑量與風險。';
+        return;
+      }
+
+      // Find highest risk
+      let highestRisk = { level: 'low', title: '低風險交互', desc: '目前資料庫中未顯示這幾種物質有嚴重交互作用，但仍需注意個別風險。', score: 0 };
+
+      // Check pairs
+      for (let i = 0; i < selected.length; i++) {
+        for (let j = i + 1; j < selected.length; j++) {
+          const s1 = selected[i];
+          const s2 = selected[j];
+          
+          const match = interactions.find(inter => 
+            (inter.pair.includes(s1) && inter.pair.includes(s2))
+          );
+
+          if (match) {
+            let score = 0;
+            if (match.level === 'deadly') score = 4;
+            else if (match.level === 'high') score = 3;
+            else if (match.level === 'medium') score = 2;
+            else score = 1;
+
+            if (score > highestRisk.score) {
+              highestRisk = { ...match, score };
+            }
+          }
+        }
+      }
+
+      // Update UI
+      if (highestRisk.level === 'deadly') {
+        resultCircle.textContent = '☠️';
+        resultContainer.classList.add('risk-deadly');
+        resultTitle.style.color = '#ff0000';
+      } else if (highestRisk.level === 'high') {
+        resultCircle.textContent = '⚠️';
+        resultContainer.classList.add('risk-high');
+        resultTitle.style.color = '#ff4444';
+      } else if (highestRisk.level === 'medium') {
+        resultCircle.textContent = '⚠️';
+        resultContainer.classList.add('risk-medium');
+        resultTitle.style.color = '#ffc800';
+      } else {
+        resultCircle.textContent = '✅';
+        resultContainer.classList.add('risk-low');
+        resultTitle.style.color = '#00ff88';
+      }
+
+      resultTitle.textContent = highestRisk.title;
+      resultDesc.textContent = highestRisk.desc;
+    }
+  </script>
 </body>
 </html>
