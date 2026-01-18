@@ -3,37 +3,415 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>急救指引｜Afterglow</title>
+  <title>緊急醫療與減害支援｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
   <style>
-    .ag-content-container {
+    /* Specific Styles for First Aid v1.2 */
+    .ag-aid-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .ag-aid-title {
+      font-size: 28px;
+      color: #00e5ff;
+      font-weight: bold;
+      text-shadow: 0 0 20px rgba(0, 229, 255, 0.6);
+      margin-bottom: 10px;
+      line-height: 1.4;
+    }
+
+    .ag-aid-subtitle {
+      color: #aaa;
+      font-size: 14px;
+    }
+
+    /* Emergency Call Buttons */
+    .ag-emergency-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .ag-emergency-btn {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
-      text-align: center;
-      color: #00e5ff;
-    }
-    .ag-placeholder-text {
-      font-size: 24px;
+      padding: 15px;
+      border-radius: 12px;
       font-weight: bold;
-      opacity: 0.8;
-      text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      text-align: center;
+    }
+
+    .ag-btn-119 {
+      background: rgba(255, 68, 68, 0.15);
+      border: 2px solid #ff4444;
+      color: #ff4444;
+      box-shadow: 0 0 20px rgba(255, 68, 68, 0.2);
+    }
+    .ag-btn-119:hover {
+      background: rgba(255, 68, 68, 0.25);
+      box-shadow: 0 0 30px rgba(255, 68, 68, 0.4);
+      transform: scale(1.02);
+    }
+
+    .ag-btn-110 {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid #ddd;
+      color: #ddd;
+    }
+    .ag-btn-110:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .ag-btn-icon {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+    .ag-btn-label { font-size: 18px; }
+    .ag-btn-desc { font-size: 12px; opacity: 0.8; font-weight: normal; margin-top: 4px; }
+
+    /* Section Headers */
+    .ag-section-title {
+      color: #00e5ff;
+      font-size: 18px;
+      font-weight: bold;
+      margin: 40px 0 15px 0;
+      padding-bottom: 10px;
+      border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Process Steps */
+    .ag-process-step {
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      gap: 15px;
+    }
+    .ag-step-num {
+      background: #00e5ff;
+      color: black;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 14px;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .ag-step-content h4 {
+      color: #e0ffff;
+      margin: 0 0 5px 0;
+      font-size: 16px;
+    }
+    .ag-step-content p {
+      color: #bbb;
+      margin: 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* Substance Cards */
+    .ag-substance-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .ag-sub-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+    .ag-sub-title {
+      color: #ff6bd9;
+      font-size: 18px;
+      font-weight: bold;
+    }
+    .ag-sub-tag {
+      background: rgba(255, 107, 217, 0.1);
+      color: #ff6bd9;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+    .ag-sub-section {
+      margin-bottom: 15px;
+    }
+    .ag-sub-label {
+      color: #ddd;
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 5px;
+      display: block;
+    }
+    .ag-sub-text {
+      color: #aaa;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+    .ag-sub-text li { margin-bottom: 4px; }
+
+    /* Legal Box */
+    .ag-legal-box {
+      border: 1px solid #bd00ff;
+      background: rgba(189, 0, 255, 0.05);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .ag-legal-title {
+      color: #bd00ff;
+      font-weight: bold;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    .ag-legal-text {
+      color: #e0d0ff;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    /* Recovery Position SVG Grid */
+    .ag-recovery-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+      margin-top: 15px;
+    }
+    .ag-illustration {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 12px;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* Footer Seal */
+    .ag-seal-section {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      text-align: center;
+    }
+    .ag-seal-badge {
+      display: inline-block;
+      border: 1px solid #00e5ff;
+      color: #00e5ff;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      margin-bottom: 10px;
+    }
+    .ag-version-info {
+      color: #666;
+      font-size: 12px;
+      line-height: 1.5;
     }
   </style>
 </head>
 <body class="ag-page">
   
-  <!-- 返回按鈕 -->
-  <a href="/support-main.html" class="ag-back-button" style="position: fixed; top: 20px; left: 20px; color: #666; text-decoration: none; font-size: 14px;">
-    ← 返回選單
+  <!-- Back Button -->
+  <a href="/support-main.html" class="ag-back-button" style="position: fixed; top: 20px; left: 20px; color: #666; text-decoration: none; font-size: 14px; z-index: 10; padding: 8px 12px; background: rgba(0,0,0,0.5); border-radius: 20px; backdrop-filter: blur(5px);">
+    ← 返回
   </a>
 
-  <div class="ag-content-container">
-    <div class="ag-placeholder-text">急救指引</div>
-    <p style="margin-top: 10px; color: #999; font-size: 14px;">內容建置中...</p>
+  <div class="ag-container" style="max-width: 600px; margin: 0 auto; padding: 80px 20px;">
+    
+    <div class="ag-aid-header">
+      <h1 class="ag-aid-title">緊急醫療與<br>減害支援模組</h1>
+      <div class="ag-aid-subtitle">Emergency & Harm Reduction Guide v1.2</div>
+    </div>
+
+    <!-- Emergency Buttons -->
+    <div class="ag-emergency-grid">
+      <a href="tel:119" class="ag-emergency-btn ag-btn-119">
+        <div class="ag-btn-icon">🚑</div>
+        <div class="ag-btn-label">撥打 119</div>
+        <div class="ag-btn-desc">消防與救護</div>
+      </a>
+      <a href="tel:110" class="ag-emergency-btn ag-btn-110">
+        <div class="ag-btn-icon">👮</div>
+        <div class="ag-btn-label">撥打 110</div>
+        <div class="ag-btn-desc">刑案或人身安全</div>
+      </a>
+    </div>
+
+    <!-- 119 Process -->
+    <div class="ag-section-title">⭐ 撥打 119：標準流程</div>
+    <div class="ag-process-step">
+      <div class="ag-step-num">1</div>
+      <div class="ag-step-content">
+        <h4>說明位置與狀況</h4>
+        <p>提供精確地址、地標、患者狀況與意識、呼吸、脈搏。</p>
+      </div>
+    </div>
+    <div class="ag-process-step">
+      <div class="ag-step-num">2</div>
+      <div class="ag-step-content">
+        <h4>依指示行動</h4>
+        <p>保持通話，遵循接線員指示進行初步處置（如側臥、清理口鼻）。</p>
+      </div>
+    </div>
+    <div class="ag-process-step">
+      <div class="ag-step-num">3</div>
+      <div class="ag-step-content">
+        <h4>迎接救護</h4>
+        <p>派人到路口引導救護車，準備大門與電梯。</p>
+      </div>
+    </div>
+
+    <!-- Recovery Position -->
+    <div class="ag-section-title">⭐ 復甦姿勢 (Recovery Position)</div>
+    <div class="ag-substance-card">
+      <div class="ag-sub-text">
+        <ol style="padding-left: 20px; margin-bottom: 15px;">
+          <li>確認環境安全</li>
+          <li>檢查反應與呼吸</li>
+          <li>將對側手臂橫過胸前</li>
+          <li>將遠側膝蓋屈起</li>
+          <li>由遠側翻向近側，讓患者側臥</li>
+          <li>打開氣道、保持口鼻通暢並持續監測</li>
+        </ol>
+      </div>
+      
+      <div class="ag-recovery-grid">
+        <div class="ag-illustration">
+          <!-- SVG: Recovery Position Step 1 -->
+          <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
+            <path d="M60 80 L140 80" stroke="#333" />
+            <circle cx="80" cy="70" r="10" />
+            <path d="M80 80 L130 80" />
+            <path d="M80 80 L70 60" /> <!-- Arm Up -->
+            <path d="M130 80 L140 90" />
+            <text x="10" y="20" fill="#ddd" font-size="12" stroke="none">1. 手臂舉高</text>
+          </svg>
+        </div>
+        <div class="ag-illustration">
+          <!-- SVG: Recovery Position Step 2 -->
+          <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
+            <path d="M60 80 L140 80" stroke="#333" />
+            <circle cx="90" cy="75" r="10" />
+            <path d="M90 85 L130 85" />
+            <path d="M130 85 L120 65" /> <!-- Leg Bent -->
+            <text x="10" y="20" fill="#ddd" font-size="12" stroke="none">2. 另一腳彎曲</text>
+          </svg>
+        </div>
+        <div class="ag-illustration">
+          <!-- SVG: Recovery Position Final -->
+          <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
+            <path d="M60 80 L140 80" stroke="#333" />
+            <circle cx="100" cy="75" r="10" />
+            <path d="M100 85 L130 85" />
+            <path d="M100 85 L90 95" /> <!-- Arm Support -->
+            <path d="M130 85 L120 95" /> <!-- Leg Support -->
+            <text x="10" y="20" fill="#00e5ff" font-size="12" stroke="none" font-weight="bold">3. 側翻固定</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <!-- Substance Specifics -->
+    <div class="ag-section-title">⭐ 物質風險與減害</div>
+
+    <!-- GHB/GBL -->
+    <div class="ag-substance-card">
+      <div class="ag-sub-header">
+        <div class="ag-sub-title">GHB / GBL</div>
+        <div class="ag-sub-tag">重點注意</div>
+      </div>
+      <div class="ag-sub-section">
+        <span class="ag-sub-label">⚠️ 警訊</span>
+        <div class="ag-sub-text">極度嗜睡或無反應、呼吸變慢或規律異常、嘔吐、抽搐。</div>
+      </div>
+      <div class="ag-sub-section">
+        <span class="ag-sub-label">🛡️ 減害應對</span>
+        <ul class="ag-sub-text" style="padding-left: 20px;">
+          <li>絕對避免與酒精、苯二氮平類混用。</li>
+          <li>不清楚劑量時不要追加。</li>
+          <li>如出現嗜睡或呼吸變慢，立即撥 119，採側臥保持氣道。</li>
+          <li><strong>不要催吐，不要留單。</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Ketamine -->
+    <div class="ag-substance-card">
+      <div class="ag-sub-header">
+        <div class="ag-sub-title">K 他命</div>
+        <div class="ag-sub-tag">修正版</div>
+      </div>
+      <div class="ag-sub-section">
+        <span class="ag-sub-label">⚠️ 危險徵象</span>
+        <div class="ag-sub-text">持續嘔吐、無法喚醒、呼吸不規律、體溫異常、暴力或嚴重迷失。</div>
+      </div>
+      <div class="ag-sub-section">
+        <span class="ag-sub-label">🛡️ 應對</span>
+        <div class="ag-sub-text">安置在安全環境、避免刺激，必要時側臥；若有呼吸困難、抽搐或無反應，立即撥 119。</div>
+      </div>
+    </div>
+
+    <!-- Alcohol Mix -->
+    <div class="ag-substance-card">
+      <div class="ag-sub-header">
+        <div class="ag-sub-title">酒精混用</div>
+      </div>
+      <div class="ag-sub-section">
+        <div class="ag-sub-text">與鎮靜劑（含 GHB/GBL、苯二氮平類）混用會顯著增加呼吸抑制風險。</div>
+      </div>
+      <div class="ag-sub-section">
+        <span class="ag-sub-label">🛡️ 減害</span>
+        <div class="ag-sub-text">避免同時使用；若已混用，切勿單獨留下同伴，密切監測呼吸與意識，一有異常即撥 119。</div>
+      </div>
+    </div>
+
+    <!-- Legal Info -->
+    <div class="ag-section-title">⭐ 法律與權益 (TW)</div>
+
+    <div class="ag-legal-box">
+      <div class="ag-legal-title">法律與保密</div>
+      <div class="ag-legal-text">
+        <ul style="padding-left: 20px;">
+          <li>119 接線與救護流程不屬警方偵查，原則上不會通報服藥情形。</li>
+          <li>醫療秘密義務：醫療機構對個人資料有保密義務，除非涉及重大刑案偵查需求之合法程序。</li>
+          <li>若現場涉及明確刑案線索，警方可依法處置；求助者之急救優先。</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ag-legal-box">
+      <div class="ag-legal-title">自動求治 §21（要點）</div>
+      <div class="ag-legal-text">
+        「撥 119」不等同啟動毒防條例之「自動求治」程序。需依規定向指定單位辦理。
+      </div>
+    </div>
+
+    <!-- Footer Seal -->
+    <div class="ag-seal-section">
+      <div class="ag-seal-badge">🛡 Legal Compliance Seal — TW 2025 v1.2</div>
+      <div class="ag-version-info">
+        依據 Evidence Appendix v1.2 通過 2025 台灣法律合規審核。<br>
+        Emergency Module v1.2 (2025-11)<br>
+        <br>
+        <span style="color: #444;">本內容僅供教育用途，非醫療或法律建議。<br>緊急情況一律優先撥打 119。</span>
+      </div>
+    </div>
+
   </div>
 
 </body>
