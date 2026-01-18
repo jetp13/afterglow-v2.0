@@ -81,3 +81,10 @@
 - [x] 移植互動邏輯（勾選啟用按鈕、跳轉）
 - [x] 移植 CSS 樣式並整合至 `layout.css`
 - [x] 將首頁「緊急支援」連結改回 `/support.html`
+
+## 建立支援子頁面
+
+- [x] 建立 `first-aid.html`（急救指引）空白頁面
+- [x] 建立 `risk-calculator.html`（風險計算器）空白頁面
+- [x] 建立 `rights.html`（權利知識）空白頁面
+- [x] 更新 `support-main.html` 中的連結指向上述頁面
