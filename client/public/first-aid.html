@@ -123,13 +123,67 @@
       line-height: 1.5;
     }
 
-    /* Substance Cards */
-    .ag-substance-card {
+    /* Accordion Styles */
+    .ag-accordion-item {
+      margin-bottom: 15px;
+      border-radius: 12px;
+      overflow: hidden;
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
+    }
+    
+    .ag-accordion-header {
+      padding: 15px 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      transition: background 0.3s ease;
+    }
+    
+    .ag-accordion-header:hover {
+      background: rgba(255, 255, 255, 0.1);
+    }
+    
+    .ag-accordion-title {
+      font-size: 16px;
+      font-weight: bold;
+      color: #e0ffff;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .ag-accordion-icon {
+      transition: transform 0.3s ease;
+      color: #00e5ff;
+    }
+    
+    .ag-accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      padding: 0 20px;
+    }
+    
+    .ag-accordion-item.active .ag-accordion-icon {
+      transform: rotate(180deg);
+    }
+    
+    .ag-accordion-item.active .ag-accordion-content {
+      max-height: 1000px; /* Large enough to fit content */
       padding: 20px;
-      margin-bottom: 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    /* Substance Cards (Modified for Accordion) */
+    .ag-substance-card {
+      /* Removed background/border as it's now handled by accordion item */
+      background: transparent;
+      border: none;
+      padding: 0;
+      margin-bottom: 0;
     }
     .ag-sub-header {
       display: flex;
@@ -166,13 +220,13 @@
     }
     .ag-sub-text li { margin-bottom: 4px; }
 
-    /* Legal Box */
+    /* Legal Box (Modified for Accordion) */
     .ag-legal-box {
-      border: 1px solid #bd00ff;
-      background: rgba(189, 0, 255, 0.05);
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
+      /* Removed background/border as it's now handled by accordion item */
+      border: none;
+      background: transparent;
+      padding: 0;
+      margin-bottom: 0;
     }
     .ag-legal-title {
       color: #bd00ff;
@@ -252,7 +306,7 @@
       </a>
     </div>
 
-    <!-- 119 Process -->
+    <!-- 119 Process (Always Visible) -->
     <div class="ag-section-title">⭐ 撥打 119：標準流程</div>
     <div class="ag-process-step">
       <div class="ag-step-num">1</div>
@@ -276,128 +330,174 @@
       </div>
     </div>
 
-    <!-- Recovery Position -->
-    <div class="ag-section-title">⭐ 復甦姿勢 (Recovery Position)</div>
-    <div class="ag-substance-card">
-      <div class="ag-sub-text">
-        <ol style="padding-left: 20px; margin-bottom: 15px;">
-          <li>確認環境安全</li>
-          <li>檢查反應與呼吸</li>
-          <li>將對側手臂橫過胸前</li>
-          <li>將遠側膝蓋屈起</li>
-          <li>由遠側翻向近側，讓患者側臥</li>
-          <li>打開氣道、保持口鼻通暢並持續監測</li>
-        </ol>
-      </div>
-      
-      <div class="ag-recovery-grid">
-        <div class="ag-illustration">
-          <!-- SVG: Recovery Position Step 1 -->
-          <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
-            <path d="M60 80 L140 80" stroke="#333" />
-            <circle cx="80" cy="70" r="10" />
-            <path d="M80 80 L130 80" />
-            <path d="M80 80 L70 60" /> <!-- Arm Up -->
-            <path d="M130 80 L140 90" />
-            <text x="10" y="20" fill="#ddd" font-size="12" stroke="none">1. 手臂舉高</text>
-          </svg>
+    <div class="ag-section-title">⭐ 急救與減害指引</div>
+
+    <!-- Recovery Position Accordion -->
+    <div class="ag-accordion-item">
+      <div class="ag-accordion-header" onclick="toggleAccordion(this)">
+        <div class="ag-accordion-title">
+          <span style="color: #00e5ff;">🏥</span> 復甦姿勢 (Recovery Position)
         </div>
-        <div class="ag-illustration">
-          <!-- SVG: Recovery Position Step 2 -->
-          <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
-            <path d="M60 80 L140 80" stroke="#333" />
-            <circle cx="90" cy="75" r="10" />
-            <path d="M90 85 L130 85" />
-            <path d="M130 85 L120 65" /> <!-- Leg Bent -->
-            <text x="10" y="20" fill="#ddd" font-size="12" stroke="none">2. 另一腳彎曲</text>
-          </svg>
+        <div class="ag-accordion-icon">▼</div>
+      </div>
+      <div class="ag-accordion-content">
+        <div class="ag-substance-card">
+          <div class="ag-sub-text">
+            <ol style="padding-left: 20px; margin-bottom: 15px;">
+              <li>確認環境安全</li>
+              <li>檢查反應與呼吸</li>
+              <li>將對側手臂橫過胸前</li>
+              <li>將遠側膝蓋屈起</li>
+              <li>由遠側翻向近側，讓患者側臥</li>
+              <li>打開氣道、保持口鼻通暢並持續監測</li>
+            </ol>
+          </div>
+          
+          <div class="ag-recovery-grid">
+            <div class="ag-illustration">
+              <!-- SVG: Recovery Position Step 1 -->
+              <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
+                <path d="M60 80 L140 80" stroke="#333" />
+                <circle cx="80" cy="70" r="10" />
+                <path d="M80 80 L130 80" />
+                <path d="M80 80 L70 60" /> <!-- Arm Up -->
+                <path d="M130 80 L140 90" />
+                <text x="10" y="20" fill="#ddd" font-size="12" stroke="none">1. 手臂舉高</text>
+              </svg>
+            </div>
+            <div class="ag-illustration">
+              <!-- SVG: Recovery Position Step 2 -->
+              <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
+                <path d="M60 80 L140 80" stroke="#333" />
+                <circle cx="90" cy="75" r="10" />
+                <path d="M90 85 L130 85" />
+                <path d="M130 85 L120 65" /> <!-- Leg Bent -->
+                <text x="10" y="20" fill="#ddd" font-size="12" stroke="none">2. 另一腳彎曲</text>
+              </svg>
+            </div>
+            <div class="ag-illustration">
+              <!-- SVG: Recovery Position Final -->
+              <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
+                <path d="M60 80 L140 80" stroke="#333" />
+                <circle cx="100" cy="75" r="10" />
+                <path d="M100 85 L130 85" />
+                <path d="M100 85 L90 95" /> <!-- Arm Support -->
+                <path d="M130 85 L120 95" /> <!-- Leg Support -->
+                <text x="10" y="20" fill="#00e5ff" font-size="12" stroke="none" font-weight="bold">3. 側翻固定</text>
+              </svg>
+            </div>
+          </div>
         </div>
-        <div class="ag-illustration">
-          <!-- SVG: Recovery Position Final -->
-          <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
-            <path d="M60 80 L140 80" stroke="#333" />
-            <circle cx="100" cy="75" r="10" />
-            <path d="M100 85 L130 85" />
-            <path d="M100 85 L90 95" /> <!-- Arm Support -->
-            <path d="M130 85 L120 95" /> <!-- Leg Support -->
-            <text x="10" y="20" fill="#00e5ff" font-size="12" stroke="none" font-weight="bold">3. 側翻固定</text>
-          </svg>
+      </div>
+    </div>
+
+    <!-- GHB/GBL Accordion -->
+    <div class="ag-accordion-item">
+      <div class="ag-accordion-header" onclick="toggleAccordion(this)">
+        <div class="ag-accordion-title">
+          <span style="color: #ff6bd9;">⚠️</span> GHB / GBL
+        </div>
+        <div class="ag-accordion-icon">▼</div>
+      </div>
+      <div class="ag-accordion-content">
+        <div class="ag-substance-card">
+          <div class="ag-sub-header">
+            <div class="ag-sub-title">GHB / GBL</div>
+            <div class="ag-sub-tag">重點注意</div>
+          </div>
+          <div class="ag-sub-section">
+            <span class="ag-sub-label">⚠️ 警訊</span>
+            <div class="ag-sub-text">極度嗜睡或無反應、呼吸變慢或規律異常、嘔吐、抽搐。</div>
+          </div>
+          <div class="ag-sub-section">
+            <span class="ag-sub-label">🛡️ 減害應對</span>
+            <ul class="ag-sub-text" style="padding-left: 20px;">
+              <li>絕對避免與酒精、苯二氮平類混用。</li>
+              <li>不清楚劑量時不要追加。</li>
+              <li>如出現嗜睡或呼吸變慢，立即撥 119，採側臥保持氣道。</li>
+              <li><strong>不要催吐，不要留單。</strong></li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
 
-    <!-- Substance Specifics -->
-    <div class="ag-section-title">⭐ 物質風險與減害</div>
-
-    <!-- GHB/GBL -->
-    <div class="ag-substance-card">
-      <div class="ag-sub-header">
-        <div class="ag-sub-title">GHB / GBL</div>
-        <div class="ag-sub-tag">重點注意</div>
+    <!-- Ketamine Accordion -->
+    <div class="ag-accordion-item">
+      <div class="ag-accordion-header" onclick="toggleAccordion(this)">
+        <div class="ag-accordion-title">
+          <span style="color: #ff6bd9;">⚠️</span> K 他命
+        </div>
+        <div class="ag-accordion-icon">▼</div>
       </div>
-      <div class="ag-sub-section">
-        <span class="ag-sub-label">⚠️ 警訊</span>
-        <div class="ag-sub-text">極度嗜睡或無反應、呼吸變慢或規律異常、嘔吐、抽搐。</div>
-      </div>
-      <div class="ag-sub-section">
-        <span class="ag-sub-label">🛡️ 減害應對</span>
-        <ul class="ag-sub-text" style="padding-left: 20px;">
-          <li>絕對避免與酒精、苯二氮平類混用。</li>
-          <li>不清楚劑量時不要追加。</li>
-          <li>如出現嗜睡或呼吸變慢，立即撥 119，採側臥保持氣道。</li>
-          <li><strong>不要催吐，不要留單。</strong></li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Ketamine -->
-    <div class="ag-substance-card">
-      <div class="ag-sub-header">
-        <div class="ag-sub-title">K 他命</div>
-        <div class="ag-sub-tag">修正版</div>
-      </div>
-      <div class="ag-sub-section">
-        <span class="ag-sub-label">⚠️ 危險徵象</span>
-        <div class="ag-sub-text">持續嘔吐、無法喚醒、呼吸不規律、體溫異常、暴力或嚴重迷失。</div>
-      </div>
-      <div class="ag-sub-section">
-        <span class="ag-sub-label">🛡️ 應對</span>
-        <div class="ag-sub-text">安置在安全環境、避免刺激，必要時側臥；若有呼吸困難、抽搐或無反應，立即撥 119。</div>
+      <div class="ag-accordion-content">
+        <div class="ag-substance-card">
+          <div class="ag-sub-header">
+            <div class="ag-sub-title">K 他命</div>
+            <div class="ag-sub-tag">修正版</div>
+          </div>
+          <div class="ag-sub-section">
+            <span class="ag-sub-label">⚠️ 危險徵象</span>
+            <div class="ag-sub-text">持續嘔吐、無法喚醒、呼吸不規律、體溫異常、暴力或嚴重迷失。</div>
+          </div>
+          <div class="ag-sub-section">
+            <span class="ag-sub-label">🛡️ 應對</span>
+            <div class="ag-sub-text">安置在安全環境、避免刺激，必要時側臥；若有呼吸困難、抽搐或無反應，立即撥 119。</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Alcohol Mix -->
-    <div class="ag-substance-card">
-      <div class="ag-sub-header">
-        <div class="ag-sub-title">酒精混用</div>
+    <!-- Alcohol Mix Accordion -->
+    <div class="ag-accordion-item">
+      <div class="ag-accordion-header" onclick="toggleAccordion(this)">
+        <div class="ag-accordion-title">
+          <span style="color: #ff6bd9;">⚠️</span> 酒精混用
+        </div>
+        <div class="ag-accordion-icon">▼</div>
       </div>
-      <div class="ag-sub-section">
-        <div class="ag-sub-text">與鎮靜劑（含 GHB/GBL、苯二氮平類）混用會顯著增加呼吸抑制風險。</div>
-      </div>
-      <div class="ag-sub-section">
-        <span class="ag-sub-label">🛡️ 減害</span>
-        <div class="ag-sub-text">避免同時使用；若已混用，切勿單獨留下同伴，密切監測呼吸與意識，一有異常即撥 119。</div>
-      </div>
-    </div>
-
-    <!-- Legal Info -->
-    <div class="ag-section-title">⭐ 法律與權益 (TW)</div>
-
-    <div class="ag-legal-box">
-      <div class="ag-legal-title">法律與保密</div>
-      <div class="ag-legal-text">
-        <ul style="padding-left: 20px;">
-          <li>119 接線與救護流程不屬警方偵查，原則上不會通報服藥情形。</li>
-          <li>醫療秘密義務：醫療機構對個人資料有保密義務，除非涉及重大刑案偵查需求之合法程序。</li>
-          <li>若現場涉及明確刑案線索，警方可依法處置；求助者之急救優先。</li>
-        </ul>
+      <div class="ag-accordion-content">
+        <div class="ag-substance-card">
+          <div class="ag-sub-header">
+            <div class="ag-sub-title">酒精混用</div>
+          </div>
+          <div class="ag-sub-section">
+            <div class="ag-sub-text">與鎮靜劑（含 GHB/GBL、苯二氮平類）混用會顯著增加呼吸抑制風險。</div>
+          </div>
+          <div class="ag-sub-section">
+            <span class="ag-sub-label">🛡️ 減害</span>
+            <div class="ag-sub-text">避免同時使用；若已混用，切勿單獨留下同伴，密切監測呼吸與意識，一有異常即撥 119。</div>
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="ag-legal-box">
-      <div class="ag-legal-title">自動求治 §21（要點）</div>
-      <div class="ag-legal-text">
-        「撥 119」不等同啟動毒防條例之「自動求治」程序。需依規定向指定單位辦理。
+    <!-- Legal Info Accordion -->
+    <div class="ag-accordion-item">
+      <div class="ag-accordion-header" onclick="toggleAccordion(this)">
+        <div class="ag-accordion-title">
+          <span style="color: #bd00ff;">⚖️</span> 法律與權益 (TW)
+        </div>
+        <div class="ag-accordion-icon">▼</div>
+      </div>
+      <div class="ag-accordion-content">
+        <div class="ag-legal-box">
+          <div class="ag-legal-title">法律與保密</div>
+          <div class="ag-legal-text">
+            <ul style="padding-left: 20px;">
+              <li>119 接線與救護流程不屬警方偵查，原則上不會通報服藥情形。</li>
+              <li>醫療秘密義務：醫療機構對個人資料有保密義務，除非涉及重大刑案偵查需求之合法程序。</li>
+              <li>若現場涉及明確刑案線索，警方可依法處置；求助者之急救優先。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="ag-legal-box" style="margin-top: 20px;">
+          <div class="ag-legal-title">自動求治 §21（要點）</div>
+          <div class="ag-legal-text">
+            「撥 119」不等同啟動毒防條例之「自動求治」程序。需依規定向指定單位辦理。
+          </div>
+        </div>
       </div>
     </div>
 
@@ -413,6 +513,22 @@
     </div>
 
   </div>
+
+  <script>
+    function toggleAccordion(header) {
+      const item = header.parentElement;
+      const isActive = item.classList.contains('active');
+      
+      // Close all other items (optional, remove if you want multiple open)
+      // document.querySelectorAll('.ag-accordion-item').forEach(i => i.classList.remove('active'));
+      
+      if (!isActive) {
+        item.classList.add('active');
+      } else {
+        item.classList.remove('active');
+      }
+    }
+  </script>
 
 </body>
 </html>
