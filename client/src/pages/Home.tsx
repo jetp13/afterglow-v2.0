@@ -24,7 +24,7 @@ export default function Home() {
           <a href="/menu.html" className="ag-glow-capsule ag-glow-capsule--primary">
             開始冥想
           </a>
-          <a href="/support.html" className="ag-glow-capsule ag-glow-capsule--secondary">
+          <a href="https://afterglow-es-zzmw9knr.manus.space" className="ag-glow-capsule ag-glow-capsule--secondary">
             緊急支援
           </a>
         </div>
