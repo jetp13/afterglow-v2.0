@@ -88,3 +88,9 @@
 - [x] 建立 `risk-calculator.html`（風險計算器）空白頁面
 - [x] 建立 `rights.html`（權利知識）空白頁面
 - [x] 更新 `support-main.html` 中的連結指向上述頁面
+
+## 權利知識頁面設計
+
+- [x] 將 `rights.html` 重新設計為卡片式佈局
+- [x] 加入常見權利主題（臨檢、搜身、緘默權等）的標題與摘要
+- [x] 確保卡片樣式符合 Afterglow 視覺風格（Glow 效果、深色背景）

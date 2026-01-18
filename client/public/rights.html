@@ -6,34 +6,165 @@
   <title>權利知識｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
   <style>
-    .ag-content-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      padding: 20px;
-      text-align: center;
-      color: #bd00ff;
+    .ag-rights-container {
+      max-width: 600px;
+      margin: 0 auto;
+      padding: 80px 20px 40px;
     }
-    .ag-placeholder-text {
+
+    .ag-rights-header {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .ag-rights-title {
       font-size: 24px;
-      font-weight: bold;
-      opacity: 0.8;
-      text-shadow: 0 0 10px rgba(189, 0, 255, 0.5);
+      color: #bd00ff;
+      margin-bottom: 10px;
+      text-shadow: 0 0 15px rgba(189, 0, 255, 0.4);
+    }
+
+    .ag-rights-subtitle {
+      font-size: 14px;
+      color: #aaa;
+      line-height: 1.6;
+    }
+
+    .ag-rights-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .ag-rights-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(189, 0, 255, 0.2);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ag-rights-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(189, 0, 255, 0.5);
+      box-shadow: 0 0 20px rgba(189, 0, 255, 0.15);
+      transform: translateY(-2px);
+    }
+
+    .ag-rights-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: #bd00ff;
+      opacity: 0.5;
+    }
+
+    .ag-rights-card:hover::before {
+      opacity: 1;
+      box-shadow: 0 0 10px #bd00ff;
+    }
+
+    .ag-card-title {
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .ag-card-summary {
+      font-size: 14px;
+      color: #ccc;
+      line-height: 1.6;
+    }
+
+    .ag-card-icon {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      color: #bd00ff;
+      opacity: 0.5;
+    }
+
+    @media (min-width: 768px) {
+      .ag-rights-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
   </style>
 </head>
 <body class="ag-page">
   
   <!-- 返回按鈕 -->
-  <a href="/support-main.html" class="ag-back-button" style="position: fixed; top: 20px; left: 20px; color: #666; text-decoration: none; font-size: 14px;">
+  <a href="/support-main.html" class="ag-back-button" style="position: fixed; top: 20px; left: 20px; color: #999; text-decoration: none; font-size: 14px; z-index: 10; padding: 8px 12px; background: rgba(0,0,0,0.5); border-radius: 20px; backdrop-filter: blur(5px);">
     ← 返回選單
   </a>
 
-  <div class="ag-content-container">
-    <div class="ag-placeholder-text">權利知識</div>
-    <p style="margin-top: 10px; color: #999; font-size: 14px;">內容建置中...</p>
+  <div class="ag-rights-container">
+    <header class="ag-rights-header">
+      <h1 class="ag-rights-title">權利知識</h1>
+      <p class="ag-rights-subtitle">
+        在面對執法單位時，<br>
+        保護自己最好的方式，就是清楚自己的底線。
+      </p>
+    </header>
+
+    <div class="ag-rights-grid">
+      
+      <!-- 卡片 1：臨檢盤查 -->
+      <div class="ag-rights-card">
+        <h3 class="ag-card-title">遇到臨檢盤查</h3>
+        <p class="ag-card-summary">
+          警察必須穿著制服或出示證件。你有權詢問盤查理由，若無合理懷疑，可拒絕出示證件。
+        </p>
+      </div>
+
+      <!-- 卡片 2：搜身與搜查 -->
+      <div class="ag-rights-card">
+        <h3 class="ag-card-title">搜身與搜查</h3>
+        <p class="ag-card-summary">
+          除非有搜索票或緊急情況，否則警察無權隨意搜查你的身體、包包或車輛。你有權拒絕同意搜索。
+        </p>
+      </div>
+
+      <!-- 卡片 3：保持緘默 -->
+      <div class="ag-rights-card">
+        <h3 class="ag-card-title">保持緘默權</h3>
+        <p class="ag-card-summary">
+          面對訊問時，你有權保持沈默，不回答任何問題。這不會被視為認罪，而是你的基本權利。
+        </p>
+      </div>
+
+      <!-- 卡片 4：律師陪同 -->
+      <div class="ag-rights-card">
+        <h3 class="ag-card-title">要求律師陪同</h3>
+        <p class="ag-card-summary">
+          在接受偵訊前，你有權要求律師在場。若無法負擔，可詢問法律扶助資源。
+        </p>
+      </div>
+
+      <!-- 卡片 5：拒絕簽名 -->
+      <div class="ag-rights-card">
+        <h3 class="ag-card-title">筆錄確認與簽名</h3>
+        <p class="ag-card-summary">
+          仔細閱讀筆錄內容，若有記載錯誤或不實，你有權要求更正，並拒絕在錯誤的筆錄上簽名。
+        </p>
+      </div>
+
+      <!-- 卡片 6：錄音錄影 -->
+      <div class="ag-rights-card">
+        <h3 class="ag-card-title">自行蒐證權利</h3>
+        <p class="ag-card-summary">
+          在公開場合遇到盤查時，在不妨礙公務的前提下，你有權進行錄音或錄影以保障自身權益。
+        </p>
+      </div>
+
+    </div>
   </div>
 
 </body>
