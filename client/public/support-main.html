@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>緊急支援選單｜Afterglow</title>
+  <link rel="stylesheet" href="/assets/layout.css">
+  <style>
+    .ag-support-menu {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      gap: 24px;
+    }
+
+    .ag-menu-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 200px;
+      height: 60px;
+      border-radius: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      color: white;
+      text-decoration: none;
+      transition: 0.3s ease;
+      position: relative;
+      background: rgba(0, 0, 0, 0.3);
+    }
+
+    /* 急救指引 - 藍綠色 Glow */
+    .ag-menu-button--first-aid {
+      border: 2px solid #00e5ff;
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.4), inset 0 0 10px rgba(0, 229, 255, 0.1);
+      color: #e0ffff;
+    }
+    .ag-menu-button--first-aid:hover {
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.7), inset 0 0 15px rgba(0, 229, 255, 0.2);
+      background: rgba(0, 229, 255, 0.1);
+    }
+
+    /* 風險計算器 - 桃紅色 Glow */
+    .ag-menu-button--risk {
+      border: 2px solid #ff6bd9;
+      box-shadow: 0 0 15px rgba(255, 107, 217, 0.4), inset 0 0 10px rgba(255, 107, 217, 0.1);
+      color: #ffe0f5;
+    }
+    .ag-menu-button--risk:hover {
+      box-shadow: 0 0 25px rgba(255, 107, 217, 0.7), inset 0 0 15px rgba(255, 107, 217, 0.2);
+      background: rgba(255, 107, 217, 0.1);
+    }
+
+    /* 權利知識 - 紫色 Glow */
+    .ag-menu-button--rights {
+      border: 2px solid #bd00ff;
+      box-shadow: 0 0 15px rgba(189, 0, 255, 0.4), inset 0 0 10px rgba(189, 0, 255, 0.1);
+      color: #f0e0ff;
+    }
+    .ag-menu-button--rights:hover {
+      box-shadow: 0 0 25px rgba(189, 0, 255, 0.7), inset 0 0 15px rgba(189, 0, 255, 0.2);
+      background: rgba(189, 0, 255, 0.1);
+    }
+
+    .ag-disclaimer-footer {
+      position: fixed;
+      bottom: 30px;
+      width: 100%;
+      text-align: center;
+      font-size: 12px;
+      color: #666;
+    }
+  </style>
+</head>
+<body class="ag-page">
+  
+  <!-- 返回按鈕 -->
+  <a href="/" class="ag-back-button" style="position: fixed; top: 20px; left: 20px; color: #666; text-decoration: none; font-size: 14px;">
+    ← 返回首頁
+  </a>
+
+  <div class="ag-support-menu">
+    
+    <!-- 急救指引 -->
+    <a href="#" class="ag-menu-button ag-menu-button--first-aid">
+      急救指引
+    </a>
+
+    <!-- 風險計算器 -->
+    <a href="#" class="ag-menu-button ag-menu-button--risk">
+      風險計算器
+    </a>
+
+    <!-- 權利知識 -->
+    <a href="#" class="ag-menu-button ag-menu-button--rights">
+      權利知識
+    </a>
+
+  </div>
+
+  <div class="ag-disclaimer-footer">
+    本內容僅供一般資訊參考，非法律或醫療建議。
+  </div>
+
+</body>
+</html>

@@ -72,3 +72,12 @@
 - [x] 更新首頁「緊急支援」按鈕連結為 `https://afterglow-es-zzmw9knr.manus.space`
 - [x] 分析目標頁面樣式，確保首頁膠囊按鈕與其呼應
 - [x] 若有需要，微調首頁膠囊按鈕樣式以達成視覺一致性
+
+## 緊急支援內容移植
+
+- [x] 分析外部網站（https://afterglow-es-zzmw9knr.manus.space）的完整內容與互動
+- [x] 建立本地 `support.html`（免責聲明與年齡確認頁）
+- [x] 建立本地 `support-main.html`（進入後的實際支援內容頁）
+- [x] 移植互動邏輯（勾選啟用按鈕、跳轉）
+- [x] 移植 CSS 樣式並整合至 `layout.css`
+- [x] 將首頁「緊急支援」連結改回 `/support.html`
