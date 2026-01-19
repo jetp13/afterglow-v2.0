@@ -109,54 +109,55 @@ body {
 }
 
 /* Glow 膠囊按鈕（完整效果版）*/
-.ag-glow-capsule {
+.ag-capsule {
   display: block;
-  width: 100%;
-  padding: 16px 0;
+  width: 220px; /* Fixed width for consistency */
+  padding: 14px 0;
   text-align: center;
-  border-radius: 9999px;
-  font-size: 19px;
+  border-radius: 50px;
+  font-size: 18px;
   font-weight: 400;
   letter-spacing: 2px;
   color: #fff;
   text-decoration: none;
   position: relative;
-  background: rgba(0, 0, 0, 0.15);
+  background: transparent;
   border: 2px solid;
   transition: all 0.3s ease;
 }
 
 /* Primary（藍色 Glow）*/
-.ag-glow-capsule--primary {
-  border-color: #4ea7ff;
+.ag-capsule--primary {
+  border-color: #2b9eff;
   box-shadow: 
-    0 0 20px rgba(78, 167, 255, 0.6),
-    inset 0 0 15px rgba(78, 167, 255, 0.1);
+    0 0 15px rgba(43, 158, 255, 0.5),
+    inset 0 0 10px rgba(43, 158, 255, 0.2);
+  text-shadow: 0 0 8px rgba(43, 158, 255, 0.8);
 }
 
-.ag-glow-capsule--primary:hover,
-.ag-glow-capsule--primary:active {
+.ag-capsule--primary:hover,
+.ag-capsule--primary:active {
   box-shadow: 
-    0 0 32px rgba(78, 167, 255, 0.85),
-    inset 0 0 25px rgba(78, 167, 255, 0.2);
-  border-color: #6bc8ff;
+    0 0 25px rgba(43, 158, 255, 0.8),
+    inset 0 0 15px rgba(43, 158, 255, 0.3);
+  text-shadow: 0 0 12px rgba(43, 158, 255, 1);
 }
 
-/* Secondary（桃紅 Glow）*/
-.ag-glow-capsule--secondary {
-  border-color: #ff6bd9;
+/* Secondary（紫色 Glow）*/
+.ag-capsule--secondary {
+  border-color: #bd00ff;
   box-shadow: 
-    0 0 20px rgba(255, 107, 217, 0.6),
-    inset 0 0 15px rgba(255, 107, 217, 0.1);
+    0 0 15px rgba(189, 0, 255, 0.5),
+    inset 0 0 10px rgba(189, 0, 255, 0.2);
+  text-shadow: 0 0 8px rgba(189, 0, 255, 0.8);
 }
 
-.ag-glow-capsule--secondary:hover,
-.ag-glow-capsule--secondary:active {
+.ag-capsule--secondary:hover,
+.ag-capsule--secondary:active {
   box-shadow: 
-    0 0 32px rgba(255, 107, 217, 0.85),
-    inset 0 0 25px rgba(255, 107, 217, 0.2);
-  border-color: #ff8bf1;
-  background: rgba(255, 107, 217, 0.05);
+    0 0 25px rgba(189, 0, 255, 0.8),
+    inset 0 0 15px rgba(189, 0, 255, 0.3);
+  text-shadow: 0 0 12px rgba(189, 0, 255, 1);
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

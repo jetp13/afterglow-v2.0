@@ -13,21 +13,17 @@
     .ag-home-header {
       position: relative;
       width: 100%;
-      height: 45vh; /* Occupy top half */
+      height: 45vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden; /* Allow logo to be clipped if needed, or visible */
-      /* Actually, user said "break the window", so maybe visible overflow? 
-         But usually "break the window" means it goes off screen or container.
-         Let's keep overflow hidden on body/page to prevent scrollbars, 
-         but allow header to be the container. */
+      overflow: visible; /* Allow logo to break out */
     }
 
     .ag-logo-container {
       position: relative;
       width: 100%;
-      max-width: 600px; /* Constrain width for layout */
+      max-width: 400px; /* Limit width for better control */
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -37,35 +33,35 @@
 
     /* The Large Logo */
     .ag-logo-large {
-      width: 140%; /* Break the container width */
+      width: 160%; /* Significantly larger to break boundaries */
       max-width: none;
       height: auto;
-      transform: translateX(-5%) rotate(-5deg); /* Slight tilt for dynamic feel */
-      opacity: 0.9;
-      /* Ensure it doesn't shrink */
+      transform: translateX(-5%) rotate(-8deg); /* More tilt */
+      opacity: 1;
       flex-shrink: 0;
-      margin-bottom: -40px; /* Pull text up closer */
+      margin-bottom: -20px;
     }
 
     /* Text Container aligned to bottom right of logo area */
     .ag-text-group {
       position: absolute;
-      bottom: 20%;
-      right: 10%;
+      bottom: 15%;
+      right: 0;
       text-align: right;
-      z-index: 10; /* Ensure text is above logo */
+      z-index: 10;
+      padding-right: 20px;
     }
 
     .ag-home-subtitle {
-      font-size: 1.2rem;
-      letter-spacing: 0.2em;
-      color: rgba(255, 255, 255, 0.9);
-      margin-bottom: 8px;
-      font-weight: 300;
+      font-size: 14px;
+      letter-spacing: 0.15em;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 6px;
+      font-weight: 400;
     }
 
     .ag-home-tagline-en {
-      font-size: 0.6rem;
+      font-size: 10px;
       letter-spacing: 0.1em;
       color: rgba(255, 255, 255, 0.5);
       text-transform: uppercase;
@@ -73,27 +69,49 @@
 
     /* Adjust Main Content to sit below */
     .ag-home-main {
-      margin-top: 0;
-      padding-top: 20px;
-      z-index: 20; /* Buttons above everything */
+      margin-top: 20px;
+      padding-top: 0;
+      z-index: 20;
       position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px; /* Space between buttons */
     }
 
     /* Mobile Optimization */
     @media (max-width: 768px) {
       .ag-home-header {
-        height: 35vh; /* Reduce height on mobile */
-        align-items: flex-end; /* Align logo closer to bottom of header */
-        padding-bottom: 20px;
+        height: 40vh;
+        align-items: center;
       }
       
+      .ag-logo-container {
+        max-width: 320px;
+      }
+
       .ag-logo-large {
-        width: 120%; /* Less overflow on mobile */
-        margin-bottom: -20px; /* Adjust spacing */
+        width: 150%;
+        transform: translateX(-5%) rotate(-8deg);
+        margin-bottom: 0;
+      }
+      
+      .ag-text-group {
+        bottom: 10%;
+        right: 10px;
+      }
+
+      .ag-home-subtitle {
+        font-size: 12px;
+      }
+
+      .ag-home-tagline-en {
+        font-size: 9px;
       }
       
       .ag-home-main {
-        padding-top: 10px; /* Bring buttons closer */
+        margin-top: 10px;
+        gap: 20px;
       }
     }
 
@@ -124,36 +142,12 @@
     <!-- Header：Break-the-Window Logo Design -->
     <header class="ag-home-header">
       <div class="ag-logo-container">
-        <!-- Using the new PNG logo -->
         <img src="/assets/logo-new.png" class="ag-logo-large" alt="Afterglow">
         
-        <!-- Aligned Text Group -->
-        <!-- Note: The SVG might already contain text based on the user's image. 
-             If the SVG is just the logo text "Afterglow", we add the subtitles.
-             If the SVG is the WHOLE composition, we just show the SVG.
-             User said: "Please align the homepage to this attachment... The LOGO will break the window... 
-             Note: LOGO and subtitle should not DOUBLE together".
-             
-             This implies the SVG likely HAS the text, OR I need to position my text carefully.
-             Let's assume the SVG provided is the FULL composition (Logo + Text) based on the image "首頁footer.svg".
-             If so, I should just display the SVG large and centered/overflowing.
-             
-             However, if the SVG is just the logo, I need to add text.
-             Let's look at the file name "首頁footer.svg" - it suggests it might be the footer or the main visual.
-             Given the user's instruction "align to this attachment", I will use the SVG as the main visual.
-             
-             Wait, if the SVG has text, I shouldn't add HTML text.
-             Let's try to display the SVG primarily.
-        -->
-        <!-- 
-             Strategy: Display the SVG. If it's the full composition, it handles itself.
-             I will hide the HTML text for now and rely on the SVG if it's complete.
-             If the SVG is just the word "Afterglow", the user would complain about missing text.
-             But the user said "LOGO and subtitle should not DOUBLE together", which strongly implies
-             the SVG might HAVE the subtitle, or I should be careful not to overlap.
-             
-             Let's assume the SVG is the visual target. I will use it as an image.
-        -->
+        <div class="ag-text-group">
+          <div class="ag-home-subtitle">讓夜裡的光有方向</div>
+          <div class="ag-home-tagline-en">STAY SAFE · CARE FOR YOURSELF · SEEK HELP</div>
+        </div>
       </div>
     </header>
 
