@@ -15,23 +15,25 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      padding: 40px 20px 100px; /* 增加底部 padding 給 fixed footer */
+      padding: 20px 16px 100px; /* 調整手機版 padding */
       text-align: center;
     }
 
     .ag-disclaimer-box {
       border: 1px solid #ff6bd9;
       border-radius: 12px;
-      padding: 24px;
+      padding: 20px; /* 手機版減少 padding */
       max-width: 800px;
-      margin-bottom: 30px;
+      width: 100%; /* 確保寬度自適應 */
+      margin-bottom: 24px;
       background: rgba(255, 107, 217, 0.05);
       box-shadow: 0 0 20px rgba(255, 107, 217, 0.1);
       text-align: left;
-      max-height: 60vh;
+      max-height: 50vh; /* 手機版高度限制 */
       overflow-y: auto;
       scrollbar-width: thin;
       scrollbar-color: #ff6bd9 rgba(255, 255, 255, 0.1);
+      -webkit-overflow-scrolling: touch; /* 優化 iOS 滾動 */
     }
 
     .ag-disclaimer-box::-webkit-scrollbar {
@@ -90,19 +92,20 @@
     .ag-consent-label {
       display: flex;
       align-items: flex-start;
-      gap: 10px;
+      gap: 12px; /* 增加間距 */
       color: #fff;
-      font-size: 14px;
+      font-size: 15px; /* 放大字體 */
       cursor: pointer;
       line-height: 1.5;
+      padding: 8px 0; /* 增加點擊區域 */
     }
 
     .ag-consent-checkbox {
-      width: 18px;
-      height: 18px;
+      width: 22px; /* 放大 Checkbox */
+      height: 22px;
       accent-color: #ff6bd9;
       cursor: pointer;
-      margin-top: 2px;
+      margin-top: 0;
       flex-shrink: 0;
     }
 

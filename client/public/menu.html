@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>冥想選單｜Afterglow</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+  <link rel="stylesheet" href="/assets/layout.css">
+  <style>
+    .ag-menu-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 60px 20px 100px;
+      text-align: center;
+    }
+
+    .ag-menu-title {
+      font-size: 24px;
+      color: #fff;
+      margin-bottom: 40px;
+      letter-spacing: 2px;
+      font-weight: 300;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+    }
+
+    .ag-menu-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      width: 100%;
+      max-width: 320px;
+    }
+
+    .ag-menu-item {
+      display: block;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      color: #fff;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ag-menu-item:hover, .ag-menu-item:active {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .ag-item-title {
+      font-size: 18px;
+      font-weight: 500;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .ag-item-desc {
+      font-size: 12px;
+      color: #aaa;
+      font-weight: 300;
+      display: block;
+    }
+
+    /* Glow effects for specific items */
+    .ag-menu-item.breathing {
+      border-color: rgba(0, 229, 255, 0.3);
+      box-shadow: 0 0 15px rgba(0, 229, 255, 0.1);
+    }
+    .ag-menu-item.breathing:hover {
+      box-shadow: 0 0 25px rgba(0, 229, 255, 0.2);
+    }
+
+    .ag-menu-item.voice {
+      border-color: rgba(189, 0, 255, 0.3);
+      box-shadow: 0 0 15px rgba(189, 0, 255, 0.1);
+    }
+    .ag-menu-item.voice:hover {
+      box-shadow: 0 0 25px rgba(189, 0, 255, 0.2);
+    }
+
+    .ag-back-fab {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      text-decoration: none;
+      font-size: 24px;
+      transition: all 0.3s ease;
+      z-index: 100;
+    }
+
+    .ag-back-fab:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateX(-50%) scale(1.1);
+    }
+
+  </style>
+</head>
+<body class="ag-page">
+
+  <div class="ag-menu-container">
+    <h1 class="ag-menu-title">選擇冥想模式</h1>
+    
+    <div class="ag-menu-list">
+      <a href="/breathing.html" class="ag-menu-item breathing">
+        <span class="ag-item-title">呼吸練習</span>
+        <span class="ag-item-desc">4-7-8 呼吸法，平靜身心</span>
+      </a>
+      
+      <a href="/voice.html" class="ag-menu-item voice">
+        <span class="ag-item-title">語音引導</span>
+        <span class="ag-item-desc">跟隨聲音，進入深層放鬆</span>
+      </a>
+      
+      <a href="#" class="ag-menu-item" style="opacity: 0.5; cursor: not-allowed;">
+        <span class="ag-item-title">更多模式</span>
+        <span class="ag-item-desc">即將推出</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Back to Home -->
+  <a href="/home.html" class="ag-back-fab" aria-label="返回首頁">
+    ✕
+  </a>
+
+  <script>
+    // Register Service Worker if not already registered
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+  </script>
+</body>
+</html>

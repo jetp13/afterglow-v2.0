@@ -13,7 +13,7 @@
     }
 
     .ag-aid-title {
-      font-size: 28px;
+      font-size: 24px; /* 手機版字體微調 */
       color: #00e5ff;
       font-weight: bold;
       text-shadow: 0 0 20px rgba(0, 229, 255, 0.6);
@@ -30,8 +30,8 @@
     .ag-emergency-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin-bottom: 30px;
+      gap: 12px; /* 手機版間距微調 */
+      margin-bottom: 24px;
     }
 
     .ag-emergency-btn {
@@ -133,13 +133,14 @@
     }
     
     .ag-accordion-header {
-      padding: 15px 20px;
+      padding: 16px 16px; /* 增加點擊區域 */
       cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: rgba(255, 255, 255, 0.05);
       transition: background 0.3s ease;
+      min-height: 56px; /* 確保最小點擊高度 */
     }
     
     .ag-accordion-header:hover {
@@ -285,8 +286,7 @@
     ← 返回
   </a>
 
-  <div class="ag-container" style="max-width: 600px; margin: 0 auto; padding: 80px 20px;">
-    
+  <div class    .ag-container" style="max-width: 600px; margin: 0 auto; padding: 60px 16px 80px;">  
     <div class="ag-aid-header">
       <h1 class="ag-aid-title">緊急醫療與<br>減害支援模組</h1>
       <div class="ag-aid-subtitle">Emergency & Harm Reduction Guide v1.2</div>

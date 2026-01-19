@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>呼吸練習｜Afterglow</title>
+  <link rel="stylesheet" href="/assets/layout.css">
+  <style>
+    .ag-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      color: #fff;
+    }
+    .ag-circle {
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      border: 2px solid #00e5ff;
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 40px;
+      animation: breathe 8s infinite ease-in-out;
+    }
+    @keyframes breathe {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 50px rgba(0, 229, 255, 0.6); }
+    }
+  </style>
+</head>
+<body class="ag-page">
+  <div class="ag-container">
+    <div class="ag-circle">吸氣</div>
+    <p>跟隨圓圈的節奏呼吸</p>
+    <a href="/menu.html" style="margin-top: 40px; color: #aaa; text-decoration: none;">← 結束練習</a>
+  </div>
+</body>
+</html>
