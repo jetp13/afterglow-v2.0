@@ -76,6 +76,24 @@
       position: relative;
     }
 
+    /* Mobile Optimization */
+    @media (max-width: 768px) {
+      .ag-home-header {
+        height: 35vh; /* Reduce height on mobile */
+        align-items: flex-end; /* Align logo closer to bottom of header */
+        padding-bottom: 20px;
+      }
+      
+      .ag-logo-large {
+        width: 120%; /* Less overflow on mobile */
+        margin-bottom: -20px; /* Adjust spacing */
+      }
+      
+      .ag-home-main {
+        padding-top: 10px; /* Bring buttons closer */
+      }
+    }
+
   </style>
   <script>
     // Check for consent immediately
