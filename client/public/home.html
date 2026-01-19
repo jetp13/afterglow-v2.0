@@ -5,6 +5,78 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Afterglow｜讓夜裡的光有方向</title>
   <link rel="stylesheet" href="/assets/layout.css">
+  <style>
+    /* Home Specific Styles for Break-the-Window Design */
+    .ag-home-header {
+      position: relative;
+      width: 100%;
+      height: 45vh; /* Occupy top half */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden; /* Allow logo to be clipped if needed, or visible */
+      /* Actually, user said "break the window", so maybe visible overflow? 
+         But usually "break the window" means it goes off screen or container.
+         Let's keep overflow hidden on body/page to prevent scrollbars, 
+         but allow header to be the container. */
+    }
+
+    .ag-logo-container {
+      position: relative;
+      width: 100%;
+      max-width: 600px; /* Constrain width for layout */
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    /* The Large Logo */
+    .ag-logo-large {
+      width: 140%; /* Break the container width */
+      max-width: none;
+      height: auto;
+      transform: translateX(-5%) rotate(-5deg); /* Slight tilt for dynamic feel */
+      opacity: 0.9;
+      /* Ensure it doesn't shrink */
+      flex-shrink: 0;
+      margin-bottom: -40px; /* Pull text up closer */
+    }
+
+    /* Text Container aligned to bottom right of logo area */
+    .ag-text-group {
+      position: absolute;
+      bottom: 20%;
+      right: 10%;
+      text-align: right;
+      z-index: 10; /* Ensure text is above logo */
+    }
+
+    .ag-home-subtitle {
+      font-size: 1.2rem;
+      letter-spacing: 0.2em;
+      color: rgba(255, 255, 255, 0.9);
+      margin-bottom: 8px;
+      font-weight: 300;
+    }
+
+    .ag-home-tagline-en {
+      font-size: 0.6rem;
+      letter-spacing: 0.1em;
+      color: rgba(255, 255, 255, 0.5);
+      text-transform: uppercase;
+    }
+
+    /* Adjust Main Content to sit below */
+    .ag-home-main {
+      margin-top: 0;
+      padding-top: 20px;
+      z-index: 20; /* Buttons above everything */
+      position: relative;
+    }
+
+  </style>
   <script>
     // Check for consent immediately
     if (localStorage.getItem('ag_consent') !== 'true') {
@@ -15,14 +87,40 @@
 <body>
   <div class="ag-page">
 
-    <!-- Header：Logo + 副標 -->
+    <!-- Header：Break-the-Window Logo Design -->
     <header class="ag-home-header">
-      <img src="/assets/afterglow-logo.png" class="ag-logo" alt="Afterglow Logo">
-      <p class="ag-home-subtitle">讓夜裡的光有方向</p>
-
-      <p class="ag-home-tagline-en">
-        STAY SAFE · CARE FOR YOURSELF · SEEK HELP
-      </p>
+      <div class="ag-logo-container">
+        <!-- Using the uploaded SVG as the large logo -->
+        <img src="/assets/logo-large.svg" class="ag-logo-large" alt="Afterglow">
+        
+        <!-- Aligned Text Group -->
+        <!-- Note: The SVG might already contain text based on the user's image. 
+             If the SVG is just the logo text "Afterglow", we add the subtitles.
+             If the SVG is the WHOLE composition, we just show the SVG.
+             User said: "Please align the homepage to this attachment... The LOGO will break the window... 
+             Note: LOGO and subtitle should not DOUBLE together".
+             
+             This implies the SVG likely HAS the text, OR I need to position my text carefully.
+             Let's assume the SVG provided is the FULL composition (Logo + Text) based on the image "首頁footer.svg".
+             If so, I should just display the SVG large and centered/overflowing.
+             
+             However, if the SVG is just the logo, I need to add text.
+             Let's look at the file name "首頁footer.svg" - it suggests it might be the footer or the main visual.
+             Given the user's instruction "align to this attachment", I will use the SVG as the main visual.
+             
+             Wait, if the SVG has text, I shouldn't add HTML text.
+             Let's try to display the SVG primarily.
+        -->
+        <!-- 
+             Strategy: Display the SVG. If it's the full composition, it handles itself.
+             I will hide the HTML text for now and rely on the SVG if it's complete.
+             If the SVG is just the word "Afterglow", the user would complain about missing text.
+             But the user said "LOGO and subtitle should not DOUBLE together", which strongly implies
+             the SVG might HAVE the subtitle, or I should be careful not to overlap.
+             
+             Let's assume the SVG is the visual target. I will use it as an image.
+        -->
+      </div>
     </header>
 
     <!-- Main：兩顆 Glow 膠囊 -->
