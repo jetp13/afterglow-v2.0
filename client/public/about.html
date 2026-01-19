@@ -3,62 +3,145 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>關於 Afterglow</title>
+  <title>關於我們｜Afterglow</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
   <link rel="stylesheet" href="/assets/layout.css">
+  <style>
+    .ag-doc-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 80px 20px 120px;
+      color: #ddd;
+    }
+
+    .ag-doc-header {
+      text-align: center;
+      margin-bottom: 60px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 40px;
+    }
+
+    .ag-doc-title {
+      font-size: 28px;
+      color: #fff;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+
+    .ag-doc-subtitle {
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .ag-section {
+      margin-bottom: 40px;
+    }
+
+    .ag-section-title {
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 16px;
+      padding-left: 12px;
+      border-left: 3px solid #bd00ff;
+    }
+
+    .ag-text {
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 16px;
+      color: #ccc;
+    }
+
+    .ag-quote-box {
+      background: rgba(255, 255, 255, 0.05);
+      border-left: 2px solid #bd00ff;
+      padding: 20px;
+      margin: 30px 0;
+      font-style: italic;
+      color: #e0e0e0;
+      font-size: 16px;
+    }
+  </style>
 </head>
 <body class="ag-page">
-  <!-- 返回首頁按鈕 -->
-  <a href="/" class="ag-back-home">← 返回首頁</a>
-  
-  <main class="ag-about">
-    <section class="ag-about__container">
-      <h1 class="ag-about__title">關於 Afterglow</h1>
-      <p class="ag-about__subtitle">讓夜裡的光有方向</p>
 
-      <div class="ag-about__content">
-        <p>
-          Afterglow 是一個為夜裡的人而生的陪伴系統。它不是單純的冥想 App，也不是冷冰冰的說明文件，而是希望在最亂、最暗、最需要有人陪你的時候，給你一個可以慢慢呼吸的地方。
-        </p>
+  <!-- Back Button -->
+  <a href="/home.html" class="ag-back-button" style="position: fixed; top: 20px; left: 20px; color: #999; text-decoration: none; font-size: 14px; z-index: 10; padding: 8px 12px; background: rgba(0,0,0,0.5); border-radius: 20px; backdrop-filter: blur(5px);">
+    ← 返回首頁
+  </a>
 
-        <p>
-          我們知道，有些夜晚很難跟別人說。派對後的空虛、藥效起伏帶來的情緒震盪、還有那些說不上來的失落與愧疚——不一定要被立刻解決，但很需要被好好承接。
-        </p>
+  <div class="ag-doc-container">
+    <header class="ag-doc-header">
+      <h1 class="ag-doc-title">關於 Afterglow</h1>
+      <p class="ag-doc-subtitle">讓夜裡的光有方向</p>
+    </header>
 
-        <p>
-          Afterglow 想做的事情很簡單：用最柔軟、最精準、也最不打擾的方式，陪你一起把注意力從外面，慢慢帶回你的呼吸、你的身體、你的界線。讓你在還沒準備好面對世界之前，先有一個可以暫時靠岸的地方。
-        </p>
-
-        <p>
-          這裡不談成功學，也不假裝一切都很正向。我們不會對你說「要加油」，也不會否定你正在經歷的一切。你可以在這裡暫時放下角色，只用一個人類的身分，誠實地喘口氣。
-        </p>
-
-        <p>
-          Afterglow 不取代醫療，也不提供任何專業診斷或處置。它只是一盞小小的燈，在你覺得走不太動的時候，不催你、不逼你，只是在旁邊亮著，提醒你：你仍然可以為自己多做一點點溫柔的選擇。
-        </p>
-
-        <p>
-          願你在最深的夜裡，也能慢慢找到自己的光。
-        </p>
+    <section class="ag-section">
+      <h2 class="ag-section-title">我們的理念</h2>
+      <p class="ag-text">
+        Afterglow 是一個專注於心理健康與減害知識的數位平台。我們相信，在面對身心挑戰或風險情境時，正確的資訊與即時的引導，是每個人都應享有的權利。
+      </p>
+      <div class="ag-quote-box">
+        「我們不評判，我們只提供光亮。在最黑暗的時刻，希望能成為你手中的一盞燈。」
       </div>
+      <p class="ag-text">
+        我們的目標是建立一個安全、隱私且易於取得的資源中心，協助使用者在需要時能夠冷靜應對，並做出對自己最有利的決定。
+      </p>
     </section>
-  </main>
 
-  <footer class="ag-footer-v2">
-    <nav class="ag-footer-v2__links">
-      <a href="/privacy.html" class="ag-footer-v2__link">隱私權政策</a>
-      <span class="ag-footer-v2__separator">·</span>
-      <a href="/legal.html" class="ag-footer-v2__link">法律免責</a>
-      <span class="ag-footer-v2__separator">·</span>
-      <a href="/terms.html" class="ag-footer-v2__link">使用條款</a>
-      <span class="ag-footer-v2__separator">·</span>
-      <a href="/about.html" class="ag-footer-v2__link">關於 Afterglow</a>
-    </nav>
-    <p class="ag-footer-v2__message">
-      Afterglow 完整內容即將上線，敬請期待。
-    </p>
-    <p class="ag-footer-v2__copyright">
-      © 2025 Afterglow. All rights reserved.
-    </p>
+    <section class="ag-section">
+      <h2 class="ag-section-title">為什麼叫 Afterglow？</h2>
+      <p class="ag-text">
+        "Afterglow" 原意指日落後的餘暉，也常用來形容經歷強烈體驗後的身心狀態。我們希望這個平台能像那道溫柔的餘暉一樣，陪伴使用者度過高張力後的緩衝期，回歸平靜與安穩。
+      </p>
+    </section>
+
+    <section class="ag-section">
+      <h2 class="ag-section-title">隱私至上</h2>
+      <p class="ag-text">
+        我們深知信任是這一切的基礎。因此，Afterglow 堅持「零資料蒐集」政策。我們不追蹤、不紀錄、不分析。你的使用歷程，只屬於你自己。
+      </p>
+    </section>
+
+    <section class="ag-section">
+      <h2 class="ag-section-title">聯絡我們</h2>
+      <p class="ag-text">
+        Afterglow 是一個持續成長的專案。若您有任何建議、合作提案或發現內容錯誤，歡迎隨時與我們聯繫：
+        <br><br>
+        <a href="mailto:contact@afterglow.tw" style="color: #bd00ff;">contact@afterglow.tw</a>
+      </p>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="ag-footer">
+    <div class="ag-footer__inner">
+      <nav class="ag-footer__links" aria-label="Legal and info links">
+        <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/legal.html" class="ag-footer__link">法律免責</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/terms.html" class="ag-footer__link">使用條款</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+      </nav>
+
+      <p class="ag-footer__copyright">
+        © 2025 Afterglow. All rights reserved.
+      </p>
+    </div>
   </footer>
+
+  <script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+  </script>
 </body>
 </html>

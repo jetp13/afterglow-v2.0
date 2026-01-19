@@ -3,105 +3,153 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>法律免責聲明｜Afterglow</title>
+  <title>法律免責｜Afterglow</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
   <link rel="stylesheet" href="/assets/layout.css">
   <style>
-    .ag-legal__content h2 {
-      color: #ff6bd9;
-      border-bottom: 1px solid rgba(255, 107, 217, 0.3);
-      padding-bottom: 10px;
-      margin-top: 40px;
-    }
-    .ag-legal__content p {
-      line-height: 1.8;
+    .ag-doc-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 80px 20px 120px;
       color: #ddd;
-      margin-bottom: 16px;
     }
-    .ag-warning-box {
-      border: 1px solid #ff4444;
-      background: rgba(255, 68, 68, 0.1);
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 40px;
+
+    .ag-doc-header {
       text-align: center;
+      margin-bottom: 60px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 40px;
+    }
+
+    .ag-doc-title {
+      font-size: 28px;
+      color: #fff;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+
+    .ag-doc-subtitle {
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .ag-section {
+      margin-bottom: 40px;
+    }
+
+    .ag-section-title {
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 16px;
+      padding-left: 12px;
+      border-left: 3px solid #ff4444;
+    }
+
+    .ag-text {
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 16px;
+      color: #ccc;
+    }
+
+    .ag-warning-box {
+      background: rgba(255, 68, 68, 0.1);
+      border: 1px solid #ff4444;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 24px;
+      color: #ffcccc;
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .ag-highlight {
       color: #ff4444;
       font-weight: bold;
     }
   </style>
 </head>
 <body class="ag-page">
-  <!-- 返回首頁按鈕 -->
-  <a href="/home.html" class="ag-back-home">← 返回首頁</a>
-  
-  <main class="ag-legal">
-    <section class="ag-legal__container">
-      <h1 class="ag-legal__title">法律免責聲明</h1>
-      
-      <div class="ag-warning-box">
-        Afterglow 僅為教育性平台，若您尋求醫療協助，請立即聯絡醫療單位。
-      </div>
 
-      <div class="ag-legal__content">
-        
-        <h2>一、總體定位聲明</h2>
-        <p>Afterglow 為健康教育與風險減害平台，其目的在於提供公共衛教與自我照護資訊，協助使用者了解身心健康與安全相關議題。</p>
-        <p>平台內容僅供教育、心理健康、自我覺察用途，絕不鼓勵、推廣或美化任何形式的非法藥物使用、性行為或風險行為。</p>
-        <p>使用者進入平台即代表已年滿 18 歲，並理解 Afterglow 非醫療、非心理治療、非緊急救助系統。</p>
+  <!-- Back Button -->
+  <a href="/home.html" class="ag-back-button" style="position: fixed; top: 20px; left: 20px; color: #999; text-decoration: none; font-size: 14px; z-index: 10; padding: 8px 12px; background: rgba(0,0,0,0.5); border-radius: 20px; backdrop-filter: blur(5px);">
+    ← 返回首頁
+  </a>
 
-        <h2>二、法律與風險免責</h2>
-        <p>Afterglow 團隊及創作者不對使用者因誤用資訊、誤解內容、或個人行為導致的任何法律、醫療、心理或社會後果負責。</p>
-        <p>平台所提供的任何藥物、心理或身體健康資訊，均屬一般性教育資料，並非個別診斷或處方建議。若有醫療需求，請立即諮詢專業醫師或藥師。</p>
-        <p>平台不儲存、蒐集或分發任何涉及違法行為的資訊。使用者若於使用平台期間進行任何違反法令之行為，法律責任由使用者本人承擔。</p>
-        <p>創作者與平台提供方不對使用者之任何刑事、行政、民事糾紛負責，亦不參與任何爭議仲裁。</p>
+  <div class="ag-doc-container">
+    <header class="ag-doc-header">
+      <h1 class="ag-doc-title">法律免責聲明</h1>
+      <p class="ag-doc-subtitle">使用本平台前請務必詳閱</p>
+    </header>
 
-        <h2>三、資料與隱私聲明</h2>
-        <p>平台不要求、也不主動蒐集個資；若使用者自行輸入或上傳資料，即表示同意其資料僅用於系統運作與統計分析，不作其他用途。</p>
-        <p>若使用者於互動過程中輸入敏感或違法內容，系統將自動遮蔽或刪除，創作者不對此負擔任何法律義務。</p>
-        <p>Afterglow 依據 GDPR 與台灣個資法原則設計，保障使用者資料安全。</p>
+    <div class="ag-warning-box">
+      <strong>重要聲明：</strong> Afterglow 僅提供教育性資訊，絕不鼓勵、推廣或美化任何形式的非法藥物使用、性行為或風險行為。
+    </div>
 
-        <h2>四、緊急與安全聲明</h2>
-        <p>若使用者或其身邊有人出現身體不適、精神錯亂、呼吸困難、失去意識等情況，請立即撥打當地緊急醫療電話（台灣：119），而非依賴本平台。</p>
-        <p>本平台不提供即時通訊、急救指導、或任何緊急醫療行為。</p>
-        <p>若使用者有精神困擾或自殺念頭，請撥打：<br>
-        1925 生命線<br>
-        1995 張老師<br>
-        1980 勵馨基金會</p>
-
-        <h2>五、著作與責任聲明</h2>
-        <p>Afterglow 為教育與公益性專案，所有內容受著作權保護，未經許可不得擷取或轉載。</p>
-        <p>使用本平台即代表使用者理解：Afterglow 的創作者及技術團隊僅提供教育性工具，不對內容的合法性、正確性、即時性或完整性提供任何明示或默示保證。</p>
-        <p>若使用者因違法使用平台內容、分享資訊或將內容轉作推廣用途，創作者與開發者不負任何連帶責任。</p>
-
-        <h2>六、使用者確認條款</h2>
-        <p>進入 Afterglow 之前，使用者必須確認：</p>
-        <ul>
-          <li>已年滿 18 歲</li>
-          <li>理解並同意 Afterglow 僅供教育與減害目的使用</li>
-          <li>了解平台內容不得視為醫療或法律建議</li>
-          <li>同意自行承擔使用本平台之所有風險與法律責任</li>
-          <li>確認若出現身心危險將立即聯繫緊急服務單位</li>
-        </ul>
-
-      </div>
+    <section class="ag-section">
+      <h2 class="ag-section-title">1. 醫療免責</h2>
+      <p class="ag-text">
+        本平台所提供的任何藥物、心理或身體健康資訊，均屬一般性教育資料，<span class="ag-highlight">並非個別診斷或處方建議</span>。
+      </p>
+      <p class="ag-text">
+        若您或您身邊的人出現身體不適、意識不清、呼吸困難等症狀，請立即撥打 119 或前往最近的醫療機構急診室。切勿因依賴本平台資訊而延誤就醫。
+      </p>
     </section>
-  </main>
 
-  <footer class="ag-footer-v2">
-    <nav class="ag-footer-v2__links">
-      <a href="/privacy.html" class="ag-footer-v2__link">隱私權政策</a>
-      <span class="ag-footer-v2__separator">·</span>
-      <a href="/legal.html" class="ag-footer-v2__link">法律免責</a>
-      <span class="ag-footer-v2__separator">·</span>
-      <a href="/terms.html" class="ag-footer-v2__link">使用條款</a>
-      <span class="ag-footer-v2__separator">·</span>
-      <a href="/about.html" class="ag-footer-v2__link">關於 Afterglow</a>
-    </nav>
-    <p class="ag-footer-v2__message">
-      Afterglow 完整內容即將上線，敬請期待。
-    </p>
-    <p class="ag-footer-v2__copyright">
-      © 2025 Afterglow. All rights reserved.
-    </p>
+    <section class="ag-section">
+      <h2 class="ag-section-title">2. 法律責任排除</h2>
+      <p class="ag-text">
+        Afterglow 團隊及創作者不對使用者因誤用資訊、誤解內容、或個人行為導致的任何法律、醫療、心理或社會後果負責。
+      </p>
+      <p class="ag-text">
+        使用者若於使用平台期間進行任何違反法令之行為（如持有、販賣、轉讓違禁品），法律責任完全由使用者本人承擔，與本平台無涉。
+      </p>
+    </section>
+
+    <section class="ag-section">
+      <h2 class="ag-section-title">3. 內容正確性</h2>
+      <p class="ag-text">
+        我們會盡力確保平台資訊的正確性與即時性，但醫學與法律知識不斷更新，我們無法保證所有內容均為最新或完全無誤。使用者應自行查證或諮詢專業人士。
+      </p>
+    </section>
+
+    <section class="ag-section">
+      <h2 class="ag-section-title">4. 第三方連結</h2>
+      <p class="ag-text">
+        本平台可能包含前往第三方網站的連結。這些連結僅為方便使用者而提供，我們不對這些網站的內容、隱私政策或安全性負責。
+      </p>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="ag-footer">
+    <div class="ag-footer__inner">
+      <nav class="ag-footer__links" aria-label="Legal and info links">
+        <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/legal.html" class="ag-footer__link">法律免責</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/terms.html" class="ag-footer__link">使用條款</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+      </nav>
+
+      <p class="ag-footer__copyright">
+        © 2025 Afterglow. All rights reserved.
+      </p>
+    </div>
   </footer>
+
+  <script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+  </script>
 </body>
 </html>

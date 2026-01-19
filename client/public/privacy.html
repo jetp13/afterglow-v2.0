@@ -4,81 +4,175 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>隱私權政策｜Afterglow</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
   <link rel="stylesheet" href="/assets/layout.css">
+  <style>
+    .ag-doc-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 80px 20px 120px;
+      color: #ddd;
+    }
+
+    .ag-doc-header {
+      text-align: center;
+      margin-bottom: 60px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 40px;
+    }
+
+    .ag-doc-title {
+      font-size: 28px;
+      color: #fff;
+      margin-bottom: 16px;
+      letter-spacing: 2px;
+    }
+
+    .ag-doc-subtitle {
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    .ag-section {
+      margin-bottom: 40px;
+    }
+
+    .ag-section-title {
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 16px;
+      padding-left: 12px;
+      border-left: 3px solid #bd00ff;
+    }
+
+    .ag-text {
+      font-size: 15px;
+      line-height: 1.8;
+      margin-bottom: 16px;
+      color: #ccc;
+    }
+
+    .ag-list {
+      padding-left: 24px;
+      margin-bottom: 16px;
+    }
+
+    .ag-list li {
+      margin-bottom: 8px;
+      line-height: 1.6;
+    }
+
+    .ag-highlight {
+      color: #bd00ff;
+      font-weight: bold;
+    }
+    
+    .ag-zero-badge {
+      display: inline-block;
+      background: rgba(189, 0, 255, 0.1);
+      border: 1px solid #bd00ff;
+      color: #bd00ff;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      margin-bottom: 16px;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body class="ag-page">
-  <!-- 返回首頁按鈕 -->
-  <a href="/" class="ag-back-home">← 返回首頁</a>
-  
-  <main class="ag-legal">
-    <section class="ag-legal__container">
-      <h1 class="ag-legal__title">隱私權政策</h1>
-      <p class="ag-legal__intro">
-        Afterglow 非常在意你的安全與隱私。我們盡可能在「不留下痕跡」的前提下，提供你可以使用的工具與內容。
+
+  <!-- Back Button -->
+  <a href="/home.html" class="ag-back-button" style="position: fixed; top: 20px; left: 20px; color: #999; text-decoration: none; font-size: 14px; z-index: 10; padding: 8px 12px; background: rgba(0,0,0,0.5); border-radius: 20px; backdrop-filter: blur(5px);">
+    ← 返回首頁
+  </a>
+
+  <div class="ag-doc-container">
+    <header class="ag-doc-header">
+      <div class="ag-zero-badge">Zero Data Collection</div>
+      <h1 class="ag-doc-title">隱私權政策</h1>
+      <p class="ag-doc-subtitle">最後更新日期：2025 年 1 月 19 日</p>
+    </header>
+
+    <section class="ag-section">
+      <h2 class="ag-section-title">1. 零資料蒐集承諾</h2>
+      <p class="ag-text">
+        Afterglow 採用業界最高標準的<span class="ag-highlight">「零資料蒐集」(Zero Data Collection)</span> 政策。我們深知心理健康與減害資訊的敏感性，因此我們的系統設計核心就是「不紀錄」。
       </p>
-
-      <div class="ag-legal__content">
-        <h2>一、我們不主動蒐集的資料</h2>
-        <ul>
-          <li>不要求你登入帳號。</li>
-          <li>不要求提供姓名、電話、電子郵件或其他可識別個人身分的資訊。</li>
-          <li>不建立個人使用者檔案，不對單一使用者行為做追蹤或標記。</li>
-        </ul>
-
-        <h2>二、技術層面可能接觸到的資訊</h2>
-        <p>
-          為了讓頁面可以正常顯示，我們的系統可能會暫時讀取以下技術資訊，這些資訊僅用於畫面呈現與系統基本運作：
-        </p>
-        <ul>
-          <li>裝置類型（例如手機、平板或電腦）。</li>
-          <li>瀏覽器類型與語系設定。</li>
-          <li>畫面尺寸與解析度，以調整排版。</li>
-        </ul>
-        <p>
-          我們不會將這些資訊用於行銷、廣告、個人化推薦，也不會試圖回推你的真實身分。
-        </p>
-
-        <h2>三、Cookie 與追蹤技術</h2>
-        <ul>
-          <li>目前不使用第三方廣告追蹤工具（如行為追蹤 Cookie）。</li>
-          <li>如未來因技術需要導入 Cookie，我們會在頁面上清楚告知用途與選項。</li>
-        </ul>
-
-        <h2>四、資料分享與第三方服務</h2>
-        <ul>
-          <li>我們不會出售、租賃或交換任何使用者相關資料。</li>
-          <li>若頁面連結至其他網站（例如求助資源、醫療單位），其隱私權政策與安全標準由該網站自行負責。</li>
-        </ul>
-
-        <h2>五、政策更新</h2>
-        <p>
-          當我們更新本隱私權政策時，會在本頁註明更新日期。若未來有重大變更，也會在頁面上以明顯方式告知。
-        </p>
-
-        <p class="ag-legal__note">
-          如果你對隱私有額外顧慮，最安全的做法永遠是：<br>
-          使用完即關閉頁面，避免在他人裝置上留下瀏覽紀錄。
-        </p>
-      </div>
+      <p class="ag-text">
+        這意味著：
+      </p>
+      <ul class="ag-list">
+        <li><strong>無帳號系統：</strong> 我們不提供註冊或登入功能，因此無法識別您的身份。</li>
+        <li><strong>無追蹤器：</strong> 我們不使用 Google Analytics、Facebook Pixel 或任何第三方追蹤工具。</li>
+        <li><strong>無伺服器紀錄：</strong> 您的瀏覽行為不會被我們的應用程式層紀錄。</li>
+      </ul>
     </section>
-  </main>
 
-  <footer class="ag-footer-v2">
-    <nav class="ag-footer-v2__links">
-      <a href="/privacy.html" class="ag-footer-v2__link">隱私權政策</a>
-      <span class="ag-footer-v2__separator">·</span>
-      <a href="/legal.html" class="ag-footer-v2__link">法律免責</a>
-      <span class="ag-footer-v2__separator">·</span>
-      <a href="/terms.html" class="ag-footer-v2__link">使用條款</a>
-      <span class="ag-footer-v2__separator">·</span>
-      <a href="/about.html" class="ag-footer-v2__link">關於 Afterglow</a>
-    </nav>
-    <p class="ag-footer-v2__message">
-      Afterglow 完整內容即將上線，敬請期待。
-    </p>
-    <p class="ag-footer-v2__copyright">
-      © 2025 Afterglow. All rights reserved.
-    </p>
+    <section class="ag-section">
+      <h2 class="ag-section-title">2. 本機儲存 (Local Storage)</h2>
+      <p class="ag-text">
+        為了提供順暢的使用體驗，我們僅會在您的瀏覽器中使用「本機儲存」技術，紀錄以下單一狀態：
+      </p>
+      <ul class="ag-list">
+        <li><strong>免責聲明同意狀態：</strong> 僅紀錄您是否已點擊「我同意」。</li>
+      </ul>
+      <p class="ag-text">
+        <span class="ag-highlight">重要：</span> 此紀錄僅存在於您的手機或電腦中，<span class="ag-highlight">絕對不會</span>回傳至我們的伺服器。您可以隨時清除瀏覽器快取來刪除此紀錄。
+      </p>
+    </section>
+
+    <section class="ag-section">
+      <h2 class="ag-section-title">3. Cookie 政策</h2>
+      <p class="ag-text">
+        本網站<span class="ag-highlight">不使用</span>任何用於追蹤、廣告或分析的 Cookie。
+      </p>
+    </section>
+
+    <section class="ag-section">
+      <h2 class="ag-section-title">4. 資訊安全</h2>
+      <p class="ag-text">
+        由於我們不蒐集您的資料，因此不存在資料外洩的風險。這是保護您隱私最徹底的方式。
+      </p>
+    </section>
+
+    <section class="ag-section">
+      <h2 class="ag-section-title">5. 聯絡我們</h2>
+      <p class="ag-text">
+        若您對本隱私權政策有任何疑問，請透過 <a href="mailto:privacy@afterglow.tw" style="color: #bd00ff;">privacy@afterglow.tw</a> 聯繫我們。
+      </p>
+    </section>
+
+  </div>
+
+  <!-- Footer -->
+  <footer class="ag-footer">
+    <div class="ag-footer__inner">
+      <nav class="ag-footer__links" aria-label="Legal and info links">
+        <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/legal.html" class="ag-footer__link">法律免責</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/terms.html" class="ag-footer__link">使用條款</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+      </nav>
+
+      <p class="ag-footer__copyright">
+        © 2025 Afterglow. All rights reserved.
+      </p>
+    </div>
   </footer>
+
+  <script>
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+  </script>
 </body>
 </html>
