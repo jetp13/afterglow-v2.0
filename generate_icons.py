@@ -26,7 +26,7 @@ def create_icon(source_path, output_path, size):
     background.save(output_path)
     print(f"Generated {output_path}")
 
-source_logo = '/home/ubuntu/afterglow/client/public/assets/afterglow-logo.png'
+source_logo = '/home/ubuntu/afterglow/client/public/assets/logo-new.png'
 output_dir = '/home/ubuntu/afterglow/client/public/assets/icons'
 
 if not os.path.exists(output_dir):
