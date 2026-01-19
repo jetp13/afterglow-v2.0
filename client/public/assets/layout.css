@@ -111,7 +111,7 @@ body {
 /* Glow 膠囊按鈕（完整效果版）*/
 .ag-capsule {
   display: block;
-  width: 220px; /* Fixed width for consistency */
+  width: 200px; /* Reduced width for better breathing room */
   padding: 14px 0;
   text-align: center;
   border-radius: 50px;
