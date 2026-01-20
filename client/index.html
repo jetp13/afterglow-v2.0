@@ -1,28 +1,315 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>免責聲明｜Afterglow</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+  <link rel="stylesheet" href="/assets/layout.css">
+  <style>
+    .ag-gate-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px 16px 100px; /* 調整手機版 padding */
+      text-align: center;
+    }
 
-  <head>
-    <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1" />
-    <link rel="icon" type="image/png" href="%VITE_APP_LOGO%" />
-    <link rel="apple-touch-icon" href="%VITE_APP_LOGO%" />
-    <title>%VITE_APP_TITLE%</title>
-    <!-- Add Google Fonts here, example:
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-    -->
-  </head>
+    .ag-disclaimer-box {
+      border: 1px solid #ff6bd9;
+      border-radius: 12px;
+      padding: 20px; /* 手機版減少 padding */
+      max-width: 800px;
+      width: 100%; /* 確保寬度自適應 */
+      margin-bottom: 24px;
+      background: rgba(255, 107, 217, 0.05);
+      box-shadow: 0 0 20px rgba(255, 107, 217, 0.1);
+      text-align: left;
+      max-height: 50vh; /* 手機版高度限制 */
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #ff6bd9 rgba(255, 255, 255, 0.1);
+      -webkit-overflow-scrolling: touch; /* 優化 iOS 滾動 */
+    }
 
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-    <script
-      defer
-      src="%VITE_ANALYTICS_ENDPOINT%/umami"
-      data-website-id="%VITE_ANALYTICS_WEBSITE_ID%"></script>
-  </body>
+    .ag-disclaimer-box::-webkit-scrollbar {
+      width: 6px;
+    }
+    .ag-disclaimer-box::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .ag-disclaimer-box::-webkit-scrollbar-thumb {
+      background-color: #ff6bd9;
+      border-radius: 3px;
+    }
 
+    .ag-disclaimer-section {
+      margin-bottom: 24px;
+    }
+
+    .ag-disclaimer-title {
+      color: #ff6bd9;
+      font-size: 18px;
+      margin-bottom: 12px;
+      font-weight: bold;
+      border-bottom: 1px solid rgba(255, 107, 217, 0.3);
+      padding-bottom: 8px;
+    }
+
+    .ag-disclaimer-text {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #ddd;
+      margin-bottom: 12px;
+    }
+
+    .ag-warning-text {
+      color: #ff4444;
+      font-weight: bold;
+      font-size: 15px;
+      margin: 20px 0;
+      padding: 12px;
+      border: 1px solid #ff4444;
+      background: rgba(255, 68, 68, 0.1);
+      border-radius: 8px;
+      text-align: center;
+    }
+
+    .ag-checkbox-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 30px;
+      text-align: left;
+      max-width: 500px;
+      width: 100%;
+    }
+
+    .ag-consent-label {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px; /* 增加間距 */
+      color: #fff;
+      font-size: 15px; /* 放大字體 */
+      cursor: pointer;
+      line-height: 1.5;
+      padding: 8px 0; /* 增加點擊區域 */
+    }
+
+    .ag-consent-checkbox {
+      width: 22px; /* 放大 Checkbox */
+      height: 22px;
+      accent-color: #ff6bd9;
+      cursor: pointer;
+      margin-top: 0;
+      flex-shrink: 0;
+    }
+
+    .ag-enter-button {
+      display: block;
+      width: 100%;
+      max-width: 280px;
+      padding: 14px 0;
+      text-align: center;
+      border-radius: 9999px;
+      font-size: 16px;
+      color: white;
+      background: transparent;
+      border: 1px solid #ff6bd9;
+      box-shadow: 0 0 15px rgba(255, 107, 217, 0.3);
+      transition: 0.3s ease;
+      cursor: pointer;
+      opacity: 0.5;
+      pointer-events: none;
+      text-decoration: none;
+    }
+
+    .ag-enter-button.active {
+      opacity: 1;
+      pointer-events: auto;
+      background: rgba(255, 107, 217, 0.1);
+      box-shadow: 0 0 25px rgba(255, 107, 217, 0.6);
+    }
+
+    .ag-enter-button.active:hover {
+      background: rgba(255, 107, 217, 0.2);
+      box-shadow: 0 0 35px rgba(255, 107, 217, 0.8);
+    }
+
+    .ag-gate-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px;
+      background: rgba(10, 10, 10, 0.9);
+      backdrop-filter: blur(5px);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      font-size: 13px;
+    }
+
+    .ag-gate-link {
+      color: #999;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .ag-gate-link:hover {
+      color: #fff;
+    }
+  </style>
+</head>
+<body class="ag-page">
+  <div class="ag-gate-container">
+    
+    <!-- Logo -->
+    <img src="/assets/logo-new.png" class="ag-logo" alt="Afterglow Logo" style="width: 180px; margin: 0 auto 20px;">
+    
+    <!-- Warning -->
+    <div class="ag-warning-text">
+      Afterglow 僅為教育性平台，若您尋求醫療協助，請立即聯絡醫療單位。
+    </div>
+
+    <!-- Disclaimer Box -->
+    <div class="ag-disclaimer-box">
+      
+      <div class="ag-disclaimer-section">
+        <div class="ag-disclaimer-title">一、總體定位聲明</div>
+        <p class="ag-disclaimer-text">Afterglow 為健康教育與風險減害平台，其目的在於提供公共衛教與自我照護資訊，協助使用者了解身心健康與安全相關議題。</p>
+        <p class="ag-disclaimer-text">平台內容僅供教育、心理健康、自我覺察用途，絕不鼓勵、推廣或美化任何形式的非法藥物使用、性行為或風險行為。</p>
+        <p class="ag-disclaimer-text">使用者進入平台即代表已年滿 18 歲，並理解 Afterglow 非醫療、非心理治療、非緊急救助系統。</p>
+      </div>
+
+      <div class="ag-disclaimer-section">
+        <div class="ag-disclaimer-title">二、法律與風險免責</div>
+        <p class="ag-disclaimer-text">Afterglow 團隊及創作者不對使用者因誤用資訊、誤解內容、或個人行為導致的任何法律、醫療、心理或社會後果負責。</p>
+        <p class="ag-disclaimer-text">平台所提供的任何藥物、心理或身體健康資訊，均屬一般性教育資料，並非個別診斷或處方建議。若有醫療需求，請立即諮詢專業醫師或藥師。</p>
+        <p class="ag-disclaimer-text">平台不儲存、蒐集或分發任何涉及違法行為的資訊。使用者若於使用平台期間進行任何違反法令之行為，法律責任由使用者本人承擔。</p>
+      </div>
+
+      <div class="ag-disclaimer-section">
+        <div class="ag-disclaimer-title">三、資料與隱私聲明</div>
+        <p class="ag-disclaimer-text">平台不要求、也不主動蒐集個資；若使用者自行輸入或上傳資料，即表示同意其資料僅用於系統運作與統計分析，不作其他用途。</p>
+        <p class="ag-disclaimer-text">若使用者於互動過程中輸入敏感或違法內容，系統將自動遮蔽或刪除，創作者不對此負擔任何法律義務。</p>
+        <p class="ag-disclaimer-text">Afterglow 依據 GDPR 與台灣個資法原則設計，保障使用者資料安全。</p>
+      </div>
+
+      <div class="ag-disclaimer-section">
+        <div class="ag-disclaimer-title">四、緊急與安全聲明</div>
+        <p class="ag-disclaimer-text">若使用者或其身邊有人出現身體不適、精神錯亂、呼吸困難、失去意識等情況，請立即撥打當地緊急醫療電話（台灣：119），而非依賴本平台。</p>
+        <p class="ag-disclaimer-text">本平台不提供即時通訊、急救指導、或任何緊急醫療行為。</p>
+        <p class="ag-disclaimer-text">若使用者有精神困擾或自殺念頭，請撥打：1925 生命線、1995 張老師、1980 勵馨基金會。</p>
+      </div>
+
+      <div class="ag-disclaimer-section">
+        <div class="ag-disclaimer-title">五、著作與責任聲明</div>
+        <p class="ag-disclaimer-text">Afterglow 為教育與公益性專案，所有內容受著作權保護，未經許可不得擷取或轉載。</p>
+        <p class="ag-disclaimer-text">使用本平台即代表使用者理解：Afterglow 的創作者及技術團隊僅提供教育性工具，不對內容的合法性、正確性、即時性或完整性提供任何明示或默示保證。</p>
+      </div>
+
+    </div>
+
+    <!-- Checkbox Group -->
+    <div class="ag-checkbox-group">
+      <label class="ag-consent-label">
+        <input type="checkbox" class="ag-consent-checkbox" data-required="true">
+        我已年滿 18 歲
+      </label>
+      <label class="ag-consent-label">
+        <input type="checkbox" class="ag-consent-checkbox" data-required="true">
+        我理解並同意 Afterglow 僅供教育與減害目的使用
+      </label>
+      <label class="ag-consent-label">
+        <input type="checkbox" class="ag-consent-checkbox" data-required="true">
+        我了解平台內容不得視為醫療或法律建議
+      </label>
+      <label class="ag-consent-label">
+        <input type="checkbox" class="ag-consent-checkbox" data-required="true">
+        我同意自行承擔使用本平台之所有風險與法律責任
+      </label>
+      <label class="ag-consent-label">
+        <input type="checkbox" class="ag-consent-checkbox" data-required="true">
+        我確認若出現身心危險將立即聯繫緊急服務單位
+      </label>
+    </div>
+
+    <!-- Enter Button -->
+    <a href="#" id="enter-btn" class="ag-enter-button">
+      進入 Afterglow
+    </a>
+
+  </div>
+
+  <!-- Footer：共用模組 -->
+  <footer class="ag-footer">
+    <div class="ag-footer__inner">
+      <nav class="ag-footer__links" aria-label="Legal and info links">
+        <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/legal.html" class="ag-footer__link">法律免責</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/terms.html" class="ag-footer__link">使用條款</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+      </nav>
+
+      <p class="ag-footer__copyright">
+        © 2025 Afterglow. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const checkboxes = document.querySelectorAll('.ag-consent-checkbox');
+    const enterBtn = document.getElementById('enter-btn');
+
+    // Check if already consented
+    if (localStorage.getItem('ag_consent') === 'true') {
+      window.location.href = '/home.html';
+    }
+
+    // FORCE UNREGISTER ALL SERVICE WORKERS TO FIX 404
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for(let registration of registrations) {
+          registration.unregister();
+          console.log('ServiceWorker unregistered');
+        }
+      });
+    }
+
+    function checkAllConsent() {
+      let allChecked = true;
+      checkboxes.forEach(cb => {
+        if (!cb.checked) allChecked = false;
+      });
+
+      if (allChecked) {
+        enterBtn.classList.add('active');
+      } else {
+        enterBtn.classList.remove('active');
+      }
+    }
+
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', checkAllConsent);
+    });
+
+    enterBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      if (enterBtn.classList.contains('active')) {
+        localStorage.setItem('ag_consent', 'true');
+        // Force reload to bypass cache
+        window.location.href = '/home.html?v=' + new Date().getTime();
+      }
+    });
+  </script>
+</body>
 </html>
