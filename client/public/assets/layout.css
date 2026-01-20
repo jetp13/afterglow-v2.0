@@ -32,8 +32,9 @@ body {
   position: fixed;
   top: 24px;
   left: 24px;
-  z-index: 100;
+  z-index: 9999; /* Ensure it's always on top */
   display: flex;
+  cursor: pointer; /* Ensure pointer cursor */
   align-items: center;
   justify-content: center;
   width: 44px;
