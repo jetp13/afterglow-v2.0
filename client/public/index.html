@@ -275,16 +275,13 @@
       window.location.href = '/home.html';
     }
 
-    // Register Service Worker
+    // FORCE UNREGISTER ALL SERVICE WORKERS TO FIX 404
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(registration => {
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-          })
-          .catch(err => {
-            console.log('ServiceWorker registration failed: ', err);
-          });
+      navigator.serviceWorker.getRegistrations().then(function(registrations) {
+        for(let registration of registrations) {
+          registration.unregister();
+          console.log('ServiceWorker unregistered');
+        }
       });
     }
 
@@ -309,7 +306,8 @@
       e.preventDefault();
       if (enterBtn.classList.contains('active')) {
         localStorage.setItem('ag_consent', 'true');
-        window.location.href = '/home.html';
+        // Force reload to bypass cache
+        window.location.href = '/home.html?v=' + new Date().getTime();
       }
     });
   </script>
