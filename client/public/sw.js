@@ -1,16 +1,21 @@
-const CACHE_NAME = 'afterglow-v1';
+const CACHE_NAME = 'afterglow-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/home.html',
-  '/gate.html',
   '/first-aid.html',
   '/rights.html',
   '/support-main.html',
   '/risk-calculator.html',
+  '/menu.html',
+  '/breathing.html',
+  '/voice.html',
+  '/privacy.html',
+  '/terms.html',
+  '/legal.html',
+  '/about.html',
   '/assets/layout.css',
-  '/assets/afterglow-logo.png',
-  '/assets/logo-large.svg',
+  '/assets/logo-new.png',
   '/assets/icons/icon-192x192.png',
   '/assets/icons/icon-512x512.png',
   '/manifest.json'
