@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>呼吸練習｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
+  <script>
+    // Check for consent immediately
+    if (localStorage.getItem('ag_consent') !== 'true') {
+      window.location.href = '/index.html';
+    }
+  </script>
   <style>
     .ag-container {
       display: flex;

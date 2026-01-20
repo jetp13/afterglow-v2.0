@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>緊急醫療與減害支援｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
+  <script>
+    // Check for consent immediately
+    if (localStorage.getItem('ag_consent') !== 'true') {
+      window.location.href = '/index.html';
+    }
+  </script>
   <style>
     /* Specific Styles for First Aid v1.2 */
     .ag-aid-header {
