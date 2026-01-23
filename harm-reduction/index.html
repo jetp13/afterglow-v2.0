@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#000000">
+    <title>Afterglow | Harm Reduction</title>
+    <link rel="manifest" href="manifest.json">
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-bg: #111111;
+            --text-main: #F3F4F5;
+            --text-dim: #888888;
+            --accent-pink: #FF2D95;
+            --accent-red: #FF0044;
+            --accent-gold: #FFD700;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Tab 導航 */
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            padding: 20px 20px 0;
+            gap: 10px;
+        }
+
+        .tab-btn {
+            background: transparent;
+            border: 1px solid var(--text-dim);
+            color: var(--text-dim);
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 1px;
+        }
+
+        .tab-btn.active {
+            border-color: var(--accent-pink);
+            color: var(--accent-pink);
+            box-shadow: 0 0 10px rgba(255, 45, 149, 0.3);
+        }
+
+        /* 頁面容器 */
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ===== Resources Hub 樣式 ===== */
+        .hub-container {
+            padding: 20px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .hub-title {
+            font-size: 12px;
+            text-align: center;
+            color: var(--text-dim);
+            letter-spacing: 2px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        /* 呼吸球（Hub 版本 - 靜態） */
+        .glow-anchor-container {
+            height: 25vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .glow-ball-static {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 45, 149, 0.15) 0%, rgba(0, 0, 0, 0) 70%);
+            box-shadow: 0 0 40px rgba(255, 45, 149, 0.4);
+            animation: breatheStatic 6s ease-in-out infinite;
+        }
+
+        @keyframes breatheStatic {
+            0%, 100% { transform: scale(0.95); opacity: 0.6; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        /* 折疊區塊 */
+        details {
+            background-color: var(--card-bg);
+            border-radius: 4px;
+            margin-bottom: 16px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: 1px solid #222;
+        }
+
+        summary {
+            padding: 20px;
+            cursor: pointer;
+            list-style: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            color: var(--text-main);
+        }
+
+        summary::-webkit-details-marker { display: none; }
+
+        summary::before {
+            content: "○";
+            margin-right: 10px;
+            color: var(--accent-pink);
+            font-size: 12px;
+        }
+
+        summary:focus { outline: none; }
+
+        details[open] summary::before {
+            content: "●";
+            text-shadow: 0 0 5px var(--accent-pink);
+        }
+
+        .content {
+            padding: 0 20px 24px 20px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #ddd;
+            border-top: 1px solid #222;
+            animation: fadeInContent 0.5s ease;
+        }
+
+        @keyframes fadeInContent {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .content ul {
+            padding-left: 20px;
+            margin: 10px 0;
+            color: #ccc;
+        }
+
+        .content li {
+            margin-bottom: 6px;
+        }
+
+        .highlight-box {
+            border: 1px solid #333;
+            padding: 12px;
+            margin-top: 15px;
+            border-radius: 4px;
+        }
+
+        .disclaimer {
+            font-size: 12px;
+            color: var(--text-dim);
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        .cta-button {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px solid var(--accent-pink);
+            color: var(--accent-pink);
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 13px;
+            transition: all 0.2s;
+        }
+
+        .cta-button:active {
+            background: rgba(255, 45, 149, 0.1);
+        }
+
+        .link-list a {
+            color: var(--accent-pink);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 8px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 8px;
+        }
+
+        .emergency-trigger {
+            color: var(--accent-red);
+            border-color: var(--accent-red);
+            font-weight: bold;
+        }
+
+        /* ===== G-Timer 樣式 ===== */
+        .timer-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* 呼吸球（Timer 版本 - 動態 + 文字固定） */
+        .glow-ball-timer-wrapper {
+            position: relative;
+            width: 220px;
+            height: 220px;
+            margin: 0 auto 30px;
+        }
+
+        .glow-ball-timer {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 45, 149, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
+            border: 2px solid transparent;
+            transition: all 0.5s ease;
+            animation: breatheTimer 6s infinite ease-in-out;
+        }
+
+        /* 關鍵：文字層獨立，不受動畫影響 */
+        .timer-display-wrapper {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        .timer-display {
+            font-size: 3rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+            letter-spacing: 2px;
+            color: var(--text-main);
+        }
+
+        @keyframes breatheTimer {
+            0%, 100% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+        }
+
+        /* 狀態顏色 */
+        .danger-mode {
+            border-color: var(--accent-red);
+            box-shadow: 0 0 30px rgba(255, 0, 68, 0.3);
+        }
+
+        .caution-mode {
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+        }
+
+        .safe-mode {
+            border-color: var(--text-main);
+        }
+
+        .status-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        .status-text {
+            margin-top: 10px;
+            font-size: 1rem;
+            color: var(--text-dim);
+            min-height: 1.2em;
+        }
+
+        .btn-main {
+            background: transparent;
+            border: 2px solid var(--accent-pink);
+            color: var(--accent-pink);
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 40px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-main:active {
+            background: var(--accent-pink);
+            color: #000;
+            box-shadow: 0 0 20px var(--accent-pink);
+        }
+
+        .warning-box {
+            margin-top: 30px;
+            padding: 15px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #aaa;
+            display: none;
+            max-width: 400px;
+        }
+
+        .reset-btn {
+            margin-top: 50px;
+            font-size: 0.8rem;
+            color: #444;
+            background: none;
+            border: none;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 10px;
+            color: #444;
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Tab 導航 -->
+    <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('hub')">資源中心</button>
+        <button class="tab-btn" onclick="switchTab('timer')">G-Timer</button>
+    </div>
+
+    <!-- ===== Resources Hub 頁面 ===== -->
+    <div id="hubPage" class="page active">
+        <div class="hub-container">
+            <h1 class="hub-title">Afterglow | Hub v1.0</h1>
+            
+            <div class="glow-anchor-container">
+                <div class="glow-ball-static"></div>
+            </div>
+
+            <details>
+                <summary>GBL 參考資訊</summary>
+                <div class="content">
+                    <p>GBL 在體內會快速轉化為 GHB，且效力約為 GHB 的 1.5–2 倍。街頭形式濃度通常未知，個體耐受差異極大（受體重、空腹、代謝影響）。</p>
+                    
+                    <div class="highlight-box">
+                        <strong>參考劑量範圍（純 GBL，單位：ml）- 僅供極粗略估算</strong>
+                        <ul>
+                            <li>0.3 – 0.8 ml：輕度放鬆、社交增強（新手應從最低開始）</li>
+                            <li>0.8 – 1.2 ml：明顯欣快、性慾提升、協調開始變差</li>
+                            <li>1.2 – 1.5 ml：強烈鎮靜、斷片風險高</li>
+                            <li>1.5 ml 以上：昏迷、呼吸抑制、過量風險極高</li>
+                        </ul>
+                    </div>
+
+                    <p><strong>重要提醒：</strong></p>
+                    <ul>
+                        <li>追加劑量（redose）務必等待至少 2–3 小時，且第二次劑量應明顯低於第一次（常見建議減半）。</li>
+                        <li>過頻追加是造成過量最常見原因。</li>
+                        <li>空腹吸收更快，與食物同服會延遲但不一定降低峰值風險。</li>
+                        <li><strong>絕對避免混用</strong>：酒精、苯二氮、鴉片類、ketamine 等會大幅增加呼吸抑制風險。</li>
+                    </ul>
+                    
+                    <p class="disclaimer">此資訊來自多個國際減害組織共識（如 TripSit、hi-ground、CAHMA），僅供教育參考，不是安全保證，也不是醫療建議。街頭濃度差異極大，任何「試劑」都無法取代「從極低劑量開始 + 等待」的原則。</p>
+                    
+                    <a href="https://drugs.tripsit.me/gbl" target="_blank" class="cta-button">外部來源：TripSit GBL Factsheet</a>
+                </div>
+            </details>
+
+            <details>
+                <summary>過量徵兆與應對</summary>
+                <div class="content">
+                    <p>若觀察到以下徵兆，可能表示代謝負荷過重：</p>
+                    <ul>
+                        <li>強烈嗜睡、無法喚醒或僅對疼痛有微弱反應</li>
+                        <li>呼吸變慢（&lt;10 次/分）、不規則、打鼾或暫停</li>
+                        <li>脈搏極慢或不規則</li>
+                        <li>皮膚蒼白、發冷、出冷汗</li>
+                        <li>嘔吐（特別危險，可能導致吸入性肺炎）</li>
+                        <li>抽搐或不自主肌肉抽動</li>
+                    </ul>
+
+                    <p><strong>立即行動順序：</strong></p>
+                    <ol>
+                        <li>將人置於復甦姿勢（側臥），確保呼吸道暢通</li>
+                        <li>大聲呼喚並搖晃肩膀，檢查是否有反應</li>
+                        <li>若無反應或呼吸異常，立即撥打 119，告知「疑似 G 類藥物過量」</li>
+                        <li>留在現場持續監測，直到救援到達</li>
+                    </ol>
+                    
+                    <a href="tel:119" class="cta-button emergency-trigger">考慮立即求助 119</a>
+                    
+                    <p class="disclaimer">無特效解藥，主要為支持性處理。過量通常在數小時內緩解，但混用風險較高。即使看似睡著，也要持續監測呼吸。</p>
+                </div>
+            </details>
+
+            <details>
+                <summary>減害資源連結</summary>
+                <div class="content link-list">
+                    <a href="https://knowhiv.org" target="_blank">↗ knowhiv.org (TW)</a>
+                    <a href="https://www.praxis.org.tw/" target="_blank">↗ 台灣愛滋權促會</a>
+                    <a href="https://tripsit.me/" target="_blank">↗ TripSit.me (International)</a>
+                    
+                    <div style="margin-top: 20px; color: #888;">
+                        <strong>求助熱線 (TW)</strong><br>
+                        同志諮詢熱線: 02-2392-1919<br>
+                        安心專線: 1925
+                    </div>
+                    
+                    <p class="disclaimer">這些連結通往外部，Afterglow 不負責其內容更新。</p>
+                </div>
+            </details>
+
+            <footer>
+                資料僅存於本地裝置 (Local Storage) • 無雲端上傳<br>
+                Afterglow 僅為減害教育工具 • 使用仍存在風險
+            </footer>
+        </div>
+    </div>
+
+    <!-- ===== G-Timer 頁面 ===== -->
+    <div id="timerPage" class="page">
+        <div class="timer-container">
+            <div class="glow-ball-timer-wrapper">
+                <div id="glowBall" class="glow-ball-timer safe-mode"></div>
+                <div class="timer-display-wrapper">
+                    <div id="timerDisplay" class="timer-display">00:00:00</div>
+                </div>
+            </div>
+
+            <div id="statusTitle" class="status-title">準備就緒 (Ready)</div>
+            <div id="statusDesc" class="status-text">尚未記錄劑量</div>
+            <div id="lastLogTime" class="status-text" style="font-size: 0.85rem; color: #666;"></div>
+
+            <button id="actionBtn" class="btn-main" onclick="logDose()">記錄劑量 (LOG)</button>
+
+            <div id="warningBox" class="warning-box">
+                ⚠️ <strong>高風險區</strong><br>現在補劑極可能導致過量或昏迷。<br>請等待至少 2 小時。
+            </div>
+
+            <button class="reset-btn" onclick="resetTimer()">重置 / 清除資料</button>
+        </div>
+
+        <footer>
+            資料僅存於本地裝置 (Local Storage) • 無雲端上傳<br>
+            Afterglow 僅為減害教育工具 • 使用仍存在風險
+        </footer>
+    </div>
+
+    <script>
+        // ===== Tab 切換 =====
+        function switchTab(tab) {
+            const tabs = document.querySelectorAll('.tab-btn');
+            const pages = document.querySelectorAll('.page');
+            
+            tabs.forEach(t => t.classList.remove('active'));
+            pages.forEach(p => p.classList.remove('active'));
+            
+            if (tab === 'hub') {
+                tabs[0].classList.add('active');
+                document.getElementById('hubPage').classList.add('active');
+            } else {
+                tabs[1].classList.add('active');
+                document.getElementById('timerPage').classList.add('active');
+            }
+        }
+
+        // ===== G-Timer 邏輯 =====
+        let startTime = null;
+        let timerInterval = null;
+
+        // 初始化：檢查是否有儲存的時間
+        window.onload = function() {
+            const savedTime = localStorage.getItem('g_timer_start');
+            if (savedTime) {
+                startTime = parseInt(savedTime);
+                startTicker();
+                updateUIState(Date.now() - startTime);
+                
+                // 顯示上次記錄時間
+                const lastLog = localStorage.getItem('g_last_log_display');
+                if (lastLog) {
+                    document.getElementById('lastLogTime').innerText = "上次記錄：" + lastLog;
+                }
+            }
+
+            // 註冊 Service Worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('sw.js');
+            }
+        };
+
+        function logDose() {
+            // 防誤觸確認
+            if(startTime && !confirm("確定要重新記錄新的劑量嗎？時間將重置。")) return;
+
+            startTime = Date.now();
+            localStorage.setItem('g_timer_start', startTime);
+            
+            const displayTime = new Date().toLocaleString('zh-TW');
+            localStorage.setItem('g_last_log_display', displayTime);
+            document.getElementById('lastLogTime').innerText = "上次記錄：" + displayTime;
+            
+            startTicker();
+        }
+
+        function startTicker() {
+            if (timerInterval) clearInterval(timerInterval);
+            document.getElementById('actionBtn').innerText = "重新計時 (RESET)";
+            
+            timerInterval = setInterval(() => {
+                const elapsed = Date.now() - startTime;
+                updateTimerDisplay(elapsed);
+                updateUIState(elapsed);
+            }, 1000);
+        }
+
+        function updateTimerDisplay(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const h = Math.floor(totalSeconds / 3600).toString().padStart(2, '0');
+            const m = Math.floor((totalSeconds % 3600) / 60).toString().padStart(2, '0');
+            const s = (totalSeconds % 60).toString().padStart(2, '0');
+            document.getElementById('timerDisplay').innerText = `${h}:${m}:${s}`;
+        }
+
+        function updateUIState(ms) {
+            const hours = ms / (1000 * 60 * 60);
+            const ball = document.getElementById('glowBall');
+            const title = document.getElementById('statusTitle');
+            const desc = document.getElementById('statusDesc');
+            const box = document.getElementById('warningBox');
+
+            // 更保守的時間閾值
+            if (hours < 2) { 
+                // 0 - 2小時：高峰 + 強烈堆疊風險
+                ball.className = "glow-ball-timer danger-mode";
+                title.innerText = "高峰作用期 (Do NOT Redose)";
+                title.style.color = "#FF0044";
+                desc.innerText = "嚴禁補劑，極高風險";
+                box.style.display = "block";
+                box.innerHTML = "⚠️ <strong>絕對不要補劑</strong><br>藥效仍在高峰，任何追加都可能導致昏迷或呼吸停止。";
+            } else if (hours < 3.5) {
+                // 2 - 3.5小時：警戒期（仍有殘留，堆疊仍危險）
+                ball.className = "glow-ball-timer caution-mode";
+                title.innerText = "代謝期 (High Caution)";
+                title.style.color = "#FFD700";
+                desc.innerText = "體內仍有殘留，補劑風險仍高";
+                box.style.display = "block";
+                box.innerHTML = "✋ <strong>強烈建議再等</strong><br>許多人需等待 3.5–4 小時以上才算安全間隔。請評估自身狀態。";
+            } else {
+                // 3.5小時以上：相對安全（但仍非零風險）
+                ball.className = "glow-ball-timer safe-mode";
+                title.innerText = "間隔已足夠 (Lower Risk)";
+                title.style.color = "#F3F4F5";
+                desc.innerText = "距上次已超過 3.5 小時，可重新評估（仍建議從低劑量開始）";
+                box.style.display = "none";
+            }
+        }
+
+        function resetTimer() {
+            if(!confirm("確定要清除所有紀錄並重置嗎？")) return;
+            localStorage.removeItem('g_timer_start');
+            localStorage.removeItem('g_last_log_display');
+            startTime = null;
+            clearInterval(timerInterval);
+            document.getElementById('timerDisplay').innerText = "00:00:00";
+            document.getElementById('statusTitle').innerText = "準備就緒 (Ready)";
+            document.getElementById('statusTitle').style.color = "#F3F4F5";
+            document.getElementById('statusDesc').innerText = "尚未記錄劑量";
+            document.getElementById('lastLogTime').innerText = "";
+            document.getElementById('actionBtn').innerText = "記錄劑量 (LOG)";
+            document.getElementById('glowBall').className = "glow-ball-timer safe-mode";
+            document.getElementById('warningBox').style.display = "none";
+        }
+    </script>
+</body>
+</html>
