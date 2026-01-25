@@ -590,3 +590,237 @@
   </script>
 </body>
 </html>
+
+  <script>
+    // Substance Data with Chinese Names and Categories
+    const substances = [
+      { id: 'alcohol', name: '酒精 (Alcohol)', category: 'depressant' },
+      { id: 'cannabis', name: '大麻 (Cannabis)', category: 'psychedelic' },
+      { id: 'mdma', name: '搖頭丸 (MDMA)', category: 'stimulant' },
+      { id: 'cocaine', name: '古柯鹼 (Cocaine)', category: 'stimulant' },
+      { id: 'ketamine', name: 'K他命 (Ketamine)', category: 'dissociative' },
+      { id: 'lsd', name: 'LSD (迷幻藥)', category: 'psychedelic' },
+      { id: 'mushrooms', name: '迷幻蘑菇 (Mushrooms)', category: 'psychedelic' },
+      { id: 'ghb', name: 'G水 (GHB/GBL)', category: 'depressant' },
+      { id: 'meth', name: '安非他命 (Methamphetamine)', category: 'stimulant' },
+      { id: 'opioids', name: '鴉片類 (Opioids)', category: 'depressant' },
+      { id: 'benzos', name: '鎮靜劑 (Benzodiazepines)', category: 'depressant' },
+      { id: 'caffeine', name: '咖啡因 (Caffeine)', category: 'stimulant' },
+      { id: 'poppers', name: 'RUSH (亞硝酸鹽)', category: 'other' },
+      { id: 'viagra', name: '威而鋼 (PDE5 抑制劑)', category: 'other' }
+    ];
+
+    // Interaction Matrix (Based on TripSit)
+    // Levels: low, caution, unsafe, deadly
+    const interactions = {
+      'alcohol+ghb': { level: 'deadly', desc: '極度危險！兩者皆為中樞神經抑制劑，混用極易導致失去意識、呼吸抑制甚至死亡。' },
+      'alcohol+benzos': { level: 'deadly', desc: '極度危險！強烈加成抑制作用，極易導致斷片、昏迷與呼吸停止。' },
+      'alcohol+opioids': { level: 'deadly', desc: '極度危險！雙重呼吸抑制作用，致死風險極高。' },
+      'alcohol+ketamine': { level: 'deadly', desc: '極度危險！增加嘔吐與窒息風險，且兩者皆影響運動協調，極易發生意外。' },
+      'alcohol+cocaine': { level: 'unsafe', desc: '危險！體內會生成古柯乙烯 (Cocaethylene)，毒性比單獨使用更強，大幅增加心臟負擔。' },
+      'alcohol+mdma': { level: 'unsafe', desc: '不建議。酒精會減弱 MDMA 效果並增加脫水與體溫過高風險，且加重隔日宿醉。' },
+      'alcohol+meth': { level: 'unsafe', desc: '危險！興奮劑會掩蓋酒精醉意，導致過量飲酒與酒精中毒風險大增。' },
+      'alcohol+poppers': { level: 'caution', desc: '需謹慎。兩者皆會降低血壓，可能導致暈眩或昏厥。' },
+      'alcohol+viagra': { level: 'caution', desc: '需謹慎。酒精會降低威而鋼效果，且兩者皆擴張血管，可能導致低血壓。' },
+
+      'ghb+benzos': { level: 'deadly', desc: '極度危險！雙重抑制劑，極易導致昏迷與呼吸停止。' },
+      'ghb+opioids': { level: 'deadly', desc: '極度危險！極高機率導致呼吸抑制與死亡。' },
+      'ghb+ketamine': { level: 'deadly', desc: '極度危險！兩者皆可能導致失去意識，混用極易造成嘔吐窒息。' },
+      'ghb+alcohol': { level: 'deadly', desc: '極度危險！兩者皆為中樞神經抑制劑，混用極易導致失去意識、呼吸抑制甚至死亡。' },
+
+      'mdma+ssri': { level: 'unsafe', desc: '效果減弱。SSRI 抗憂鬱藥會阻斷 MDMA 效果，且可能增加血清素症候群風險。' },
+      'mdma+maoi': { level: 'deadly', desc: '致命危險！MAOI 與 MDMA 混用極易引發致死性血清素症候群。' },
+      'mdma+cocaine': { level: 'unsafe', desc: '危險！雙重興奮劑，極度增加心臟負擔，且古柯鹼會減弱 MDMA 的同理心效果。' },
+      'mdma+meth': { level: 'unsafe', desc: '危險！強烈神經毒性，大幅增加心臟負擔與體溫過高風險。' },
+      'mdma+viagra': { level: 'caution', desc: '需謹慎。MDMA 會收縮血管，威而鋼擴張血管，增加心臟負擔（稱作「糖果翻轉」風險）。' },
+
+      'cocaine+viagra': { level: 'unsafe', desc: '危險！古柯鹼增加心率，威而鋼降低血壓，兩者混用大幅增加心臟病發風險。' },
+      'poppers+viagra': { level: 'deadly', desc: '致命危險！兩者皆強烈擴張血管，混用會導致血壓驟降，引發休克甚至死亡。' },
+      'meth+viagra': { level: 'unsafe', desc: '危險！安非他命增加心臟負擔，混用威而鋼可能引發心血管危象。' },
+
+      'ketamine+alcohol': { level: 'deadly', desc: '極度危險！增加嘔吐與窒息風險，且兩者皆影響運動協調，極易發生意外。' },
+      'ketamine+benzos': { level: 'unsafe', desc: '危險！增加鎮靜效果與呼吸抑制風險。' },
+      'ketamine+opioids': { level: 'deadly', desc: '極度危險！雙重呼吸抑制，致死風險高。' },
+
+      'lsd+cannabis': { level: 'caution', desc: '需謹慎。大麻可能極大增強 LSD 的迷幻效果，容易引發焦慮、恐慌或Bad Trip。' },
+      'lsd+mdma': { level: 'low', desc: 'Candy Flipping。協同效應強烈，建議減少兩者劑量，注意脫水。' },
+      'lsd+lithium': { level: 'deadly', desc: '致命危險！鋰鹽與 LSD 混用已知會導致癲癇與昏迷。' },
+
+      'mushrooms+cannabis': { level: 'caution', desc: '需謹慎。大麻可能增強迷幻體驗，容易引發焦慮或思緒混亂。' },
+      
+      'opioids+benzos': { level: 'deadly', desc: '極度危險！常見的致死性過量組合，強烈呼吸抑制。' },
+      'opioids+cocaine': { level: 'deadly', desc: 'Speedball。極度危險，容易因興奮劑消退後發生鴉片類過量。' }
+    };
+
+    // UI Elements
+    const dropdownBtn = document.getElementById('dropdown-btn');
+    const dropdownList = document.getElementById('dropdown-list');
+    const selectedTags = document.getElementById('selected-tags');
+    const resultCircle = document.getElementById('result-circle');
+    const resultBox = document.getElementById('result-box');
+    const resultTitle = document.getElementById('result-title');
+    const resultDesc = document.getElementById('result-desc');
+
+    let selectedSubstances = [];
+
+    // Initialize Dropdown
+    function initDropdown() {
+      substances.forEach(sub => {
+        const option = document.createElement('div');
+        option.className = 'ag-option';
+        option.textContent = sub.name;
+        option.onclick = () => addSubstance(sub);
+        dropdownList.appendChild(option);
+      });
+    }
+
+    // Toggle Dropdown
+    dropdownBtn.onclick = (e) => {
+      e.stopPropagation();
+      dropdownList.classList.toggle('show');
+    };
+
+    // Close Dropdown when clicking outside
+    document.addEventListener('click', () => {
+      dropdownList.classList.remove('show');
+    });
+
+    // Add Substance
+    function addSubstance(sub) {
+      if (selectedSubstances.length >= 4) {
+        alert('最多只能選擇 4 種物質');
+        return;
+      }
+      if (selectedSubstances.find(s => s.id === sub.id)) {
+        return; // Already selected
+      }
+
+      selectedSubstances.push(sub);
+      renderTags();
+      calculateRisk();
+    }
+
+    // Remove Substance
+    function removeSubstance(id) {
+      selectedSubstances = selectedSubstances.filter(s => s.id !== id);
+      renderTags();
+      calculateRisk();
+    }
+
+    // Render Tags
+    function renderTags() {
+      selectedTags.innerHTML = '';
+      selectedSubstances.forEach(sub => {
+        const tag = document.createElement('div');
+        tag.className = 'ag-tag';
+        tag.innerHTML = `
+          ${sub.name}
+          <span class="ag-tag-remove" onclick="removeSubstance('${sub.id}')">×</span>
+        `;
+        selectedTags.appendChild(tag);
+      });
+    }
+
+    // Calculate Risk
+    function calculateRisk() {
+      // Reset UI
+      document.body.className = 'ag-page'; // Reset body class if needed
+      resultCircle.parentElement.className = 'ag-result-container'; // Reset circle container
+      
+      if (selectedSubstances.length < 2) {
+        resultCircle.textContent = '?';
+        resultTitle.textContent = selectedSubstances.length === 0 ? '請選擇物質' : '請再選擇一種物質';
+        resultDesc.textContent = '至少需要兩種物質才能評估交互作用風險';
+        resultTitle.style.color = '#666';
+        return;
+      }
+
+      let highestRisk = 'low';
+      let riskMessages = [];
+
+      // Check pairs
+      for (let i = 0; i < selectedSubstances.length; i++) {
+        for (let j = i + 1; j < selectedSubstances.length; j++) {
+          const s1 = selectedSubstances[i].id;
+          const s2 = selectedSubstances[j].id;
+          
+          // Check both orders: s1+s2 and s2+s1
+          const key1 = `${s1}+${s2}`;
+          const key2 = `${s2}+${s1}`;
+          
+          const interaction = interactions[key1] || interactions[key2];
+
+          if (interaction) {
+            riskMessages.push(`${selectedSubstances[i].name.split(' ')[0]} + ${selectedSubstances[j].name.split(' ')[0]}: ${interaction.desc}`);
+            
+            // Update highest risk
+            if (riskLevelValue(interaction.level) > riskLevelValue(highestRisk)) {
+              highestRisk = interaction.level;
+            }
+          } else {
+            // Default if no specific interaction found but categories match? 
+            // For now, just note unknown/low synergy
+          }
+        }
+      }
+
+      // Update UI based on highest risk
+      updateResultUI(highestRisk, riskMessages);
+    }
+
+    function riskLevelValue(level) {
+      const levels = { 'low': 1, 'caution': 2, 'unsafe': 3, 'deadly': 4 };
+      return levels[level] || 0;
+    }
+
+    function updateResultUI(level, messages) {
+      // Remove old classes
+      const container = document.getElementById('result-container');
+      container.classList.remove('risk-low', 'risk-medium', 'risk-high', 'risk-deadly');
+
+      let titleText = '';
+      let circleText = '';
+      let color = '';
+
+      switch(level) {
+        case 'low':
+          container.classList.add('risk-low');
+          titleText = '低風險 / 協同效應';
+          circleText = '低';
+          color = '#00ff88';
+          break;
+        case 'caution':
+          container.classList.add('risk-medium');
+          titleText = '需謹慎 (Caution)';
+          circleText = '慎';
+          color = '#ffc800';
+          break;
+        case 'unsafe':
+          container.classList.add('risk-high');
+          titleText = '不安全 (Unsafe)';
+          circleText = '危';
+          color = '#ff4444';
+          break;
+        case 'deadly':
+          container.classList.add('risk-deadly');
+          titleText = '致命危險 (Deadly)';
+          circleText = '凶';
+          color = '#ff0000';
+          break;
+      }
+
+      resultCircle.textContent = circleText;
+      resultTitle.textContent = titleText;
+      resultTitle.style.color = color;
+
+      if (messages.length > 0) {
+        resultDesc.innerHTML = messages.join('<br><br>');
+      } else {
+        resultDesc.textContent = '目前資料庫中無此組合的特定高風險警示，但仍請保持謹慎，少量測試。';
+      }
+    }
+
+    // Initialize
+    initDropdown();
+
+  </script>
