@@ -63,88 +63,54 @@
       font-size: 15px;
     }
 
-    /* Dropdown & Selection */
-    .ag-select-wrapper {
-      position: relative;
-      margin-bottom: 20px;
-    }
-
-    .ag-select-btn {
-      width: 100%;
-      padding: 16px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 30px;
-      color: white;
-      font-size: 16px;
-      text-align: left;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .ag-select-dropdown {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      background: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 12px;
-      margin-top: 8px;
-      z-index: 100;
-      display: none;
-      max-height: 300px;
-      overflow-y: auto;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    }
-
-    .ag-select-dropdown.show {
-      display: block;
-    }
-
-    .ag-option {
-      padding: 12px 20px;
-      color: #ddd;
-      cursor: pointer;
-      border-bottom: 1px solid #222;
-      transition: background 0.2s;
-    }
-
-    .ag-option:hover {
-      background: rgba(255, 107, 217, 0.1);
-      color: #ff6bd9;
-    }
-
-    .ag-selected-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+    /* Neon Capsule Grid */
+    .ag-capsule-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+      gap: 12px;
       margin-bottom: 40px;
-      min-height: 40px;
     }
 
-    .ag-tag {
-      background: #ff6bd9;
-      color: black;
-      padding: 8px 16px;
-      border-radius: 20px;
+    .ag-capsule-btn {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 107, 217, 0.3);
+      border-radius: 50px;
+      padding: 12px 16px;
+      color: #ddd;
       font-size: 14px;
-      font-weight: bold;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
       display: flex;
       align-items: center;
-      gap: 8px;
-      animation: fadeIn 0.3s ease;
+      justify-content: center;
+      min-height: 48px;
+      box-shadow: 0 0 5px rgba(255, 107, 217, 0.1);
     }
 
-    .ag-tag-remove {
-      cursor: pointer;
-      font-size: 18px;
-      line-height: 1;
-      opacity: 0.6;
+    .ag-capsule-btn:hover {
+      border-color: rgba(255, 107, 217, 0.8);
+      box-shadow: 0 0 10px rgba(255, 107, 217, 0.3);
+      transform: translateY(-2px);
     }
-    .ag-tag-remove:hover { opacity: 1; }
+
+    .ag-capsule-btn.active {
+      background: rgba(255, 107, 217, 0.2);
+      border-color: #ff6bd9;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(255, 107, 217, 0.6), inset 0 0 10px rgba(255, 107, 217, 0.2);
+      font-weight: bold;
+      text-shadow: 0 0 5px rgba(255, 107, 217, 0.8);
+    }
+
+    .ag-capsule-btn.disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+      border-color: #444;
+      box-shadow: none;
+    }
 
     /* Result Circle */
     .ag-result-container {
@@ -344,20 +310,9 @@
 
     <div class="ag-section-label">選擇您使用或考慮使用的物質（最多 4 種）</div>
 
-    <!-- Dropdown -->
-    <div class="ag-select-wrapper">
-      <div class="ag-select-btn" id="dropdown-btn">
-        -- 選擇一種物質 --
-        <span>▼</span>
-      </div>
-      <div class="ag-select-dropdown" id="dropdown-list">
-        <!-- Options will be populated by JS -->
-      </div>
-    </div>
-
-    <!-- Selected Tags -->
-    <div class="ag-selected-tags" id="selected-tags">
-      <!-- Tags will appear here -->
+    <!-- Neon Capsule Grid -->
+    <div class="ag-capsule-grid" id="capsule-grid">
+      <!-- Buttons will be populated by JS -->
     </div>
 
     <!-- Result Display -->
@@ -664,9 +619,7 @@
     };
 
     // UI Elements
-    const dropdownBtn = document.getElementById('dropdown-btn');
-    const dropdownList = document.getElementById('dropdown-list');
-    const selectedTags = document.getElementById('selected-tags');
+    const capsuleGrid = document.getElementById('capsule-grid');
     const resultCircle = document.getElementById('result-circle');
     const resultBox = document.getElementById('result-box');
     const resultTitle = document.getElementById('result-title');
@@ -674,66 +627,42 @@
 
     let selectedSubstances = [];
 
-    // Initialize Dropdown
-    function initDropdown() {
+    // Initialize Capsule Grid
+    function initCapsuleGrid() {
+      capsuleGrid.innerHTML = '';
       substances.forEach(sub => {
-        const option = document.createElement('div');
-        option.className = 'ag-option';
-        option.textContent = sub.name;
-        option.onclick = () => addSubstance(sub);
-        dropdownList.appendChild(option);
+        const btn = document.createElement('div');
+        btn.className = 'ag-capsule-btn';
+        btn.textContent = sub.name.split(' ')[0]; // Use short name for button
+        btn.dataset.id = sub.id;
+        btn.onclick = () => toggleSubstance(sub, btn);
+        capsuleGrid.appendChild(btn);
       });
     }
 
-    // Toggle Dropdown
-    dropdownBtn.onclick = (e) => {
-      e.stopPropagation();
-      dropdownList.classList.toggle('show');
-    };
-
-    // Close Dropdown when clicking outside
-    document.addEventListener('click', () => {
-      dropdownList.classList.remove('show');
-    });
-
-    // Add Substance
-    function addSubstance(sub) {
-      if (selectedSubstances.length >= 4) {
-        alert('最多只能選擇 4 種物質');
-        return;
+    // Toggle Substance Selection
+    function toggleSubstance(sub, btn) {
+      const index = selectedSubstances.findIndex(s => s.id === sub.id);
+      
+      if (index > -1) {
+        // Remove
+        selectedSubstances.splice(index, 1);
+        btn.classList.remove('active');
+      } else {
+        // Add
+        if (selectedSubstances.length >= 4) {
+          alert('最多只能選擇 4 種物質');
+          return;
+        }
+        selectedSubstances.push(sub);
+        btn.classList.add('active');
       }
-      if (selectedSubstances.find(s => s.id === sub.id)) {
-        return; // Already selected
-      }
-
-      selectedSubstances.push(sub);
-      renderTags();
+      
       calculateRisk();
     }
 
-    // Remove Substance
-    function removeSubstance(id) {
-      selectedSubstances = selectedSubstances.filter(s => s.id !== id);
-      renderTags();
-      calculateRisk();
-    }
-
-    // Render Tags
-    function renderTags() {
-      selectedTags.innerHTML = '';
-      selectedSubstances.forEach(sub => {
-        const tag = document.createElement('div');
-        tag.className = 'ag-tag';
-        tag.innerHTML = `
-          ${sub.name}
-          <span class="ag-tag-remove" onclick="removeSubstance('${sub.id}')">×</span>
-        `;
-        selectedTags.appendChild(tag);
-      });
-    }
-
-    // Calculate Risk
-    function calculateRisk() {
+    // Initialize
+    initCapsuleGrid();lateRisk() {
       // Reset UI
       document.body.className = 'ag-page'; // Reset body class if needed
       resultCircle.parentElement.className = 'ag-result-container'; // Reset circle container
@@ -832,6 +761,6 @@
     }
 
     // Initialize
-    initDropdown();
+    initCapsuleGrid();
 
   </script>
