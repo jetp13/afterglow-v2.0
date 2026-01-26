@@ -112,67 +112,93 @@
       box-shadow: none;
     }
 
-    /* Result Circle */
+    /* Result Breathing Ball */
     .ag-result-container {
       display: flex;
       justify-content: center;
       margin-bottom: 40px;
-      height: 200px;
+      height: 220px;
       align-items: center;
       position: relative;
     }
 
     .ag-result-circle {
-      width: 120px;
-      height: 120px;
+      width: 160px;
+      height: 160px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.05);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 40px;
-      color: #666;
+      font-size: 20px;
+      font-weight: bold;
+      color: rgba(255,255,255,0.8);
       transition: all 0.5s ease;
-      position: relative;
+      
+      /* Default Breathing State */
+      background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+      box-shadow: 0 0 30px rgba(255,255,255,0.1);
+      animation: breathe-idle 4s infinite ease-in-out;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255,255,255,0.1);
     }
 
-    .ag-result-circle::after {
-      content: '';
-      position: absolute;
-      top: -10px; left: -10px; right: -10px; bottom: -10px;
-      border-radius: 50%;
-      background: transparent;
-      z-index: -1;
-      transition: all 0.5s ease;
+    @keyframes breathe-idle {
+      0%, 100% { transform: scale(1); opacity: 0.8; }
+      50% { transform: scale(1.05); opacity: 0.6; }
     }
 
-    /* Risk Levels */
+    /* Risk Levels Animation */
     .risk-low .ag-result-circle {
-      background: rgba(0, 255, 136, 0.1);
-      color: #00ff88;
-      box-shadow: 0 0 30px rgba(0, 255, 136, 0.2);
-    }
-    .risk-medium .ag-result-circle {
-      background: rgba(255, 200, 0, 0.1);
-      color: #ffc800;
-      box-shadow: 0 0 30px rgba(255, 200, 0, 0.2);
-    }
-    .risk-high .ag-result-circle {
-      background: rgba(255, 68, 68, 0.1);
-      color: #ff4444;
-      box-shadow: 0 0 30px rgba(255, 68, 68, 0.3);
-    }
-    .risk-deadly .ag-result-circle {
-      background: rgba(139, 0, 0, 0.2);
-      color: #ff0000;
-      box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
-      animation: pulse-red 1.5s infinite;
+      background: radial-gradient(circle, rgba(0, 255, 157, 0.2) 0%, rgba(0, 255, 157, 0) 70%);
+      box-shadow: 0 0 40px rgba(0, 255, 157, 0.3);
+      border-color: rgba(0, 255, 157, 0.3);
+      color: #00ff9d;
+      animation: breathe-calm 4s infinite ease-in-out;
     }
 
-    @keyframes pulse-red {
-      0% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.4); }
-      50% { box-shadow: 0 0 60px rgba(255, 0, 0, 0.7); }
-      100% { box-shadow: 0 0 30px rgba(255, 0, 0, 0.4); }
+    .risk-medium .ag-result-circle {
+      background: radial-gradient(circle, rgba(255, 213, 0, 0.2) 0%, rgba(255, 213, 0, 0) 70%);
+      box-shadow: 0 0 40px rgba(255, 213, 0, 0.3);
+      border-color: rgba(255, 213, 0, 0.3);
+      color: #ffd500;
+      animation: breathe-caution 3s infinite ease-in-out;
+    }
+
+    .risk-high .ag-result-circle {
+      background: radial-gradient(circle, rgba(255, 107, 0, 0.2) 0%, rgba(255, 107, 0, 0) 70%);
+      box-shadow: 0 0 50px rgba(255, 107, 0, 0.4);
+      border-color: rgba(255, 107, 0, 0.4);
+      color: #ff6b00;
+      animation: breathe-unsafe 2s infinite ease-in-out;
+    }
+
+    .risk-deadly .ag-result-circle {
+      background: radial-gradient(circle, rgba(255, 0, 60, 0.3) 0%, rgba(255, 0, 60, 0) 70%);
+      box-shadow: 0 0 60px rgba(255, 0, 60, 0.6);
+      border-color: rgba(255, 0, 60, 0.6);
+      color: #ff003c;
+      animation: pulse-deadly 0.8s infinite ease-in-out;
+    }
+
+    @keyframes breathe-calm {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(0, 255, 157, 0.3); }
+      50% { transform: scale(1.1); box-shadow: 0 0 60px rgba(0, 255, 157, 0.5); }
+    }
+
+    @keyframes breathe-caution {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(255, 213, 0, 0.3); }
+      50% { transform: scale(1.15); box-shadow: 0 0 60px rgba(255, 213, 0, 0.5); }
+    }
+
+    @keyframes breathe-unsafe {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 50px rgba(255, 107, 0, 0.4); }
+      50% { transform: scale(1.2); box-shadow: 0 0 80px rgba(255, 107, 0, 0.6); }
+    }
+
+    @keyframes pulse-deadly {
+      0% { transform: scale(1); box-shadow: 0 0 60px rgba(255, 0, 60, 0.6); }
+      50% { transform: scale(1.3); box-shadow: 0 0 100px rgba(255, 0, 60, 0.9); }
+      100% { transform: scale(1); box-shadow: 0 0 60px rgba(255, 0, 60, 0.6); }
     }
 
     .ag-result-text-box {
