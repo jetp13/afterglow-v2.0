@@ -381,3 +381,40 @@ body {
     font-size: 14px;
   }
 }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   H. Wild Header Logo (Internal Pages)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ag-wild-header {
+  position: relative;
+  width: 100%;
+  height: 80px; /* Reduced height for internal pages */
+  overflow: visible;
+  margin-bottom: 20px;
+  z-index: 100;
+}
+
+.ag-wild-logo {
+  position: absolute;
+  top: -10px;
+  left: -20px; /* Bleed out left */
+  width: 180px; /* Adjust size as needed */
+  height: auto;
+  transform: rotate(-5deg);
+  opacity: 0.9;
+  pointer-events: none; /* Let clicks pass through if needed */
+}
+
+/* Mobile adjustments for Wild Header */
+@media (max-width: 480px) {
+  .ag-wild-header {
+    height: 60px;
+    margin-bottom: 10px;
+  }
+  
+  .ag-wild-logo {
+    width: 140px;
+    top: -5px;
+    left: -15px;
+  }
+}
