@@ -607,7 +607,8 @@
       { id: 'benzos', name: '鎮靜劑 (Benzodiazepines)', category: 'depressant' },
       { id: 'caffeine', name: '咖啡因 (Caffeine)', category: 'stimulant' },
       { id: 'poppers', name: 'RUSH (亞硝酸鹽)', category: 'other' },
-      { id: 'viagra', name: '威而鋼 (PDE5 抑制劑)', category: 'other' }
+      { id: 'viagra', name: '威而鋼 (PDE5 抑制劑)', category: 'other' },
+      { id: 'etomidate', name: '依托 (依托咪酯/Etomidate)', category: 'depressant' }
     ];
 
     // Interaction Matrix (Based on TripSit)
@@ -649,7 +650,17 @@
       'mushrooms+cannabis': { level: 'caution', desc: '需謹慎。大麻可能增強迷幻體驗，容易引發焦慮或思緒混亂。' },
       
       'opioids+benzos': { level: 'deadly', desc: '極度危險！常見的致死性過量組合，強烈呼吸抑制。' },
-      'opioids+cocaine': { level: 'deadly', desc: 'Speedball。極度危險，容易因興奮劑消退後發生鴉片類過量。' }
+      'opioids+cocaine': { level: 'deadly', desc: 'Speedball。極度危險，容易因興奮劑消退後發生鴉片類過量。' },
+
+      // Etomidate Interactions
+      'alcohol+etomidate': { level: 'deadly', desc: '極度危險！兩者皆為強烈中樞神經抑制劑，混用極易導致呼吸停止與死亡。' },
+      'benzos+etomidate': { level: 'deadly', desc: '極度危險！強烈加成抑制作用，極易導致昏迷與呼吸衰竭。' },
+      'opioids+etomidate': { level: 'deadly', desc: '極度危險！雙重呼吸抑制，致死風險極高。' },
+      'ghb+etomidate': { level: 'deadly', desc: '極度危險！極易導致失去意識、嘔吐窒息與死亡。' },
+      'ketamine+etomidate': { level: 'deadly', desc: '極度危險！深層麻醉風險，可能導致呼吸道阻塞與窒息。' },
+      'cocaine+etomidate': { level: 'unsafe', desc: '危險！興奮劑會掩蓋麻醉效果，導致用量過度，且增加心血管崩潰風險。' },
+      'meth+etomidate': { level: 'unsafe', desc: '危險！興奮劑會掩蓋麻醉效果，導致用量過度，且增加心血管崩潰風險。' },
+      'mdma+etomidate': { level: 'unsafe', desc: '危險！增加心臟負擔，且可能導致不可預期的意識喪失。' }
     };
 
     // UI Elements
