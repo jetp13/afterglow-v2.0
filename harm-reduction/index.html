@@ -225,7 +225,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 80vh;
+            min-height: 100vh;
             padding: 20px;
             text-align: center;
         }
@@ -233,19 +233,20 @@
         /* 呼吸球（Timer 版本 - 動態 + 文字固定） */
         .glow-ball-timer-wrapper {
             position: relative;
-            width: 220px;
-            height: 220px;
-            margin: 0 auto 30px;
+            width: 280px;
+            height: 280px;
+            margin: 0 auto 40px;
         }
 
         .glow-ball-timer {
             width: 100%;
             height: 100%;
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(255, 45, 149, 0.2) 0%, rgba(0, 0, 0, 0) 70%);
-            border: 2px solid transparent;
+            background: radial-gradient(circle, rgba(255, 45, 149, 0.15) 0%, rgba(255, 45, 149, 0.05) 50%, rgba(0, 0, 0, 0) 70%);
+            border: 1.5px solid rgba(255, 45, 149, 0.3);
             transition: all 0.5s ease;
             animation: breatheTimer 6s infinite ease-in-out;
+            filter: blur(1px);
         }
 
         /* 關鍵：文字層獨立，不受動畫影響 */
@@ -258,31 +259,35 @@
         }
 
         .timer-display {
-            font-size: 3rem;
+            font-size: 3.5rem;
             font-weight: 700;
             font-variant-numeric: tabular-nums;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             color: var(--text-main);
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
         }
 
         @keyframes breatheTimer {
-            0%, 100% { transform: scale(0.95); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; }
+            0%, 100% { transform: scale(0.92); opacity: 0.6; }
+            50% { transform: scale(1.08); opacity: 0.9; }
         }
 
         /* 狀態顏色 */
         .danger-mode {
-            border-color: var(--accent-red);
-            box-shadow: 0 0 30px rgba(255, 0, 68, 0.3);
+            border-color: rgba(255, 0, 68, 0.4);
+            background: radial-gradient(circle, rgba(255, 0, 68, 0.15) 0%, rgba(255, 0, 68, 0.05) 50%, rgba(0, 0, 0, 0) 70%);
+            box-shadow: 0 0 40px rgba(255, 0, 68, 0.2);
         }
 
         .caution-mode {
-            border-color: var(--accent-gold);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.2);
+            border-color: rgba(255, 215, 0, 0.4);
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.12) 0%, rgba(255, 215, 0, 0.04) 50%, rgba(0, 0, 0, 0) 70%);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
         }
 
         .safe-mode {
-            border-color: var(--text-main);
+            border-color: rgba(243, 244, 245, 0.3);
+            background: radial-gradient(circle, rgba(243, 244, 245, 0.08) 0%, rgba(243, 244, 245, 0.02) 50%, rgba(0, 0, 0, 0) 70%);
         }
 
         .status-title {
