@@ -315,11 +315,9 @@
 <body class="ag-page">
   
   <!-- Back Button -->
-  <a href="/support-main.html" class="ag-back-button" style="position: fixed; top: 20px; left: 20px; color: #666; text-decoration: none; font-size: 14px; z-index: 10; padding: 8px 12px; background: rgba(0,0,0,0.5); border-radius: 20px; backdrop-filter: blur(5px);">
-    ← 返回
-  </a>
+  <a href="/support-main.html" class="ag-back-button ag-back-button-fixed" aria-label="返回"></a>
 
-  <div class="ag-container" style="max-width: 600px; margin: 0 auto; padding: 80px 20px;">
+  <div class="ag-container ag-container-sm">
     
     <!-- Wild Header -->
     <div class="ag-wild-header">
@@ -327,7 +325,7 @@
     </div>
     
     <div class="ag-risk-header">
-      <h1 class="ag-risk-title" style="display:none;">風險計算器</h1> <!-- Hidden for SEO/Structure but visually replaced -->
+      <h1 class="ag-risk-title ag-visually-hidden">風險計算器</h1>
     </div>
 
     <!-- Harm Reduction Disclaimer -->
@@ -388,18 +386,18 @@
     <!-- Need Help -->
     <div class="ag-help-section">
       <div class="ag-help-title">需要協助？</div>
-      <p style="color: #aaa; font-size: 13px; margin-bottom: 15px;">如果您或朋友正面臨物質使用相關問題，以下資源可提供協助：</p>
+      <p class="ag-text-gray ag-text-sm ag-mb-15">如果您或朋友正面臨物質使用相關問題，以下資源可提供協助：</p>
       <div class="ag-help-row">
         <span>反毒諮詢專線</span>
-        <span style="color: white; font-weight: bold;">0800-770-885</span>
+        <span class="ag-text-white ag-font-bold">0800-770-885</span>
       </div>
       <div class="ag-help-row">
         <span>生命線</span>
-        <span style="color: white; font-weight: bold;">1995</span>
+        <span class="ag-text-white ag-font-bold">1995</span>
       </div>
       <div class="ag-help-row">
         <span>張老師</span>
-        <span style="color: white; font-weight: bold;">1980</span>
+        <span class="ag-text-white ag-font-bold">1980</span>
       </div>
     </div>
 
@@ -448,7 +446,7 @@
     substances.forEach(sub => {
       const div = document.createElement('div');
       div.className = 'ag-option';
-      div.innerHTML = `<div>${sub.name}</div><div style="font-size:12px;color:#666;">${sub.sub}</div>`;
+      div.innerHTML = `<div>${sub.name}</div><div class="ag-text-xs ag-text-dark-gray">${sub.sub}</div>`;
       div.onclick = () => addSubstance(sub.id);
       dropdownList.appendChild(div);
     });

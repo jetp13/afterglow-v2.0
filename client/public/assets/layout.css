@@ -418,3 +418,117 @@ body {
     left: -15px;
   }
 }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   I. SSOT Utilities & Mobile Safety (Refactored)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* 1. Mobile Safety & Scroll Locking */
+body {
+  overflow-x: hidden; /* Prevent horizontal scroll from wild logo */
+  width: 100%;
+  position: relative;
+}
+
+/* Safe Area Insets for Mobile */
+.ag-page {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* 2. Utility Classes to Replace Inline Styles */
+
+/* Visually Hidden (Accessible) */
+.ag-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Text Colors */
+.ag-text-cyan { color: #00e5ff; }
+.ag-text-magenta { color: #ff6bd9; }
+.ag-text-purple { color: #bd00ff; }
+.ag-text-white { color: white; }
+.ag-text-gray { color: #aaa; }
+.ag-text-dark-gray { color: #666; }
+.ag-text-red { color: #ff4444; }
+
+/* Font Weights */
+.ag-font-bold { font-weight: bold; }
+
+/* Spacing */
+.ag-mt-10 { margin-top: 10px; }
+.ag-mt-20 { margin-top: 20px; }
+.ag-mt-40 { margin-top: 40px; }
+.ag-mb-0 { margin-bottom: 0; }
+.ag-mb-15 { margin-bottom: 15px; }
+.ag-mb-20 { margin-bottom: 20px; }
+.ag-mb-40 { margin-bottom: 40px; }
+.ag-pl-20 { padding-left: 20px; }
+
+/* Font Sizes */
+.ag-text-xs { font-size: 12px; }
+.ag-text-sm { font-size: 13px; }
+
+/* Links */
+.ag-link-clean {
+  text-decoration: none;
+  color: inherit;
+  transition: opacity 0.2s;
+}
+.ag-link-clean:hover { opacity: 0.8; }
+
+.ag-link-purple { color: #bd00ff; text-decoration: none; }
+.ag-link-purple:hover { text-decoration: underline; }
+
+/* Containers */
+.ag-container-sm {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 60px 16px 80px;
+}
+
+.ag-container-md {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 60px 16px 100px;
+}
+
+/* Specific Component Fixes */
+.ag-back-button-fixed {
+  position: fixed;
+  top: 24px; /* Adjusted for safe area if needed, but usually below status bar */
+  left: 24px;
+  z-index: 9999;
+  /* Style inheritance from .ag-back-button is assumed, 
+     but inline styles had specific overrides we need to standardize */
+  color: rgba(255, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(5px);
+}
+
+/* Disabled State */
+.ag-disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Grid Spans */
+.ag-col-span-full {
+  grid-column: 1 / -1;
+}
+
+/* Logo Sizing Utilities */
+.ag-logo-sm {
+  width: 200px;
+  margin: 0 auto;
+}
