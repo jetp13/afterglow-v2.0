@@ -356,224 +356,33 @@
 
     <!-- Important Warning -->
     <div class="ag-warning-box">
-      <div class="ag-warning-title">⚠️ 重要聲明</div>
+      <div class="ag-warning-title">⚠️ 重要免責聲明</div>
       <ul class="ag-warning-list">
-        <li>此計算器基於現有研究與使用者回報，但每個人的體質與反應不同</li>
-        <li>風險評估無法涵蓋所有可能情況，實際風險可能更高</li>
-        <li>即使顯示「低風險」，仍可能發生不良反應或意外</li>
-        <li>如出現異常症狀（呼吸困難、胸痛、意識模糊等），請立即撥打 119</li>
-        <li>本工具不鼓勵物質使用，僅提供減害資訊</li>
+        <li>此工具僅供參考，無法涵蓋所有個體差異與潛在風險。</li>
+        <li>「低風險」不代表「絕對安全」。</li>
+        <li>若出現嚴重不適，請立即尋求醫療協助。</li>
       </ul>
     </div>
 
-    <!-- How to use -->
+    <!-- Info Cards -->
     <div class="ag-info-card">
-      <h3>如何使用此工具</h3>
-      <p>從下拉選單中選擇您使用或考慮使用的物質。系統會根據 TripSit 的藥物混用風險表，評估不同物質組合的風險等級，並說明可能的危險原因。您可以選擇最多 4 種物質進行評估。</p>
+      <h3>關於交互作用</h3>
+      <p>不同物質混合使用（混藥）可能產生不可預期的加成效果。某些組合（如中樞神經抑制劑混用）具有極高的致死風險。</p>
     </div>
 
-    <!-- Resources -->
     <div class="ag-info-card">
-      <h3>資料來源與延伸閱讀</h3>
+      <h3>相關資源</h3>
       <div class="ag-link-list">
-        <a href="https://wiki.tripsit.me/wiki/Drug_combinations" target="_blank" class="ag-link-item">↗ TripSit - Guide to Drug Combinations</a>
-        <a href="https://tripsit.me/" target="_blank" class="ag-link-item">↗ TripSit - Drug Information & Harm Reduction</a>
-        <a href="https://psychonautwiki.org/" target="_blank" class="ag-link-item">↗ PsychonautWiki - 物質資訊百科</a>
-        <a href="https://www.erowid.org/" target="_blank" class="ag-link-item">↗ Erowid - 經驗報告與研究資料</a>
-      </div>
-    </div>
-
-    <!-- Need Help -->
-    <div class="ag-help-section">
-      <div class="ag-help-title">需要協助？</div>
-      <p class="ag-text-gray ag-text-sm ag-mb-15">如果您或朋友正面臨物質使用相關問題，以下資源可提供協助：</p>
-      <div class="ag-help-row">
-        <span>反毒諮詢專線</span>
-        <span class="ag-text-white ag-font-bold">0800-770-885</span>
-      </div>
-      <div class="ag-help-row">
-        <span>生命線</span>
-        <span class="ag-text-white ag-font-bold">1995</span>
-      </div>
-      <div class="ag-help-row">
-        <span>張老師</span>
-        <span class="ag-text-white ag-font-bold">1980</span>
+        <a href="https://tripsit.me/combinations/" target="_blank" class="ag-link-item">
+          <span>🔗</span> TripSit 交互作用表 (英文)
+        </a>
+        <a href="https://psychonautwiki.org/" target="_blank" class="ag-link-item">
+          <span>🔗</span> PsychonautWiki (英文)
+        </a>
       </div>
     </div>
 
   </div>
-
-  <script>
-    // Substance Data
-    const substances = [
-      { id: 'ice', name: 'Ice (甲基苯丙胺)', sub: '(Methamphetamine)' },
-      { id: 'mdma', name: 'MDMA (搖頭丸)', sub: '(MDMA)' },
-      { id: 'ghb', name: 'G水 (GHB/GBL)', sub: '(GHB/GBL)' },
-      { id: 'ket', name: 'K (K他命)', sub: '(Ketamine)' },
-      { id: 'viagra', name: '威而鋼 (威)', sub: '(Viagra)' },
-      { id: 'rush', name: 'Rush (亞硝酸鹽)', sub: '(Poppers)' },
-      { id: 'alcohol', name: '酒精', sub: '(Alcohol)' }
-    ];
-
-    // Risk Interactions Database (Simplified based on TripSit)
-    // Levels: low, medium, high, deadly
-    const interactions = [
-      // Deadly
-      { pair: ['viagra', 'rush'], level: 'deadly', title: '致命風險', desc: '極度危險！兩者皆為血管擴張劑，混用會導致血壓驟降、休克甚至死亡。' },
-      { pair: ['ghb', 'alcohol'], level: 'deadly', title: '致命風險', desc: '極度危險！兩者皆為中樞神經抑制劑，混用極易導致意識喪失、呼吸停止。' },
-      { pair: ['ket', 'alcohol'], level: 'deadly', title: '致命風險', desc: '極度危險！兩者皆為抑制劑，混用會導致嚴重的運動失調、嘔吐（可能窒息）及呼吸抑制。' },
-      { pair: ['ghb', 'ket'], level: 'deadly', title: '致命風險', desc: '極度危險！雙重抑制劑，極易導致失去意識與呼吸衰竭。' },
-      
-      // High Risk
-      { pair: ['mdma', 'ice'], level: 'high', title: '高風險', desc: '危險！兩者皆為強效興奮劑，混用會對心臟造成極大負擔，增加神經毒性風險。' },
-      { pair: ['mdma', 'viagra'], level: 'high', title: '高風險', desc: '危險！MDMA 會增加心臟負荷，威而鋼影響血壓，混用可能導致心臟問題。' },
-      { pair: ['ice', 'viagra'], level: 'high', title: '高風險', desc: '危險！興奮劑與血管擴張劑混用，對心血管系統造成極大壓力。' },
-      { pair: ['ice', 'rush'], level: 'high', title: '高風險', desc: '危險！對心臟負荷極大，可能導致心律不整或暈厥。' },
-      
-      // Medium / Unsafe
-      { pair: ['mdma', 'alcohol'], level: 'medium', title: '不安全', desc: '酒精會減弱 MDMA 效果並增加脫水風險，且加重宿醉與神經毒性。' },
-      { pair: ['ice', 'alcohol'], level: 'medium', title: '不安全', desc: '酒精會掩蓋興奮劑效果，導致過量飲酒或過量使用藥物（OD）的風險增加。' },
-      { pair: ['ket', 'mdma'], level: 'medium', title: '需謹慎', desc: '雖然常見（Kitty Flip），但會增強彼此效果，容易導致意外受傷或過度解離。' },
-      { pair: ['ghb', 'mdma'], level: 'medium', title: '需謹慎', desc: 'GHB 劑量極難控制，混用時容易因興奮劑退去而突然陷入昏迷（G-out）。' },
-    ];
-
-    let selected = [];
-
-    // Init Dropdown
-    const dropdownList = document.getElementById('dropdown-list');
-    const dropdownBtn = document.getElementById('dropdown-btn');
-    
-    substances.forEach(sub => {
-      const div = document.createElement('div');
-      div.className = 'ag-option';
-      div.innerHTML = `<div>${sub.name}</div><div class="ag-text-xs ag-text-dark-gray">${sub.sub}</div>`;
-      div.onclick = () => addSubstance(sub.id);
-      dropdownList.appendChild(div);
-    });
-
-    dropdownBtn.onclick = () => {
-      dropdownList.classList.toggle('show');
-    };
-
-    // Close dropdown when clicking outside
-    window.onclick = (e) => {
-      if (!e.target.closest('.ag-select-wrapper')) {
-        dropdownList.classList.remove('show');
-      }
-    };
-
-    function addSubstance(id) {
-      if (selected.length >= 4) {
-        alert('最多只能選擇 4 種物質');
-        return;
-      }
-      if (selected.includes(id)) return;
-
-      selected.push(id);
-      renderTags();
-      calculateRisk();
-      dropdownList.classList.remove('show');
-    }
-
-    function removeSubstance(id) {
-      selected = selected.filter(s => s !== id);
-      renderTags();
-      calculateRisk();
-    }
-
-    function renderTags() {
-      const container = document.getElementById('selected-tags');
-      container.innerHTML = '';
-      selected.forEach(id => {
-        const sub = substances.find(s => s.id === id);
-        const tag = document.createElement('div');
-        tag.className = 'ag-tag';
-        tag.innerHTML = `
-          ${sub.name.split(' ')[0]}
-          <span class="ag-tag-remove" onclick="removeSubstance('${id}')">×</span>
-        `;
-        container.appendChild(tag);
-      });
-    }
-
-    function calculateRisk() {
-      const resultCircle = document.getElementById('result-circle');
-      const resultTitle = document.getElementById('result-title');
-      const resultDesc = document.getElementById('result-desc');
-      const resultContainer = document.getElementById('result-container');
-
-      // Reset classes
-      resultContainer.className = 'ag-result-container';
-      
-      if (selected.length === 0) {
-        resultCircle.textContent = '?';
-        resultTitle.textContent = '請選擇物質';
-        resultTitle.style.color = '#666';
-        resultDesc.textContent = '選擇您使用或考慮使用的物質以評估風險';
-        return;
-      }
-
-      if (selected.length === 1) {
-        resultCircle.textContent = 'ℹ️';
-        resultContainer.classList.add('risk-low');
-        resultTitle.textContent = '單一物質';
-        resultTitle.style.color = '#00ff88';
-        resultDesc.textContent = '目前僅選擇一種物質。請注意該物質本身的劑量與風險。';
-        return;
-      }
-
-      // Find highest risk
-      let highestRisk = { level: 'low', title: '低風險交互', desc: '目前資料庫中未顯示這幾種物質有嚴重交互作用，但仍需注意個別風險。', score: 0 };
-
-      // Check pairs
-      for (let i = 0; i < selected.length; i++) {
-        for (let j = i + 1; j < selected.length; j++) {
-          const s1 = selected[i];
-          const s2 = selected[j];
-          
-          const match = interactions.find(inter => 
-            (inter.pair.includes(s1) && inter.pair.includes(s2))
-          );
-
-          if (match) {
-            let score = 0;
-            if (match.level === 'deadly') score = 4;
-            else if (match.level === 'high') score = 3;
-            else if (match.level === 'medium') score = 2;
-            else score = 1;
-
-            if (score > highestRisk.score) {
-              highestRisk = { ...match, score };
-            }
-          }
-        }
-      }
-
-      // Update UI
-      if (highestRisk.level === 'deadly') {
-        resultCircle.textContent = '☠️';
-        resultContainer.classList.add('risk-deadly');
-        resultTitle.style.color = '#ff0000';
-      } else if (highestRisk.level === 'high') {
-        resultCircle.textContent = '⚠️';
-        resultContainer.classList.add('risk-high');
-        resultTitle.style.color = '#ff4444';
-      } else if (highestRisk.level === 'medium') {
-        resultCircle.textContent = '⚠️';
-        resultContainer.classList.add('risk-medium');
-        resultTitle.style.color = '#ffc800';
-      } else {
-        resultCircle.textContent = '✅';
-        resultContainer.classList.add('risk-low');
-        resultTitle.style.color = '#00ff88';
-      }
-
-      resultTitle.textContent = highestRisk.title;
-      resultDesc.textContent = highestRisk.desc;
-    }
-  </script>
-</body>
-</html>
 
   <script>
     // Substance Data with Chinese Names and Categories
@@ -793,3 +602,5 @@
     initCapsuleGrid();
 
   </script>
+</body>
+</html>
