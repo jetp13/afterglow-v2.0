@@ -225,17 +225,44 @@
     }
 
     .ag-check-list.do li::before {
-      content: '✓';
+      content: '';
       position: absolute;
       left: 0;
-      color: #4caf50;
+      top: 4px;
+      width: 12px;
+      height: 6px;
+      border-left: 2px solid #00ff9d;
+      border-bottom: 2px solid #00ff9d;
+      transform: rotate(-45deg);
+      box-shadow: -1px 1px 5px rgba(0, 255, 157, 0.6);
     }
 
     .ag-check-list.dont li::before {
-      content: '✕';
+      content: '';
       position: absolute;
       left: 0;
-      color: #f44336;
+      top: 8px;
+      width: 12px;
+      height: 12px;
+      background: transparent;
+    }
+    .ag-check-list.dont li::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 12px;
+      height: 12px;
+      background: transparent;
+    }
+    /* Create X shape with pseudo elements on the li itself for better control */
+    .ag-check-list.dont li::before {
+      width: 14px; height: 2px; background: #ff4444; transform: rotate(45deg); top: 10px; left: 0;
+      box-shadow: 0 0 5px rgba(255, 68, 68, 0.6);
+    }
+    .ag-check-list.dont li::after {
+      width: 14px; height: 2px; background: #ff4444; transform: rotate(-45deg); top: 10px; left: 0;
+      box-shadow: 0 0 5px rgba(255, 68, 68, 0.6);
     }
 
     /* Resources */
@@ -282,7 +309,9 @@
 <body class="ag-page">
   
   <!-- 返回按鈕 -->
-  <a href="/support-main.html" class="ag-back-button" aria-label="返回選單"></a>
+  <a href="/support-main.html" class="ag-back-button neon-style" aria-label="返回選單">
+    <span class="ag-neon-icon-back"></span>
+  </a>
 
   <div class="ag-rights-container">
     <!-- Wild Header -->

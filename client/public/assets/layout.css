@@ -528,3 +528,271 @@ body {
   width: 200px;
   margin: 0 auto;
 }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   J. Global 9:16 Layout Fixes (Viewport, Safe Area, Overflow)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Ensure full height and prevent horizontal scroll */
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overscroll-behavior-y: none; /* Prevent pull-to-refresh effect if not needed */
+}
+
+/* Safe Area Variables */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* Page Container with Safe Area Padding */
+.ag-page {
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+  min-height: 100vh;
+}
+
+/* Ensure Logo doesn't cause scroll */
+.ag-logo-block, .ag-wild-header {
+  max-width: 100vw;
+  overflow: hidden; /* Contain the bleeding logo visually */
+}
+
+/* Fix for potential text vibrating/blurring */
+.ag-breathing-text {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   K. Neon Tube Icon (No Emoji)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ag-neon-icon-back {
+  width: 24px;
+  height: 24px;
+  position: relative;
+  display: block;
+}
+
+/* Neon Arrow Shape */
+.ag-neon-icon-back::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  transform: translate(-25%, -50%) rotate(-45deg);
+  box-shadow: -1px -1px 8px rgba(0, 229, 255, 0.8), -1px -1px 4px rgba(0, 229, 255, 0.5); /* Neon Cyan Glow */
+  border-radius: 2px;
+}
+
+/* Update Back Button to use Neon Icon */
+.ag-back-button {
+  font-size: 0; /* Hide any text */
+}
+
+.ag-back-button::before {
+  display: none; 
+}
+
+/* Ensure neon-style button centers content */
+.ag-back-button.neon-style {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   L. Neon Icons (Emoji Replacements)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* Base Icon Style */
+.ag-neon-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+  position: relative;
+  margin-right: 8px;
+}
+
+/* 1. Warning / Alert Icon (Triangle with !) */
+.ag-icon-alert {
+  width: 20px;
+  height: 18px;
+}
+.ag-icon-alert::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 18px solid #ff6bd9; /* Magenta Neon */
+  filter: drop-shadow(0 0 2px rgba(255, 107, 217, 0.8));
+}
+.ag-icon-alert::after {
+  content: '!';
+  position: absolute;
+  bottom: -2px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #000;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+/* 2. Shield Icon */
+.ag-icon-shield {
+  width: 18px;
+  height: 20px;
+  border: 2px solid #00e5ff; /* Cyan Neon */
+  border-radius: 2px 2px 10px 10px;
+  box-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+  position: relative;
+}
+.ag-icon-shield::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 10px;
+  border: 1px solid rgba(0, 229, 255, 0.5);
+  border-radius: 1px 1px 5px 5px;
+}
+
+/* 3. Link Icon */
+.ag-icon-link {
+  width: 18px;
+  height: 18px;
+  border: 2px solid #bd00ff; /* Purple Neon */
+  border-radius: 50%;
+  position: relative;
+  box-shadow: 0 0 5px rgba(189, 0, 255, 0.5);
+}
+.ag-icon-link::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 10px;
+  height: 2px;
+  background: #bd00ff;
+  transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* 4. Check Mark (Neon Green) */
+.ag-icon-check {
+  width: 16px;
+  height: 8px;
+  border-left: 2px solid #00ff9d;
+  border-bottom: 2px solid #00ff9d;
+  transform: rotate(-45deg) translate(2px, -2px);
+  box-shadow: -1px 1px 5px rgba(0, 255, 157, 0.6);
+  display: inline-block;
+}
+
+/* 5. Cross Mark (Neon Red) */
+.ag-icon-cross {
+  width: 16px;
+  height: 16px;
+  position: relative;
+  display: inline-block;
+}
+.ag-icon-cross::before,
+.ag-icon-cross::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #ff4444;
+  box-shadow: 0 0 5px rgba(255, 68, 68, 0.6);
+}
+.ag-icon-cross::before { transform: rotate(45deg); }
+.ag-icon-cross::after { transform: rotate(-45deg); }
+
+/* 6. Ambulance / Emergency (Cross shape) */
+.ag-icon-medical {
+  width: 20px;
+  height: 20px;
+  position: relative;
+  display: inline-block;
+}
+.ag-icon-medical::before,
+.ag-icon-medical::after {
+  content: '';
+  position: absolute;
+  background: #ff4444;
+  box-shadow: 0 0 5px rgba(255, 68, 68, 0.6);
+}
+.ag-icon-medical::before {
+  width: 6px;
+  height: 20px;
+  left: 7px;
+  top: 0;
+}
+.ag-icon-medical::after {
+  width: 20px;
+  height: 6px;
+  left: 0;
+  top: 7px;
+}
+
+/* 7. Police / Law (Badge shape) */
+.ag-icon-law {
+  width: 18px;
+  height: 20px;
+  border: 2px solid #bd00ff;
+  border-radius: 50% 50% 0 0;
+  border-bottom: 2px solid #bd00ff;
+  box-shadow: 0 0 5px rgba(189, 0, 255, 0.5);
+  position: relative;
+}
+.ag-icon-law::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 6px;
+  height: 6px;
+  background: #bd00ff;
+  border-radius: 50%;
+}
+
+/* 8. Hospital (H shape) */
+.ag-icon-hospital {
+  width: 18px;
+  height: 18px;
+  position: relative;
+  border: 2px solid #00e5ff;
+  border-top: none;
+  border-bottom: none;
+  box-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
+}
+.ag-icon-hospital::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #00e5ff;
+  transform: translateY(-50%);
+}

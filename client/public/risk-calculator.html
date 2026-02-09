@@ -112,7 +112,7 @@
       box-shadow: none;
     }
 
-    /* Result Breathing Ball */
+    /* Result Breathing Ball - Refactored for Stability */
     .ag-result-container {
       display: flex;
       justify-content: center;
@@ -122,24 +122,38 @@
       position: relative;
     }
 
-    .ag-result-circle {
+    /* The Glow Circle (Animates) */
+    .ag-result-glow {
+      position: absolute;
       width: 160px;
       height: 160px;
       border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 20px;
-      font-weight: bold;
-      color: rgba(255,255,255,0.8);
       transition: all 0.5s ease;
       
       /* Default Breathing State */
       background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
       box-shadow: 0 0 30px rgba(255,255,255,0.1);
       animation: breathe-idle 4s infinite ease-in-out;
-      backdrop-filter: blur(5px);
       border: 1px solid rgba(255,255,255,0.1);
+      z-index: 1;
+    }
+
+    /* The Text Content (Stable, No Scale Animation) */
+    .ag-result-text-layer {
+      position: relative;
+      z-index: 2;
+      font-size: 20px;
+      font-weight: bold;
+      color: rgba(255,255,255,0.8);
+      text-align: center;
+      width: 160px;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* Ensure text doesn't blur */
+      transform: translateZ(0);
+      -webkit-font-smoothing: antialiased;
     }
 
     @keyframes breathe-idle {
@@ -148,37 +162,37 @@
     }
 
     /* Risk Levels Animation */
-    .risk-low .ag-result-circle {
+    .risk-low .ag-result-glow {
       background: radial-gradient(circle, rgba(0, 255, 157, 0.2) 0%, rgba(0, 255, 157, 0) 70%);
       box-shadow: 0 0 40px rgba(0, 255, 157, 0.3);
       border-color: rgba(0, 255, 157, 0.3);
-      color: #00ff9d;
       animation: breathe-calm 4s infinite ease-in-out;
     }
+    .risk-low .ag-result-text-layer { color: #00ff9d; }
 
-    .risk-medium .ag-result-circle {
+    .risk-medium .ag-result-glow {
       background: radial-gradient(circle, rgba(255, 213, 0, 0.2) 0%, rgba(255, 213, 0, 0) 70%);
       box-shadow: 0 0 40px rgba(255, 213, 0, 0.3);
       border-color: rgba(255, 213, 0, 0.3);
-      color: #ffd500;
       animation: breathe-caution 3s infinite ease-in-out;
     }
+    .risk-medium .ag-result-text-layer { color: #ffd500; }
 
-    .risk-high .ag-result-circle {
+    .risk-high .ag-result-glow {
       background: radial-gradient(circle, rgba(255, 107, 0, 0.2) 0%, rgba(255, 107, 0, 0) 70%);
       box-shadow: 0 0 50px rgba(255, 107, 0, 0.4);
       border-color: rgba(255, 107, 0, 0.4);
-      color: #ff6b00;
       animation: breathe-unsafe 2s infinite ease-in-out;
     }
+    .risk-high .ag-result-text-layer { color: #ff6b00; }
 
-    .risk-deadly .ag-result-circle {
+    .risk-deadly .ag-result-glow {
       background: radial-gradient(circle, rgba(255, 0, 60, 0.3) 0%, rgba(255, 0, 60, 0) 70%);
       box-shadow: 0 0 60px rgba(255, 0, 60, 0.6);
       border-color: rgba(255, 0, 60, 0.6);
-      color: #ff003c;
       animation: pulse-deadly 0.8s infinite ease-in-out;
     }
+    .risk-deadly .ag-result-text-layer { color: #ff003c; }
 
     @keyframes breathe-calm {
       0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(0, 255, 157, 0.3); }
@@ -315,7 +329,9 @@
 <body class="ag-page">
   
   <!-- Back Button -->
-  <a href="/support-main.html" class="ag-back-button ag-back-button-fixed" aria-label="返回"></a>
+  <a href="/support-main.html" class="ag-back-button ag-back-button-fixed neon-style" aria-label="返回">
+    <span class="ag-neon-icon-back"></span>
+  </a>
 
   <div class="ag-container ag-container-sm">
     
@@ -344,9 +360,10 @@
       <!-- Buttons will be populated by JS -->
     </div>
 
-    <!-- Result Display -->
+    <!-- Result Display (Refactored) -->
     <div id="result-container" class="ag-result-container">
-      <div class="ag-result-circle" id="result-circle">?</div>
+      <div class="ag-result-glow"></div>
+      <div class="ag-result-text-layer" id="result-circle">?</div>
     </div>
 
     <div class="ag-result-text-box" id="result-box">
@@ -356,7 +373,7 @@
 
     <!-- Important Warning -->
     <div class="ag-warning-box">
-      <div class="ag-warning-title">⚠️ 重要免責聲明</div>
+      <div class="ag-warning-title"><span class="ag-neon-icon ag-icon-alert"></span> 重要免責聲明</div>
       <ul class="ag-warning-list">
         <li>此工具僅供參考，無法涵蓋所有個體差異與潛在風險。</li>
         <li>「低風險」不代表「絕對安全」。</li>
@@ -374,10 +391,10 @@
       <h3>相關資源</h3>
       <div class="ag-link-list">
         <a href="https://tripsit.me/combinations/" target="_blank" class="ag-link-item">
-          <span>🔗</span> TripSit 交互作用表 (英文)
+          <span class="ag-neon-icon ag-icon-link"></span> TripSit 交互作用表 (英文)
         </a>
         <a href="https://psychonautwiki.org/" target="_blank" class="ag-link-item">
-          <span>🔗</span> PsychonautWiki (英文)
+          <span class="ag-neon-icon ag-icon-link"></span> PsychonautWiki (英文)
         </a>
       </div>
     </div>
