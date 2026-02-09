@@ -20,8 +20,8 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      padding: 60px 20px 100px;
+      min-height: 80vh; /* Ensure content is centered but fits in view */
+      padding: 40px 20px 20px;
       text-align: center;
     }
 
@@ -44,10 +44,10 @@
 
     .ag-menu-item {
       display: block;
-      padding: 20px;
+      padding: 16px; /* Reduced padding for compactness */
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
+      border-radius: 12px; /* Slightly smaller radius */
       color: #fff;
       text-decoration: none;
       transition: all 0.3s ease;
@@ -93,85 +93,98 @@
       box-shadow: 0 0 25px rgba(189, 0, 255, 0.2);
     }
 
-    .ag-back-fab {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      text-decoration: none;
-      font-size: 24px;
-      transition: all 0.3s ease;
-      z-index: 100;
+    /* Accordion Styles */
+    .ag-menu-details {
+      width: 100%;
+      margin-top: 10px;
     }
-
-    .ag-back-fab:hover {
-      background: rgba(255, 255, 255, 0.2);
-      transform: translateX(-50%) scale(1.1);
+    
+    .ag-menu-summary {
+      list-style: none;
+      cursor: pointer;
+      font-size: 14px;
+      color: #aaa;
+      padding: 10px;
+      border-radius: 8px;
+      transition: color 0.3s;
+    }
+    
+    .ag-menu-summary:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    
+    .ag-menu-summary::-webkit-details-marker {
+      display: none;
+    }
+    
+    .ag-menu-sublist {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
 
   </style>
 </head>
 <body class="ag-page">
-
-  <div class="ag-menu-container">
-    <!-- Wild Header -->
-    <div class="ag-wild-header ag-mb-40">
-      <img src="/assets/logo-handwritten.png" class="ag-wild-logo" alt="Afterglow">
-    </div>
-
-    <h1 class="ag-menu-title ag-visually-hidden">選擇冥想模式</h1>
-    
-    <div class="ag-menu-list">
-      <a href="/breathing.html" class="ag-menu-item breathing">
-        <span class="ag-item-title">呼吸練習</span>
-        <span class="ag-item-desc">4-7-8 呼吸法，平靜身心</span>
-      </a>
-      
-      <a href="/voice.html" class="ag-menu-item voice">
-        <span class="ag-item-title">語音引導</span>
-        <span class="ag-item-desc">跟隨聲音，進入深層放鬆</span>
-      </a>
-      
-      <a href="#" class="ag-menu-item ag-disabled">
-        <span class="ag-item-title">更多模式</span>
-        <span class="ag-item-desc">即將推出</span>
-      </a>
-    </div>
-  </div>
-
-  <!-- Back to Home -->
+  <!-- Back to Home (Fixed Position) -->
   <a href="/home.html" class="ag-back-button neon-style" aria-label="返回首頁">
     <span class="ag-neon-icon-back"></span>
   </a>
 
-  <!-- Footer：共用模組 -->
-  <footer class="ag-footer">
-    <div class="ag-footer__inner">
-      <nav class="ag-footer__links" aria-label="Legal and info links">
-        <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
-        <span class="ag-footer__separator">•</span>
-        <a href="/legal.html" class="ag-footer__link">法律免責</a>
-        <span class="ag-footer__separator">•</span>
-        <a href="/terms.html" class="ag-footer__link">使用條款</a>
-        <span class="ag-footer__separator">•</span>
-        <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
-      </nav>
+  <div class="ag-main-scroll">
+    <div class="ag-menu-container">
+      <!-- Wild Header -->
+      <div class="ag-wild-header ag-mb-20">
+        <img src="/assets/logo-handwritten.png" class="ag-wild-logo" alt="Afterglow">
+      </div>
 
-      <p class="ag-footer__copyright">
-        © 2025 Afterglow. All rights reserved.
-      </p>
+      <h1 class="ag-menu-title ag-visually-hidden">選擇冥想模式</h1>
+      
+      <div class="ag-menu-list">
+        <a href="/breathing.html" class="ag-menu-item breathing">
+          <span class="ag-item-title">呼吸練習</span>
+          <span class="ag-item-desc">4-7-8 呼吸法，平靜身心</span>
+        </a>
+        
+        <a href="/voice.html" class="ag-menu-item voice">
+          <span class="ag-item-title">語音引導</span>
+          <span class="ag-item-desc">跟隨聲音，進入深層放鬆</span>
+        </a>
+        
+        <!-- Collapsible Secondary Options -->
+        <details class="ag-menu-details">
+          <summary class="ag-menu-summary">更多模式</summary>
+          <div class="ag-menu-sublist">
+            <div class="ag-menu-item ag-disabled">
+              <span class="ag-item-title">白噪音</span>
+              <span class="ag-item-desc">即將推出</span>
+            </div>
+          </div>
+        </details>
+      </div>
     </div>
-  </footer>
+
+    <!-- Footer：共用模組 -->
+    <footer class="ag-footer">
+      <div class="ag-footer__inner">
+        <nav class="ag-footer__links" aria-label="Legal and info links">
+          <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/legal.html" class="ag-footer__link">法律免責</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/terms.html" class="ag-footer__link">使用條款</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+        </nav>
+
+        <p class="ag-footer__copyright">
+          © 2025 Afterglow. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  </div>
 
   <script>
     // Register Service Worker if not already registered

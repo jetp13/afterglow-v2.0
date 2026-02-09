@@ -327,31 +327,31 @@
   </style>
 </head>
 <body class="ag-page">
-  
-  <!-- Back Button -->
-  <a href="/support-main.html" class="ag-back-button ag-back-button-fixed neon-style" aria-label="返回">
+  <!-- Back Button (Fixed Position) -->
+  <a href="/support-main.html" class="ag-back-button neon-style" aria-label="返回">
     <span class="ag-neon-icon-back"></span>
   </a>
 
-  <div class="ag-container ag-container-sm">
-    
-    <!-- Wild Header -->
-    <div class="ag-wild-header">
-      <img src="/assets/logo-handwritten.png" class="ag-wild-logo" alt="Afterglow">
-    </div>
-    
-    <div class="ag-risk-header">
-      <h1 class="ag-risk-title ag-visually-hidden">風險計算器</h1>
-    </div>
-
-    <!-- Harm Reduction Disclaimer -->
-    <div class="ag-harm-reduction-box">
-      <div class="ag-info-icon">ⓘ</div>
-      <div class="ag-harm-text">
-        <span class="ag-harm-title">減害立場：</span>
-        我們理解物質使用是個人選擇。此工具旨在提供風險資訊，協助您做出更安全的決定，而非評判或禁止。如果您選擇使用，請了解風險並採取減害措施。
+  <div class="ag-main-scroll">
+    <div class="ag-container ag-container-sm">
+      
+      <!-- Wild Header -->
+      <div class="ag-wild-header">
+        <img src="/assets/logo-handwritten.png" class="ag-wild-logo" alt="Afterglow">
       </div>
-    </div>
+      
+      <div class="ag-risk-header">
+        <h1 class="ag-risk-title ag-visually-hidden">風險計算器</h1>
+      </div>
+
+      <!-- Harm Reduction Disclaimer -->
+      <div class="ag-harm-reduction-box">
+        <div class="ag-info-icon"><span class="ag-neon-icon ag-icon-shield"></span></div>
+        <div class="ag-harm-text">
+          <span class="ag-harm-title">減害立場：</span>
+          我們理解物質使用是個人選擇。此工具旨在提供風險資訊，協助您做出更安全的決定，而非評判或禁止。如果您選擇使用，請了解風險並採取減害措施。
+        </div>
+      </div>
 
     <div class="ag-section-label">選擇您使用或考慮使用的物質（最多 4 種）</div>
 
@@ -371,33 +371,54 @@
       <div class="ag-result-desc" id="result-desc">選擇您使用或考慮使用的物質以評估風險</div>
     </div>
 
-    <!-- Important Warning -->
-    <div class="ag-warning-box">
-      <div class="ag-warning-title"><span class="ag-neon-icon ag-icon-alert"></span> 重要免責聲明</div>
-      <ul class="ag-warning-list">
-        <li>此工具僅供參考，無法涵蓋所有個體差異與潛在風險。</li>
-        <li>「低風險」不代表「絕對安全」。</li>
-        <li>若出現嚴重不適，請立即尋求醫療協助。</li>
-      </ul>
-    </div>
+      <!-- Important Warning -->
+      <div class="ag-warning-box">
+        <div class="ag-warning-title"><span class="ag-neon-icon ag-icon-alert"></span> 重要免責聲明</div>
+        <ul class="ag-warning-list">
+          <li>此工具僅供參考，無法涵蓋所有個體差異與潛在風險。</li>
+          <li>「低風險」不代表「絕對安全」。</li>
+          <li>若出現嚴重不適，請立即尋求醫療協助。</li>
+        </ul>
+      </div>
 
-    <!-- Info Cards -->
-    <div class="ag-info-card">
-      <h3>關於交互作用</h3>
-      <p>不同物質混合使用（混藥）可能產生不可預期的加成效果。某些組合（如中樞神經抑制劑混用）具有極高的致死風險。</p>
-    </div>
+      <!-- Info Cards -->
+      <div class="ag-info-card">
+        <h3>關於交互作用</h3>
+        <p>不同物質混合使用（混藥）可能產生不可預期的加成效果。某些組合（如中樞神經抑制劑混用）具有極高的致死風險。</p>
+      </div>
 
-    <div class="ag-info-card">
-      <h3>相關資源</h3>
-      <div class="ag-link-list">
-        <a href="https://tripsit.me/combinations/" target="_blank" class="ag-link-item">
-          <span class="ag-neon-icon ag-icon-link"></span> TripSit 交互作用表 (英文)
-        </a>
-        <a href="https://psychonautwiki.org/" target="_blank" class="ag-link-item">
-          <span class="ag-neon-icon ag-icon-link"></span> PsychonautWiki (英文)
-        </a>
+      <div class="ag-info-card">
+        <h3>相關資源</h3>
+        <div class="ag-link-list">
+          <a href="https://tripsit.me/combinations/" target="_blank" class="ag-link-item">
+            <span class="ag-neon-icon ag-icon-link"></span> TripSit 交互作用表 (英文)
+          </a>
+          <a href="https://psychonautwiki.org/" target="_blank" class="ag-link-item">
+            <span class="ag-neon-icon ag-icon-link"></span> PsychonautWiki (英文)
+          </a>
+        </div>
       </div>
     </div>
+
+    <!-- Footer：共用模組 -->
+    <footer class="ag-footer">
+      <div class="ag-footer__inner">
+        <nav class="ag-footer__links" aria-label="Legal and info links">
+          <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/legal.html" class="ag-footer__link">法律免責</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/terms.html" class="ag-footer__link">使用條款</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+        </nav>
+
+        <p class="ag-footer__copyright">
+          © 2025 Afterglow. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  </div>
 
   </div>
 

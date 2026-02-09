@@ -17,22 +17,42 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* App Shell: Lock body scroll */
+  height: 100dvh;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
 }
 
 .ag-page {
-  min-height: 100vh;
+  height: 100dvh;
   display: flex;
   flex-direction: column;
+  /* Safe Area Handling */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Scrollable Main Content Area */
+.ag-main-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  padding-bottom: 40px; /* Bottom spacing */
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    A. 返回首頁按鈕 (Wild Style)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ag-back-button {
-  position: fixed;
-  top: 24px;
-  left: 24px;
-  z-index: 9999; /* Ensure it's always on top */
+  position: absolute; /* Changed from fixed to absolute relative to ag-page */
+  top: calc(24px + env(safe-area-inset-top)); /* Safe area aware */
+  left: calc(24px + env(safe-area-inset-left));
+  z-index: 9999;
   display: flex;
   cursor: pointer; /* Ensure pointer cursor */
   align-items: center;
@@ -74,8 +94,8 @@ body {
 /* Mobile adjustments */
 @media (max-width: 480px) {
   .ag-back-button {
-    top: 16px; /* Slightly higher to clear content */
-    left: 16px;
+    top: calc(16px + env(safe-area-inset-top));
+    left: calc(16px + env(safe-area-inset-left));
     width: 40px;
     height: 40px;
   }

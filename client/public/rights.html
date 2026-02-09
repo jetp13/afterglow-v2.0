@@ -12,11 +12,7 @@
     }
   </script>
   <style>
-    .ag-rights-container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 60px 16px 100px; /* 手機版調整 padding */
-    }
+    /* Container moved to layout.css ag-container-sm */
 
     .ag-rights-header {
       text-align: center;
@@ -313,81 +309,82 @@
     <span class="ag-neon-icon-back"></span>
   </a>
 
-  <div class="ag-rights-container">
-    <!-- Wild Header -->
-    <div class="ag-wild-header">
-      <img src="/assets/logo-handwritten.png" class="ag-wild-logo" alt="Afterglow">
-    </div>
-
-    <header class="ag-rights-header">
-      <h1 class="ag-rights-title ag-visually-hidden">權利知識</h1>
-      <p class="ag-rights-subtitle">
-        本模組旨在協助理解警方臨檢、盤查與搜索時可主張的權利。<br>
-        內容屬教育用途，非法律意見。
-      </p>
-    </header>
-
-    <!-- 區塊一：三大核心原則 -->
-    <section class="ag-section">
-      <h2 class="ag-section-title">三大核心原則</h2>
-      <div class="ag-principles-grid">
-        <div class="ag-principle-card">
-          <div class="ag-principle-header">
-            <span class="ag-principle-number">1</span>
-            <span class="ag-principle-title">不說</span>
-          </div>
-          <p class="ag-principle-text">除身分基本資料外，可行使緘默權。</p>
-          <div class="ag-quote-box">
-            「我希望有律師在場，並選擇行使緘默權。」
-          </div>
-        </div>
-
-        <div class="ag-principle-card">
-          <div class="ag-principle-header">
-            <span class="ag-principle-number">2</span>
-            <span class="ag-principle-title">不搜</span>
-          </div>
-          <p class="ag-principle-text">無法院搜索票、無緊急狀況、或未經明確同意，可拒絕搜索。</p>
-          <div class="ag-quote-box">
-            「我不同意搜索，除非您持法院搜索票。」
-          </div>
-        </div>
-
-        <div class="ag-principle-card">
-          <div class="ag-principle-header">
-            <span class="ag-principle-number">3</span>
-            <span class="ag-principle-title">不抗拒</span>
-          </div>
-          <p class="ag-principle-text">不肢體對抗，避免妨害公務風險；以錄音錄影、標記警員識別、事後救濟維權。</p>
-        </div>
+  <div class="ag-main-scroll">
+    <div class="ag-container-sm">
+      <!-- Wild Header -->
+      <div class="ag-wild-header">
+        <img src="/assets/logo-handwritten.png" class="ag-wild-logo" alt="Afterglow">
       </div>
-    </section>
 
-    <!-- 區塊二：基本權利總表 -->
-    <section class="ag-section">
-      <h2 class="ag-section-title">基本權利總表</h2>
-      <div class="ag-rights-grid">
-        <div class="ag-rights-card">
-          <h3 class="ag-card-title">身分查證邊界</h3>
-          <p class="ag-card-summary">員警應著制服或出示證件並告知事由；未依規定，人民得拒絕。</p>
+      <header class="ag-rights-header">
+        <h1 class="ag-rights-title ag-visually-hidden">權利知識</h1>
+        <p class="ag-rights-subtitle">
+          本模組旨在協助理解警方臨檢、盤查與搜索時可主張的權利。<br>
+          內容屬教育用途，非法律意見。
+        </p>
+      </header>
+
+      <!-- 區塊一：三大核心原則 -->
+      <section class="ag-section">
+        <h2 class="ag-section-title">三大核心原則</h2>
+        <div class="ag-principles-grid">
+          <div class="ag-principle-card">
+            <div class="ag-principle-header">
+              <span class="ag-principle-number">1</span>
+              <span class="ag-principle-title">不說</span>
+            </div>
+            <p class="ag-principle-text">除身分基本資料外，可行使緘默權。</p>
+            <div class="ag-quote-box">
+              「我希望有律師在場，並選擇行使緘默權。」
+            </div>
+          </div>
+
+          <div class="ag-principle-card">
+            <div class="ag-principle-header">
+              <span class="ag-principle-number">2</span>
+              <span class="ag-principle-title">不搜</span>
+            </div>
+            <p class="ag-principle-text">無法院搜索票、無緊急狀況、或未經明確同意，可拒絕搜索。</p>
+            <div class="ag-quote-box">
+              「我不同意搜索，除非您持法院搜索票。」
+            </div>
+          </div>
+
+          <div class="ag-principle-card">
+            <div class="ag-principle-header">
+              <span class="ag-principle-number">3</span>
+              <span class="ag-principle-title">不抗拒</span>
+            </div>
+            <p class="ag-principle-text">不肢體對抗，避免妨害公務風險；以錄音錄影、標記警員識別、事後救濟維權。</p>
+          </div>
         </div>
-        <div class="ag-rights-card">
-          <h3 class="ag-card-title">限時帶返查證</h3>
-          <p class="ag-card-summary">一般最多 3 小時，並應即時通報及通知指定親友或律師。</p>
-        </div>
-        <div class="ag-rights-card">
-          <h3 class="ag-card-title">搜索要件</h3>
-          <p class="ag-card-summary">原則須法院搜索票；緊急狀況或現行犯等例外另論。</p>
-        </div>
-        <div class="ag-rights-card">
-          <h3 class="ag-card-title">手機與數位載具</h3>
-          <p class="ag-card-summary">原則上屬隱私高度保護標的，無令狀或合法事由不得逕行解鎖取證。請明確表達不同意。</p>
-        </div>
-        <div class="ag-rights-card">
-          <h3 class="ag-card-title">採尿程序</h3>
-          <p class="ag-card-summary">快篩陽性須經實驗室複驗始具法律效；可要求錄影與樣本封存；程序不當可爭執。</p>
-        </div>
-        <div class="ag-rights-card">
+      </section>
+
+      <!-- 區塊二：基本權利總表 -->
+      <section class="ag-section">
+        <h2 class="ag-section-title">基本權利總表</h2>
+        <div class="ag-rights-grid">
+          <div class="ag-rights-card">
+            <h3 class="ag-card-title">身分查證邊界</h3>
+            <p class="ag-card-summary">員警應著制服或出示證件並告知事由；未依規定，人民得拒絕。</p>
+          </div>
+          <div class="ag-rights-card">
+            <h3 class="ag-card-title">限時帶返查證</h3>
+            <p class="ag-card-summary">一般最多 3 小時，並應即時通報及通知指定親友或律師。</p>
+          </div>
+          <div class="ag-rights-card">
+            <h3 class="ag-card-title">搜索要件</h3>
+            <p class="ag-card-summary">原則須法院搜索票；緊急狀況或現行犯等例外另論。</p>
+          </div>
+          <div class="ag-rights-card">
+            <h3 class="ag-card-title">手機與數位載具</h3>
+            <p class="ag-card-summary">原則上屬隱私高度保護標的，無令狀或合法事由不得逕行解鎖取證。請明確表達不同意。</p>
+          </div>
+          <div class="ag-rights-card">
+            <h3 class="ag-card-title">採尿程序</h3>
+            <p class="ag-card-summary">快篩陽性須經實驗室複驗始具法律效；可要求錄影與樣本封存；程序不當可爭執。</p>
+          </div>
+          <div class="ag-rights-card">
           <h3 class="ag-card-title">異議權</h3>
           <p class="ag-card-summary">對臨檢盤查不當可當場提出異議並請求製作異議紀錄。</p>
         </div>

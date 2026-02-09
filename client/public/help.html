@@ -80,53 +80,73 @@
   </style>
 </head>
 <body class="ag-page">
-  
-  <!-- 返回按鈕 -->
-  <a href="javascript:history.back()" class="ag-back-button ag-back-button-fixed neon-style" aria-label="返回">
+  <!-- Back Button (Fixed Position) -->
+  <a href="/support-main.html" class="ag-back-button neon-style" aria-label="返回">
     <span class="ag-neon-icon-back"></span>
   </a>
 
-  <div class="ag-help-container">
-    <h1 class="ag-help-title">求助資源</h1>
+  <div class="ag-main-scroll">
+    <div class="ag-help-container">
+      <h1 class="ag-help-title">求助資源</h1>
 
-    <div class="ag-emergency-box">
-      <div class="ag-emergency-title">緊急狀況</div>
-      <p class="ag-emergency-text">
-        若您或身邊的人出現身體不適、呼吸困難、失去意識等危急情況，請立即撥打緊急醫療電話。
-      </p>
-      <a href="tel:119" class="ag-help-phone ag-text-red ag-mt-10" style="display: block;">119</a>
+      <div class="ag-emergency-box">
+        <div class="ag-emergency-title"><span class="ag-neon-icon ag-icon-alert"></span> 緊急狀況</div>
+        <p class="ag-emergency-text">
+          若您或身邊的人出現身體不適、呼吸困難、失去意識等危急情況，請立即撥打緊急醫療電話。
+        </p>
+        <a href="tel:119" class="ag-help-phone ag-text-red ag-mt-10" style="display: block;">119</a>
+      </div>
+
+      <ul class="ag-help-list">
+        <li class="ag-help-item">
+          <span class="ag-help-name">衛生福利部安心專線</span>
+          <a href="tel:1925" class="ag-help-phone">1925</a>
+          <span class="ag-help-desc">提供心理諮詢與自殺防治服務（24小時）</span>
+        </li>
+
+        <li class="ag-help-item">
+          <span class="ag-help-name">生命線協談專線</span>
+          <a href="tel:1995" class="ag-help-phone">1995</a>
+          <span class="ag-help-desc">提供各類心理困擾與危機處理諮詢</span>
+        </li>
+
+        <li class="ag-help-item">
+          <span class="ag-help-name">張老師輔導專線</span>
+          <a href="tel:1980" class="ag-help-phone">1980</a>
+          <span class="ag-help-desc">提供情緒困擾與心理輔導服務</span>
+        </li>
+
+        <li class="ag-help-item">
+          <span class="ag-help-name">勵馨基金會</span>
+          <a href="tel:0289118595" class="ag-help-phone">02-8911-8595</a>
+          <span class="ag-help-desc">提供性侵害與家庭暴力受害者支持</span>
+        </li>
+      </ul>
+
+      <div class="ag-mt-40 ag-text-sm ag-text-dark-gray">
+        本頁面資訊僅供參考，若遇緊急危難，請優先撥打 119 求助。<br>
+        Afterglow 關心您的安全。
+      </div>
     </div>
 
-    <ul class="ag-help-list">
-      <li class="ag-help-item">
-        <span class="ag-help-name">衛生福利部安心專線</span>
-        <a href="tel:1925" class="ag-help-phone">1925</a>
-        <span class="ag-help-desc">提供心理諮詢與自殺防治服務（24小時）</span>
-      </li>
+    <!-- Footer：共用模組 -->
+    <footer class="ag-footer">
+      <div class="ag-footer__inner">
+        <nav class="ag-footer__links" aria-label="Legal and info links">
+          <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/legal.html" class="ag-footer__link">法律免責</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/terms.html" class="ag-footer__link">使用條款</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+        </nav>
 
-      <li class="ag-help-item">
-        <span class="ag-help-name">生命線協談專線</span>
-        <a href="tel:1995" class="ag-help-phone">1995</a>
-        <span class="ag-help-desc">提供各類心理困擾與危機處理諮詢</span>
-      </li>
-
-      <li class="ag-help-item">
-        <span class="ag-help-name">張老師輔導專線</span>
-        <a href="tel:1980" class="ag-help-phone">1980</a>
-        <span class="ag-help-desc">提供情緒困擾與心理輔導服務</span>
-      </li>
-
-      <li class="ag-help-item">
-        <span class="ag-help-name">勵馨基金會</span>
-        <a href="tel:0289118595" class="ag-help-phone">02-8911-8595</a>
-        <span class="ag-help-desc">提供性侵害與家庭暴力受害者支持</span>
-      </li>
-    </ul>
-
-    <div class="ag-mt-40 ag-text-sm ag-text-dark-gray">
-      本頁面資訊僅供參考，若遇緊急危難，請優先撥打 119 求助。<br>
-      Afterglow 關心您的安全。
-    </div>
+        <p class="ag-footer__copyright">
+          © 2025 Afterglow. All rights reserved.
+        </p>
+      </div>
+    </footer>
   </div>
 </body>
 </html>
