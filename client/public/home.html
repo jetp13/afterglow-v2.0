@@ -79,9 +79,10 @@
       flex-direction: column;
       align-items: center;
       gap: 36px; /* Increased space for breathing room */
-      flex-grow: 1; /* Allow it to grow and push footer down */
+      /* Removed flex-grow to prevent it from pushing footer out of view or misaligning */
       justify-content: flex-end; /* Push content towards bottom */
       padding-bottom: 20px; /* Add padding at bottom of main */
+      width: 100%; /* Ensure full width for centering */
     }
 
     /* Mobile Optimization */
@@ -170,7 +171,7 @@
       </main>
 
       <!-- Footer：共用模組 -->
-      <footer class="ag-footer-v2 ag-footer-single">
+      <footer class="ag-footer-v2 ag-footer-single" style="margin-top: auto; width: 100%; display: flex; flex-direction: column; align-items: center;">
         <div class="ag-footer-v2__links">
           <a href="/privacy.html" class="ag-footer-v2__link">隱私權</a>
           <span class="ag-footer-v2__separator">|</span>
