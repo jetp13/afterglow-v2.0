@@ -17,9 +17,12 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
+      min-height: 100%; /* Ensure full height */
       padding: 20px;
-      gap: 24px;
+      gap: 20px; /* Slightly reduced gap */
+      /* Adjusted padding to center content vertically on single screen */
+      padding-top: calc(40px + env(safe-area-inset-top)); 
+      padding-bottom: calc(40px + env(safe-area-inset-bottom));
     }
 
     .ag-menu-button {
@@ -91,7 +94,7 @@
     <div class="ag-support-menu">
       
       <!-- Wild Header -->
-      <div class="ag-wild-header ag-mb-20">
+      <div class="ag-wild-header ag-mb-40">
         <img src="/assets/logo-handwritten.png" class="ag-wild-logo" alt="Afterglow">
       </div>
 
@@ -117,24 +120,7 @@
 
     </div>
 
-    <!-- Footer：共用模組 -->
-    <footer class="ag-footer">
-      <div class="ag-footer__inner">
-        <nav class="ag-footer__links" aria-label="Legal and info links">
-          <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
-          <span class="ag-footer__separator">•</span>
-          <a href="/legal.html" class="ag-footer__link">法律免責</a>
-          <span class="ag-footer__separator">•</span>
-          <a href="/terms.html" class="ag-footer__link">使用條款</a>
-          <span class="ag-footer__separator">•</span>
-          <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
-        </nav>
-
-        <p class="ag-footer__copyright">
-          © 2025 Afterglow. All rights reserved.
-        </p>
-      </div>
-    </footer>
+    <!-- Footer Removed for Immersive Support Menu (Rule B) -->
   </div>
 </body>
 </html>

@@ -22,22 +22,43 @@
       color: #fff;
       padding: 40px 20px;
     }
-    .ag-circle {
-      width: 200px;
-      height: 200px;
-      border-radius: 50%;
-      border: 2px solid #00e5ff;
-      box-shadow: 0 0 30px rgba(0, 229, 255, 0.3);
+    .ag-breathing-wrapper {
+      position: relative;
+      width: 240px;
+      height: 240px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 24px;
       margin-bottom: 40px;
+    }
+    .ag-circle-glow {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px solid #00e5ff;
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.3);
       animation: breathe 8s infinite ease-in-out;
+      z-index: 1;
+    }
+    .ag-breathing-text {
+      position: absolute; /* Center absolutely to avoid layout shifts */
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%); /* Perfect centering */
+      z-index: 2;
+      font-size: 24px;
+      color: #fff;
+      text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+      pointer-events: none;
+      white-space: nowrap;
+      /* Rule C: Text MUST remain fixed size (no transform: scale) */
     }
     @keyframes breathe {
-      0%, 100% { transform: scale(1); opacity: 0.8; }
-      50% { transform: scale(1.2); opacity: 1; box-shadow: 0 0 50px rgba(0, 229, 255, 0.6); }
+      0%, 100% { transform: scale(0.8); opacity: 0.6; }
+      50% { transform: scale(1.1); opacity: 1; box-shadow: 0 0 50px rgba(0, 229, 255, 0.6); }
     }
   </style>
 </head>
@@ -49,29 +70,40 @@
 
   <div class="ag-main-scroll">
     <div class="ag-container">
-      <div class="ag-circle">吸氣</div>
-      <p>跟隨圓圈的節奏呼吸</p>
+      <div class="ag-breathing-wrapper">
+        <div class="ag-circle-glow"></div>
+        <div class="ag-breathing-text" id="breathing-text">吸氣</div>
+      </div>
+      <p class="ag-mt-20" style="opacity: 0.7;">跟隨圓圈的節奏呼吸</p>
+
+      <script>
+        document.addEventListener('DOMContentLoaded', () => {
+          const textEl = document.getElementById('breathing-text');
+          const circleEl = document.querySelector('.ag-circle-glow');
+          
+          // Sync text with animation cycle (8s total: 4s in, 4s out)
+          // Animation starts immediately on load.
+          // We assume 0-50% is expand (Inhale), 50-100% is shrink (Exhale).
+          
+          function updateText() {
+            textEl.innerText = '吸氣'; // Start with Inhale
+            
+            setTimeout(() => {
+              textEl.innerText = '吐氣'; // Switch to Exhale at 4s
+            }, 4000);
+          }
+
+          // Initial run
+          updateText();
+
+          // Loop every 8s
+          setInterval(updateText, 8000);
+        });
+      </script>
       <a href="/menu.html" class="ag-mt-40 ag-text-gray ag-link-clean">← 結束練習</a>
     </div>
 
-    <!-- Footer：共用模組 -->
-    <footer class="ag-footer">
-      <div class="ag-footer__inner">
-        <nav class="ag-footer__links" aria-label="Legal and info links">
-          <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
-          <span class="ag-footer__separator">•</span>
-          <a href="/legal.html" class="ag-footer__link">法律免責</a>
-          <span class="ag-footer__separator">•</span>
-          <a href="/terms.html" class="ag-footer__link">使用條款</a>
-          <span class="ag-footer__separator">•</span>
-          <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
-        </nav>
-
-        <p class="ag-footer__copyright">
-          © 2025 Afterglow. All rights reserved.
-        </p>
-      </div>
-    </footer>
+    <!-- Footer Removed for Immersive Page (Rule B) -->
   </div>
 </body>
 </html>

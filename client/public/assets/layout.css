@@ -46,26 +46,40 @@ body {
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   A. 返回首頁按鈕 (Wild Style)
+   A. 返回首頁按鈕 (Wild Style) - STRICT GLOBAL RULE
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ag-back-button {
-  position: absolute; /* Changed from fixed to absolute relative to ag-page */
+  position: fixed; /* STRICT RULE: Always fixed */
   top: calc(24px + env(safe-area-inset-top)); /* Safe area aware */
-  left: calc(24px + env(safe-area-inset-left));
+  left: 16px; /* STRICT RULE: Fixed left position */
   z-index: 9999;
   display: flex;
-  cursor: pointer; /* Ensure pointer cursor */
+  cursor: pointer;
   align-items: center;
   justify-content: center;
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.4); /* Slight background for contrast against wild logo */
+  background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(4px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   color: rgba(255, 255, 255, 0.7);
   text-decoration: none;
   transition: all 0.3s ease;
+}
+
+/* Ensure Back Button is ALWAYS visible on top of everything */
+.ag-back-button:not([hidden]) {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* Ensure Back Button is ALWAYS visible on top of everything */
+.ag-back-button:not([hidden]) {
+  display: flex !important;
+  visibility: visible !important;
+  opacity: 1 !important;
 }
 
 /* 箭頭圖示 - 使用更簡約的符號 */
@@ -95,7 +109,7 @@ body {
 @media (max-width: 480px) {
   .ag-back-button {
     top: calc(16px + env(safe-area-inset-top));
-    left: calc(16px + env(safe-area-inset-left));
+    left: 16px; /* Keep consistent left spacing */
     width: 40px;
     height: 40px;
   }
@@ -220,12 +234,37 @@ body {
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   D. Footer Component v2（三層結構）
+   D. Footer Component v2（三層結構） - STRICT FOOTER STRATEGY
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ag-footer-v2 {
   padding: 32px 24px 28px;
   text-align: center;
   font-weight: 300;
+  /* Default: Visible */
+}
+
+/* Immersive Mode: Hide Footer */
+.ag-footer-hidden {
+  display: none !important;
+}
+
+/* Info Mode: Ensure single footer at bottom */
+.ag-footer-single {
+  margin-top: auto; /* Push to bottom of flex container */
+  padding-bottom: calc(28px + env(safe-area-inset-bottom));
+  width: 100%;
+}
+
+/* Ensure footer links are clickable and not blocked */
+.ag-footer-v2__links {
+  position: relative;
+  z-index: 10;
+}
+
+/* Ensure footer links are clickable and not blocked */
+.ag-footer-v2__links {
+  position: relative;
+  z-index: 10;
 }
 
 /* 上排：四個連結 */
