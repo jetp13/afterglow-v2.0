@@ -1,1 +1,1 @@
-- [x] Fix Home page footer alignment and positioning
+- [x] Adjust Logo positioning to prevent text overlap

@@ -18,7 +18,8 @@
       justify-content: center;
       align-items: center;
       overflow: visible; /* Allow logo to break out */
-      margin-top: 5vh; /* Add top margin for breathing room */
+      margin-top: 2vh; /* Reduced top margin to lift logo slightly */
+      margin-bottom: 2vh; /* Add bottom margin to separate from text */
     }
 
     .ag-logo-container {
@@ -37,16 +38,16 @@
       width: 160%; /* Significantly larger to break boundaries */
       max-width: none;
       height: auto;
-      transform: translateX(-5%) rotate(-8deg); /* More tilt */
+      transform: translateX(-5%) rotate(-8deg) translateY(-10%); /* Lift logo up */
       opacity: 1;
       flex-shrink: 0;
-      margin-bottom: -20px;
+      margin-bottom: 0; /* Remove negative margin */
     }
 
     /* Text Container aligned to bottom right of logo area */
     .ag-text-group {
       position: absolute;
-      bottom: 15%;
+      bottom: 5%; /* Push text lower */
       right: 0;
       text-align: right;
       z-index: 10;
@@ -171,17 +172,21 @@
       </main>
 
       <!-- Footer：共用模組 -->
-      <footer class="ag-footer-v2 ag-footer-single" style="margin-top: auto; width: 100%; display: flex; flex-direction: column; align-items: center;">
-        <div class="ag-footer-v2__links">
-          <a href="/privacy.html" class="ag-footer-v2__link">隱私權</a>
-          <span class="ag-footer-v2__separator">|</span>
-          <a href="/legal.html" class="ag-footer-v2__link">免責</a>
-          <span class="ag-footer-v2__separator">|</span>
-          <a href="/terms.html" class="ag-footer-v2__link">條款</a>
-          <span class="ag-footer-v2__separator">|</span>
-          <a href="/about.html" class="ag-footer-v2__link">關於</a>
+      <footer class="ag-footer-standard">
+        <div class="ag-footer__inner">
+          <nav class="ag-footer__links" aria-label="Legal and info links">
+            <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+            <span class="ag-footer__separator">•</span>
+            <a href="/legal.html" class="ag-footer__link">法律免責</a>
+            <span class="ag-footer__separator">•</span>
+            <a href="/terms.html" class="ag-footer__link">使用條款</a>
+            <span class="ag-footer__separator">•</span>
+            <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+          </nav>
+          <p class="ag-footer__copyright">
+            © 2025 Afterglow. All rights reserved.
+          </p>
         </div>
-        <div class="ag-footer-v2__copyright">© 2025 Afterglow</div>
       </footer>
     </div>
   </div>
