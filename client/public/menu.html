@@ -20,12 +20,10 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100%; /* Ensure full height */
+      height: 100dvh; /* Force single screen height (C2) */
       padding: 20px;
       text-align: center;
-      /* Adjusted padding to center content vertically on single screen */
-      padding-top: calc(40px + env(safe-area-inset-top)); 
-      padding-bottom: calc(40px + env(safe-area-inset-bottom));
+      overflow: hidden; /* Prevent scrolling (C2) */
     }
 
     .ag-menu-title {
@@ -136,8 +134,8 @@
     <span class="ag-neon-icon-back"></span>
   </a>
 
-  <div class="ag-main-scroll">
-    <div class="ag-menu-container">
+  <!-- Removed ag-main-scroll to prevent scrolling (C2) -->
+  <div class="ag-menu-container">
       <!-- Wild Header -->
       <div class="ag-wild-header ag-mb-40">
         <img src="/assets/logo-handwritten.png" class="ag-wild-logo" alt="Afterglow">
@@ -169,25 +167,8 @@
       </div>
     </div>
 
-    <!-- Footer：共用模組 -->
-    <footer class="ag-footer-standard">
-      <div class="ag-footer__inner">
-        <nav class="ag-footer__links" aria-label="Legal and info links">
-          <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
-          <span class="ag-footer__separator">•</span>
-          <a href="/legal.html" class="ag-footer__link">法律免責</a>
-          <span class="ag-footer__separator">•</span>
-          <a href="/terms.html" class="ag-footer__link">使用條款</a>
-          <span class="ag-footer__separator">•</span>
-          <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
-        </nav>
-
-        <p class="ag-footer__copyright">
-          © 2025 Afterglow. All rights reserved.
-        </p>
-      </div>
-    </footer>
-  </div>
+    <!-- Footer Removed for Immersive Menu (C2) -->
+  <!-- End of ag-menu-container -->
 
   <script>
     // Register Service Worker if not already registered

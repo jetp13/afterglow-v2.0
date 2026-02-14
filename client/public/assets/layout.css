@@ -50,8 +50,8 @@ body {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ag-back-button {
   position: fixed; /* STRICT RULE: Always fixed */
-  top: calc(24px + env(safe-area-inset-top)); /* Safe area aware */
-  left: 16px; /* STRICT RULE: Fixed left position */
+  top: 24px; /* STRICT RULE: Fixed top position (A1) */
+  left: 16px; /* STRICT RULE: Fixed left position (A1) */
   z-index: 2147483647; /* Max z-index to ensure visibility */
   display: flex !important; /* Force display */
   cursor: pointer;
@@ -109,7 +109,7 @@ body {
 /* Mobile adjustments */
 @media (max-width: 480px) {
   .ag-back-button {
-    top: calc(16px + env(safe-area-inset-top));
+    top: 24px; /* STRICT RULE: Keep consistent top spacing (A1) */
     left: 16px; /* Keep consistent left spacing */
     width: 40px;
     height: 40px;

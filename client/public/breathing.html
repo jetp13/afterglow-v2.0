@@ -17,10 +17,11 @@
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 80vh; /* Adjusted for App Shell */
+      height: 100dvh; /* Force full height (D1) */
       text-align: center;
       color: #fff;
-      padding: 40px 20px;
+      padding: 20px;
+      overflow: hidden; /* Prevent scrolling (D1) */
     }
     .ag-breathing-wrapper {
       position: relative;
@@ -68,8 +69,8 @@
     <span class="ag-neon-icon-back"></span>
   </a>
 
-  <div class="ag-main-scroll">
-    <div class="ag-container">
+  <!-- Removed ag-main-scroll to prevent scrolling (D1) -->
+  <div class="ag-container">
       <div class="ag-breathing-wrapper">
         <div class="ag-circle-glow"></div>
         <div class="ag-breathing-text" id="breathing-text">吸氣</div>
@@ -104,6 +105,6 @@
     </div>
 
     <!-- Footer Removed for Immersive Page (Rule B) -->
-  </div>
+  <!-- End of ag-container -->
 </body>
 </html>

@@ -13,13 +13,13 @@
     .ag-home-header {
       position: relative;
       width: 100%;
-      height: 40vh; /* Reduced height to push content down */
+      height: 30vh; /* B1: Further reduced height to lift logo higher */
       display: flex;
       justify-content: center;
       align-items: center;
       overflow: visible; /* Allow logo to break out */
-      margin-top: 2vh; /* Reduced top margin to lift logo slightly */
-      margin-bottom: 2vh; /* Add bottom margin to separate from text */
+      margin-top: 0;
+      margin-bottom: 6vh; /* B2: Increased bottom margin for spacing */
     }
 
     .ag-logo-container {
@@ -71,19 +71,18 @@
 
     /* Adjust Main Content to sit below */
     .ag-home-main {
-      margin-top: auto; /* Push to bottom of available space */
-      margin-bottom: 32px; /* Ensure vertical spacing (Rule: >= 32px) */
+      margin-top: auto;
+      margin-bottom: 40px; /* B2: Ensure vertical spacing >= 32px */
       padding-top: 0;
       z-index: 20;
       position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 36px; /* Increased space for breathing room */
-      /* Removed flex-grow to prevent it from pushing footer out of view or misaligning */
-      justify-content: flex-end; /* Push content towards bottom */
-      padding-bottom: 20px; /* Add padding at bottom of main */
-      width: 100%; /* Ensure full width for centering */
+      gap: 32px; /* B2: Ensure gap is at least 32px */
+      justify-content: flex-end;
+      padding-bottom: 40px; /* B3: Add padding to avoid footer interference */
+      width: 100%;
     }
 
     /* Mobile Optimization */

@@ -30,17 +30,15 @@
       border: 1px solid #ff6bd9;
       background: rgba(255, 107, 217, 0.1);
       border-radius: 16px;
-      padding: 24px; /* Increased padding */
+      padding: 24px; /* G1: Padding >= 16px */
       margin-bottom: 30px;
       display: flex;
       gap: 16px;
-      align-items: flex-start;
-      padding-left: 24px; /* Ensure left padding is sufficient */
-      padding-right: 24px; /* Ensure right padding is sufficient */
-      /* Rule: Unify field rhythm */
-      flex-direction: column; /* Stack content for better mobile rhythm */
-      text-align: center;
       align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      text-align: center;
+      box-shadow: 0 0 15px rgba(255, 107, 217, 0.1); /* G1: Neon glow effect */
     }
 
     .ag-info-icon {
@@ -338,6 +336,7 @@
 </head>
 <body class="ag-page">
   <!-- Back Button (Fixed Position) -->
+  <!-- Back Button (Fixed Position) (G3) -->
   <a href="/support-main.html" class="ag-back-button neon-style" aria-label="返回">
     <span class="ag-neon-icon-back"></span>
   </a>
@@ -410,24 +409,23 @@
       </div>
     </div>
 
-      <!-- Footer：共用模組 -->
-      <footer class="ag-footer-standard">
-        <div class="ag-footer__inner">
-          <nav class="ag-footer__links" aria-label="Legal and info links">
-            <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
-            <span class="ag-footer__separator">•</span>
-            <a href="/legal.html" class="ag-footer__link">法律免責</a>
-            <span class="ag-footer__separator">•</span>
-            <a href="/terms.html" class="ag-footer__link">使用條款</a>
-            <span class="ag-footer__separator">•</span>
-            <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
-          </nav>
-
-          <p class="ag-footer__copyright">
-            © 2025 Afterglow. All rights reserved.
-          </p>
-        </div>
-      </footer>
+        <!-- Footer：共用模組 (Single Instance) -->
+    <footer class="ag-footer-standard">
+      <div class="ag-footer__inner">
+        <nav class="ag-footer__links" aria-label="Legal and info links">
+          <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/legal.html" class="ag-footer__link">法律免責</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/terms.html" class="ag-footer__link">使用條款</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+        </nav>
+        <p class="ag-footer__copyright">
+          © 2025 Afterglow. All rights reserved.
+        </p>
+      </div>
+    </footer>    </footer>
   </div>
 
   </div>
