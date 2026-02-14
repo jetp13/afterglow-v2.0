@@ -9,6 +9,25 @@
   <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
   <link rel="stylesheet" href="/assets/layout.css">
   <style>
+    /* Footer Sticky Test Styles (Scoped to Home) */
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+    .ag-page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .ag-main-scroll {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+    .ag-home-main {
+      flex: 1; /* Push footer to bottom */
+    }
+    
     /* Home Specific Styles for Break-the-Window Design */
     .ag-home-header {
       position: relative;
