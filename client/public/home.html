@@ -32,19 +32,19 @@
     .ag-home-header {
       position: relative;
       width: 100%;
-      height: 30vh; /* B1: Further reduced height to lift logo higher */
+      height: 30vh;
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: visible; /* Allow logo to break out */
+      overflow: visible;
       margin-top: 0;
-      margin-bottom: 6vh; /* B2: Increased bottom margin for spacing */
+      margin-bottom: 6vh;
     }
 
     .ag-logo-container {
       position: relative;
       width: 100%;
-      max-width: 400px; /* Limit width for better control */
+      max-width: 400px;
       height: 100%;
       display: flex;
       flex-direction: column;
@@ -54,23 +54,26 @@
 
     /* The Large Logo */
     .ag-logo-large {
-      width: 160%; /* Significantly larger to break boundaries */
+      width: 160%;
       max-width: none;
       height: auto;
-      transform: translateX(-5%) rotate(-8deg) translateY(-10%); /* Lift logo up */
+      /* Step 2: Logo further up, allow slight bleed */
+      transform: translateX(-5%) rotate(-8deg) translateY(-25%); 
       opacity: 1;
       flex-shrink: 0;
-      margin-bottom: 0; /* Remove negative margin */
+      margin-bottom: 0;
     }
 
     /* Text Container aligned to bottom right of logo area */
     .ag-text-group {
       position: absolute;
-      bottom: 5%; /* Push text lower */
-      right: 0;
+      bottom: 0; /* Align to bottom of header area */
+      right: 24px; /* Step 2: Explicit right alignment */
       text-align: right;
       z-index: 10;
-      padding-right: 20px;
+      padding-right: 0;
+      width: auto;
+      max-width: 360px; /* Ensure it doesn't span full width */
     }
 
     .ag-home-subtitle {
@@ -91,17 +94,19 @@
     /* Adjust Main Content to sit below */
     .ag-home-main {
       margin-top: auto;
-      margin-bottom: 40px; /* B2: Ensure vertical spacing >= 32px */
+      margin-bottom: 40px;
       padding-top: 0;
       z-index: 20;
       position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 32px; /* B2: Ensure gap is at least 32px */
+      gap: 32px;
       justify-content: flex-end;
-      padding-bottom: 40px; /* B3: Add padding to avoid footer interference */
+      padding-bottom: 40px;
       width: 100%;
+      /* Step 2: Shift buttons down for visual balance */
+      transform: translateY(24px); 
     }
 
     /* Mobile Optimization */
@@ -169,11 +174,11 @@
       <header class="ag-home-header">
         <div class="ag-logo-container">
           <img src="/assets/logo-new.png" class="ag-logo-large" alt="Afterglow">
-          
-          <div class="ag-text-group">
-            <div class="ag-home-subtitle">讓夜裡的光有方向</div>
-            <div class="ag-home-tagline-en">STAY SAFE · CARE FOR YOURSELF · SEEK HELP</div>
-          </div>
+        </div>
+        <!-- Step 2: Move text group out of logo container for independent positioning -->
+        <div class="ag-text-group">
+          <div class="ag-home-subtitle">讓夜裡的光有方向</div>
+          <div class="ag-home-tagline-en">STAY SAFE · CARE FOR YOURSELF · SEEK HELP</div>
         </div>
       </header>
 
