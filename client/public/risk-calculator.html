@@ -519,7 +519,8 @@
       substances.forEach(sub => {
         const btn = document.createElement('div');
         btn.className = 'ag-capsule-btn';
-        btn.textContent = sub.name.split(' ')[0]; // Use short name for button
+        // Use full name but handle long text with CSS if needed
+        btn.textContent = sub.name; 
         btn.dataset.id = sub.id;
         btn.onclick = () => toggleSubstance(sub, btn);
         capsuleGrid.appendChild(btn);
@@ -536,9 +537,11 @@
         btn.classList.remove('active');
       } else {
         // Add
-        if (selectedSubstances.length >= 4) {
-          alert('最多只能選擇 4 種物質');
-          return;
+        if (selectedSubstances.length >= 2) {
+          // Auto-remove the first selected if trying to add a 3rd
+          const firstSub = selectedSubstances.shift();
+          const firstBtn = capsuleGrid.querySelector(`.ag-capsule-btn[data-id="${firstSub.id}"]`);
+          if (firstBtn) firstBtn.classList.remove('active');
         }
         selectedSubstances.push(sub);
         btn.classList.add('active');
