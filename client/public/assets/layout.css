@@ -1,6 +1,6 @@
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   Afterglow v2.2.0 — Layout CSS
-   深夜陪伴系統｜霓虹燈管風格 (Neon Tube Style)
+   Afterglow v2.3.0 — Layout CSS
+   深夜陪伴系統｜黑暗入口風格 (Dark Entrance Style)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 /* === Global Reset === */
@@ -61,7 +61,7 @@ body {
   background: transparent; /* Remove background */
   border: none; /* Remove border */
   box-shadow: none; /* Remove box-shadow */
-  opacity: 0.2; /* Low opacity by default */
+  opacity: 0.15; /* Reduced opacity to 0.15 */
   transition: opacity 0.5s ease;
   animation: ag-breathe-opacity 4s ease-in-out infinite;
   cursor: pointer;
@@ -87,7 +87,7 @@ body {
 
 @keyframes ag-breathe-opacity {
   0%, 100% { opacity: 0.1; }
-  50% { opacity: 0.3; }
+  50% { opacity: 0.25; }
 }
 
 /* Mobile adjustments */
@@ -99,68 +99,73 @@ body {
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   B. 首頁 Logo + 副標區塊 (Separated & Neon)
+   B. 首頁 Logo + 副標區塊 (Dark Entrance Style)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ag-home-header {
   position: relative;
   width: 100%;
-  height: 35vh; /* Increased height for better spacing */
+  height: 45vh; /* Occupy top 45% */
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: center; /* Center vertically in the top section */
   overflow: visible;
   margin-bottom: 0;
+  padding-top: 5vh; /* Slight top padding */
 }
 
 .ag-logo-container {
   position: relative;
   width: 100%;
-  max-width: 400px;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 2vh; /* Move down slightly */
+  margin-bottom: 32px; /* Spacing between Logo and Subtitle */
 }
 
-/* The Large Logo */
+/* The Large Logo - Refined */
 .ag-logo-large {
-  width: 140%; /* Slightly reduced from 160% */
-  max-width: none;
+  width: 70%; /* Restricted to 70% width */
+  max-width: 320px; /* Max width constraint */
   height: auto;
-  transform: translateX(-2%) rotate(-8deg) translateY(-10%); 
+  transform: none; /* Remove rotation/translation */
   opacity: 1;
   flex-shrink: 0;
+  /* Reduced Neon Glow (30% less) */
+  filter: drop-shadow(0 0 3px rgba(255,255,255,0.5)) 
+          drop-shadow(0 0 8px rgba(255,255,255,0.3)) 
+          drop-shadow(0 0 16px rgba(255,255,255,0.15));
 }
 
-/* Text Group - Independent Positioning */
+/* Text Group - Clean Hierarchy */
 .ag-text-group {
-  position: absolute;
-  bottom: 10%;
-  right: 24px;
-  text-align: right;
+  position: relative; /* Changed to relative for natural flow */
+  bottom: auto;
+  right: auto;
+  text-align: center; /* Center alignment */
   z-index: 10;
-  width: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
 .ag-home-subtitle {
-  font-size: 18px; /* Updated to 18px */
+  font-size: 18px; /* Fixed 18px */
   letter-spacing: 0.15em;
-  color: #fff;
-  margin-bottom: 8px;
+  color: rgba(255, 255, 255, 0.85); /* 85% White */
+  margin-bottom: 0;
   font-weight: 300;
-  text-shadow: 
-    0 0 5px rgba(255, 255, 255, 0.6),
-    0 0 10px rgba(255, 255, 255, 0.4),
-    0 0 15px rgba(255, 255, 255, 0.2); /* Neon White Glow */
+  text-shadow: none; /* Remove neon glow */
 }
 
 .ag-home-tagline-en {
-  font-size: 13px; /* Updated to 13px */
-  letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.7);
+  font-size: 13px; /* Fixed 13px */
+  letter-spacing: 1px; /* Increased letter spacing */
+  color: rgba(255, 255, 255, 0.5);
   text-transform: uppercase;
-  text-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+  text-shadow: none;
 }
 
 /* Mobile Optimization */
@@ -170,26 +175,21 @@ body {
   }
   
   .ag-logo-large {
-    width: 130%;
-    transform: translateX(-2%) rotate(-8deg);
-  }
-  
-  .ag-text-group {
-    bottom: 15%;
-    right: 20px;
+    width: 70%;
   }
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   C. 首頁主區域（Matrix Pills）
+   C. 首頁主區域（Vertical Capsules）
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ag-home-main {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* Align to top of main section */
   width: 100%;
+  padding-top: 20px;
   padding-bottom: 60px;
   position: relative;
 }
@@ -198,74 +198,79 @@ body {
 .ag-pills-container {
   display: flex;
   flex-direction: column;
-  gap: 40px; /* Increased gap */
+  gap: 28px; /* Fixed 28px gap */
   align-items: center;
   position: relative;
-  margin-top: 20px;
+  width: 100%;
 }
 
-/* Base Capsule Style */
+/* Base Capsule Style - Refined */
 .ag-capsule {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 220px;
-  height: 60px;
-  border-radius: 30px;
-  font-size: 18px;
+  width: 187px; /* Reduced by 15% from 220px */
+  height: 54px; /* Reduced by 10% from 60px */
+  border-radius: 999px;
+  font-size: 16px; /* Slightly smaller font */
   font-weight: 500;
   letter-spacing: 2px;
   color: #fff;
   text-decoration: none;
   position: relative;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(4px);
   transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
 /* Blue Pill (Start Meditation) */
 .ag-capsule--primary {
-  border: 2px solid #00aaff;
-  box-shadow: 
-    0 0 10px rgba(0, 170, 255, 0.4),
-    inset 0 0 15px rgba(0, 170, 255, 0.2);
-  transform: translateX(-20px) rotate(-2deg); /* Offset Left & Tilt */
+  border: 1.5px solid #00aaff;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0,160,255,.2) 0%,
+    rgba(0,0,0,0) 70%
+  );
+  box-shadow:
+    0 0 10px rgba(0,160,255,.5),
+    inset 0 0 14px rgba(0,160,255,.25);
+  transform: none; /* Remove tilt */
 }
 
 .ag-capsule--primary:hover {
   box-shadow: 
-    0 0 20px rgba(0, 170, 255, 0.8),
-    inset 0 0 25px rgba(0, 170, 255, 0.4);
-  text-shadow: 0 0 10px rgba(0, 170, 255, 1);
-  transform: translateX(-20px) rotate(-2deg) scale(1.05);
+    0 0 15px rgba(0, 170, 255, 0.7),
+    inset 0 0 20px rgba(0, 170, 255, 0.35);
+  transform: scale(1.02);
 }
 
 /* Red Pill (Emergency Support) */
 .ag-capsule--secondary {
-  border: 2px solid #ff0066;
-  box-shadow: 
-    0 0 10px rgba(255, 0, 102, 0.4),
-    inset 0 0 15px rgba(255, 0, 102, 0.2);
-  transform: translateX(20px) rotate(3deg); /* Offset Right & Tilt */
+  border: 1.5px solid #ff0033;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255,0,51,.2) 0%,
+    rgba(0,0,0,0) 70%
+  );
+  box-shadow:
+    0 0 10px rgba(255,0,51,.5),
+    inset 0 0 14px rgba(255,0,51,.25);
+  transform: none; /* Remove tilt */
 }
 
 .ag-capsule--secondary:hover {
   box-shadow: 
-    0 0 20px rgba(255, 0, 102, 0.8),
-    inset 0 0 25px rgba(255, 0, 102, 0.4);
-  text-shadow: 0 0 10px rgba(255, 0, 102, 1);
-  transform: translateX(20px) rotate(3deg) scale(1.05);
+    0 0 15px rgba(255, 0, 51, 0.7),
+    inset 0 0 20px rgba(255, 0, 51, 0.35);
+  transform: scale(1.02);
 }
 
 /* Breathing Animation for Pills */
 @keyframes ag-pill-breathe {
-  0%, 100% { box-shadow: 0 0 10px currentColor, inset 0 0 15px currentColor; }
-  50% { box-shadow: 0 0 18px currentColor, inset 0 0 20px currentColor; }
+  0%, 100% { box-shadow: 0 0 10px currentColor, inset 0 0 14px currentColor; }
+  50% { box-shadow: 0 0 14px currentColor, inset 0 0 18px currentColor; }
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   D. Footer Component (Refined)
+   D. Footer Component (Clean & Minimal)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ag-footer-standard {
   width: 100%;
@@ -294,29 +299,31 @@ body {
   flex-wrap: nowrap; /* Force single line */
   justify-content: center;
   align-items: center;
-  gap: 16px; /* Reduced gap */
+  gap: 16px; /* Fixed 16px gap */
   font-size: 12px; /* Fixed 12px */
   color: rgba(255, 255, 255, 0.6); /* Opacity 0.6 */
   white-space: nowrap;
   width: 100%;
   overflow: hidden;
+  opacity: 0.6; /* Ensure container opacity */
 }
 
 .ag-footer__link {
-  color: rgba(255, 255, 255, 0.6);
+  color: inherit; /* Inherit from parent */
   text-decoration: none;
-  transition: color 0.3s ease, text-shadow 0.3s ease;
+  transition: color 0.3s ease;
   white-space: nowrap;
 }
 
 .ag-footer__link:hover {
   color: #fff;
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  opacity: 1;
 }
 
 .ag-footer__separator {
-  color: rgba(255, 255, 255, 0.3);
+  color: inherit;
   font-size: 10px;
+  opacity: 0.5;
 }
 
 .ag-footer__copyright {
@@ -324,6 +331,7 @@ body {
   color: rgba(255, 255, 255, 0.4);
   letter-spacing: 1px;
   margin-top: 4px;
+  display: none; /* Hide copyright for cleaner look if needed, or keep minimal */
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
