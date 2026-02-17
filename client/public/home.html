@@ -2,162 +2,12 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Afterglow｜讓夜裡的光有方向</title>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#000000">
   <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
   <link rel="stylesheet" href="/assets/layout.css">
-  <style>
-    /* Flexbox Sticky Footer Structure (Standardized) */
-    html, body {
-      height: 100%;
-      margin: 0;
-    }
-    .ag-page {
-      min-height: 100vh; /* Fallback for browsers that don't support svh */
-      min-height: 100svh; /* Use svh to account for mobile browser UI */
-      display: flex;
-      flex-direction: column;
-    }
-    /* Wrapper for content to push footer down */
-    .ag-home-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-      /* Ensure content doesn't overflow horizontally */
-      overflow-x: hidden;
-    }
-    .ag-home-main {
-      flex: 1; /* Push footer to bottom */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center; /* Center buttons vertically in available space */
-      width: 100%;
-      padding-bottom: 40px; /* Space before footer */
-    }
-    
-    /* Home Specific Styles for Break-the-Window Design */
-    .ag-home-header {
-      position: relative;
-      width: 100%;
-      height: 30vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: visible;
-      margin-top: 0;
-      margin-bottom: 6vh;
-    }
-
-    .ag-logo-container {
-      position: relative;
-      width: 100%;
-      max-width: 400px;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* The Large Logo */
-    .ag-logo-large {
-      width: 160%;
-      max-width: none;
-      height: auto;
-      /* Step 2: Logo further up, allow slight bleed */
-      transform: translateX(-5%) rotate(-8deg) translateY(-25%); 
-      opacity: 1;
-      flex-shrink: 0;
-      margin-bottom: 0;
-    }
-
-    /* Text Container aligned to bottom right of logo area */
-    .ag-text-group {
-      position: absolute;
-      bottom: 0; /* Align to bottom of header area */
-      right: 24px; /* Step 2: Explicit right alignment */
-      text-align: right;
-      z-index: 10;
-      padding-right: 0;
-      width: auto;
-      max-width: 360px; /* Ensure it doesn't span full width */
-    }
-
-    .ag-home-subtitle {
-      font-size: 14px;
-      letter-spacing: 0.15em;
-      color: rgba(255, 255, 255, 0.7);
-      margin-bottom: 6px;
-      font-weight: 400;
-    }
-
-    .ag-home-tagline-en {
-      font-size: 10px;
-      letter-spacing: 0.1em;
-      color: rgba(255, 255, 255, 0.5);
-      text-transform: uppercase;
-    }
-
-    /* Adjust Main Content to sit below */
-    .ag-home-main {
-      margin-top: auto;
-      margin-bottom: 40px;
-      padding-top: 0;
-      z-index: 20;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 32px;
-      justify-content: flex-end;
-      padding-bottom: 40px;
-      width: 100%;
-      /* Step 2: Shift buttons down for visual balance */
-      transform: translateY(24px); 
-    }
-
-    /* Mobile Optimization */
-    @media (max-width: 768px) {
-      .ag-home-header {
-        height: 40vh;
-        align-items: center;
-      }
-      
-      .ag-logo-container {
-        max-width: 320px;
-      }
-
-      .ag-logo-large {
-        width: 150%;
-        transform: translateX(-5%) rotate(-8deg);
-        margin-bottom: 0;
-      }
-      
-      .ag-text-group {
-        bottom: 10%;
-        right: 10px;
-      }
-
-      .ag-home-subtitle {
-        font-size: 12px;
-      }
-
-      .ag-home-tagline-en {
-        font-size: 9px;
-      }
-      
-      .ag-home-main {
-        margin-top: auto;
-        margin-bottom: 20px;
-        gap: 24px;
-      }
-    }
-
-  </style>
   <script>
     // Check for consent immediately
     if (localStorage.getItem('ag_consent') !== 'true') {
@@ -180,36 +30,42 @@
 </head>
 <body>
   <div class="ag-page">
+    <!-- Neon Back Button (Hidden on Home, but structure kept for consistency if needed later) -->
+    <!-- <a href="/index.html" class="ag-back-button" aria-label="Back"></a> -->
+
     <div class="ag-home-container">
-      <!-- Header：Break-the-Window Logo Design -->
+      <!-- Header：Separated Logo & Subtitle -->
       <header class="ag-home-header">
         <div class="ag-logo-container">
           <img src="/assets/logo-new.png" class="ag-logo-large" alt="Afterglow">
         </div>
-        <!-- Step 2: Move text group out of logo container for independent positioning -->
+        <!-- Independent Text Group -->
         <div class="ag-text-group">
           <div class="ag-home-subtitle">讓夜裡的光有方向</div>
           <div class="ag-home-tagline-en">STAY SAFE · CARE FOR YOURSELF · SEEK HELP</div>
         </div>
       </header>
 
-      <!-- Main：兩顆 Glow 膠囊 -->
+      <!-- Main：Matrix Pills (Red/Blue) -->
       <main class="ag-home-main">
-        <a href="/menu.html" class="ag-capsule ag-capsule--primary">
-          開始冥想
-        </a>
+        <div class="ag-pills-container">
+          <!-- Blue Pill: Meditation -->
+          <a href="/menu.html" class="ag-capsule ag-capsule--primary">
+            開始冥想
+          </a>
 
-        <!-- 更新連結：直接進入選單，因為已在 gate.html 同意過免責聲明 -->
-        <a href="/support-main.html" class="ag-capsule ag-capsule--secondary">
-          緊急支援
-        </a>
+          <!-- Red Pill: Emergency Support -->
+          <a href="/support-main.html" class="ag-capsule ag-capsule--secondary">
+            緊急支援
+          </a>
+        </div>
       </main>
     </div>
 
-    /* Footer：共用模組 */
-    <footer class="ag-footer-standard" style="padding-bottom: calc(24px + env(safe-area-inset-bottom));">
+    <!-- Footer：Standardized & Clean -->
+    <footer class="ag-footer-standard">
       <div class="ag-footer__inner">
-        <nav class="ag-footer__links" aria-label="Legal and info links">s">
+        <nav class="ag-footer__links" aria-label="Legal and info links">
           <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
           <span class="ag-footer__separator">•</span>
           <a href="/legal.html" class="ag-footer__link">法律免責</a>

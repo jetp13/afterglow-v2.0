@@ -1,6 +1,6 @@
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   Afterglow v2.1.2 — Layout CSS
-   深夜陪伴系統｜黑底霧霾風格
+   Afterglow v2.2.0 — Layout CSS
+   深夜陪伴系統｜霓虹燈管風格 (Neon Tube Style)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 /* === Global Reset === */
@@ -46,205 +46,231 @@ body {
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   A. 返回首頁按鈕 (Wild Style) - STRICT GLOBAL RULE
+   A. 返回首頁按鈕 (Neon Icon Style)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ag-back-button {
-  position: fixed; /* STRICT RULE: Always fixed */
-  top: 24px; /* STRICT RULE: Fixed top position (A1) */
-  left: 16px; /* STRICT RULE: Fixed left position (A1) */
-  z-index: 2147483647; /* Max z-index to ensure visibility */
-  display: flex !important; /* Force display */
-  cursor: pointer;
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 2147483647;
+  display: flex !important;
   align-items: center;
   justify-content: center;
   width: 44px;
   height: 44px;
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.8); /* Darker background for max contrast */
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.6); /* Brighter border */
-  color: #fff; /* Pure white icon */
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.5); /* Stronger shadow */
+  background: transparent; /* Remove background */
+  border: none; /* Remove border */
+  box-shadow: none; /* Remove box-shadow */
+  opacity: 0.2; /* Low opacity by default */
+  transition: opacity 0.5s ease;
+  animation: ag-breathe-opacity 4s ease-in-out infinite;
+  cursor: pointer;
 }
 
-/* Ensure Back Button is ALWAYS visible on top of everything */
-.ag-back-button:not([hidden]) {
-  display: flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
+.ag-back-button:hover {
+  opacity: 1;
+  animation: none; /* Stop breathing on hover */
 }
 
-/* Ensure Back Button is ALWAYS visible on top of everything */
-.ag-back-button:not([hidden]) {
-  display: flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-/* 箭頭圖示 - 使用更簡約的符號 */
+/* Neon Arrow Icon */
 .ag-back-button::before {
   content: "";
-  width: 10px;
-  height: 10px;
-  border-top: 2px solid currentColor;
-  border-left: 2px solid currentColor;
-  transform: rotate(-45deg) translate(2px, 2px);
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  transform: rotate(-45deg);
+  box-shadow: -1px -1px 8px rgba(255, 255, 255, 0.8), -1px -1px 4px rgba(255, 255, 255, 0.5); /* White Neon Glow */
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
 }
 
-/* Hover: 點亮 */
-.ag-back-button:hover {
-  border-color: rgba(255, 255, 255, 0.6);
-  color: #fff;
-  background: rgba(0, 0, 0, 0.6);
-  transform: scale(1.05);
-  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
-}
-
-.ag-back-button:active {
-  transform: scale(0.95);
+@keyframes ag-breathe-opacity {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.3; }
 }
 
 /* Mobile adjustments */
 @media (max-width: 480px) {
   .ag-back-button {
-    top: 24px; /* STRICT RULE: Keep consistent top spacing (A1) */
-    left: 16px; /* Keep consistent left spacing */
-    width: 40px;
-    height: 40px;
+    top: 20px;
+    left: 16px;
   }
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   B. 首頁 Logo + 副標區塊
+   B. 首頁 Logo + 副標區塊 (Separated & Neon)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ag-home-header {
-  padding: 8vh 20px 20px; /* Adjusted top padding to 8vh */
+  position: relative;
+  width: 100%;
+  height: 35vh; /* Increased height for better spacing */
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Align content to top */
-}
-
-.ag-logo-block {
-  position: relative;
-  max-width: 600px;
-  margin: 0 auto;
-}
-
-/* Logo：寬版、允許外擴、偏左 */
-.ag-logo {
-  width: 75%;
-  max-width: 480px;
-  height: auto;
-  object-fit: contain;
+  align-items: center;
+  justify-content: center;
   overflow: visible;
-  display: block;
-  margin: -20px 0 40px 0; /* Adjusted margin-top as requested */
-  transform: none; /* Removed transform to rely on margin */
+  margin-bottom: 0;
 }
 
-/* 副標區塊：置於 Logo 右下方 */
-.ag-subtitle-block {
+.ag-logo-container {
+  position: relative;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2vh; /* Move down slightly */
+}
+
+/* The Large Logo */
+.ag-logo-large {
+  width: 140%; /* Slightly reduced from 160% */
+  max-width: none;
+  height: auto;
+  transform: translateX(-2%) rotate(-8deg) translateY(-10%); 
+  opacity: 1;
+  flex-shrink: 0;
+}
+
+/* Text Group - Independent Positioning */
+.ag-text-group {
   position: absolute;
-  bottom: 10px;
-  right: 0;
+  bottom: 10%;
+  right: 24px;
   text-align: right;
+  z-index: 10;
+  width: auto;
 }
 
-.ag-subtitle-zh {
-  font-size: 18px;
+.ag-home-subtitle {
+  font-size: 18px; /* Updated to 18px */
+  letter-spacing: 0.15em;
+  color: #fff;
+  margin-bottom: 8px;
   font-weight: 300;
-  color: #ccc;
-  margin-bottom: 4px;
-  letter-spacing: 0.5px;
+  text-shadow: 
+    0 0 5px rgba(255, 255, 255, 0.6),
+    0 0 10px rgba(255, 255, 255, 0.4),
+    0 0 15px rgba(255, 255, 255, 0.2); /* Neon White Glow */
 }
 
-.ag-subtitle-en {
-  font-size: 14px;
-  font-weight: 300;
-  color: #999;
-  letter-spacing: 1px;
+.ag-home-tagline-en {
+  font-size: 13px; /* Updated to 13px */
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  text-shadow: 0 0 4px rgba(255, 255, 255, 0.3);
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+  .ag-home-header {
+    height: 40vh;
+  }
+  
+  .ag-logo-large {
+    width: 130%;
+    transform: translateX(-2%) rotate(-8deg);
+  }
+  
+  .ag-text-group {
+    bottom: 15%;
+    right: 20px;
+  }
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   C. 首頁主區域（Glow 按鈕）
+   C. 首頁主區域（Matrix Pills）
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ag-home-main {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 40px 20px;
+  width: 100%;
+  padding-bottom: 60px;
+  position: relative;
 }
 
-.ag-button-group {
+/* Matrix Pills Container */
+.ag-pills-container {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  width: 100%;
-  max-width: 360px;
+  gap: 40px; /* Increased gap */
+  align-items: center;
+  position: relative;
+  margin-top: 20px;
 }
 
-/* Glow 膠囊按鈕（完整效果版）*/
+/* Base Capsule Style */
 .ag-capsule {
-  display: block;
-  width: 200px; /* Reduced width for better breathing room */
-  padding: 14px 0;
-  text-align: center;
-  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 220px;
+  height: 60px;
+  border-radius: 30px;
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: 2px;
   color: #fff;
   text-decoration: none;
   position: relative;
-  background: transparent;
-  border: 2px solid;
-  transition: all 0.3s ease;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
-/* Primary（藍色 Glow）*/
+/* Blue Pill (Start Meditation) */
 .ag-capsule--primary {
-  border-color: #2b9eff;
+  border: 2px solid #00aaff;
   box-shadow: 
-    0 0 15px rgba(43, 158, 255, 0.5),
-    inset 0 0 10px rgba(43, 158, 255, 0.2);
-  text-shadow: 0 0 8px rgba(43, 158, 255, 0.8);
+    0 0 10px rgba(0, 170, 255, 0.4),
+    inset 0 0 15px rgba(0, 170, 255, 0.2);
+  transform: translateX(-20px) rotate(-2deg); /* Offset Left & Tilt */
 }
 
-.ag-capsule--primary:hover,
-.ag-capsule--primary:active {
+.ag-capsule--primary:hover {
   box-shadow: 
-    0 0 25px rgba(43, 158, 255, 0.8),
-    inset 0 0 15px rgba(43, 158, 255, 0.3);
-  text-shadow: 0 0 12px rgba(43, 158, 255, 1);
+    0 0 20px rgba(0, 170, 255, 0.8),
+    inset 0 0 25px rgba(0, 170, 255, 0.4);
+  text-shadow: 0 0 10px rgba(0, 170, 255, 1);
+  transform: translateX(-20px) rotate(-2deg) scale(1.05);
 }
 
-/* Secondary（紫色 Glow）*/
+/* Red Pill (Emergency Support) */
 .ag-capsule--secondary {
-  border-color: #bd00ff;
+  border: 2px solid #ff0066;
   box-shadow: 
-    0 0 15px rgba(189, 0, 255, 0.5),
-    inset 0 0 10px rgba(189, 0, 255, 0.2);
-  text-shadow: 0 0 8px rgba(189, 0, 255, 0.8);
+    0 0 10px rgba(255, 0, 102, 0.4),
+    inset 0 0 15px rgba(255, 0, 102, 0.2);
+  transform: translateX(20px) rotate(3deg); /* Offset Right & Tilt */
 }
 
-.ag-capsule--secondary:hover,
-.ag-capsule--secondary:active {
+.ag-capsule--secondary:hover {
   box-shadow: 
-    0 0 25px rgba(189, 0, 255, 0.8),
-    inset 0 0 15px rgba(189, 0, 255, 0.3);
-  text-shadow: 0 0 12px rgba(189, 0, 255, 1);
+    0 0 20px rgba(255, 0, 102, 0.8),
+    inset 0 0 25px rgba(255, 0, 102, 0.4);
+  text-shadow: 0 0 10px rgba(255, 0, 102, 1);
+  transform: translateX(20px) rotate(3deg) scale(1.05);
+}
+
+/* Breathing Animation for Pills */
+@keyframes ag-pill-breathe {
+  0%, 100% { box-shadow: 0 0 10px currentColor, inset 0 0 15px currentColor; }
+  50% { box-shadow: 0 0 18px currentColor, inset 0 0 20px currentColor; }
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   D. Footer Component (Standardized) - STRICT FOOTER STRATEGY
+   D. Footer Component (Refined)
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ag-footer-standard {
   width: 100%;
-  padding: 32px 20px calc(28px + env(safe-area-inset-bottom));
-  margin-top: auto; /* Push to bottom */
+  padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
+  margin-top: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -259,7 +285,8 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
+  width: 100%;
 }
 
 .ag-footer__links {
@@ -267,243 +294,73 @@ body {
   flex-wrap: nowrap; /* Force single line */
   justify-content: center;
   align-items: center;
-  gap: 24px; /* Adjusted gap as requested */
-  font-size: 11px;
-  color: #aaa;
-  white-space: nowrap; /* Prevent wrapping */
+  gap: 16px; /* Reduced gap */
+  font-size: 12px; /* Fixed 12px */
+  color: rgba(255, 255, 255, 0.6); /* Opacity 0.6 */
+  white-space: nowrap;
   width: 100%;
   overflow: hidden;
 }
 
 .ag-footer__link {
-  color: #aaa;
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
   white-space: nowrap;
 }
 
 .ag-footer__link:hover {
   color: #fff;
-  text-decoration: underline;
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
 }
 
 .ag-footer__separator {
-  color: #444;
+  color: rgba(255, 255, 255, 0.3);
   font-size: 10px;
 }
 
 .ag-footer__copyright {
   font-size: 10px;
-  color: #666;
+  color: rgba(255, 255, 255, 0.4);
   letter-spacing: 1px;
   margin-top: 4px;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   E. About 頁面
+   E. Other Pages (About, Legal, etc.) - Preserved
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.ag-about {
-  flex: 1;
-  padding: 20px 24px 40px;
-}
+.ag-about { flex: 1; padding: 20px 24px 40px; }
+.ag-about__container { max-width: 540px; margin: 0 auto; }
+.ag-about__title { font-size: 26px; font-weight: 400; text-align: center; margin-bottom: 8px; opacity: 0.95; }
+.ag-about__subtitle { font-size: 16px; font-weight: 300; text-align: center; color: #aaa; margin-bottom: 32px; }
+.ag-about__content { font-size: 15px; line-height: 1.8; color: #ddd; }
+.ag-about__content p { margin-bottom: 18px; }
 
-.ag-about__container {
-  max-width: 540px;
-  margin: 0 auto;
-}
-
-.ag-about__title {
-  font-size: 26px;
-  font-weight: 400;
-  text-align: center;
-  margin-bottom: 8px;
-  opacity: 0.95;
-}
-
-.ag-about__subtitle {
-  font-size: 16px;
-  font-weight: 300;
-  text-align: center;
-  color: #aaa;
-  margin-bottom: 32px;
-}
-
-.ag-about__content {
-  font-size: 15px;
-  line-height: 1.8;
-  color: #ddd;
-}
-
-.ag-about__content p {
-  margin-bottom: 18px;
-}
+.ag-legal { flex: 1; padding: 20px 24px 40px; }
+.ag-legal__container { max-width: 560px; margin: 0 auto; }
+.ag-legal__title { font-size: 26px; font-weight: 400; text-align: center; margin-bottom: 12px; opacity: 0.95; }
+.ag-legal__intro { font-size: 15px; line-height: 1.7; text-align: center; color: #bbb; margin-bottom: 28px; }
+.ag-legal__content { font-size: 14px; line-height: 1.7; color: #ccc; }
+.ag-legal__content h2 { font-size: 17px; font-weight: 400; margin-top: 24px; margin-bottom: 10px; opacity: 0.95; }
+.ag-legal__content ul { margin: 12px 0 16px 20px; list-style: disc; }
+.ag-legal__content li { margin-bottom: 8px; line-height: 1.7; }
+.ag-legal__content p { margin-bottom: 16px; }
+.ag-legal__note { margin-top: 24px; padding: 16px; background: rgba(255, 255, 255, 0.03); border-left: 2px solid rgba(255, 255, 255, 0.2); font-size: 14px; line-height: 1.7; color: #aaa; }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   F. Legal 頁面（Privacy / Terms / Legal）
+   F. Wild Header Logo (Internal Pages) - Preserved
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.ag-legal {
-  flex: 1;
-  padding: 20px 24px 40px;
-}
-
-.ag-legal__container {
-  max-width: 560px;
-  margin: 0 auto;
-}
-
-.ag-legal__title {
-  font-size: 26px;
-  font-weight: 400;
-  text-align: center;
-  margin-bottom: 12px;
-  opacity: 0.95;
-}
-
-.ag-legal__intro {
-  font-size: 15px;
-  line-height: 1.7;
-  text-align: center;
-  color: #bbb;
-  margin-bottom: 28px;
-}
-
-.ag-legal__content {
-  font-size: 14px;
-  line-height: 1.7;
-  color: #ccc;
-}
-
-.ag-legal__content h2 {
-  font-size: 17px;
-  font-weight: 400;
-  margin-top: 24px;
-  margin-bottom: 10px;
-  opacity: 0.95;
-}
-
-.ag-legal__content ul {
-  margin: 12px 0 16px 20px;
-  list-style: disc;
-}
-
-.ag-legal__content li {
-  margin-bottom: 8px;
-  line-height: 1.7;
-}
-
-.ag-legal__content p {
-  margin-bottom: 16px;
-}
-
-.ag-legal__note {
-  margin-top: 24px;
-  padding: 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border-left: 2px solid rgba(255, 255, 255, 0.2);
-  font-size: 14px;
-  line-height: 1.7;
-  color: #aaa;
-}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   G. RWD 響應式調整
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ag-wild-header { position: relative; width: 100%; height: 80px; overflow: visible; margin-bottom: 20px; z-index: 100; }
+.ag-wild-logo { position: absolute; top: -10px; left: -20px; width: 180px; height: auto; transform: rotate(-5deg); opacity: 0.9; pointer-events: none; }
 @media (max-width: 480px) {
-  .ag-logo {
-    width: 80%;
-  }
-
-  .ag-subtitle-zh {
-    font-size: 16px;
-  }
-
-  .ag-subtitle-en {
-    font-size: 12px;
-  }
-
-  .ag-glow-capsule {
-    font-size: 17px;
-    letter-spacing: 1.5px;
-  }
-
-  .ag-legal__content,
-  .ag-about__content {
-    font-size: 14px;
-  }
+  .ag-wild-header { height: 60px; margin-bottom: 10px; }
+  .ag-wild-logo { width: 140px; top: -5px; left: -15px; }
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   H. Wild Header Logo (Internal Pages)
+   G. Utilities & Mobile Safety
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.ag-wild-header {
-  position: relative;
-  width: 100%;
-  height: 80px; /* Reduced height for internal pages */
-  overflow: visible;
-  margin-bottom: 20px;
-  z-index: 100;
-}
-
-.ag-wild-logo {
-  position: absolute;
-  top: -10px;
-  left: -20px; /* Bleed out left */
-  width: 180px; /* Adjust size as needed */
-  height: auto;
-  transform: rotate(-5deg);
-  opacity: 0.9;
-  pointer-events: none; /* Let clicks pass through if needed */
-}
-
-/* Mobile adjustments for Wild Header */
-@media (max-width: 480px) {
-  .ag-wild-header {
-    height: 60px;
-    margin-bottom: 10px;
-  }
-  
-  .ag-wild-logo {
-    width: 140px;
-    top: -5px;
-    left: -15px;
-  }
-}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   I. SSOT Utilities & Mobile Safety (Refactored)
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-
-/* 1. Mobile Safety & Scroll Locking */
-body {
-  overflow-x: hidden; /* Prevent horizontal scroll from wild logo */
-  width: 100%;
-  position: relative;
-}
-
-/* Safe Area Insets for Mobile */
-.ag-page {
-  padding-top: env(safe-area-inset-top);
-  padding-bottom: env(safe-area-inset-bottom);
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
-}
-
-/* 2. Utility Classes to Replace Inline Styles */
-
-/* Visually Hidden (Accessible) */
-.ag-visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* Text Colors */
+.ag-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; white-space: nowrap; border: 0; }
 .ag-text-cyan { color: #00e5ff; }
 .ag-text-magenta { color: #ff6bd9; }
 .ag-text-purple { color: #bd00ff; }
@@ -511,11 +368,7 @@ body {
 .ag-text-gray { color: #aaa; }
 .ag-text-dark-gray { color: #666; }
 .ag-text-red { color: #ff4444; }
-
-/* Font Weights */
 .ag-font-bold { font-weight: bold; }
-
-/* Spacing */
 .ag-mt-10 { margin-top: 10px; }
 .ag-mt-20 { margin-top: 20px; }
 .ag-mt-40 { margin-top: 40px; }
@@ -524,76 +377,17 @@ body {
 .ag-mb-20 { margin-bottom: 20px; }
 .ag-mb-40 { margin-bottom: 40px; }
 .ag-pl-20 { padding-left: 20px; }
-
-/* Font Sizes */
 .ag-text-xs { font-size: 12px; }
 .ag-text-sm { font-size: 13px; }
-
-/* Links */
-.ag-link-clean {
-  text-decoration: none;
-  color: inherit;
-  transition: opacity 0.2s;
-}
+.ag-link-clean { text-decoration: none; color: inherit; transition: opacity 0.2s; }
 .ag-link-clean:hover { opacity: 0.8; }
-
 .ag-link-purple { color: #bd00ff; text-decoration: none; }
 .ag-link-purple:hover { text-decoration: underline; }
-
-/* Containers */
-.ag-container-sm {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 60px 16px 80px;
-}
-
-.ag-container-md {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 60px 16px 100px;
-}
-
-/* Specific Component Fixes */
-.ag-back-button-fixed {
-  position: fixed;
-  top: 24px; /* Adjusted for safe area if needed, but usually below status bar */
-  left: 24px;
-  z-index: 9999;
-  /* Style inheritance from .ag-back-button is assumed, 
-     but inline styles had specific overrides we need to standardize */
-  color: rgba(255, 255, 255, 0.5);
-  background: rgba(0, 0, 0, 0.2);
-  backdrop-filter: blur(5px);
-}
-
-/* Disabled State */
-.ag-disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-/* Grid Spans */
-.ag-col-span-full {
-  grid-column: 1 / -1;
-}
-
-/* Logo Sizing Utilities */
-.ag-logo-sm {
-  width: 200px;
-  margin: 0 auto;
-}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   J. Global 9:16 Layout Fixes (Viewport, Safe Area, Overflow)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-
-/* Ensure full height and prevent horizontal scroll */
-html, body {
-  width: 100%;
-  height: 100%;
-  overflow-x: hidden;
-  overscroll-behavior-y: none; /* Prevent pull-to-refresh effect if not needed */
-}
+.ag-container-sm { max-width: 600px; margin: 0 auto; padding: 60px 16px 80px; }
+.ag-container-md { max-width: 800px; margin: 0 auto; padding: 60px 16px 100px; }
+.ag-disabled { opacity: 0.5; cursor: not-allowed; }
+.ag-col-span-full { grid-column: 1 / -1; }
+.ag-logo-sm { width: 200px; margin: 0 auto; }
 
 /* Safe Area Variables */
 :root {
@@ -612,253 +406,8 @@ html, body {
   min-height: 100vh;
 }
 
-/* Ensure Logo doesn't cause scroll */
-.ag-logo-block, .ag-wild-header {
-  max-width: 100vw;
-  overflow: hidden; /* Contain the bleeding logo visually */
-}
-
 /* Fix for potential text vibrating/blurring */
 .ag-breathing-text {
   transform: translateZ(0);
   backface-visibility: hidden;
-}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   K. Neon Tube Icon (No Emoji)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-.ag-neon-icon-back {
-  width: 24px;
-  height: 24px;
-  position: relative;
-  display: block;
-}
-
-/* Neon Arrow Shape */
-.ag-neon-icon-back::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 12px;
-  height: 12px;
-  border-top: 2px solid #fff;
-  border-left: 2px solid #fff;
-  transform: translate(-25%, -50%) rotate(-45deg);
-  box-shadow: -1px -1px 8px rgba(0, 229, 255, 0.8), -1px -1px 4px rgba(0, 229, 255, 0.5); /* Neon Cyan Glow */
-  border-radius: 2px;
-}
-
-/* Update Back Button to use Neon Icon */
-.ag-back-button {
-  font-size: 0; /* Hide any text */
-}
-
-/* Restore ::before for the arrow icon */
-.ag-back-button::before {
-  content: "";
-  display: block !important; /* Force display */
-  width: 10px;
-  height: 10px;
-  border-top: 2px solid #fff;
-  border-left: 2px solid #fff;
-  transform: rotate(-45deg) translate(2px, 2px);
-  position: absolute; /* Ensure correct positioning */
-  top: 50%;
-  left: 50%;
-  margin-top: -5px; /* Center adjustment */
-  margin-left: -2px; /* Center adjustment */
-}
-
-/* Ensure neon-style button centers content */
-.ag-back-button.neon-style {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   L. Neon Icons (Emoji Replacements)
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-
-/* Base Icon Style */
-.ag-neon-icon {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  vertical-align: middle;
-  position: relative;
-  margin-right: 8px;
-}
-
-/* 1. Warning / Alert Icon (Triangle with !) */
-.ag-icon-alert {
-  width: 20px;
-  height: 18px;
-}
-.ag-icon-alert::before {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 0;
-  height: 0;
-  border-left: 10px solid transparent;
-  border-right: 10px solid transparent;
-  border-bottom: 18px solid #ff6bd9; /* Magenta Neon */
-  filter: drop-shadow(0 0 2px rgba(255, 107, 217, 0.8));
-}
-.ag-icon-alert::after {
-  content: '!';
-  position: absolute;
-  bottom: -2px;
-  left: 50%;
-  transform: translateX(-50%);
-  color: #000;
-  font-size: 12px;
-  font-weight: bold;
-}
-
-/* 2. Shield Icon */
-.ag-icon-shield {
-  width: 18px;
-  height: 20px;
-  border: 2px solid #00e5ff; /* Cyan Neon */
-  border-radius: 2px 2px 10px 10px;
-  box-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
-  position: relative;
-}
-.ag-icon-shield::before {
-  content: '';
-  position: absolute;
-  top: 2px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 8px;
-  height: 10px;
-  border: 1px solid rgba(0, 229, 255, 0.5);
-  border-radius: 1px 1px 5px 5px;
-}
-
-/* 3. Link Icon */
-.ag-icon-link {
-  width: 18px;
-  height: 18px;
-  border: 2px solid #bd00ff; /* Purple Neon */
-  border-radius: 50%;
-  position: relative;
-  box-shadow: 0 0 5px rgba(189, 0, 255, 0.5);
-}
-.ag-icon-link::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 10px;
-  height: 2px;
-  background: #bd00ff;
-  transform: translate(-50%, -50%) rotate(-45deg);
-}
-
-/* 4. Check Mark (Neon Green) */
-.ag-icon-check {
-  width: 16px;
-  height: 8px;
-  border-left: 2px solid #00ff9d;
-  border-bottom: 2px solid #00ff9d;
-  transform: rotate(-45deg) translate(2px, -2px);
-  box-shadow: -1px 1px 5px rgba(0, 255, 157, 0.6);
-  display: inline-block;
-}
-
-/* 5. Cross Mark (Neon Red) */
-.ag-icon-cross {
-  width: 16px;
-  height: 16px;
-  position: relative;
-  display: inline-block;
-}
-.ag-icon-cross::before,
-.ag-icon-cross::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: #ff4444;
-  box-shadow: 0 0 5px rgba(255, 68, 68, 0.6);
-}
-.ag-icon-cross::before { transform: rotate(45deg); }
-.ag-icon-cross::after { transform: rotate(-45deg); }
-
-/* 6. Ambulance / Emergency (Cross shape) */
-.ag-icon-medical {
-  width: 20px;
-  height: 20px;
-  position: relative;
-  display: inline-block;
-}
-.ag-icon-medical::before,
-.ag-icon-medical::after {
-  content: '';
-  position: absolute;
-  background: #ff4444;
-  box-shadow: 0 0 5px rgba(255, 68, 68, 0.6);
-}
-.ag-icon-medical::before {
-  width: 6px;
-  height: 20px;
-  left: 7px;
-  top: 0;
-}
-.ag-icon-medical::after {
-  width: 20px;
-  height: 6px;
-  left: 0;
-  top: 7px;
-}
-
-/* 7. Police / Law (Badge shape) */
-.ag-icon-law {
-  width: 18px;
-  height: 20px;
-  border: 2px solid #bd00ff;
-  border-radius: 50% 50% 0 0;
-  border-bottom: 2px solid #bd00ff;
-  box-shadow: 0 0 5px rgba(189, 0, 255, 0.5);
-  position: relative;
-}
-.ag-icon-law::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 6px;
-  height: 6px;
-  background: #bd00ff;
-  border-radius: 50%;
-}
-
-/* 8. Hospital (H shape) */
-.ag-icon-hospital {
-  width: 18px;
-  height: 18px;
-  position: relative;
-  border: 2px solid #00e5ff;
-  border-top: none;
-  border-bottom: none;
-  box-shadow: 0 0 5px rgba(0, 229, 255, 0.5);
-}
-.ag-icon-hospital::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: #00e5ff;
-  transform: translateY(-50%);
 }
