@@ -15,7 +15,8 @@
       margin: 0;
     }
     .ag-page {
-      min-height: 100vh;
+      min-height: 100vh; /* Fallback for browsers that don't support svh */
+      min-height: 100svh; /* Use svh to account for mobile browser UI */
       display: flex;
       flex-direction: column;
     }
@@ -25,6 +26,8 @@
       display: flex;
       flex-direction: column;
       width: 100%;
+      /* Ensure content doesn't overflow horizontally */
+      overflow-x: hidden;
     }
     .ag-home-main {
       flex: 1; /* Push footer to bottom */
@@ -203,10 +206,10 @@
       </main>
     </div>
 
-    <!-- Footer：共用模組 -->
-    <footer class="ag-footer-standard">
+    /* Footer：共用模組 */
+    <footer class="ag-footer-standard" style="padding-bottom: calc(24px + env(safe-area-inset-bottom));">
       <div class="ag-footer__inner">
-        <nav class="ag-footer__links" aria-label="Legal and info links">
+        <nav class="ag-footer__links" aria-label="Legal and info links">s">
           <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
           <span class="ag-footer__separator">•</span>
           <a href="/legal.html" class="ag-footer__link">法律免責</a>
