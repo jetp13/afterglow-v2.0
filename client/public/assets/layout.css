@@ -120,7 +120,10 @@ body {
    B. 首頁 Logo + 副標區塊
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 .ag-home-header {
-  padding: 40px 20px 20px;
+  padding: 8vh 20px 20px; /* Adjusted top padding to 8vh */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Align content to top */
 }
 
 .ag-logo-block {
@@ -137,7 +140,8 @@ body {
   object-fit: contain;
   overflow: visible;
   display: block;
-  margin: 0 0 40px 0; /* Increased bottom margin to prevent overlap */
+  margin: -20px 0 40px 0; /* Adjusted margin-top as requested */
+  transform: none; /* Removed transform to rely on margin */
 }
 
 /* 副標區塊：置於 Logo 右下方 */
@@ -260,12 +264,15 @@ body {
 
 .ag-footer__links {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* Force single line */
   justify-content: center;
   align-items: center;
-  gap: 8px;
-  font-size: 12px;
+  gap: 24px; /* Adjusted gap as requested */
+  font-size: 11px;
   color: #aaa;
+  white-space: nowrap; /* Prevent wrapping */
+  width: 100%;
+  overflow: hidden;
 }
 
 .ag-footer__link {
@@ -647,8 +654,20 @@ html, body {
   font-size: 0; /* Hide any text */
 }
 
+/* Restore ::before for the arrow icon */
 .ag-back-button::before {
-  display: none; 
+  content: "";
+  display: block !important; /* Force display */
+  width: 10px;
+  height: 10px;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  transform: rotate(-45deg) translate(2px, 2px);
+  position: absolute; /* Ensure correct positioning */
+  top: 50%;
+  left: 50%;
+  margin-top: -5px; /* Center adjustment */
+  margin-left: -2px; /* Center adjustment */
 }
 
 /* Ensure neon-style button centers content */
