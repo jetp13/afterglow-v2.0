@@ -5,15 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>求助資源｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
+  <script>
+    if (localStorage.getItem('ag_consent') !== 'true') {
+      window.location.href = '/index.html';
+    }
+  </script>
   <style>
+    html, body {
+      min-height: 100%;
+      margin: 0;
+    }
+
+    .ag-page {
+      min-height: 100vh;
+      background: #000;
+    }
+
+    .ag-main-scroll {
+      min-height: 100vh;
+      padding-bottom: calc(120px + env(safe-area-inset-bottom));
+      box-sizing: border-box;
+    }
+
     .ag-help-container {
       max-width: 600px;
       margin: 0 auto;
       padding: 20px;
+      padding-top: calc(40px + env(safe-area-inset-top));
+      padding-bottom: 32px;
       text-align: center;
-      /* Adjusted padding to center content vertically on single screen */
-      padding-top: calc(40px + env(safe-area-inset-top)); 
-      padding-bottom: calc(40px + env(safe-area-inset-bottom));
+      box-sizing: border-box;
     }
 
     .ag-help-title {
@@ -23,68 +44,14 @@
       text-shadow: 0 0 15px rgba(255, 107, 217, 0.4);
     }
 
-    .ag-help-list {
-      display: grid;
-      gap: 20px;
-      list-style: none;
-      padding: 0;
-    }
-
-    .ag-help-item {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 12px;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .ag-help-name {
-      font-size: 18px;
-      color: #fff;
-      font-weight: 500;
-    }
-
-    .ag-help-phone {
-      font-size: 28px;
-      color: #ff6bd9;
-      font-weight: bold;
-      text-decoration: none;
-      letter-spacing: 2px;
-    }
-
-    .ag-help-desc {
-      font-size: 13px;
-      color: #aaa;
-    }
-
-    .ag-emergency-box {
-      border: 1px solid #ff4444;
-      background: rgba(255, 68, 68, 0.1);
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 40px;
-    }
-
-    .ag-emergency-title {
-      color: #ff4444;
-      font-weight: bold;
-      margin-bottom: 8px;
-      font-size: 18px;
-    }
-
-    .ag-emergency-text {
-      color: #ddd;
-      font-size: 14px;
-      line-height: 1.6;
+    .ag-footer-standard {
+      margin-top: 32px;
+      padding-bottom: calc(28px + env(safe-area-inset-bottom));
+      box-sizing: border-box;
     }
   </style>
 </head>
 <body class="ag-page">
-  <!-- Back Button (Fixed Position) -->
-  <!-- Back Button (Fixed Position) (I3) -->
   <a href="/support-main.html" class="ag-back-button neon-style" aria-label="返回">
     <span class="ag-neon-icon-back"></span>
   </a>
@@ -94,36 +61,38 @@
       <h1 class="ag-help-title">求助資源</h1>
 
       <div class="ag-emergency-box">
-        <div class="ag-emergency-title"><span class="ag-neon-icon ag-icon-alert"></span> 緊急狀況</div>
-        <p class="ag-emergency-text">
+        <div class="ag-emergency-title">
+          <span class="ag-neon-icon ag-icon-alert"></span> 緊急狀況
+        </div>
+        <p>
           若您或身邊的人出現身體不適、呼吸困難、失去意識等危急情況，請立即撥打緊急醫療電話。
         </p>
-        <a href="tel:119" class="ag-help-phone ag-text-red ag-mt-10" style="display: block;">119</a>
+        <a href="tel:119" class="ag-help-phone ag-text-red" style="display: block;">119</a>
       </div>
 
       <ul class="ag-help-list">
         <li class="ag-help-item">
           <span class="ag-help-name">衛生福利部安心專線</span>
           <a href="tel:1925" class="ag-help-phone">1925</a>
-          <span class="ag-help-desc">提供心理諮詢與自殺防治服務（24小時）</span>
+          <span>提供心理諮詢與自殺防治服務（24小時）</span>
         </li>
 
         <li class="ag-help-item">
           <span class="ag-help-name">生命線協談專線</span>
           <a href="tel:1995" class="ag-help-phone">1995</a>
-          <span class="ag-help-desc">提供各類心理困擾與危機處理諮詢</span>
+          <span>提供各類心理困擾與危機處理諮詢</span>
         </li>
 
         <li class="ag-help-item">
           <span class="ag-help-name">張老師輔導專線</span>
           <a href="tel:1980" class="ag-help-phone">1980</a>
-          <span class="ag-help-desc">提供情緒困擾與心理輔導服務</span>
+          <span>提供情緒困擾與心理輔導服務</span>
         </li>
 
         <li class="ag-help-item">
           <span class="ag-help-name">勵馨基金會</span>
           <a href="tel:0289118595" class="ag-help-phone">02-8911-8595</a>
-          <span class="ag-help-desc">提供性侵害與家庭暴力受害者支持</span>
+          <span>提供性侵害與家庭暴力受害者支持</span>
         </li>
       </ul>
 
@@ -131,25 +100,24 @@
         本頁面資訊僅供參考，若遇緊急危難，請優先撥打 119 求助。<br>
         Afterglow 關心您的安全。
       </div>
-    </div>
 
-    <!-- Footer：共用模組 (Single Instance) (I1) -->
-    <footer class="ag-footer-standard">
-      <div class="ag-footer__inner">
-        <nav class="ag-footer__links" aria-label="Legal and info links">
-          <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
-          <span class="ag-footer__separator">•</span>
-          <a href="/legal.html" class="ag-footer__link">法律免責</a>
-          <span class="ag-footer__separator">•</span>
-          <a href="/terms.html" class="ag-footer__link">使用條款</a>
-          <span class="ag-footer__separator">•</span>
-          <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
-        </nav>
-        <p class="ag-footer__copyright">
-          © 2025 Afterglow. All rights reserved.
-        </p>
-      </div>
-    </footer>
+      <footer class="ag-footer-standard">
+        <div class="ag-footer__inner">
+          <nav class="ag-footer__links" aria-label="Legal and info links">
+            <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+            <span class="ag-footer__separator">•</span>
+            <a href="/legal.html" class="ag-footer__link">法律免責</a>
+            <span class="ag-footer__separator">•</span>
+            <a href="/terms.html" class="ag-footer__link">使用條款</a>
+            <span class="ag-footer__separator">•</span>
+            <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+          </nav>
+          <p class="ag-footer__copyright">
+            © 2025 Afterglow. All rights reserved.
+          </p>
+        </div>
+      </footer>
+    </div>
   </div>
 </body>
 </html>
