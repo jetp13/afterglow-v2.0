@@ -70,12 +70,20 @@
 
     .ag-section-label {
       color: #ddd;
-      margin-bottom: 16px; /* Increased spacing */
+      margin-bottom: 8px; /* Adjusted spacing */
       font-size: 16px; /* Slightly larger for readability */
       font-weight: 500;
       display: block;
       text-align: center; /* Center align for 9:16 mobile first */
       padding-left: 0;
+    }
+    
+    .ag-section-helper {
+      color: #999;
+      font-size: 14px;
+      text-align: center;
+      margin-bottom: 16px;
+      display: block;
     }
 
     /* Neon Capsule Grid */
@@ -369,7 +377,8 @@
         </div>
       </div>
 
-    <div class="ag-section-label">選擇您使用或考慮使用的物質（最多 2 種）</div>
+    <div class="ag-section-label">選擇您正在使用或考慮併用的物質</div>
+    <div class="ag-section-helper">建議一次選擇 2 種進行風險評估</div>
 
     <!-- Neon Capsule Grid -->
     <div class="ag-capsule-grid" id="capsule-grid">
@@ -541,10 +550,9 @@
       } else {
         // Add
         if (selectedSubstances.length >= 2) {
-          // Auto-remove the first selected if trying to add a 3rd
-          const firstSub = selectedSubstances.shift();
-          const firstBtn = capsuleGrid.querySelector(`.ag-capsule-btn[data-id="${firstSub.id}"]`);
-          if (firstBtn) firstBtn.classList.remove('active');
+          // Block 3rd selection and show alert
+          alert('此工具一次僅分析 2 種物質的交互風險，請先取消一項再繼續');
+          return;
         }
         selectedSubstances.push(sub);
         btn.classList.add('active');
