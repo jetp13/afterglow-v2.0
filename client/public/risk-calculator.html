@@ -412,10 +412,10 @@
         <h3>相關資源</h3>
         <div class="ag-link-list">
           <a href="https://tripsit.me/combinations/" target="_blank" rel="noopener noreferrer" class="ag-link-item">
-            <span class="ag-neon-icon ag-icon-link"></span> TripSit 交互作用表 (英文)
+            <span class="ag-neon-icon ag-icon-link"></span> TripSit 交互作用表 (英文 )
           </a>
           <a href="https://psychonautwiki.org/" target="_blank" rel="noopener noreferrer" class="ag-link-item">
-            <span class="ag-neon-icon ag-icon-link"></span> PsychonautWiki (英文)
+            <span class="ag-neon-icon ag-icon-link"></span> PsychonautWiki (英文 )
           </a>
         </div>
       </div>
@@ -570,13 +570,13 @@
           const s1 = selectedSubstances[i].id;
           const s2 = selectedSubstances[j].id;
 
-          const key1 = `${s1}+<LaTex>${s2}`;
-          const key2 = `$</LaTex>{s2}+<LaTex>${s1}`;
+          const key1 = `${s1}+${s2}`;
+          const key2 = `${s2}+${s1}`;
 
           const interaction = interactions[key1] || interactions[key2];
 
           if (interaction) {
-            riskMessages.push(`$</LaTex>{selectedSubstances[i].name} + <LaTex>${selectedSubstances[j].name}：$</LaTex>{interaction.desc}`);
+            riskMessages.push(`${selectedSubstances[i].name} + ${selectedSubstances[j].name}：${interaction.desc}`);
 
             if (riskLevelValue(interaction.level) > riskLevelValue(highestRisk)) {
               highestRisk = interaction.level;
@@ -637,7 +637,9 @@
       resultTitle.style.color = color;
 
       if (messages.length > 0) {
-        resultDesc.innerHTML = messages.join('<br><br>');
+        resultDesc.innerHTML = messages.join('  
+  
+');
       } else {
         resultDesc.textContent = '目前資料庫中無此組合的特定高風險警示，但仍請保持謹慎，少量測試。';
       }
