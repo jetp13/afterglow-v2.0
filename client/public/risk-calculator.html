@@ -37,7 +37,7 @@
       border: 1px solid #ff6bd9;
       background: rgba(255, 107, 217, 0.1);
       border-radius: 16px;
-      padding: 24px; /* G1: Padding >= 16px */
+      padding: 24px;
       margin-bottom: 30px;
       display: flex;
       gap: 16px;
@@ -45,14 +45,14 @@
       justify-content: center;
       flex-direction: column;
       text-align: center;
-      box-shadow: 0 0 15px rgba(255, 107, 217, 0.1); /* G1: Neon glow effect */
+      box-shadow: 0 0 15px rgba(255, 107, 217, 0.1);
     }
 
     .ag-info-icon {
       color: #ff6bd9;
-      font-size: 24px; /* Larger icon */
+      font-size: 24px;
       flex-shrink: 0;
-      margin-bottom: 12px; /* Space below icon */
+      margin-bottom: 12px;
     }
 
     .ag-harm-text {
@@ -70,14 +70,14 @@
 
     .ag-section-label {
       color: #ddd;
-      margin-bottom: 8px; /* Adjusted spacing */
-      font-size: 16px; /* Slightly larger for readability */
+      margin-bottom: 8px;
+      font-size: 16px;
       font-weight: 500;
       display: block;
-      text-align: center; /* Center align for 9:16 mobile first */
+      text-align: center;
       padding-left: 0;
     }
-    
+
     .ag-section-helper {
       color: #999;
       font-size: 14px;
@@ -135,7 +135,7 @@
       box-shadow: none;
     }
 
-    /* Result Breathing Ball - Refactored for Stability */
+    /* Result Breathing Ball */
     .ag-result-container {
       display: flex;
       justify-content: center;
@@ -145,15 +145,12 @@
       position: relative;
     }
 
-    /* The Glow Circle (Animates) */
     .ag-result-glow {
       position: absolute;
       width: 160px;
       height: 160px;
       border-radius: 50%;
       transition: all 0.5s ease;
-      
-      /* Default Breathing State */
       background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
       box-shadow: 0 0 30px rgba(255,255,255,0.1);
       animation: breathe-idle 4s infinite ease-in-out;
@@ -161,7 +158,6 @@
       z-index: 1;
     }
 
-    /* The Text Content (Stable, No Scale Animation) */
     .ag-result-text-layer {
       position: relative;
       z-index: 2;
@@ -174,7 +170,6 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      /* Ensure text doesn't blur */
       transform: translateZ(0);
       -webkit-font-smoothing: antialiased;
     }
@@ -184,7 +179,6 @@
       50% { transform: scale(1.05); opacity: 0.6; }
     }
 
-    /* Risk Levels Animation */
     .risk-low .ag-result-glow {
       background: radial-gradient(circle, rgba(0, 255, 157, 0.2) 0%, rgba(0, 255, 157, 0) 70%);
       box-shadow: 0 0 40px rgba(0, 255, 157, 0.3);
@@ -257,12 +251,13 @@
       margin-bottom: 8px;
       color: #666;
     }
+
     .ag-result-desc {
       font-size: 14px;
       color: #999;
+      line-height: 1.7;
     }
 
-    /* Warning Box */
     .ag-warning-box {
       border: 1px solid #ffc800;
       background: rgba(255, 200, 0, 0.05);
@@ -270,6 +265,7 @@
       padding: 20px;
       margin-top: 40px;
     }
+
     .ag-warning-title {
       color: #ffc800;
       font-weight: bold;
@@ -278,6 +274,7 @@
       align-items: center;
       gap: 8px;
     }
+
     .ag-warning-list {
       list-style: disc;
       padding-left: 20px;
@@ -285,30 +282,34 @@
       font-size: 14px;
       line-height: 1.6;
     }
+
     .ag-warning-list li { margin-bottom: 6px; }
 
-    /* Info Cards */
     .ag-info-card {
       background: rgba(255, 255, 255, 0.05);
       border-radius: 12px;
       padding: 20px;
       margin-top: 20px;
     }
+
     .ag-info-card h3 {
       color: #aaa;
       font-size: 16px;
       margin-bottom: 12px;
     }
+
     .ag-info-card p {
       color: #888;
       font-size: 14px;
       line-height: 1.6;
     }
+
     .ag-link-list {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
+
     .ag-link-item {
       color: #ff6bd9;
       text-decoration: none;
@@ -317,9 +318,9 @@
       align-items: center;
       gap: 8px;
     }
+
     .ag-link-item:hover { text-decoration: underline; }
 
-    /* Help Section */
     .ag-help-section {
       background: rgba(100, 50, 100, 0.1);
       border: 1px solid rgba(189, 0, 255, 0.2);
@@ -327,11 +328,13 @@
       padding: 20px;
       margin-top: 20px;
     }
+
     .ag-help-title {
       color: #bd00ff;
       font-weight: bold;
       margin-bottom: 10px;
     }
+
     .ag-help-row {
       display: flex;
       justify-content: space-between;
@@ -341,6 +344,7 @@
       border-bottom: 1px solid rgba(255,255,255,0.05);
       padding-bottom: 8px;
     }
+
     .ag-help-row:last-child { border-bottom: none; }
 
     @keyframes fadeIn {
@@ -350,25 +354,21 @@
   </style>
 </head>
 <body class="ag-page">
-  <!-- Back Button (Fixed Position) -->
-  <!-- Back Button (Fixed Position) (G3) -->
   <a href="/support-main.html" class="ag-back-button neon-style" aria-label="返回">
     <span class="ag-neon-icon-back"></span>
   </a>
 
   <div class="ag-main-scroll">
     <div class="ag-container ag-container-sm">
-      
-      <!-- Wild Header -->
+
       <div class="ag-wild-header">
         <img src="/assets/logo-handwritten.png" class="ag-wild-logo" alt="Afterglow">
       </div>
-      
+
       <div class="ag-risk-header">
         <h1 class="ag-risk-title ag-visually-hidden">風險計算器</h1>
       </div>
 
-      <!-- Harm Reduction Disclaimer -->
       <div class="ag-harm-reduction-box">
         <div class="ag-info-icon"><span class="ag-neon-icon ag-icon-shield"></span></div>
         <div class="ag-harm-text">
@@ -377,26 +377,23 @@
         </div>
       </div>
 
-    <div class="ag-section-label">選擇您正在使用或考慮併用的物質</div>
-    <div class="ag-section-helper">建議一次選擇 2 種進行風險評估</div>
+      <div class="ag-section-label">選擇您正在使用或考慮併用的物質</div>
+      <div class="ag-section-helper">建議一次選擇 2 種進行風險評估</div>
 
-    <!-- Neon Capsule Grid -->
-    <div class="ag-capsule-grid" id="capsule-grid">
-      <!-- Buttons will be populated by JS -->
-    </div>
+      <div class="ag-capsule-grid" id="capsule-grid">
+        <!-- Buttons will be populated by JS -->
+      </div>
 
-    <!-- Result Display (Refactored) -->
-    <div id="result-container" class="ag-result-container">
-      <div class="ag-result-glow"></div>
-      <div class="ag-result-text-layer" id="result-circle">?</div>
-    </div>
+      <div id="result-container" class="ag-result-container">
+        <div class="ag-result-glow"></div>
+        <div class="ag-result-text-layer" id="result-circle">?</div>
+      </div>
 
-    <div class="ag-result-text-box" id="result-box">
-      <div class="ag-result-title" id="result-title">請選擇物質</div>
-      <div class="ag-result-desc" id="result-desc">選擇您使用或考慮使用的物質以評估風險</div>
-    </div>
+      <div class="ag-result-text-box" id="result-box">
+        <div class="ag-result-title" id="result-title">請選擇物質</div>
+        <div class="ag-result-desc" id="result-desc">至少需要兩種物質才能評估交互作用風險</div>
+      </div>
 
-      <!-- Important Warning -->
       <div class="ag-warning-box">
         <div class="ag-warning-title"><span class="ag-neon-icon ag-icon-alert"></span> 重要免責聲明</div>
         <ul class="ag-warning-list">
@@ -406,7 +403,6 @@
         </ul>
       </div>
 
-      <!-- Info Cards -->
       <div class="ag-info-card">
         <h3>關於交互作用</h3>
         <p>不同物質混合使用（混藥）可能產生不可預期的加成效果。某些組合（如中樞神經抑制劑混用）具有極高的致死風險。</p>
@@ -415,17 +411,16 @@
       <div class="ag-info-card">
         <h3>相關資源</h3>
         <div class="ag-link-list">
-          <a href="https://tripsit.me/combinations/" target="_blank" class="ag-link-item">
+          <a href="https://tripsit.me/combinations/" target="_blank" rel="noopener noreferrer" class="ag-link-item">
             <span class="ag-neon-icon ag-icon-link"></span> TripSit 交互作用表 (英文)
           </a>
-          <a href="https://psychonautwiki.org/" target="_blank" class="ag-link-item">
+          <a href="https://psychonautwiki.org/" target="_blank" rel="noopener noreferrer" class="ag-link-item">
             <span class="ag-neon-icon ag-icon-link"></span> PsychonautWiki (英文)
           </a>
         </div>
       </div>
     </div>
 
-        <!-- Footer：共用模組 (Single Instance) -->
     <footer class="ag-footer-standard">
       <div class="ag-footer__inner">
         <nav class="ag-footer__links" aria-label="Legal and info links">
@@ -445,7 +440,6 @@
   </div>
 
   <script>
-    // Substance Data with Chinese Names and Categories
     const substances = [
       { id: 'alcohol', name: '酒精 (Alcohol)', category: 'depressant' },
       { id: 'cannabis', name: '大麻 (Cannabis)', category: 'psychedelic' },
@@ -464,14 +458,12 @@
       { id: 'etomidate', name: '依托 (依托咪酯/Etomidate)', category: 'depressant' }
     ];
 
-    // Interaction Matrix (Based on TripSit)
-    // Levels: low, caution, unsafe, deadly
     const interactions = {
       'alcohol+ghb': { level: 'deadly', desc: '極度危險！兩者皆為中樞神經抑制劑，混用極易導致失去意識、呼吸抑制甚至死亡。' },
       'alcohol+benzos': { level: 'deadly', desc: '極度危險！強烈加成抑制作用，極易導致斷片、昏迷與呼吸停止。' },
       'alcohol+opioids': { level: 'deadly', desc: '極度危險！雙重呼吸抑制作用，致死風險極高。' },
       'alcohol+ketamine': { level: 'deadly', desc: '極度危險！增加嘔吐與窒息風險，且兩者皆影響運動協調，極易發生意外。' },
-      'alcohol+cocaine': { level: 'unsafe', desc: '危險！體內會生成古柯乙烯 (Cocaethylene)，毒性比單獨使用更強，大幅增加心臟負擔。' },
+      'alcohol+cocaine': { level: 'unsafe', desc: '危險！體內會生成古柯乙烯（Cocaethylene），毒性比單獨使用更強，大幅增加心臟負擔。' },
       'alcohol+mdma': { level: 'unsafe', desc: '不建議。酒精會減弱 MDMA 效果並增加脫水與體溫過高風險，且加重隔日宿醉。' },
       'alcohol+meth': { level: 'unsafe', desc: '危險！興奮劑會掩蓋酒精醉意，導致過量飲酒與酒精中毒風險大增。' },
       'alcohol+poppers': { level: 'caution', desc: '需謹慎。兩者皆會降低血壓，可能導致暈眩或昏厥。' },
@@ -486,7 +478,7 @@
       'mdma+maoi': { level: 'deadly', desc: '致命危險！MAOI 與 MDMA 混用極易引發致死性血清素症候群。' },
       'mdma+cocaine': { level: 'unsafe', desc: '危險！雙重興奮劑，極度增加心臟負擔，且古柯鹼會減弱 MDMA 的同理心效果。' },
       'mdma+meth': { level: 'unsafe', desc: '危險！強烈神經毒性，大幅增加心臟負擔與體溫過高風險。' },
-      'mdma+viagra': { level: 'caution', desc: '需謹慎。MDMA 會收縮血管，威而鋼擴張血管，增加心臟負擔（稱作「糖果翻轉」風險）。' },
+      'mdma+viagra': { level: 'caution', desc: '需謹慎。MDMA 會收縮血管，威而鋼擴張血管，增加心臟負擔。' },
 
       'cocaine+viagra': { level: 'unsafe', desc: '危險！古柯鹼增加心率，威而鋼降低血壓，兩者混用大幅增加心臟病發風險。' },
       'poppers+viagra': { level: 'deadly', desc: '致命危險！兩者皆強烈擴張血管，混用會導致血壓驟降，引發休克甚至死亡。' },
@@ -496,16 +488,15 @@
       'ketamine+benzos': { level: 'unsafe', desc: '危險！增加鎮靜效果與呼吸抑制風險。' },
       'ketamine+opioids': { level: 'deadly', desc: '極度危險！雙重呼吸抑制，致死風險高。' },
 
-      'lsd+cannabis': { level: 'caution', desc: '需謹慎。大麻可能極大增強 LSD 的迷幻效果，容易引發焦慮、恐慌或Bad Trip。' },
+      'lsd+cannabis': { level: 'caution', desc: '需謹慎。大麻可能極大增強 LSD 的迷幻效果，容易引發焦慮、恐慌或 Bad Trip。' },
       'lsd+mdma': { level: 'low', desc: 'Candy Flipping。協同效應強烈，建議減少兩者劑量，注意脫水。' },
       'lsd+lithium': { level: 'deadly', desc: '致命危險！鋰鹽與 LSD 混用已知會導致癲癇與昏迷。' },
 
       'mushrooms+cannabis': { level: 'caution', desc: '需謹慎。大麻可能增強迷幻體驗，容易引發焦慮或思緒混亂。' },
-      
+
       'opioids+benzos': { level: 'deadly', desc: '極度危險！常見的致死性過量組合，強烈呼吸抑制。' },
       'opioids+cocaine': { level: 'deadly', desc: 'Speedball。極度危險，容易因興奮劑消退後發生鴉片類過量。' },
 
-      // Etomidate Interactions
       'alcohol+etomidate': { level: 'deadly', desc: '極度危險！兩者皆為強烈中樞神經抑制劑，混用極易導致呼吸停止與死亡。' },
       'benzos+etomidate': { level: 'deadly', desc: '極度危險！強烈加成抑制作用，極易導致昏迷與呼吸衰竭。' },
       'opioids+etomidate': { level: 'deadly', desc: '極度危險！雙重呼吸抑制，致死風險極高。' },
@@ -516,133 +507,115 @@
       'mdma+etomidate': { level: 'unsafe', desc: '危險！增加心臟負擔，且可能導致不可預期的意識喪失。' }
     };
 
-    // UI Elements
     const capsuleGrid = document.getElementById('capsule-grid');
     const resultCircle = document.getElementById('result-circle');
-    const resultBox = document.getElementById('result-box');
+    const resultContainer = document.getElementById('result-container');
     const resultTitle = document.getElementById('result-title');
     const resultDesc = document.getElementById('result-desc');
 
     let selectedSubstances = [];
 
-    // Initialize Capsule Grid
     function initCapsuleGrid() {
       capsuleGrid.innerHTML = '';
+
       substances.forEach(sub => {
         const btn = document.createElement('div');
         btn.className = 'ag-capsule-btn';
-        // Use full name but handle long text with CSS if needed
-        btn.textContent = sub.name; 
+        btn.textContent = sub.name;
         btn.dataset.id = sub.id;
         btn.onclick = () => toggleSubstance(sub, btn);
         capsuleGrid.appendChild(btn);
       });
     }
 
-    // Toggle Substance Selection
     function toggleSubstance(sub, btn) {
       const index = selectedSubstances.findIndex(s => s.id === sub.id);
-      
+
       if (index > -1) {
-        // Remove
         selectedSubstances.splice(index, 1);
         btn.classList.remove('active');
       } else {
-        // Add
         if (selectedSubstances.length >= 2) {
-          // Block 3rd selection and show alert
           alert('此工具一次僅分析 2 種物質的交互風險，請先取消一項再繼續');
           return;
         }
         selectedSubstances.push(sub);
         btn.classList.add('active');
       }
-      
+
       calculateRisk();
     }
 
-    // Calculate Risk Logic
     function calculateRisk() {
-      // Reset UI
-      document.body.className = 'ag-page'; // Reset body class if needed
-      resultCircle.parentElement.className = 'ag-result-container'; // Reset circle container
-      
+      resultContainer.className = 'ag-result-container';
+
       if (selectedSubstances.length < 2) {
         resultCircle.textContent = '?';
         resultTitle.textContent = selectedSubstances.length === 0 ? '請選擇物質' : '請再選擇一種物質';
-        resultDesc.textContent = '至少需要兩種物質才能評估交互作用風險';
         resultTitle.style.color = '#666';
+        resultDesc.textContent = '至少需要兩種物質才能評估交互作用風險';
         return;
       }
 
       let highestRisk = 'low';
       let riskMessages = [];
 
-      // Check pairs
       for (let i = 0; i < selectedSubstances.length; i++) {
         for (let j = i + 1; j < selectedSubstances.length; j++) {
           const s1 = selectedSubstances[i].id;
           const s2 = selectedSubstances[j].id;
-          
-          // Check both orders: s1+s2 and s2+s1
-          const key1 = `<LaTex>${s1}+$</LaTex>{s2}`;
-          const key2 = `<LaTex>${s2}+$</LaTex>{s1}`;
-          
+
+          const key1 = `${s1}+${s2}`;
+          const key2 = `${s2}+${s1}`;
+
           const interaction = interactions[key1] || interactions[key2];
 
           if (interaction) {
-            riskMessages.push(`<LaTex>${selectedSubstances[i].name.split(' ')[0]} + $</LaTex>{selectedSubstances[j].name.split(' ')[0]}: ${interaction.desc}`);
-            
-            // Update highest risk
+            riskMessages.push(`${selectedSubstances[i].name} + ${selectedSubstances[j].name}：${interaction.desc}`);
+
             if (riskLevelValue(interaction.level) > riskLevelValue(highestRisk)) {
               highestRisk = interaction.level;
             }
-          } else {
-            // Default if no specific interaction found but categories match? 
-            // For now, just note unknown/low synergy
           }
         }
       }
 
-      // Update UI based on highest risk
       updateResultUI(highestRisk, riskMessages);
     }
 
     function riskLevelValue(level) {
-      const levels = { 'low': 1, 'caution': 2, 'unsafe': 3, 'deadly': 4 };
+      const levels = { low: 1, caution: 2, unsafe: 3, deadly: 4 };
       return levels[level] || 0;
     }
 
     function updateResultUI(level, messages) {
-      // Remove old classes
-      const container = document.getElementById('result-container');
-      container.classList.remove('risk-low', 'risk-medium', 'risk-high', 'risk-deadly');
+      resultContainer.classList.remove('risk-low', 'risk-medium', 'risk-high', 'risk-deadly');
 
       let titleText = '';
       let circleText = '';
       let color = '';
 
-      switch(level) {
+      switch (level) {
         case 'low':
-          container.classList.add('risk-low');
+          resultContainer.classList.add('risk-low');
           titleText = '低風險 / 協同效應';
           circleText = '低';
           color = '#00ff88';
           break;
         case 'caution':
-          container.classList.add('risk-medium');
+          resultContainer.classList.add('risk-medium');
           titleText = '需謹慎 (Caution)';
           circleText = '慎';
           color = '#ffc800';
           break;
         case 'unsafe':
-          container.classList.add('risk-high');
+          resultContainer.classList.add('risk-high');
           titleText = '不安全 (Unsafe)';
           circleText = '危';
           color = '#ff4444';
           break;
         case 'deadly':
-          container.classList.add('risk-deadly');
+          resultContainer.classList.add('risk-deadly');
           titleText = '致命危險 (Deadly)';
           circleText = '凶';
           color = '#ff0000';
@@ -660,9 +633,7 @@
       }
     }
 
-    // Initialize
     initCapsuleGrid();
-
   </script>
 </body>
 </html>
