@@ -378,7 +378,7 @@
       </div>
 
       <div class="ag-section-label">選擇您正在使用或考慮併用的物質</div>
-      <div class="ag-section-helper">建議一次選擇 2 種進行風險評估</div>
+      <div class="ag-section-helper" id="selection-counter">已選 0 / 2</div>
 
       <div class="ag-capsule-grid" id="capsule-grid">
         <!-- Buttons will be populated by JS -->
@@ -554,6 +554,11 @@
         resultTitle.textContent = selectedSubstances.length === 0 ? '請選擇物質' : '請再選擇一種物質';
         resultTitle.style.color = '#666';
         resultDesc.textContent = '至少需要兩種物質才能評估交互作用風險';
+        
+        const counter = document.getElementById('selection-counter');
+        if (counter) {
+          counter.textContent = `已選 ${selectedSubstances.length} / 2`;
+        }
         return;
       }
 
@@ -565,13 +570,13 @@
           const s1 = selectedSubstances[i].id;
           const s2 = selectedSubstances[j].id;
 
-          const key1 = `${s1}+${s2}`;
-          const key2 = `${s2}+${s1}`;
+          const key1 = `${s1}+<LaTex>${s2}`;
+          const key2 = `$</LaTex>{s2}+<LaTex>${s1}`;
 
           const interaction = interactions[key1] || interactions[key2];
 
           if (interaction) {
-            riskMessages.push(`${selectedSubstances[i].name} + ${selectedSubstances[j].name}：${interaction.desc}`);
+            riskMessages.push(`$</LaTex>{selectedSubstances[i].name} + <LaTex>${selectedSubstances[j].name}：$</LaTex>{interaction.desc}`);
 
             if (riskLevelValue(interaction.level) > riskLevelValue(highestRisk)) {
               highestRisk = interaction.level;
@@ -581,6 +586,11 @@
       }
 
       updateResultUI(highestRisk, riskMessages);
+      
+      const counter = document.getElementById('selection-counter');
+      if (counter) {
+        counter.textContent = `已選 ${selectedSubstances.length} / 2`;
+      }
     }
 
     function riskLevelValue(level) {
