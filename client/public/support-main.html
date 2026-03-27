@@ -2,7 +2,7 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>緊急支援選單｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
   <script>
@@ -14,21 +14,29 @@
   <style>
     /* Flexbox Sticky Footer Structure */
     html, body {
-      height: 100%;
       margin: 0;
+      padding: 0;
     }
     .ag-page {
       min-height: 100vh;
+      min-height: 100svh;
       display: flex;
       flex-direction: column;
+    }
+    .ag-main-scroll {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
     }
     .ag-support-menu {
       flex: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 20px;
+      justify-content: flex-start;
+      padding: calc(90px + env(safe-area-inset-top)) 20px 32px;
+      box-sizing: border-box;
       gap: 16px; /* Reduced gap for compactness */
       position: relative;
       z-index: 1;
@@ -83,71 +91,74 @@
       background: rgba(189, 0, 255, 0.1);
     }
 
-    .ag-disclaimer-footer {
-      position: fixed;
-      bottom: 30px;
-      width: 100%;
+    .ag-wild-header {
       text-align: center;
-      font-size: 12px;
-      color: #666;
+      margin-bottom: 24px;
+      margin-top: 20px;
+    }
+
+    /* Footer Adjustments */
+    .ag-footer-standard {
+      margin-top: auto;
+      padding-bottom: calc(16px + env(safe-area-inset-bottom));
     }
   </style>
 </head>
 <body class="ag-page">
   <!-- Back Button (Fixed Position) -->
-  <a href="/home.html" class="ag-back-button" aria-label="返回首頁">
-    <!-- Icon restored via CSS ::before -->
+  <a href="/home.html" class="ag-back-button neon-style" aria-label="返回">
+    <span class="ag-neon-icon-back"></span>
   </a>
 
-  <!-- Removed ag-main-scroll to prevent scrolling (E2) -->
-  <div class="ag-support-menu">
-      
-      <!-- Compact Header -->
-      <div class="ag-wild-header" style="margin-bottom: 24px;">
-        <img src="/assets/logo-handwritten.png" class="ag-wild-logo" alt="Afterglow" style="width: 120px; opacity: 0.8;">
-      </div>
+  <div class="ag-main-scroll">
+    <div class="ag-support-menu">
+        
+        <!-- Compact Header -->
+        <div class="ag-wild-header">
+          <a href="/index.html">
+            <img src="/assets/logo-handwritten.png" class="ag-wild-logo" alt="Afterglow" style="width: 120px; opacity: 0.8;">
+          </a>
+        </div>
 
-      <!-- 急救指引 -->
-      <a href="/first-aid.html" class="ag-menu-button ag-menu-button--first-aid">
-        急救指引
-      </a>
+        <!-- 急救指引 -->
+        <a href="/first-aid.html" class="ag-menu-button ag-menu-button--first-aid">
+          急救指引
+        </a>
 
-      <!-- 風險計算器 -->
-      <a href="/risk-calculator.html" class="ag-menu-button ag-menu-button--risk">
-        風險計算器
-      </a>
+        <!-- 風險計算器 -->
+        <a href="/risk-calculator.html" class="ag-menu-button ag-menu-button--risk">
+          風險計算器
+        </a>
 
-      <!-- 權利知識 -->
-      <a href="/rights.html" class="ag-menu-button ag-menu-button--rights">
-        權利知識
-      </a>
+        <!-- 權利知識 -->
+        <a href="/rights.html" class="ag-menu-button ag-menu-button--rights">
+          權利知識
+        </a>
 
-      <!-- 求助資源 -->
-      <a href="/help.html" class="ag-menu-button ag-menu-button--help" style="border: 2px solid #00ff88; box-shadow: 0 0 15px rgba(0, 255, 136, 0.4); color: #e0ffe0;">
-        求助資源
-      </a>
+        <!-- 求助資源 -->
+        <a href="/help.html" class="ag-menu-button ag-menu-button--help" style="border: 2px solid #00ff88; box-shadow: 0 0 15px rgba(0, 255, 136, 0.4); color: #e0ffe0;">
+          求助資源
+        </a>
 
     </div>
-
-    </div>
-    <!-- End of ag-support-menu -->
 
     <!-- Footer: Standard Sticky Footer -->
     <footer class="ag-footer-standard">
       <div class="ag-footer__inner">
-        <nav class="ag-footer__links" aria-label="Legal and info links">
+        <div class="ag-footer__links">
           <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
-          <span class="ag-footer__separator">•</span>
+          <span class="ag-footer__separator">|</span>
           <a href="/legal.html" class="ag-footer__link">法律免責</a>
-          <span class="ag-footer__separator">•</span>
+          <span class="ag-footer__separator">|</span>
           <a href="/terms.html" class="ag-footer__link">使用條款</a>
-          <span class="ag-footer__separator">•</span>
+          <span class="ag-footer__separator">|</span>
           <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
-        </nav>
-        <p class="ag-footer__copyright">
-          © 2025 Afterglow. All rights reserved.
-        </p>
+        </div>
+        <div class="ag-footer__copyright">
+          &copy; 2025 Afterglow. All rights reserved.
+        </div>
       </div>
     </footer>
+  </div>
 </body>
 </html>
