@@ -5,83 +5,279 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Afterglow｜讓夜裡的光有方向</title>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#050505">
   <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
-  <link rel="stylesheet" href="/assets/layout.css">
   <script>
-    // Check for consent immediately
     if (localStorage.getItem('ag_consent') !== 'true') {
       window.location.href = '/index.html';
     }
-
-    // Register Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(registration => {
-            console.log('ServiceWorker registration successful with scope: ', registration.scope);
-          })
-          .catch(err => {
-            console.log('ServiceWorker registration failed: ', err);
-          });
+        navigator.serviceWorker.register('/sw.js').catch(() => {});
       });
     }
   </script>
+  <style>
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       Homepage Restoration Pass v0.9 — Composition Fix
+       構圖邏輯：Logo 偏左出血 / 副標縮小靠右 / CTA 微錯落
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: #050505;
+      color: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+      overflow: hidden;
+    }
+
+    /* ── 全屏容器 ── */
+    .ag-home {
+      position: fixed;
+      inset: 0;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      padding-left: env(safe-area-inset-left, 0px);
+      padding-right: env(safe-area-inset-right, 0px);
+      background: #050505;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       A. HERO BLOCK
+       Logo 偏左出血：從左側 -8% 開始，向右延伸出血
+       副標靠右：絕對定位在 Logo 右下方
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .ag-hero {
+      position: absolute;
+      top: 10vh;
+      left: 0;
+      right: 0;
+    }
+
+    /* Logo：偏左出血，大型主視覺 */
+    .ag-logo {
+      display: block;
+      width: min(92vw, 360px);
+      height: auto;
+      /* 偏左：負 margin 讓左側出血 */
+      margin-left: -6vw;
+      filter:
+        drop-shadow(0 0 8px rgba(255,255,255,0.65))
+        drop-shadow(0 0 28px rgba(255,255,255,0.28))
+        drop-shadow(0 0 60px rgba(255,255,255,0.12));
+    }
+
+    /* 副標群組：靠右，在 CTA 下方 */
+    .ag-text {
+      position: absolute;
+      top: 72vh; /* CTA 下方，不重疊 */
+      right: 20px;
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .ag-subtitle {
+      font-size: clamp(11px, 3vw, 13px); /* 明顯縮小 */
+      font-weight: 300;
+      letter-spacing: 0.18em;
+      color: rgba(255, 255, 255, 0.72);
+      line-height: 1.5;
+    }
+
+    .ag-tagline {
+      font-size: clamp(8px, 2.2vw, 9.5px);
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      color: rgba(255, 255, 255, 0.28);
+      text-transform: uppercase;
+      line-height: 1.4;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       B. CTA BLOCK
+       微錯落：上方按鈕偏左，下方按鈕偏右
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .ag-cta {
+      position: absolute;
+      top: 38vh; /* Logo 底部下方，第一層行動區 */
+      left: 0;
+      right: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 0 24px;
+    }
+
+    /* 共用膠囊基底 */
+    .ag-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 50px;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      color: #fff;
+      text-decoration: none;
+      transition: box-shadow 0.35s ease, transform 0.30s ease;
+    }
+
+    /* 主 CTA：偏左，寬度略大，藍色 */
+    .ag-btn--primary {
+      width: min(200px, 56vw);
+      /* 偏左：align-self + margin */
+      align-self: flex-start;
+      margin-left: 4vw;
+      border: 1.5px solid #00aaff;
+      background: radial-gradient(ellipse at center, rgba(0,160,255,.18) 0%, transparent 70%);
+      box-shadow:
+        0 0 12px rgba(0,160,255,.45),
+        inset 0 0 14px rgba(0,160,255,.20);
+      animation: ag-breathe-blue 4s ease-in-out infinite;
+    }
+
+    .ag-btn--primary:hover,
+    .ag-btn--primary:active {
+      box-shadow:
+        0 0 24px rgba(0,160,255,.72),
+        inset 0 0 20px rgba(0,160,255,.32);
+      transform: scale(1.03);
+      animation: none;
+    }
+
+    /* 次 CTA：偏右，寬度略小，紅色 */
+    .ag-btn--secondary {
+      width: min(180px, 50vw);
+      /* 偏右 */
+      align-self: flex-end;
+      margin-right: 6vw;
+      border: 1.5px solid rgba(255, 30, 60, 0.65);
+      background: radial-gradient(ellipse at center, rgba(255,0,51,.10) 0%, transparent 70%);
+      box-shadow:
+        0 0 8px rgba(255,0,51,.25),
+        inset 0 0 10px rgba(255,0,51,.12);
+      color: rgba(255,255,255,0.78);
+      font-weight: 400;
+    }
+
+    .ag-btn--secondary:hover,
+    .ag-btn--secondary:active {
+      box-shadow:
+        0 0 18px rgba(255,0,51,.52),
+        inset 0 0 16px rgba(255,0,51,.22);
+      transform: scale(1.03);
+      color: #fff;
+    }
+
+    @keyframes ag-breathe-blue {
+      0%, 100% {
+        box-shadow: 0 0 12px rgba(0,160,255,.45), inset 0 0 14px rgba(0,160,255,.20);
+      }
+      50% {
+        box-shadow: 0 0 20px rgba(0,160,255,.62), inset 0 0 18px rgba(0,160,255,.28);
+      }
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       C. FOOTER — 固定在底部安全區
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .ag-footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 0 16px calc(20px + env(safe-area-inset-bottom, 0px));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .ag-footer__links {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      font-size: 10px;
+      color: rgba(255,255,255,0.28);
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .ag-footer__link {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.25s ease;
+    }
+
+    .ag-footer__link:hover {
+      color: rgba(255,255,255,0.60);
+    }
+
+    .ag-footer__sep {
+      color: rgba(255,255,255,0.15);
+      font-size: 7px;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       極小螢幕（高度 < 680px）收緊
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    @media (max-height: 680px) {
+      .ag-hero { top: 6vh; }
+      .ag-logo { width: min(80vw, 300px); }
+      .ag-cta { top: min(52vw, 200px); gap: 12px; }
+      .ag-btn { height: 44px; font-size: 14px; }
+    }
+  </style>
 </head>
 <body>
-  <div class="ag-page">
-    <!-- A. Neon Back Button (Icon Only) -->
-    <button class="ag-back-button" onclick="window.location.href='/'" aria-label="返回首頁"></button>
+  <div class="ag-home">
 
-    <!-- Main Scrollable Area -->
-    <div class="ag-main-scroll">
-      
-      <!-- B. Hero Section (Logo + Subtitle) -->
-      <header class="ag-home-header">
-        <div class="ag-logo-container">
-          <img src="/assets/logo-new.png" alt="Afterglow Logo" class="ag-logo-large" />
-        </div>
-        
-        <div class="ag-text-group">
-          <h2 class="ag-home-subtitle">讓夜裡的光有方向</h2>
-          <p class="ag-home-tagline-en">STAY SAFE · CARE FOR YOURSELF · SEEK HELP</p>
-        </div>
-      </header>
+    <!-- Hero：Logo 偏左出血 + 副標靠右 -->
+    <section class="ag-hero" aria-label="品牌識別">
+      <img
+        src="/assets/logo-transparent.png"
+        alt="Afterglow"
+        class="ag-logo"
+      />
+      <!-- 副標：疊在 Logo 右下方 -->
+      <div class="ag-text">
+        <p class="ag-subtitle">讓夜裡的光有方向</p>
+        <p class="ag-tagline">Stay Safe · Care for Yourself · Seek Help</p>
+      </div>
+    </section>
 
-      <!-- C. Main Interaction Area (Vertical Capsules) -->
-      <main class="ag-home-main">
-        <div class="ag-pills-container">
-          <!-- Blue Pill: Start Meditation -->
-          <a href="/menu.html" class="ag-capsule ag-capsule--primary">
-            開始冥想
-          </a>
-          
-          <!-- Red Pill: Emergency Support -->
-          <a href="/support-main.html" class="ag-capsule ag-capsule--secondary">
-            緊急支援
-          </a>
-        </div>
+    <!-- CTA：微錯落，主左次右 -->
+    <nav class="ag-cta" aria-label="主要功能入口">
+      <a href="/menu.html" class="ag-btn ag-btn--primary">開始冥想</a>
+      <a href="/support-main.html" class="ag-btn ag-btn--secondary">緊急支援</a>
+    </nav>
 
-        <!-- D. Footer (Clean & Minimal) -->
-        <footer class="ag-footer-standard">
-          <div class="ag-footer__inner">
-            <div class="ag-footer__links">
-              <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
-              <span class="ag-footer__separator">|</span>
-              <a href="/legal.html" class="ag-footer__link">法律免責</a>
-              <span class="ag-footer__separator">|</span>
-              <a href="/terms.html" class="ag-footer__link">使用條款</a>
-              <span class="ag-footer__separator">|</span>
-              <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
-            </div>
-            <div class="ag-footer__copyright">
-              &copy; 2025 Afterglow. All rights reserved.
-            </div>
-          </div>
-        </footer>
-      </main>
+    <!-- Footer -->
+    <footer class="ag-footer">
+      <nav class="ag-footer__links" aria-label="法律與資訊連結">
+        <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+        <span class="ag-footer__sep">•</span>
+        <a href="/legal.html" class="ag-footer__link">法律免責</a>
+        <span class="ag-footer__sep">•</span>
+        <a href="/terms.html" class="ag-footer__link">使用條款</a>
+        <span class="ag-footer__sep">•</span>
+        <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+      </nav>
+    </footer>
 
-    </div>
   </div>
 </body>
 </html>
