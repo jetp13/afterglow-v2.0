@@ -13,17 +13,6 @@
   </script>
   <style>
     /* ── Inner Header Shell ── */
-    html, body { height: 100%; margin: 0; padding: 0; }
-    body { background: #000; }
-    .ag-page {
-      min-height: 100vh;
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      padding-top: env(safe-area-inset-top);
-      padding-left: env(safe-area-inset-left);
-      padding-right: env(safe-area-inset-right);
-    }
     .ag-inner-header {
       flex-shrink: 0;
       display: flex;
@@ -70,13 +59,6 @@
     }
 
     /* Specific Styles for Risk Calculator */
-    .ag-main-scroll {
-      flex: 1 0 auto;
-      overflow-y: auto;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: calc(80px + env(safe-area-inset-bottom));
-      box-sizing: border-box;
-    }
 
     .ag-risk-header {
       text-align: center;
@@ -155,7 +137,7 @@
 
     .ag-capsule-btn {
       background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 107, 217, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       border-radius: 50px;
       padding: 12px 20px;
       color: #ddd;
@@ -170,29 +152,69 @@
       justify-content: center;
       min-height: 48px;
       white-space: nowrap;
-      box-shadow: 0 0 5px rgba(255, 107, 217, 0.1);
+    }
+
+    /* Category colours */
+    .ag-capsule-btn[data-cat="stimulant"] {
+      border-color: rgba(255, 77, 77, 0.5);
+      box-shadow: 0 0 6px rgba(255, 77, 77, 0.15);
+    }
+    .ag-capsule-btn[data-cat="depressant"] {
+      border-color: rgba(77, 184, 255, 0.5);
+      box-shadow: 0 0 6px rgba(77, 184, 255, 0.15);
+    }
+    .ag-capsule-btn[data-cat="psychedelic"] {
+      border-color: rgba(77, 255, 154, 0.5);
+      box-shadow: 0 0 6px rgba(77, 255, 154, 0.15);
+    }
+    .ag-capsule-btn[data-cat="other"] {
+      border-color: rgba(199, 125, 255, 0.5);
+      box-shadow: 0 0 6px rgba(199, 125, 255, 0.15);
     }
 
     .ag-capsule-btn:hover {
-      border-color: rgba(255, 107, 217, 0.8);
-      box-shadow: 0 0 10px rgba(255, 107, 217, 0.3);
       transform: translateY(-2px);
+      filter: brightness(1.3);
     }
 
-    .ag-capsule-btn.active {
-      background: rgba(255, 107, 217, 0.2);
-      border-color: #ff6bd9;
+    .ag-capsule-btn.active[data-cat="stimulant"] {
+      background: rgba(255, 77, 77, 0.18);
+      border-color: #ff4d4d;
       color: #fff;
-      box-shadow: 0 0 15px rgba(255, 107, 217, 0.6), inset 0 0 10px rgba(255, 107, 217, 0.2);
+      box-shadow: 0 0 16px rgba(255, 77, 77, 0.5), inset 0 0 8px rgba(255, 77, 77, 0.15);
       font-weight: bold;
-      text-shadow: 0 0 5px rgba(255, 107, 217, 0.8);
+      text-shadow: 0 0 6px rgba(255, 77, 77, 0.7);
+    }
+    .ag-capsule-btn.active[data-cat="depressant"] {
+      background: rgba(77, 184, 255, 0.18);
+      border-color: #4db8ff;
+      color: #fff;
+      box-shadow: 0 0 16px rgba(77, 184, 255, 0.5), inset 0 0 8px rgba(77, 184, 255, 0.15);
+      font-weight: bold;
+      text-shadow: 0 0 6px rgba(77, 184, 255, 0.7);
+    }
+    .ag-capsule-btn.active[data-cat="psychedelic"] {
+      background: rgba(77, 255, 154, 0.18);
+      border-color: #4dff9a;
+      color: #fff;
+      box-shadow: 0 0 16px rgba(77, 255, 154, 0.5), inset 0 0 8px rgba(77, 255, 154, 0.15);
+      font-weight: bold;
+      text-shadow: 0 0 6px rgba(77, 255, 154, 0.7);
+    }
+    .ag-capsule-btn.active[data-cat="other"] {
+      background: rgba(199, 125, 255, 0.18);
+      border-color: #c77dff;
+      color: #fff;
+      box-shadow: 0 0 16px rgba(199, 125, 255, 0.5), inset 0 0 8px rgba(199, 125, 255, 0.15);
+      font-weight: bold;
+      text-shadow: 0 0 6px rgba(199, 125, 255, 0.7);
     }
 
     .ag-capsule-btn.disabled {
-      opacity: 0.3;
+      opacity: 0.25;
       cursor: not-allowed;
-      border-color: #444;
-      box-shadow: none;
+      filter: none;
+      transform: none;
     }
 
     /* Result Breathing Ball */
@@ -504,22 +526,27 @@
   </div>
 
   <script>
+    // 物質清單：按分類排序（興奮劑 → 鎮靜/解離 → 迷幻 → 其他）
     const substances = [
-      { id: 'alcohol', name: '酒精 (Alcohol)', category: 'depressant' },
-      { id: 'cannabis', name: '大麻 (Cannabis)', category: 'psychedelic' },
-      { id: 'mdma', name: '搖頭丸 (MDMA)', category: 'stimulant' },
-      { id: 'cocaine', name: '古柯鹼 (Cocaine)', category: 'stimulant' },
-      { id: 'ketamine', name: 'K他命 (Ketamine)', category: 'dissociative' },
-      { id: 'lsd', name: 'LSD (迷幻藥)', category: 'psychedelic' },
-      { id: 'mushrooms', name: '迷幻蘑菇 (Mushrooms)', category: 'psychedelic' },
-      { id: 'ghb', name: 'G水 (GHB/GBL)', category: 'depressant' },
-      { id: 'meth', name: '安非他命 (Methamphetamine)', category: 'stimulant' },
-      { id: 'opioids', name: '鴉片類 (Opioids)', category: 'depressant' },
-      { id: 'benzos', name: '鎮靜劑 (Benzodiazepines)', category: 'depressant' },
-      { id: 'caffeine', name: '咖啡因 (Caffeine)', category: 'stimulant' },
-      { id: 'poppers', name: 'RUSH (亞硝酸鹽)', category: 'other' },
-      { id: 'viagra', name: '威而鋼 (PDE5 抑制劑)', category: 'other' },
-      { id: 'etomidate', name: '依托 (依托咪酯/Etomidate)', category: 'depressant' }
+      // 興奮劑 stimulant — 紅
+      { id: 'mdma',      name: '搖頭丸 (MDMA)',              category: 'stimulant' },
+      { id: 'meth',      name: '安非他命 (Methamphetamine)', category: 'stimulant' },
+      { id: 'cocaine',   name: '古柯鹼 (Cocaine)',           category: 'stimulant' },
+      { id: 'caffeine',  name: '咖啡因 (Caffeine)',          category: 'stimulant' },
+      // 鎮靜/解離劑 depressant — 藍
+      { id: 'alcohol',   name: '酒精 (Alcohol)',             category: 'depressant' },
+      { id: 'opioids',   name: '海洛因/鴉片類 (四號/軟的)',  category: 'depressant' },
+      { id: 'ghb',       name: 'G水 (GHB/GBL)',             category: 'depressant' },
+      { id: 'benzos',    name: '鎮靜劑 (Benzodiazepines)',   category: 'depressant' },
+      { id: 'ketamine',  name: 'K他命 (Ketamine)',           category: 'depressant' },
+      { id: 'etomidate', name: '依托 (依托咪酯/Etomidate)',  category: 'depressant' },
+      // 迷幻劑 psychedelic — 綠
+      { id: 'mushrooms', name: '迷幻蘑菇 (Mushrooms)',       category: 'psychedelic' },
+      { id: 'cannabis',  name: '大麻 (Cannabis)',            category: 'psychedelic' },
+      { id: 'lsd',       name: 'LSD (迷幻藥)',               category: 'psychedelic' },
+      // 其他 other — 紫
+      { id: 'poppers',   name: 'RUSH (亞硝酸鹽)',           category: 'other' },
+      { id: 'viagra',    name: '威而鋼 (PDE5 抑制劑)',       category: 'other' },
     ];
 
     const interactions = {
@@ -582,6 +609,7 @@
         btn.className = 'ag-capsule-btn';
         btn.textContent = sub.name;
         btn.dataset.id = sub.id;
+        btn.dataset.cat = sub.category;
         btn.onclick = () => toggleSubstance(sub, btn);
         capsuleGrid.appendChild(btn);
       });
@@ -591,15 +619,22 @@
       const index = selectedSubstances.findIndex(s => s.id === sub.id);
 
       if (index > -1) {
+        // 取消選擇
         selectedSubstances.splice(index, 1);
         btn.classList.remove('active');
+        // 恢復所有禁用狀態
+        document.querySelectorAll('.ag-capsule-btn.disabled').forEach(b => b.classList.remove('disabled'));
       } else {
         if (selectedSubstances.length >= 2) {
-          alert('此工具一次僅分析 2 種物質的交互風險，請先取消一項再繼續');
+          // 已選滿 2 個：静默忽略，不彈警告
           return;
         }
         selectedSubstances.push(sub);
         btn.classList.add('active');
+        // 如果已選滿 2 個，禁用其餘未選的
+        if (selectedSubstances.length >= 2) {
+          document.querySelectorAll('.ag-capsule-btn:not(.active)').forEach(b => b.classList.add('disabled'));
+        }
       }
 
       calculateRisk();
