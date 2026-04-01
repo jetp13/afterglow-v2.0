@@ -1,1 +1,0 @@
-- [x] Adjust Logo positioning to prevent text overlap
