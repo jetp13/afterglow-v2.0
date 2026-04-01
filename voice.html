@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>語音引導｜Afterglow</title>
+  <link rel="stylesheet" href="/assets/layout.css">
+  <script>
+    // Check for consent immediately
+    if (localStorage.getItem('ag_consent') !== 'true') {
+      window.location.href = '/index.html';
+    }
+  </script>
+  <style>
+    .ag-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+      color: #fff;
+    }
+    .ag-wave {
+      font-size: 40px;
+      margin-bottom: 20px;
+      color: #bd00ff;
+    }
+  </style>
+</head>
+<body class="ag-page">
+  <!-- Back Button -->
+  <a href="/menu.html" class="ag-back-button neon-style" aria-label="返回選單">
+    <span class="ag-neon-icon-back"></span>
+  </a>
+
+  <div class="ag-container">
+    <div class="ag-wave">ılılllıllı</div>
+    <h2>語音引導模式</h2>
+    <p class="ag-text-gray ag-mt-10">請戴上耳機，閉上眼睛</p>
+    <a href="/menu.html" class="ag-mt-40 ag-text-gray ag-link-clean">← 結束引導</a>
+  </div>
+
+  <!-- Footer：共用模組 -->
+  <footer class="ag-footer-standard">
+    <div class="ag-footer__inner">
+      <nav class="ag-footer__links" aria-label="Legal and info links">
+        <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/legal.html" class="ag-footer__link">法律免責</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/terms.html" class="ag-footer__link">使用條款</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+      </nav>
+
+      <p class="ag-footer__copyright">
+        © 2025 Afterglow. All rights reserved.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>

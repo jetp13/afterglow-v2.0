@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>緊急支援｜Afterglow</title>
+  <link rel="stylesheet" href="/assets/layout.css">
+  <style>
+    .ag-support-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .ag-disclaimer-box {
+      border: 1px solid #ff6bd9;
+      border-radius: 12px;
+      padding: 24px;
+      max-width: 600px;
+      margin-bottom: 30px;
+      background: rgba(255, 107, 217, 0.05);
+      box-shadow: 0 0 20px rgba(255, 107, 217, 0.1);
+    }
+
+    .ag-disclaimer-title {
+      color: #ff6bd9;
+      font-size: 20px;
+      margin-bottom: 16px;
+      font-weight: bold;
+    }
+
+    .ag-disclaimer-text {
+      font-size: 14px;
+      line-height: 1.8;
+      color: #ddd;
+      text-align: left;
+      margin-bottom: 16px;
+    }
+
+    .ag-disclaimer-list {
+      text-align: left;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #ccc;
+      margin-bottom: 20px;
+      padding-left: 20px;
+    }
+
+    .ag-disclaimer-list li {
+      margin-bottom: 8px;
+    }
+
+    .ag-consent-label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      margin-bottom: 30px;
+    }
+
+    .ag-consent-checkbox {
+      width: 20px;
+      height: 20px;
+      accent-color: #ff6bd9;
+      cursor: pointer;
+    }
+
+    .ag-enter-button {
+      display: block;
+      width: 100%;
+      max-width: 280px;
+      padding: 14px 0;
+      text-align: center;
+      border-radius: 9999px;
+      font-size: 16px;
+      color: white;
+      background: transparent;
+      border: 1px solid #ff6bd9;
+      box-shadow: 0 0 15px rgba(255, 107, 217, 0.3);
+      transition: 0.3s ease;
+      cursor: pointer;
+      opacity: 0.5;
+      pointer-events: none;
+      text-decoration: none;
+    }
+
+    .ag-enter-button.active {
+      opacity: 1;
+      pointer-events: auto;
+      background: rgba(255, 107, 217, 0.1);
+      box-shadow: 0 0 25px rgba(255, 107, 217, 0.6);
+    }
+
+    .ag-enter-button.active:hover {
+      background: rgba(255, 107, 217, 0.2);
+      box-shadow: 0 0 35px rgba(255, 107, 217, 0.8);
+    }
+  </style>
+</head>
+<body class="ag-page">
+  <!-- Back Button -->
+  <a href="/home.html" class="ag-back-button neon-style" aria-label="返回首頁">
+    <span class="ag-neon-icon-back"></span>
+  </a>
+
+  <div class="ag-support-container">
+    
+    <!-- Logo -->
+    <img src="/assets/afterglow-logo.png" class="ag-logo ag-logo-sm ag-mb-20" alt="Afterglow Logo">
+    <p class="ag-home-tagline-en ag-mb-40">STAY SAFE · CARE FOR YOURSELF · SEEK HELP</p>
+
+    <!-- Disclaimer Box -->
+    <div class="ag-disclaimer-box">
+      <div class="ag-disclaimer-title">免責聲明</div>
+      <p class="ag-disclaimer-text">本網站提供的資訊僅供教育與減害目的，並非醫療或法律建議。</p>
+      <ul class="ag-disclaimer-list">
+        <li>本網站內容不能取代專業醫療、心理或法律諮詢。</li>
+        <li>藥物使用存在健康風險，每個人的反應因劑量、純度、個人健康狀況等因素而異。</li>
+        <li>風險評估工具僅供參考，不構成安全保證。</li>
+        <li>緊急情況請立即撥打 119 或前往最近的醫療機構。</li>
+        <li>本網站不鼓勵、推廣或支持任何非法藥物使用行為。</li>
+      </ul>
+      <p class="ag-disclaimer-text ag-mb-0 ag-text-sm ag-text-gray">進入本網站即表示您已閱讀並理解上述聲明。</p>
+    </div>
+
+    <!-- Consent Checkbox -->
+    <label class="ag-consent-label">
+      <input type="checkbox" id="age-consent" class="ag-consent-checkbox">
+      我已年滿 18 歲，並已閱讀且同意免責聲明與隱私政策。
+    </label>
+
+    <!-- Enter Button -->
+    <a href="/support-main.html" id="enter-btn" class="ag-enter-button">
+      進入 Afterglow
+    </a>
+
+    <div class="ag-mt-40 ag-text-xs ag-text-dark-gray">
+      © 2025 Afterglow. All rights reserved.
+    </div>
+  </div>
+
+  <script>
+    const checkbox = document.getElementById('age-consent');
+    const enterBtn = document.getElementById('enter-btn');
+
+    checkbox.addEventListener('change', function() {
+      if (this.checked) {
+        enterBtn.classList.add('active');
+      } else {
+        enterBtn.classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>

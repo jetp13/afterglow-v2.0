@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>權利知識｜Afterglow</title>
+  <link rel="stylesheet" href="/assets/layout.css">
+  <script>
+    // Check for consent immediately
+    if (localStorage.getItem('ag_consent') !== 'true') {
+      window.location.href = '/index.html';
+    }
+  </script>
+  <style>
+    /* ── Inner Header Shell ── */
+    html, body { height: 100%; margin: 0; padding: 0; }
+    body { background: #000; }
+    .ag-page {
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      padding-top: env(safe-area-inset-top);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+    .ag-inner-header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: calc(14px + env(safe-area-inset-top)) 20px 10px;
+      box-sizing: border-box;
+      min-height: 64px;
+    }
+    .ag-back-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 18px;
+      line-height: 1;
+      transition: border-color 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+    .ag-back-btn:hover { border-color: rgba(255,255,255,0.6); color: #fff; }
+    .ag-inner-logo {
+      display: block;
+      width: 80px;
+      max-width: 26vw;
+      height: auto;
+      mix-blend-mode: screen;
+      opacity: 0.85;
+    }
+    .ag-page-title-block {
+      padding: 0 20px 8px;
+      flex-shrink: 0;
+    }
+    .ag-page-title {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .ag-main-scroll {
+      flex: 1 0 auto;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    /* Container moved to layout.css ag-container-sm */
+
+    .ag-rights-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .ag-rights-title {
+      font-size: 24px; /* 手機版字體微調 */
+      color: #bd00ff;
+      margin-bottom: 12px;
+      text-shadow: 0 0 15px rgba(189, 0, 255, 0.4);
+      letter-spacing: 2px;
+    }
+
+    .ag-rights-subtitle {
+      font-size: 14px;
+      color: #aaa;
+      line-height: 1.8;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Section Styles */
+    .ag-section {
+      margin-bottom: 60px;
+    }
+
+    .ag-section-title {
+      font-size: 18px;
+      color: #fff;
+      margin-bottom: 24px;
+      padding-left: 12px;
+      border-left: 3px solid #bd00ff;
+      letter-spacing: 1px;
+    }
+
+    /* Core Principles (Top Section) */
+    .ag-principles-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .ag-principle-card {
+      background: rgba(189, 0, 255, 0.05);
+      border: 1px solid rgba(189, 0, 255, 0.3);
+      border-radius: 12px;
+      padding: 20px; /* 手機版減少 padding */
+      position: relative;
+    }
+
+    .ag-principle-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .ag-principle-number {
+      background: #bd00ff;
+      color: #000;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+
+    .ag-principle-title {
+      font-size: 18px;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .ag-principle-text {
+      color: #ccc;
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .ag-quote-box {
+      background: rgba(0, 0, 0, 0.3);
+      border-left: 2px solid #bd00ff;
+      padding: 12px 16px;
+      font-size: 14px;
+      color: #e0e0e0;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    /* Rights Overview Grid */
+    .ag-rights-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px; /* 手機版間距微調 */
+    }
+
+    .ag-rights-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 8px;
+      padding: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .ag-rights-card:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: rgba(189, 0, 255, 0.3);
+    }
+
+    .ag-card-title {
+      font-size: 16px;
+      color: #bd00ff;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .ag-card-summary {
+      font-size: 13px;
+      color: #bbb;
+      line-height: 1.6;
+    }
+
+    /* Scenarios */
+    .ag-scenario-list {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .ag-scenario-item {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 20px;
+    }
+
+    .ag-scenario-item:last-child {
+      border-bottom: none;
+    }
+
+    .ag-scenario-title {
+      font-size: 16px;
+      color: #fff;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+    }
+
+    .ag-scenario-title::before {
+      content: '•';
+      color: #bd00ff;
+      margin-right: 8px;
+      font-size: 20px;
+    }
+
+    .ag-scenario-content {
+      padding-left: 20px;
+    }
+
+    .ag-scenario-text {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    /* Do / Don't List */
+    .ag-dodont-container {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    .ag-list-box {
+      background: rgba(255, 255, 255, 0.02);
+      border-radius: 12px;
+      padding: 24px;
+    }
+
+    .ag-list-title {
+      font-size: 18px;
+      margin-bottom: 16px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .ag-do-title { color: #4caf50; }
+    .ag-dont-title { color: #f44336; }
+
+    .ag-check-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .ag-check-list li {
+      position: relative;
+      padding-left: 24px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: #ccc;
+      line-height: 1.5;
+    }
+
+    .ag-check-list.do li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 4px;
+      width: 12px;
+      height: 6px;
+      border-left: 2px solid #00ff9d;
+      border-bottom: 2px solid #00ff9d;
+      transform: rotate(-45deg);
+      box-shadow: -1px 1px 5px rgba(0, 255, 157, 0.6);
+    }
+
+    .ag-check-list.dont li::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 12px;
+      height: 12px;
+      background: transparent;
+    }
+    .ag-check-list.dont li::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 12px;
+      height: 12px;
+      background: transparent;
+    }
+    /* Create X shape with pseudo elements on the li itself for better control */
+    .ag-check-list.dont li::before {
+      width: 14px; height: 2px; background: #ff4444; transform: rotate(45deg); top: 10px; left: 0;
+      box-shadow: 0 0 5px rgba(255, 68, 68, 0.6);
+    }
+    .ag-check-list.dont li::after {
+      width: 14px; height: 2px; background: #ff4444; transform: rotate(-45deg); top: 10px; left: 0;
+      box-shadow: 0 0 5px rgba(255, 68, 68, 0.6);
+    }
+
+    /* Resources */
+    .ag-resources-list {
+      list-style: none;
+      padding: 0;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .ag-resource-item {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 16px;
+      border-radius: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #ddd;
+    }
+
+    .ag-resource-phone {
+      color: #bd00ff;
+      font-weight: 500;
+    }
+
+    @media (min-width: 768px) {
+      .ag-principles-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .ag-rights-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .ag-dodont-container {
+        grid-template-columns: 1fr 1fr;
+      }
+      .ag-resources-list {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+</head>
+<body class="ag-page">
+  
+  <!-- Inner Header: Back + Logo -->
+  <header class="ag-inner-header">
+    <a href="/support-main.html" class="ag-back-btn" aria-label="返回緊急支援">&#8592;</a>
+    <a href="/home.html" aria-label="返回首頁">
+      <img src="/assets/logo-transparent.png" class="ag-inner-logo" alt="Afterglow">
+    </a>
+  </header>
+  <div class="ag-page-title-block">
+    <p class="ag-page-title">權利知識 · Know Your Rights</p>
+  </div>
+
+  <div class="ag-main-scroll">
+    <div class="ag-container-sm">
+      <header class="ag-rights-header">
+        <h1 class="ag-rights-title ag-visually-hidden">權利知識</h1>
+        <p class="ag-rights-subtitle">
+          本模組旨在協助理解警方臨檢、盤查與搜索時可主張的權利。<br>
+          內容屬教育用途，非法律意見。
+        </p>
+      </header>
+
+      <!-- 區塊一：三大核心原則 -->
+      <section class="ag-section">
+        <h2 class="ag-section-title">三大核心原則</h2>
+        <div class="ag-principles-grid">
+          <div class="ag-principle-card">
+            <div class="ag-principle-header">
+              <span class="ag-principle-number">1</span>
+              <span class="ag-principle-title">不說</span>
+            </div>
+            <p class="ag-principle-text">除身分基本資料外，可行使緘默權。</p>
+            <div class="ag-quote-box">
+              「我希望有律師在場，並選擇行使緘默權。」
+            </div>
+          </div>
+
+          <div class="ag-principle-card">
+            <div class="ag-principle-header">
+              <span class="ag-principle-number">2</span>
+              <span class="ag-principle-title">不搜</span>
+            </div>
+            <p class="ag-principle-text">無法院搜索票、無緊急狀況、或未經明確同意，可拒絕搜索。</p>
+            <div class="ag-quote-box">
+              「我不同意搜索，除非您持法院搜索票。」
+            </div>
+          </div>
+
+          <div class="ag-principle-card">
+            <div class="ag-principle-header">
+              <span class="ag-principle-number">3</span>
+              <span class="ag-principle-title">不抗拒</span>
+            </div>
+            <p class="ag-principle-text">不肢體對抗，避免妨害公務風險；以錄音錄影、標記警員識別、事後救濟維權。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 區塊二：基本權利總表 -->
+      <section class="ag-section">
+        <h2 class="ag-section-title">基本權利總表</h2>
+        <div class="ag-rights-grid">
+          <div class="ag-rights-card">
+            <h3 class="ag-card-title">身分查證邊界</h3>
+            <p class="ag-card-summary">員警應著制服或出示證件並告知事由；未依規定，人民得拒絕。</p>
+          </div>
+          <div class="ag-rights-card">
+            <h3 class="ag-card-title">限時帶返查證</h3>
+            <p class="ag-card-summary">一般最多 3 小時，並應即時通報及通知指定親友或律師。</p>
+          </div>
+          <div class="ag-rights-card">
+            <h3 class="ag-card-title">搜索要件</h3>
+            <p class="ag-card-summary">原則須法院搜索票；緊急狀況或現行犯等例外另論。</p>
+          </div>
+          <div class="ag-rights-card">
+            <h3 class="ag-card-title">手機與數位載具</h3>
+            <p class="ag-card-summary">原則上屬隱私高度保護標的，無令狀或合法事由不得逕行解鎖取證。請明確表達不同意。</p>
+          </div>
+          <div class="ag-rights-card">
+            <h3 class="ag-card-title">採尿程序</h3>
+            <p class="ag-card-summary">快篩陽性須經實驗室複驗始具法律效；可要求錄影與樣本封存；程序不當可爭執。</p>
+          </div>
+          <div class="ag-rights-card">
+          <h3 class="ag-card-title">異議權</h3>
+          <p class="ag-card-summary">對臨檢盤查不當可當場提出異議並請求製作異議紀錄。</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 區塊三：前科者的權利迷思 -->
+    <section class="ag-section">
+      <h2 class="ag-section-title">前科者的權利迷思</h2>
+      <div class="ag-rights-grid">
+        <div class="ag-rights-card" style="grid-column: 1 / -1; border-color: rgba(255, 107, 107, 0.5); background: rgba(255, 107, 107, 0.05);">
+          <h3 class="ag-card-title" style="color: #ff6b6b;">核心結論：不行</h3>
+          <p class="ag-card-summary" style="color: #ffcccc;">
+            警方絕對不能僅因為你「有前科」或「毒品人口列管中」就強制搜索你的身體、包包或車輛。<br><br>
+            「有前科」只能作為警方「加強盤查身分」（臨檢）的參考，但不能作為「發動搜索」（翻找物品）的法律依據。
+          </p>
+        </div>
+      </div>
+
+      <div class="ag-dodont-container" style="margin-top: 24px;">
+        <div class="ag-list-box">
+          <h3 class="ag-list-title ag-do-title">你的應對策略</h3>
+          <ul class="ag-check-list do">
+            <li><strong>配合盤查</strong>：出示證件，回答基本資料（這是義務）。</li>
+            <li><strong>拒絕搜索</strong>：當警方要求翻包包或搜身時，溫和且堅定地說：「請問有搜索票嗎？如果沒有，我不同意搜索。」</li>
+            <li><strong>聲明異議</strong>：若警方強行搜索，不要肢體對抗，口頭大聲聲明異議並要求記錄。</li>
+          </ul>
+        </div>
+        <div class="ag-list-box">
+          <h3 class="ag-list-title ag-dont-title">常見警方話術</h3>
+          <ul class="ag-check-list dont">
+            <li>「你若沒做虧心事幹嘛怕我看？」<br><span style="font-size: 12px; color: #999;">回應：「這是我的隱私權利。」</span></li>
+            <li>「配合一下很快就好。」<br><span style="font-size: 12px; color: #999;">回應：「我趕時間，如果不讓我走，請問是用什麼理由限制我自由？」</span></li>
+            <li>「你前科還在列管，依規定我要看一下。」<br><span style="font-size: 12px; color: #999;">回應：列管人口有義務配合驗尿（需通知書），但無義務隨時被搜。</span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 區塊四：情境應對指南 -->
+    <section class="ag-section">
+      <h2 class="ag-section-title">情境應對指南</h2>
+      <div class="ag-scenario-list">
+        <div class="ag-scenario-item">
+          <h3 class="ag-scenario-title">路邊／設檢</h3>
+          <div class="ag-scenario-content">
+            <p class="ag-scenario-text">開口順序：問姓名與單位 → 請說明攔查事由 → 出示證件或制服確認 → 配合身分查驗，拒絕無要件搜索。</p>
+            <div class="ag-quote-box">
+              「您好，請問您哪個單位？為何攔查我？」「若僅臨檢，我配合基本資料。不接受未依法程序的搜索。」
+            </div>
+          </div>
+        </div>
+
+        <div class="ag-scenario-item">
+          <h3 class="ag-scenario-title">夜店／公共場所</h3>
+          <div class="ag-scenario-content">
+            <p class="ag-scenario-text">重點：大規模臨檢須有合法指定與目的；拒絕任意翻包與觸碰。</p>
+            <div class="ag-quote-box">
+              「我不同意搜索，如需搜索請出示法院搜索票或說明緊急事由。」
+            </div>
+          </div>
+        </div>
+
+        <div class="ag-scenario-item">
+          <h3 class="ag-scenario-title">住處</h3>
+          <div class="ag-scenario-content">
+            <p class="ag-scenario-text">原則：住宅搜索須票；緊急例外限縮。拒絕入內搜查並要求票示。</p>
+            <div class="ag-quote-box">
+              「這是住居空間，請出示法院搜索票。」
+            </div>
+          </div>
+        </div>
+
+        <div class="ag-scenario-item">
+          <h3 class="ag-scenario-title">手機／電腦</h3>
+          <div class="ag-scenario-content">
+            <p class="ag-scenario-text">重點：不得強迫解鎖；不同意解鎖與取閱內容。</p>
+            <div class="ag-quote-box">
+              「我不同意提供解鎖或取用內容，請依合法程序辦理。」
+            </div>
+          </div>
+        </div>
+
+        <div class="ag-scenario-item">
+          <h3 class="ag-scenario-title">採尿／抽血</h3>
+          <div class="ag-scenario-content">
+            <p class="ag-scenario-text">重點：告知法源與必要性；可要求錄影、雙份封存、簽名確認流程；快篩非最終。</p>
+            <div class="ag-quote-box">
+              「如依法需要，請全程錄影並封存樣本一式兩份，快篩陽性請送實驗室複驗。」
+            </div>
+          </div>
+        </div>
+
+        <div class="ag-scenario-item">
+          <h3 class="ag-scenario-title">派出所</h3>
+          <div class="ag-scenario-content">
+            <p class="ag-scenario-text">重點：計時不超過 3 小時（一般查證情境）；可聯繫律師與親友；簽任何文件前先諮詢。</p>
+            <div class="ag-quote-box">
+              「我行使緘默權，欲聯繫律師。任何文件請律師過目後再簽。」
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 區塊四：Do / Don’t 清單 -->
+    <section class="ag-section">
+      <h2 class="ag-section-title">Do / Don’t 清單</h2>
+      <div class="ag-dodont-container">
+        <div class="ag-list-box">
+          <h3 class="ag-list-title ag-do-title">Do</h3>
+          <ul class="ag-check-list do">
+            <li>禮貌、穩定語氣、全程錄音錄影</li>
+            <li>詢問單位、姓名、警號與執法事由</li>
+            <li>明確表達不同意搜索與解鎖</li>
+            <li>要求程序紀錄與異議單</li>
+            <li>事後整理時間線、地點、姓名、影像證據，盡速諮詢律師</li>
+          </ul>
+        </div>
+        <div class="ag-list-box">
+          <h3 class="ag-list-title ag-dont-title">Don’t</h3>
+          <ul class="ag-check-list dont">
+            <li>不肢體推擠或搶奪器材</li>
+            <li>不即興辯解或提供不必要資訊</li>
+            <li>不在未諮詢前簽下不理解的文書</li>
+            <li>不接受未明法源或未出示票據的任意搜索</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 區塊五：求助資源 -->
+    <section class="ag-section">
+      <h2 class="ag-section-title">求助資源</h2>
+      <ul class="ag-resources-list">
+        <li class="ag-resource-item">
+          <span>法律扶助基金會</span>
+          <span class="ag-resource-phone">0800-013-999</span>
+        </li>
+        <li class="ag-resource-item">
+          <span>戒治與諮詢（法務部戒成專線）</span>
+          <span class="ag-resource-phone">0800-770-885</span>
+        </li>
+        <li class="ag-resource-item">
+          <span>心理支持（安心專線）</span>
+          <span class="ag-resource-phone">1925</span>
+        </li>
+        <li class="ag-resource-item">
+          <span>監督申訴</span>
+          <span class="ag-resource-phone">監察院申訴、警政督察管道</span>
+        </li>
+        <li class="ag-resource-item ag-col-span-full">
+          <span>地方法律事務所與律師公會名錄（建議預先備存個人清單）</span>
+        </li>
+      </ul>
+    </section>
+
+    <!-- Footer：共用模組 -->
+    <footer class="ag-footer-standard">
+      <div class="ag-footer__inner">
+        <nav class="ag-footer__links" aria-label="Legal and info links">
+          <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/legal.html" class="ag-footer__link">法律免責</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/terms.html" class="ag-footer__link">使用條款</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+        </nav>
+
+        <p class="ag-footer__copyright">
+          © 2025 Afterglow. All rights reserved.
+        </p>
+      </div>
+    </footer>
+  </div>
+
+</body>
+</html>

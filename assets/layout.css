@@ -1,0 +1,421 @@
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Afterglow v2.3.0 — Layout CSS
+   深夜陪伴系統｜黑暗入口風格 (Dark Entrance Style)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* === Global Reset === */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
+  background: #000;
+  color: #fff;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* App Shell: Lock body scroll */
+  height: 100dvh;
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+.ag-page {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  /* Safe Area Handling */
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Scrollable Main Content Area */
+.ag-main-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  position: relative;
+  padding-bottom: 40px; /* Bottom spacing */
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   A. 返回首頁按鈕 (Neon Icon Style)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ag-back-button {
+  position: fixed;
+  top: 24px;
+  left: 24px;
+  z-index: 2147483647;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  background: transparent; /* Remove background */
+  border: none; /* Remove border */
+  box-shadow: none; /* Remove box-shadow */
+  opacity: 0.15; /* Reduced opacity to 0.15 */
+  transition: opacity 0.5s ease;
+  animation: ag-breathe-opacity 4s ease-in-out infinite;
+  cursor: pointer;
+}
+
+.ag-back-button:hover {
+  opacity: 1;
+  animation: none; /* Stop breathing on hover */
+}
+
+/* Neon Arrow Icon */
+.ag-back-button::before {
+  content: "";
+  display: block;
+  width: 12px;
+  height: 12px;
+  border-top: 2px solid #fff;
+  border-left: 2px solid #fff;
+  transform: rotate(-45deg);
+  box-shadow: -1px -1px 8px rgba(255, 255, 255, 0.8), -1px -1px 4px rgba(255, 255, 255, 0.5); /* White Neon Glow */
+  filter: drop-shadow(0 0 2px rgba(255, 255, 255, 0.8));
+}
+
+@keyframes ag-breathe-opacity {
+  0%, 100% { opacity: 0.1; }
+  50% { opacity: 0.25; }
+}
+
+/* Mobile adjustments */
+@media (max-width: 480px) {
+  .ag-back-button {
+    top: 20px;
+    left: 16px;
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   B. 首頁 Logo + 副標區塊 (Dark Entrance Style)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ag-home-header {
+  position: relative;
+  width: 100%;
+  height: 45vh; /* Occupy top 45% */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; /* Center vertically in the top section */
+  overflow: visible;
+  margin-bottom: 0;
+  padding-top: 5vh; /* Slight top padding */
+}
+
+.ag-logo-container {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 32px; /* Spacing between Logo and Subtitle */
+}
+
+/* The Large Logo - Refined */
+.ag-logo-large {
+  width: 70%; /* Restricted to 70% width */
+  max-width: 320px; /* Max width constraint */
+  height: auto;
+  transform: none; /* Remove rotation/translation */
+  opacity: 1;
+  flex-shrink: 0;
+  /* Reduced Neon Glow (30% less) */
+  filter: drop-shadow(0 0 3px rgba(255,255,255,0.5)) 
+          drop-shadow(0 0 8px rgba(255,255,255,0.3)) 
+          drop-shadow(0 0 16px rgba(255,255,255,0.15));
+}
+
+/* Text Group - Clean Hierarchy */
+.ag-text-group {
+  position: relative; /* Changed to relative for natural flow */
+  bottom: auto;
+  right: auto;
+  text-align: center; /* Center alignment */
+  z-index: 10;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.ag-home-subtitle {
+  font-size: 18px; /* Fixed 18px */
+  letter-spacing: 0.15em;
+  color: rgba(255, 255, 255, 0.85); /* 85% White */
+  margin-bottom: 0;
+  font-weight: 300;
+  text-shadow: none; /* Remove neon glow */
+}
+
+.ag-home-tagline-en {
+  font-size: 13px; /* Fixed 13px */
+  letter-spacing: 1px; /* Increased letter spacing */
+  color: rgba(255, 255, 255, 0.5);
+  text-transform: uppercase;
+  text-shadow: none;
+}
+
+/* Mobile Optimization */
+@media (max-width: 768px) {
+  .ag-home-header {
+    height: 40vh;
+  }
+  
+  .ag-logo-large {
+    width: 70%;
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   C. 首頁主區域（Vertical Capsules）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ag-home-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Align to top of main section */
+  width: 100%;
+  padding-top: 20px;
+  padding-bottom: 60px;
+  position: relative;
+}
+
+/* Matrix Pills Container */
+.ag-pills-container {
+  display: flex;
+  flex-direction: column;
+  gap: 28px; /* Fixed 28px gap */
+  align-items: center;
+  position: relative;
+  width: 100%;
+}
+
+/* Base Capsule Style - Refined */
+.ag-capsule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 187px; /* Reduced by 15% from 220px */
+  height: 54px; /* Reduced by 10% from 60px */
+  border-radius: 999px;
+  font-size: 16px; /* Slightly smaller font */
+  font-weight: 500;
+  letter-spacing: 2px;
+  color: #fff;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Blue Pill (Start Meditation) */
+.ag-capsule--primary {
+  border: 1.5px solid #00aaff;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0,160,255,.2) 0%,
+    rgba(0,0,0,0) 70%
+  );
+  box-shadow:
+    0 0 10px rgba(0,160,255,.5),
+    inset 0 0 14px rgba(0,160,255,.25);
+  transform: none; /* Remove tilt */
+}
+
+.ag-capsule--primary:hover {
+  box-shadow: 
+    0 0 15px rgba(0, 170, 255, 0.7),
+    inset 0 0 20px rgba(0, 170, 255, 0.35);
+  transform: scale(1.02);
+}
+
+/* Red Pill (Emergency Support) */
+.ag-capsule--secondary {
+  border: 1.5px solid #ff0033;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255,0,51,.2) 0%,
+    rgba(0,0,0,0) 70%
+  );
+  box-shadow:
+    0 0 10px rgba(255,0,51,.5),
+    inset 0 0 14px rgba(255,0,51,.25);
+  transform: none; /* Remove tilt */
+}
+
+.ag-capsule--secondary:hover {
+  box-shadow: 
+    0 0 15px rgba(255, 0, 51, 0.7),
+    inset 0 0 20px rgba(255, 0, 51, 0.35);
+  transform: scale(1.02);
+}
+
+/* Breathing Animation for Pills */
+@keyframes ag-pill-breathe {
+  0%, 100% { box-shadow: 0 0 10px currentColor, inset 0 0 14px currentColor; }
+  50% { box-shadow: 0 0 14px currentColor, inset 0 0 18px currentColor; }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   D. Footer Component (Clean & Minimal)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ag-footer-standard {
+  width: 100%;
+  padding: 20px 20px calc(20px + env(safe-area-inset-bottom));
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: transparent;
+  position: relative;
+  z-index: 10;
+}
+
+.ag-footer__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+.ag-footer__links {
+  display: flex;
+  flex-wrap: nowrap; /* Force single line */
+  justify-content: center;
+  align-items: center;
+  gap: 16px; /* Fixed 16px gap */
+  font-size: 12px; /* Fixed 12px */
+  color: rgba(255, 255, 255, 0.6); /* Opacity 0.6 */
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+  opacity: 0.6; /* Ensure container opacity */
+}
+
+.ag-footer__link {
+  color: inherit; /* Inherit from parent */
+  text-decoration: none;
+  transition: color 0.3s ease;
+  white-space: nowrap;
+}
+
+.ag-footer__link:hover {
+  color: #fff;
+  opacity: 1;
+}
+
+.ag-footer__separator {
+  color: inherit;
+  font-size: 10px;
+  opacity: 0.5;
+}
+
+.ag-footer__copyright {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.4);
+  letter-spacing: 1px;
+  margin-top: 4px;
+  display: none; /* Hide copyright for cleaner look if needed, or keep minimal */
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   E. Other Pages (About, Legal, etc.) - Preserved
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ag-about { flex: 1; padding: 20px 24px 40px; }
+.ag-about__container { max-width: 540px; margin: 0 auto; }
+.ag-about__title { font-size: 26px; font-weight: 400; text-align: center; margin-bottom: 8px; opacity: 0.95; }
+.ag-about__subtitle { font-size: 16px; font-weight: 300; text-align: center; color: #aaa; margin-bottom: 32px; }
+.ag-about__content { font-size: 15px; line-height: 1.8; color: #ddd; }
+.ag-about__content p { margin-bottom: 18px; }
+
+.ag-legal { flex: 1; padding: 20px 24px 40px; }
+.ag-legal__container { max-width: 560px; margin: 0 auto; }
+.ag-legal__title { font-size: 26px; font-weight: 400; text-align: center; margin-bottom: 12px; opacity: 0.95; }
+.ag-legal__intro { font-size: 15px; line-height: 1.7; text-align: center; color: #bbb; margin-bottom: 28px; }
+.ag-legal__content { font-size: 14px; line-height: 1.7; color: #ccc; }
+.ag-legal__content h2 { font-size: 17px; font-weight: 400; margin-top: 24px; margin-bottom: 10px; opacity: 0.95; }
+.ag-legal__content ul { margin: 12px 0 16px 20px; list-style: disc; }
+.ag-legal__content li { margin-bottom: 8px; line-height: 1.7; }
+.ag-legal__content p { margin-bottom: 16px; }
+.ag-legal__note { margin-top: 24px; padding: 16px; background: rgba(255, 255, 255, 0.03); border-left: 2px solid rgba(255, 255, 255, 0.2); font-size: 14px; line-height: 1.7; color: #aaa; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   F. Wild Header Logo (Internal Pages) - Preserved
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ag-wild-header { position: relative; width: 100%; height: 80px; overflow: visible; margin-bottom: 20px; z-index: 100; }
+.ag-wild-logo { position: absolute; top: -10px; left: -20px; width: 180px; height: auto; transform: rotate(-5deg); opacity: 0.9; pointer-events: none; }
+@media (max-width: 480px) {
+  .ag-wild-header { height: 60px; margin-bottom: 10px; }
+  .ag-wild-logo { width: 140px; top: -5px; left: -15px; }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   G. Utilities & Mobile Safety
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.ag-visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; white-space: nowrap; border: 0; }
+.ag-text-cyan { color: #00e5ff; }
+.ag-text-magenta { color: #ff6bd9; }
+.ag-text-purple { color: #bd00ff; }
+.ag-text-white { color: white; }
+.ag-text-gray { color: #aaa; }
+.ag-text-dark-gray { color: #666; }
+.ag-text-red { color: #ff4444; }
+.ag-font-bold { font-weight: bold; }
+.ag-mt-10 { margin-top: 10px; }
+.ag-mt-20 { margin-top: 20px; }
+.ag-mt-40 { margin-top: 40px; }
+.ag-mb-0 { margin-bottom: 0; }
+.ag-mb-15 { margin-bottom: 15px; }
+.ag-mb-20 { margin-bottom: 20px; }
+.ag-mb-40 { margin-bottom: 40px; }
+.ag-pl-20 { padding-left: 20px; }
+.ag-text-xs { font-size: 12px; }
+.ag-text-sm { font-size: 13px; }
+.ag-link-clean { text-decoration: none; color: inherit; transition: opacity 0.2s; }
+.ag-link-clean:hover { opacity: 0.8; }
+.ag-link-purple { color: #bd00ff; text-decoration: none; }
+.ag-link-purple:hover { text-decoration: underline; }
+.ag-container-sm { max-width: 600px; margin: 0 auto; padding: 60px 16px 80px; }
+.ag-container-md { max-width: 800px; margin: 0 auto; padding: 60px 16px 100px; }
+.ag-disabled { opacity: 0.5; cursor: not-allowed; }
+.ag-col-span-full { grid-column: 1 / -1; }
+.ag-logo-sm { width: 200px; margin: 0 auto; }
+
+/* Safe Area Variables */
+:root {
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-left: env(safe-area-inset-left, 0px);
+  --safe-right: env(safe-area-inset-right, 0px);
+}
+
+/* Page Container with Safe Area Padding */
+.ag-page {
+  padding-top: var(--safe-top);
+  padding-bottom: var(--safe-bottom);
+  padding-left: var(--safe-left);
+  padding-right: var(--safe-right);
+  min-height: 100vh;
+}
+
+/* Fix for potential text vibrating/blurring */
+.ag-breathing-text {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}

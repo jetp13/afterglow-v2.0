@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>白噪音｜Afterglow</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#000000">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+  <link rel="stylesheet" href="/assets/layout.css">
+  <script>
+    // Check for consent immediately
+    if (localStorage.getItem('ag_consent') !== 'true') {
+      window.location.href = '/index.html';
+    }
+  </script>
+  <style>
+    .ag-noise-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ag-noise-visualizer {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(0, 0, 0, 0) 70%);
+      position: relative;
+      margin-bottom: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.5s ease;
+    }
+
+    .ag-noise-visualizer::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      animation: pulse-ring 4s infinite linear;
+    }
+
+    .ag-noise-visualizer::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: 80%;
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      animation: pulse-ring 4s infinite linear reverse;
+    }
+
+    @keyframes pulse-ring {
+      0% { transform: translate(-50%, -50%) scale(0.8) rotate(0deg); opacity: 0.3; }
+      50% { transform: translate(-50%, -50%) scale(1.1) rotate(180deg); opacity: 0.6; }
+      100% { transform: translate(-50%, -50%) scale(0.8) rotate(360deg); opacity: 0.3; }
+    }
+
+    .ag-noise-visualizer.playing {
+      box-shadow: 0 0 50px rgba(255, 255, 255, 0.1);
+    }
+
+    .ag-noise-visualizer.playing::before {
+      animation-duration: 3s;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .ag-noise-icon {
+      font-size: 48px;
+      color: rgba(255, 255, 255, 0.8);
+      z-index: 2;
+    }
+
+    .ag-controls {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      margin-bottom: 40px;
+    }
+
+    .ag-control-btn {
+      background: none;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      color: white;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .ag-control-btn:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.8);
+    }
+
+    .ag-control-btn.active {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: white;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    }
+
+    .ag-noise-title {
+      font-size: 24px;
+      font-weight: 300;
+      letter-spacing: 2px;
+      margin-bottom: 8px;
+      color: white;
+    }
+
+    .ag-noise-subtitle {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.5);
+      margin-bottom: 40px;
+    }
+
+    /* Volume Slider */
+    .ag-volume-container {
+      width: 200px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .ag-volume-slider {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 2px;
+      outline: none;
+    }
+
+    .ag-volume-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: white;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .ag-volume-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+  </style>
+</head>
+<body class="ag-page">
+  <!-- Back Button -->
+  <a href="/menu.html" class="ag-back-button neon-style" aria-label="返回選單">
+    <span class="ag-neon-icon-back"></span>
+  </a>
+
+  <div class="ag-noise-container">
+    <div class="ag-noise-visualizer" id="visualizer">
+      <div class="ag-noise-icon">≋</div>
+    </div>
+
+    <h1 class="ag-noise-title">白噪音</h1>
+    <p class="ag-noise-subtitle">專注與放鬆的背景音</p>
+
+    <div class="ag-controls">
+      <button class="ag-control-btn" id="playBtn" aria-label="播放/暫停">
+        ▶
+      </button>
+    </div>
+
+    <div class="ag-volume-container">
+      <span>🔈</span>
+      <input type="range" min="0" max="1" step="0.01" value="0.5" class="ag-volume-slider" id="volumeSlider" aria-label="音量調整">
+      <span>🔊</span>
+    </div>
+
+    <audio id="noiseAudio" loop>
+      <!-- Placeholder audio source -->
+      <source src="" type="audio/wav">
+      您的瀏覽器不支援音訊播放。
+    </audio>
+  </div>
+
+  <!-- Footer：共用模組 -->
+  <footer class="ag-footer-standard">
+    <div class="ag-footer__inner">
+      <nav class="ag-footer__links" aria-label="Legal and info links">
+        <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/legal.html" class="ag-footer__link">法律免責</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/terms.html" class="ag-footer__link">使用條款</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+      </nav>
+
+      <p class="ag-footer__copyright">
+        © 2025 Afterglow. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    const audio = document.getElementById('noiseAudio');
+    const playBtn = document.getElementById('playBtn');
+    const visualizer = document.getElementById('visualizer');
+    const volumeSlider = document.getElementById('volumeSlider');
+
+    // Initialize volume
+    audio.volume = volumeSlider.value;
+
+    playBtn.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play();
+        playBtn.textContent = '⏸';
+        playBtn.classList.add('active');
+        visualizer.classList.add('playing');
+      } else {
+        audio.pause();
+        playBtn.textContent = '▶';
+        playBtn.classList.remove('active');
+        visualizer.classList.remove('playing');
+      }
+    });
+
+    volumeSlider.addEventListener('input', (e) => {
+      audio.volume = e.target.value;
+    });
+
+    // Register Service Worker
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+  </script>
+</body>
+</html>
