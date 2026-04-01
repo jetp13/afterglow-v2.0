@@ -62,17 +62,17 @@
     .ag-hero {
       flex: 0 0 auto;
       position: relative;
-      padding-top: clamp(16px, 4vh, 40px);
-      /* 讓副標能疊在 Logo 右下角 */
+      padding-top: 0; /* 上側出血：不需要 padding-top，讓 Logo 直接頂住 */
+      overflow: visible; /* 讓 Logo 可以出血到 hero 外 */
     }
 
-    /* Logo：偏左出血 */
+    /* Logo：明確破框 — 左、右、上三邊出血，讓裁切是刻意設計而非失誤 */
     .ag-logo {
       display: block;
-      width: clamp(280px, 96vw, 460px);
+      width: clamp(360px, 118vw, 580px); /* 比視窗更寬，左右都出血 */
       height: auto;
-      margin-left: -8vw; /* 左側出血加強 */
-      margin-top: -8px; /* 往上切進畫面 */
+      margin-left: -10vw;  /* 左側出血 */
+      margin-top: -32px;   /* 上側出血，切進 safe-area */
       filter:
         drop-shadow(0 0 8px rgba(255,255,255,0.65))
         drop-shadow(0 0 28px rgba(255,255,255,0.28))
@@ -239,16 +239,17 @@
         margin: 0 auto;
       }
       .ag-logo {
-        width: clamp(300px, 82vw, 400px);
-        margin-left: -24px;
-        margin-top: -8px;
+        /* 桌機：在 max-width 480px 容器內，左右出血相對容器 */
+        width: clamp(360px, 108%, 560px);
+        margin-left: -20px;
+        margin-top: -24px;
       }
     }
 
     /* 極小螢幕（高度 < 680px）收緊 */
     @media (max-height: 680px) {
-      .ag-hero { padding-top: 20px; }
-      .ag-logo { width: clamp(220px, 78vw, 320px); }
+      .ag-hero { padding-top: 0; }
+      .ag-logo { width: clamp(300px, 112vw, 440px); margin-top: -24px; }
       .ag-cta { padding-top: 20px; gap: 10px; }
       .ag-btn { height: 44px; font-size: 14px; }
     }
