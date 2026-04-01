@@ -19,8 +19,12 @@
   </script>
   <style>
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       Homepage Restoration Pass v0.9 — Composition Fix
-       構圖邏輯：Logo 偏左出血 / 副標縮小靠右 / CTA 微錯落
+       home.html — Flexbox 文件流版本
+       結構：body = flex column
+         .ag-hero   (flex: 0 0 auto) — Logo + 副標
+         .ag-cta    (flex: 0 0 auto) — 兩顆膠囊
+         .ag-spacer (flex: 1 1 auto) — 吸收剩餘空間
+         .ag-footer (flex: 0 0 auto) — 底部法律連結
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
     *, *::before, *::after {
@@ -29,66 +33,62 @@
       box-sizing: border-box;
     }
 
-    html, body {
-      width: 100%;
+    html {
       height: 100%;
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      min-height: 100%;
+      min-height: 100svh;
       background: #050505;
       color: #fff;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
       -webkit-font-smoothing: antialiased;
-      -webkit-text-size-adjust: 100%;
-      overflow: hidden;
-    }
-
-    /* ── 全屏容器 ── */
-    .ag-home {
-      position: fixed;
-      inset: 0;
+      /* Flexbox 文件流 */
+      display: flex;
+      flex-direction: column;
+      /* iOS Safe Area */
       padding-top: env(safe-area-inset-top, 0px);
       padding-bottom: env(safe-area-inset-bottom, 0px);
       padding-left: env(safe-area-inset-left, 0px);
       padding-right: env(safe-area-inset-right, 0px);
-      background: #050505;
+      overflow-x: hidden;
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       A. HERO BLOCK
-       Logo 偏左出血：從左側 -8% 開始，向右延伸出血
-       副標靠右：絕對定位在 Logo 右下方
+       A. HERO — Logo 偏左出血 + 副標靠右
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     .ag-hero {
-      position: absolute;
-      top: 10vh;
-      left: 0;
-      right: 0;
+      flex: 0 0 auto;
+      position: relative;
+      padding-top: clamp(32px, 8vh, 72px);
+      /* 讓副標能疊在 Logo 右下角 */
     }
 
-    /* Logo：偏左出血，大型主視覺 */
+    /* Logo：偏左出血 */
     .ag-logo {
       display: block;
-      width: min(92vw, 360px);
+      width: clamp(260px, 88vw, 420px);
       height: auto;
-      /* 偏左：負 margin 讓左側出血 */
-      margin-left: -6vw;
+      margin-left: -4vw; /* 左側微出血 */
       filter:
         drop-shadow(0 0 8px rgba(255,255,255,0.65))
         drop-shadow(0 0 28px rgba(255,255,255,0.28))
         drop-shadow(0 0 60px rgba(255,255,255,0.12));
     }
 
-    /* 副標群組：靠右，在 CTA 下方 */
+    /* 副標群組：靠右，在 Logo 下方緊接 */
     .ag-text {
-      position: absolute;
-      top: 72vh; /* CTA 下方，不重疊 */
-      right: 20px;
+      padding: 12px 20px 0;
       text-align: right;
       display: flex;
       flex-direction: column;
-      gap: 5px;
+      gap: 4px;
     }
 
     .ag-subtitle {
-      font-size: clamp(11px, 3vw, 13px); /* 明顯縮小 */
+      font-size: clamp(11px, 2.8vw, 13px);
       font-weight: 300;
       letter-spacing: 0.18em;
       color: rgba(255, 255, 255, 0.72);
@@ -96,7 +96,7 @@
     }
 
     .ag-tagline {
-      font-size: clamp(8px, 2.2vw, 9.5px);
+      font-size: clamp(8px, 2vw, 9.5px);
       font-weight: 400;
       letter-spacing: 0.12em;
       color: rgba(255, 255, 255, 0.28);
@@ -105,18 +105,14 @@
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       B. CTA BLOCK
-       微錯落：上方按鈕偏左，下方按鈕偏右
+       B. CTA — 微錯落：主左次右
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     .ag-cta {
-      position: absolute;
-      top: 38vh; /* Logo 底部下方，第一層行動區 */
-      left: 0;
-      right: 0;
+      flex: 0 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 16px;
-      padding: 0 24px;
+      gap: 14px;
+      padding: clamp(28px, 6vh, 52px) 24px 0;
     }
 
     /* 共用膠囊基底 */
@@ -134,10 +130,9 @@
       transition: box-shadow 0.35s ease, transform 0.30s ease;
     }
 
-    /* 主 CTA：偏左，寬度略大，藍色 */
+    /* 主 CTA：偏左，藍色 Glow */
     .ag-btn--primary {
-      width: min(200px, 56vw);
-      /* 偏左：align-self + margin */
+      width: clamp(180px, 54vw, 220px);
       align-self: flex-start;
       margin-left: 4vw;
       border: 1.5px solid #00aaff;
@@ -157,10 +152,9 @@
       animation: none;
     }
 
-    /* 次 CTA：偏右，寬度略小，紅色 */
+    /* 次 CTA：偏右，紅色 Glow */
     .ag-btn--secondary {
-      width: min(180px, 50vw);
-      /* 偏右 */
+      width: clamp(160px, 50vw, 200px);
       align-self: flex-end;
       margin-right: 6vw;
       border: 1.5px solid rgba(255, 30, 60, 0.65);
@@ -191,14 +185,19 @@
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       C. FOOTER — 固定在底部安全區
+       C. SPACER — 吸收剩餘空間，把 Footer 推到底部
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .ag-spacer {
+      flex: 1 1 auto;
+      min-height: 24px;
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       D. FOOTER — 文件流底部，iOS Safe Area 正確
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     .ag-footer {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      padding: 0 16px calc(20px + env(safe-area-inset-bottom, 0px));
+      flex: 0 0 auto;
+      padding: 0 16px clamp(16px, 4vh, 28px);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -206,20 +205,19 @@
 
     .ag-footer__links {
       display: flex;
-      flex-wrap: nowrap;
+      flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      gap: 10px;
+      gap: 8px 10px;
       font-size: 10px;
       color: rgba(255,255,255,0.28);
-      white-space: nowrap;
-      overflow: hidden;
     }
 
     .ag-footer__link {
       color: inherit;
       text-decoration: none;
       transition: color 0.25s ease;
+      white-space: nowrap;
     }
 
     .ag-footer__link:hover {
@@ -232,52 +230,65 @@
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       極小螢幕（高度 < 680px）收緊
+       桌機版微調（寬螢幕時讓 Logo 不要太大）
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    @media (min-width: 600px) {
+      body {
+        max-width: 480px;
+        margin: 0 auto;
+      }
+      .ag-logo {
+        width: clamp(280px, 80vw, 380px);
+        margin-left: -20px;
+      }
+    }
+
+    /* 極小螢幕（高度 < 680px）收緊 */
     @media (max-height: 680px) {
-      .ag-hero { top: 6vh; }
-      .ag-logo { width: min(80vw, 300px); }
-      .ag-cta { top: min(52vw, 200px); gap: 12px; }
+      .ag-hero { padding-top: 20px; }
+      .ag-logo { width: clamp(220px, 78vw, 320px); }
+      .ag-cta { padding-top: 20px; gap: 10px; }
       .ag-btn { height: 44px; font-size: 14px; }
     }
   </style>
 </head>
 <body>
-  <div class="ag-home">
 
-    <!-- Hero：Logo 偏左出血 + 副標靠右 -->
-    <section class="ag-hero" aria-label="品牌識別">
-      <img
-        src="/assets/logo-transparent.png"
-        alt="Afterglow"
-        class="ag-logo"
-      />
-      <!-- 副標：疊在 Logo 右下方 -->
-      <div class="ag-text">
-        <p class="ag-subtitle">讓夜裡的光有方向</p>
-        <p class="ag-tagline">Stay Safe · Care for Yourself · Seek Help</p>
-      </div>
-    </section>
+  <!-- Hero：Logo 偏左出血 -->
+  <section class="ag-hero" aria-label="品牌識別">
+    <img
+      src="/assets/logo-transparent.png"
+      alt="Afterglow"
+      class="ag-logo"
+    />
+    <!-- 副標：靠右，在 Logo 下方 -->
+    <div class="ag-text">
+      <p class="ag-subtitle">讓夜裡的光有方向</p>
+      <p class="ag-tagline">Stay Safe · Care for Yourself · Seek Help</p>
+    </div>
+  </section>
 
-    <!-- CTA：微錯落，主左次右 -->
-    <nav class="ag-cta" aria-label="主要功能入口">
-      <a href="/menu.html" class="ag-btn ag-btn--primary">開始冥想</a>
-      <a href="/support-main.html" class="ag-btn ag-btn--secondary">緊急支援</a>
+  <!-- CTA：微錯落，主左次右 -->
+  <nav class="ag-cta" aria-label="主要功能入口">
+    <a href="/support-main.html" class="ag-btn ag-btn--primary">開始冥想</a>
+    <a href="/support-main.html" class="ag-btn ag-btn--secondary">緊急支援</a>
+  </nav>
+
+  <!-- Spacer：把 Footer 推到底部 -->
+  <div class="ag-spacer" aria-hidden="true"></div>
+
+  <!-- Footer -->
+  <footer class="ag-footer">
+    <nav class="ag-footer__links" aria-label="法律與資訊連結">
+      <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+      <span class="ag-footer__sep">•</span>
+      <a href="/legal.html" class="ag-footer__link">法律免責</a>
+      <span class="ag-footer__sep">•</span>
+      <a href="/terms.html" class="ag-footer__link">使用條款</a>
+      <span class="ag-footer__sep">•</span>
+      <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
     </nav>
+  </footer>
 
-    <!-- Footer -->
-    <footer class="ag-footer">
-      <nav class="ag-footer__links" aria-label="法律與資訊連結">
-        <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
-        <span class="ag-footer__sep">•</span>
-        <a href="/legal.html" class="ag-footer__link">法律免責</a>
-        <span class="ag-footer__sep">•</span>
-        <a href="/terms.html" class="ag-footer__link">使用條款</a>
-        <span class="ag-footer__sep">•</span>
-        <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
-      </nav>
-    </footer>
-
-  </div>
 </body>
 </html>
