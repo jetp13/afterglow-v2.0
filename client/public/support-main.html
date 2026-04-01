@@ -37,29 +37,42 @@
       padding-right: env(safe-area-inset-right);
     }
 
-    /* Header: Logo Area */
+    /* ── Inner Header Shell ── */
     .ag-header {
-      position: relative;
-      padding: calc(18px + env(safe-area-inset-top)) 20px 8px;
-      min-height: 96px;
-      box-sizing: border-box;
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: calc(14px + env(safe-area-inset-top)) 20px 10px;
+      box-sizing: border-box;
+      min-height: 64px;
     }
 
     .ag-logo-link {
-      position: absolute;
-      top: calc(18px + env(safe-area-inset-top));
-      left: 20px;
-      z-index: 3;
       display: inline-flex;
       text-decoration: none;
     }
 
     .ag-logo {
       display: block;
-      width: 110px;
-      max-width: 32vw;
+      width: 80px;
+      max-width: 26vw;
       height: auto;
+      mix-blend-mode: screen;
+      opacity: 0.85;
+    }
+
+    /* Page title block */
+    .ag-page-title-block {
+      padding: 0 20px 8px;
+      flex-shrink: 0;
+    }
+    .ag-page-title {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0;
     }
 
     /* Main: Capsule Content Area */
@@ -224,9 +237,12 @@
     <!-- Header: Logo Area -->
     <header class="ag-header">
       <a href="/home.html" class="ag-logo-link" aria-label="返回首頁">
-        <img src="/assets/logo-handwritten.png" class="ag-logo" alt="Afterglow">
+        <img src="/assets/logo-transparent.png" class="ag-logo" alt="Afterglow">
       </a>
     </header>
+    <div class="ag-page-title-block">
+      <p class="ag-page-title">緊急支援 · Emergency Support</p>
+    </div>
 
     <!-- Main: Capsule Content Area -->
     <main class="ag-main-scroll">

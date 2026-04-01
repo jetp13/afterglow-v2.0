@@ -12,6 +12,63 @@
     }
   </script>
   <style>
+    /* ── Inner Header Shell ── */
+    html, body { height: 100%; margin: 0; padding: 0; }
+    body { background: #000; }
+    .ag-page {
+      min-height: 100vh;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      padding-top: env(safe-area-inset-top);
+      padding-left: env(safe-area-inset-left);
+      padding-right: env(safe-area-inset-right);
+    }
+    .ag-inner-header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: calc(14px + env(safe-area-inset-top)) 20px 10px;
+      box-sizing: border-box;
+      min-height: 64px;
+    }
+    .ag-back-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 18px;
+      line-height: 1;
+      transition: border-color 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+    .ag-back-btn:hover { border-color: rgba(255,255,255,0.6); color: #fff; }
+    .ag-inner-logo {
+      display: block;
+      width: 80px;
+      max-width: 26vw;
+      height: auto;
+      mix-blend-mode: screen;
+      opacity: 0.85;
+    }
+    .ag-page-title-block {
+      padding: 0 20px 8px;
+      flex-shrink: 0;
+    }
+    .ag-page-title {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
     /* Specific Styles for First Aid v1.2 */
     .ag-aid-header {
       text-align: center;
@@ -286,22 +343,22 @@
   </style>
 </head>
 <body class="ag-page">
-  <!-- Back Button (Fixed Position) -->
-  <!-- Back Button (Fixed Position) (F3) -->
-  <a href="/support-main.html" class="ag-back-button neon-style" aria-label="返回">
-    <span class="ag-neon-icon-back"></span>
-  </a>
+
+  <!-- Inner Header: Back + Logo -->
+  <header class="ag-inner-header">
+    <a href="/support-main.html" class="ag-back-btn" aria-label="返回緊急支援">&#8592;</a>
+    <a href="/home.html" aria-label="返回首頁">
+      <img src="/assets/logo-transparent.png" class="ag-inner-logo" alt="Afterglow">
+    </a>
+  </header>
+  <div class="ag-page-title-block">
+    <p class="ag-page-title">急救指引 · Emergency Guide v1.2</p>
+  </div>
 
   <div class="ag-main-scroll">
-    <div class="ag-container ag-container-sm">  
-      <!-- Wild Header -->
-      <div class="ag-wild-header">
-        <img src="/assets/logo-handwritten.png" class="ag-wild-logo" alt="Afterglow">
-      </div>
-
+    <div class="ag-container ag-container-sm">
       <div class="ag-aid-header">
         <h1 class="ag-aid-title ag-visually-hidden">緊急醫療與<br>減害支援模組</h1>
-        <div class="ag-aid-subtitle">Emergency & Harm Reduction Guide v1.2</div>
       </div>
 
       <!-- Emergency Buttons -->
