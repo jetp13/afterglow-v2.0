@@ -1,13 +1,15 @@
 {
   "version": 2,
-  "outputDirectory": "client/public",
-  "buildCommand": null,
-  "installCommand": null,
-  "framework": null,
+  "builds": [
+    {
+      "src": "client/public/**",
+      "use": "@vercel/static"
+    }
+  ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/$1"
+      "dest": "/client/public/$1"
     }
   ]
 }
