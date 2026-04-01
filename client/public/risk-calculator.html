@@ -569,12 +569,7 @@
       'mdma+etomidate': { level: 'unsafe', desc: '危險！增加心臟負擔，且可能導致不可預期的意識喪失。' }
     };
 
-    const capsuleGrid = document.getElementById('capsule-grid');
-    const resultCircle = document.getElementById('result-circle');
-    const resultContainer = document.getElementById('result-container');
-    const resultTitle = document.getElementById('result-title');
-    const resultDesc = document.getElementById('result-desc');
-
+    let capsuleGrid, resultCircle, resultContainer, resultTitle, resultDesc;
     let selectedSubstances = [];
 
     function initCapsuleGrid() {
@@ -699,15 +694,20 @@
       resultTitle.style.color = color;
 
       if (messages.length > 0) {
-        resultDesc.innerHTML = messages.join('  
-  
-');
+        resultDesc.innerHTML = messages.join('<br><br>');
       } else {
         resultDesc.textContent = '目前資料庫中無此組合的特定高風險警示，但仍請保持謹慎，少量測試。';
       }
     }
 
-    initCapsuleGrid();
+    document.addEventListener('DOMContentLoaded', function() {
+      capsuleGrid = document.getElementById('capsule-grid');
+      resultCircle = document.getElementById('result-circle');
+      resultContainer = document.getElementById('result-container');
+      resultTitle = document.getElementById('result-title');
+      resultDesc = document.getElementById('result-desc');
+      initCapsuleGrid();
+    });
   </script>
 </body>
 </html>
