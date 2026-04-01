@@ -62,16 +62,17 @@
     .ag-hero {
       flex: 0 0 auto;
       position: relative;
-      padding-top: clamp(32px, 8vh, 72px);
+      padding-top: clamp(16px, 4vh, 40px);
       /* 讓副標能疊在 Logo 右下角 */
     }
 
     /* Logo：偏左出血 */
     .ag-logo {
       display: block;
-      width: clamp(260px, 88vw, 420px);
+      width: clamp(280px, 96vw, 460px);
       height: auto;
-      margin-left: -4vw; /* 左側微出血 */
+      margin-left: -8vw; /* 左側出血加強 */
+      margin-top: -8px; /* 往上切進畫面 */
       filter:
         drop-shadow(0 0 8px rgba(255,255,255,0.65))
         drop-shadow(0 0 28px rgba(255,255,255,0.28))
@@ -238,8 +239,9 @@
         margin: 0 auto;
       }
       .ag-logo {
-        width: clamp(280px, 80vw, 380px);
-        margin-left: -20px;
+        width: clamp(300px, 82vw, 400px);
+        margin-left: -24px;
+        margin-top: -8px;
       }
     }
 
@@ -270,7 +272,7 @@
 
   <!-- CTA：微錯落，主左次右 -->
   <nav class="ag-cta" aria-label="主要功能入口">
-    <a href="/support-main.html" class="ag-btn ag-btn--primary">開始冥想</a>
+    <a href="/menu.html" class="ag-btn ag-btn--primary">開始冥想</a>
     <a href="/support-main.html" class="ag-btn ag-btn--secondary">緊急支援</a>
   </nav>
 
