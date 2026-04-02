@@ -6,192 +6,177 @@
   <title>緊急支援選單｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
   <script>
-    // Check for consent immediately
     if (localStorage.getItem('ag_consent') !== 'true') {
       window.location.href = '/index.html';
     }
   </script>
   <style>
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       Support Main Layout - Flexbox Structure
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background: #000;
-    }
-
-    .ag-page {
-      min-height: 100vh;
-      min-height: 100svh;
-      display: flex;
-      flex-direction: column;
-      padding-top: env(safe-area-inset-top);
-      padding-bottom: env(safe-area-inset-bottom);
-      padding-left: env(safe-area-inset-left);
-      padding-right: env(safe-area-inset-right);
-    }
-
-    /* ── Inner Header Shell ── */
-    .ag-header {
+    /* ── Header ── */
+    .ag-inner-header {
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: calc(14px + env(safe-area-inset-top)) 20px 10px;
+      padding: calc(12px + env(safe-area-inset-top)) 20px 10px;
       box-sizing: border-box;
-      min-height: 64px;
+      min-height: 56px;
     }
 
-    .ag-logo-link {
+    .ag-back-btn {
       display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 50%;
+      color: rgba(255,255,255,0.7);
+      font-size: 16px;
       text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+      flex-shrink: 0;
     }
+    .ag-back-btn:hover { border-color: rgba(255,255,255,0.6); color: #fff; }
 
-    .ag-logo {
-      display: block;
-      width: 80px;
-      max-width: 26vw;
-      height: auto;
-      mix-blend-mode: screen;
-      opacity: 0.85;
-    }
-
-    /* Page title block */
+    /* Page label */
     .ag-page-title-block {
-      padding: 0 20px 8px;
+      padding: 0 20px 4px;
       flex-shrink: 0;
     }
     .ag-page-title {
-      font-size: 13px;
-      color: rgba(255,255,255,0.35);
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
       letter-spacing: 0.08em;
       text-transform: uppercase;
       margin: 0;
     }
 
-    /* Main: Capsule Content Area */
+    /* ── Main scroll area ── */
     .ag-main-scroll {
-      flex: 1 0 auto;
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      padding: 8px 20px 24px;
+      padding: 16px 20px 20px;
       box-sizing: border-box;
     }
 
     .ag-support-inner {
       width: 100%;
-      max-width: 520px;
+      max-width: 480px;
       margin: 0 auto;
     }
 
-    /* Capsule Container */
+    /* ── Capsule List ── */
     .ag-capsule-list {
       display: flex;
       flex-direction: column;
-      gap: 22px;
+      gap: 18px;
       width: 100%;
-      margin: 0 auto;
     }
 
-    /* Base Capsule Style */
+    /* Base capsule */
     .ag-menu-button {
-      display: flex;
+      display: inline-flex;
       align-items: center;
       justify-content: center;
-      width: 200px;
-      height: 60px;
-      border-radius: 30px;
-      font-size: 18px;
-      font-weight: bold;
+      height: 56px;
+      border-radius: 28px;
+      font-size: 17px;
+      font-weight: 600;
       color: white;
       text-decoration: none;
-      transition: 0.3s ease;
+      background: rgba(0,0,0,0.25);
       position: relative;
-      background: rgba(0, 0, 0, 0.3);
-      margin: 0 auto;
+      transition: box-shadow 0.25s ease, background 0.25s ease;
+      /* prevent full-width stretch */
+      align-self: flex-start;
     }
 
-    /* Playful Stagger Effect */
-    .ag-menu-button:nth-child(1) { transform: translateX(6px); }
-    .ag-menu-button:nth-child(2) { transform: translateX(-10px); }
-    .ag-menu-button:nth-child(3) { transform: translateX(-2px); }
-    .ag-menu-button:nth-child(4) { transform: translateX(10px); }
+    /* Stagger: varied widths + slight horizontal offsets + tiny rotations */
+    .ag-menu-button:nth-child(1) {
+      width: 68%;
+      padding: 0 28px;
+      align-self: flex-end;
+      transform: translateX(-4px) rotate(0.4deg);
+    }
+    .ag-menu-button:nth-child(2) {
+      width: 74%;
+      padding: 0 28px;
+      align-self: flex-start;
+      transform: translateX(8px) rotate(-0.5deg);
+    }
+    .ag-menu-button:nth-child(3) {
+      width: 70%;
+      padding: 0 28px;
+      align-self: flex-end;
+      transform: translateX(-8px) rotate(0.3deg);
+    }
+    .ag-menu-button:nth-child(4) {
+      width: 66%;
+      padding: 0 28px;
+      align-self: flex-start;
+      transform: translateX(4px) rotate(-0.4deg);
+    }
 
-    /* 急救指引 - 藍綠色 Glow */
+    /* 急救指引 — 藍綠 */
     .ag-menu-button--first-aid {
-      border: 2px solid #00e5ff;
-      box-shadow: 0 0 15px rgba(0, 229, 255, 0.4), inset 0 0 10px rgba(0, 229, 255, 0.1);
-      color: #e0ffff;
+      border: 1.5px solid #00e5ff;
+      box-shadow: 0 0 12px rgba(0,229,255,0.35), inset 0 0 8px rgba(0,229,255,0.08);
+      color: #d8feff;
     }
     .ag-menu-button--first-aid:hover {
-      box-shadow: 0 0 25px rgba(0, 229, 255, 0.7), inset 0 0 15px rgba(0, 229, 255, 0.2);
-      background: rgba(0, 229, 255, 0.1);
+      box-shadow: 0 0 22px rgba(0,229,255,0.65), inset 0 0 12px rgba(0,229,255,0.18);
+      background: rgba(0,229,255,0.08);
     }
 
-    /* 風險計算器 - 桃紅色 Glow */
+    /* 風險計算器 — 桃紅 */
     .ag-menu-button--risk {
-      border: 2px solid #ff6bd9;
-      box-shadow: 0 0 15px rgba(255, 107, 217, 0.4), inset 0 0 10px rgba(255, 107, 217, 0.1);
+      border: 1.5px solid #ff6bd9;
+      box-shadow: 0 0 12px rgba(255,107,217,0.35), inset 0 0 8px rgba(255,107,217,0.08);
       color: #ffe0f5;
     }
     .ag-menu-button--risk:hover {
-      box-shadow: 0 0 25px rgba(255, 107, 217, 0.7), inset 0 0 15px rgba(255, 107, 217, 0.2);
-      background: rgba(255, 107, 217, 0.1);
+      box-shadow: 0 0 22px rgba(255,107,217,0.65), inset 0 0 12px rgba(255,107,217,0.18);
+      background: rgba(255,107,217,0.08);
     }
 
-    /* 權利知識 - 紫色 Glow */
+    /* 權利知識 — 紫 */
     .ag-menu-button--rights {
-      border: 2px solid #bd00ff;
-      box-shadow: 0 0 15px rgba(189, 0, 255, 0.4), inset 0 0 10px rgba(189, 0, 255, 0.1);
+      border: 1.5px solid #bd00ff;
+      box-shadow: 0 0 12px rgba(189,0,255,0.35), inset 0 0 8px rgba(189,0,255,0.08);
       color: #f0e0ff;
     }
     .ag-menu-button--rights:hover {
-      box-shadow: 0 0 25px rgba(189, 0, 255, 0.7), inset 0 0 15px rgba(189, 0, 255, 0.2);
-      background: rgba(189, 0, 255, 0.1);
+      box-shadow: 0 0 22px rgba(189,0,255,0.65), inset 0 0 12px rgba(189,0,255,0.18);
+      background: rgba(189,0,255,0.08);
     }
 
-    /* 求助資源 - 綠色 Glow */
+    /* 求助資源 — 綠 */
     .ag-menu-button--help {
-      border: 2px solid #00ff88;
-      box-shadow: 0 0 15px rgba(0, 255, 136, 0.4), inset 0 0 10px rgba(0, 255, 136, 0.1);
-      color: #e0ffe0;
+      border: 1.5px solid #00ff88;
+      box-shadow: 0 0 12px rgba(0,255,136,0.35), inset 0 0 8px rgba(0,255,136,0.08);
+      color: #d8fff0;
     }
     .ag-menu-button--help:hover {
-      box-shadow: 0 0 25px rgba(0, 255, 136, 0.7), inset 0 0 15px rgba(0, 255, 136, 0.2);
-      background: rgba(0, 255, 136, 0.1);
+      box-shadow: 0 0 22px rgba(0,255,136,0.65), inset 0 0 12px rgba(0,255,136,0.18);
+      background: rgba(0,255,136,0.08);
     }
 
-    /* Footer */
+    /* ── Footer ── */
     .ag-footer {
       flex-shrink: 0;
-      padding: 16px 20px calc(18px + env(safe-area-inset-bottom));
+      padding: 14px 20px calc(16px + env(safe-area-inset-bottom));
       box-sizing: border-box;
-    }
-
-    .ag-footer-standard {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      background: transparent;
-      position: relative;
-      z-index: 10;
     }
 
     .ag-footer__inner {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       width: 100%;
     }
 
@@ -200,95 +185,90 @@
       flex-wrap: wrap;
       justify-content: center;
       align-items: center;
-      gap: 6px 12px;
+      gap: 4px 10px;
       font-size: 10px;
-      color: rgba(255, 255, 255, 0.45);
+      color: rgba(255,255,255,0.35);
       width: 100%;
     }
 
     .ag-footer__link {
       color: inherit;
       text-decoration: none;
-      transition: color 0.3s ease;
       white-space: nowrap;
+      transition: color 0.2s;
     }
-
-    .ag-footer__link:hover {
-      color: #fff;
-      opacity: 1;
-    }
+    .ag-footer__link:hover { color: rgba(255,255,255,0.7); }
 
     .ag-footer__separator {
-      color: inherit;
+      color: rgba(255,255,255,0.2);
       font-size: 10px;
-      opacity: 0.5;
     }
 
     .ag-footer__copyright {
       font-size: 10px;
-      color: rgba(255, 255, 255, 0.4);
-      letter-spacing: 1px;
-      margin-top: 4px;
-      display: none;
+      color: rgba(255,255,255,0.25);
+      letter-spacing: 0.05em;
+      margin: 0;
     }
   </style>
 </head>
 <body class="ag-page">
-    <!-- Header: Logo Area -->
-    <header class="ag-header">
-      <a href="/home.html" class="ag-logo-link" aria-label="返回首頁">
-        <img src="/assets/logo-transparent.png" class="ag-logo" alt="Afterglow">
-      </a>
-    </header>
-    <div class="ag-page-title-block">
-      <p class="ag-page-title">緊急支援 · Emergency Support</p>
+
+  <!-- Header: Back + Logo area -->
+  <header class="ag-inner-header">
+    <a href="/home.html" class="ag-back-btn" aria-label="返回首頁">&#8592;</a>
+    <a href="/home.html" aria-label="返回首頁" style="display:inline-flex;">
+      <img src="/assets/logo-transparent.png"
+           style="width:72px;height:auto;opacity:0.75;mix-blend-mode:screen;"
+           alt="Afterglow">
+    </a>
+  </header>
+
+  <!-- Page label -->
+  <div class="ag-page-title-block">
+    <p class="ag-page-title">緊急支援 · Emergency Support</p>
+  </div>
+
+  <!-- Main capsule area -->
+  <main class="ag-main-scroll">
+    <div class="ag-support-inner">
+      <div class="ag-capsule-list">
+
+        <a href="/first-aid.html" class="ag-menu-button ag-menu-button--first-aid">
+          急救指引
+        </a>
+
+        <a href="/risk-calculator.html" class="ag-menu-button ag-menu-button--risk">
+          風險計算器
+        </a>
+
+        <a href="/rights.html" class="ag-menu-button ag-menu-button--rights">
+          權利知識
+        </a>
+
+        <a href="/help.html" class="ag-menu-button ag-menu-button--help">
+          求助資源
+        </a>
+
+      </div>
     </div>
+  </main>
 
-    <!-- Main: Capsule Content Area -->
-    <main class="ag-main-scroll">
-      <div class="ag-support-inner">
-        <div class="ag-capsule-list">
-          <!-- 急救指引 -->
-          <a href="/first-aid.html" class="ag-menu-button ag-menu-button--first-aid">
-            急救指引
-          </a>
+  <!-- Footer -->
+  <footer class="ag-footer">
+    <div class="ag-footer__inner">
+      <nav class="ag-footer__links" aria-label="頁面連結">
+        <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+        <span class="ag-footer__separator">·</span>
+        <a href="/legal.html" class="ag-footer__link">法律免責</a>
+        <span class="ag-footer__separator">·</span>
+        <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+        <span class="ag-footer__separator">·</span>
+        <a href="/terms.html" class="ag-footer__link">使用條款</a>
+      </nav>
+      <p class="ag-footer__copyright">© 2025 Afterglow</p>
+    </div>
+  </footer>
 
-          <!-- 風險計算器 -->
-          <a href="/risk-calculator.html" class="ag-menu-button ag-menu-button--risk">
-            風險計算器
-          </a>
-
-          <!-- 權利知識 -->
-          <a href="/rights.html" class="ag-menu-button ag-menu-button--rights">
-            權利知識
-          </a>
-
-          <!-- 求助資源 -->
-          <a href="/help.html" class="ag-menu-button ag-menu-button--help">
-            求助資源
-          </a>
-        </div>
-      </div>
-    </main>
-
-    <!-- Footer -->
-    <footer class="ag-footer">
-      <div class="ag-footer-standard">
-        <div class="ag-footer__inner">
-          <nav class="ag-footer__links" aria-label="Legal and info links">
-            <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
-            <span class="ag-footer__separator">•</span>
-            <a href="/legal.html" class="ag-footer__link">法律免責</a>
-            <span class="ag-footer__separator">•</span>
-            <a href="/terms.html" class="ag-footer__link">使用條款</a>
-            <span class="ag-footer__separator">•</span>
-            <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
-          </nav>
-          <p class="ag-footer__copyright">
-            © 2025 Afterglow. All rights reserved.
-          </p>
-        </div>
-      </div>
-    </footer>
 </body>
 </html>
