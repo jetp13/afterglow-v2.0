@@ -37,6 +37,11 @@ body {
 }
 
 /* 全站内頁底圖水印 — Afterglow 草書 logo */
+/* ag-inner-logo 已由全站水印取代，全站隱藏 */
+.ag-inner-logo {
+  display: none !important;
+}
+
 .ag-page::before {
   content: '';
   position: absolute;
@@ -49,10 +54,10 @@ body {
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center top;
-  opacity: 0.06;
+  opacity: 0.12;
+  filter: invert(1);
   pointer-events: none;
   z-index: 0;
-  mix-blend-mode: screen;
 }
 
 /* Scrollable Main Content Area */
