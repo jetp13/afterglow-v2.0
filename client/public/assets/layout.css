@@ -4,6 +4,12 @@
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
 /* === Global Reset === */
+html {
+  height: 100%;
+  /* Prevent iOS Safari address bar from causing layout shift */
+  -webkit-text-size-adjust: 100%;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -17,11 +23,11 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /* App Shell: Lock body scroll */
+  /* App Shell: Lock body scroll — do NOT use position:fixed here;
+     it breaks -webkit-overflow-scrolling on iOS Safari.
+     height + overflow:hidden on body is sufficient. */
   height: 100dvh;
   overflow: hidden;
-  position: fixed;
-  width: 100%;
 }
 
 .ag-page {
