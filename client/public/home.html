@@ -190,9 +190,15 @@
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        C. SPACER — 吸收剩餘空間，把 Footer 推到底部
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    /* spacer-top: hero 與 CTA 之間，吸收 60% 剩餘空間，讓 CTA 往下移 */
+    .ag-spacer-top {
+      flex: 3 1 0;
+      min-height: 16px;
+    }
+    /* spacer-bottom: CTA 與 footer 之間，吸收 40% 剩餘空間 */
     .ag-spacer {
-      flex: 1 1 auto;
-      min-height: 24px;
+      flex: 2 1 0;
+      min-height: 16px;
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -272,6 +278,9 @@
       <p class="ag-tagline">Stay Safe · Care for Yourself · Seek Help</p>
     </div>
   </section>
+
+  <!-- Spacer：把 CTA 往下推 -->
+  <div class="ag-spacer-top" aria-hidden="true"></div>
 
   <!-- CTA：微錯落，主左次右 -->
   <nav class="ag-cta" aria-label="主要功能入口">
