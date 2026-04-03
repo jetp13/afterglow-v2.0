@@ -299,16 +299,15 @@ body {
 
 .ag-footer__links {
   display: flex;
-  flex-wrap: nowrap; /* Force single line */
+  flex-wrap: nowrap;
   justify-content: center;
   align-items: center;
-  gap: 16px; /* Fixed 16px gap */
-  font-size: 12px; /* Fixed 12px */
-  color: rgba(255, 255, 255, 0.6); /* Opacity 0.6 */
+  gap: 14px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.4);
   white-space: nowrap;
   width: 100%;
   overflow: hidden;
-  opacity: 0.6; /* Ensure container opacity */
 }
 
 .ag-footer__link {
@@ -330,11 +329,11 @@ body {
 }
 
 .ag-footer__copyright {
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.4);
-  letter-spacing: 1px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.35);
+  letter-spacing: 0.06em;
   margin-top: 4px;
-  display: none; /* Hide copyright for cleaner look if needed, or keep minimal */
+  display: block;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

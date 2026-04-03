@@ -204,39 +204,7 @@
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        D. FOOTER — 文件流底部，iOS Safe Area 正確
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    .ag-footer {
-      flex: 0 0 auto;
-      padding: 0 16px clamp(16px, 4vh, 28px);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .ag-footer__links {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      gap: 8px 10px;
-      font-size: 10px;
-      color: rgba(255,255,255,0.28);
-    }
-
-    .ag-footer__link {
-      color: inherit;
-      text-decoration: none;
-      transition: color 0.25s ease;
-      white-space: nowrap;
-    }
-
-    .ag-footer__link:hover {
-      color: rgba(255,255,255,0.60);
-    }
-
-    .ag-footer__sep {
-      color: rgba(255,255,255,0.15);
-      font-size: 7px;
-    }
+    /* footer uses global ag-footer-standard from layout.css */
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        桌機版微調（寬螢幕時讓 Logo 不要太大）
@@ -292,16 +260,19 @@
   <div class="ag-spacer" aria-hidden="true"></div>
 
   <!-- Footer -->
-  <footer class="ag-footer">
-    <nav class="ag-footer__links" aria-label="法律與資訊連結">
-      <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
-      <span class="ag-footer__sep">•</span>
-      <a href="/legal.html" class="ag-footer__link">法律免責</a>
-      <span class="ag-footer__sep">•</span>
-      <a href="/terms.html" class="ag-footer__link">使用條款</a>
-      <span class="ag-footer__sep">•</span>
-      <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
-    </nav>
+  <footer class="ag-footer-standard">
+    <div class="ag-footer__inner">
+      <nav class="ag-footer__links" aria-label="Legal and info links">
+        <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/legal.html" class="ag-footer__link">法律免責</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/terms.html" class="ag-footer__link">使用條款</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+      </nav>
+      <p class="ag-footer__copyright">© 2025 Afterglow. All rights reserved.</p>
+    </div>
   </footer>
 
 </body>
