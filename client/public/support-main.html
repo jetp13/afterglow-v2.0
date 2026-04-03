@@ -74,9 +74,9 @@
       display: flex;
       flex-direction: column;
       align-items: stretch;
-      gap: 18px;
+      gap: 0;
       width: 100%;
-      padding: 0 8px;
+      padding: 0 4px;
     }
 
     /* Base capsule */
@@ -96,30 +96,34 @@
       transition: box-shadow 0.25s ease, background 0.25s ease;
     }
 
-    /* Scattered landing: each capsule has its own width, margin, and angle */
+    /* Organic scatter — uneven gaps, varied widths, each capsule drifts differently */
     .ag-menu-button:nth-child(1) {
-      width: 68%;
+      width: 71%;
       align-self: flex-end;
-      margin-right: 4%;
-      transform: rotate(-4.5deg);
+      margin-right: 2%;
+      margin-bottom: 10px;
+      transform: rotate(-5deg) translateX(-6px);
     }
     .ag-menu-button:nth-child(2) {
-      width: 74%;
+      width: 78%;
       align-self: flex-start;
-      margin-left: 2%;
-      transform: rotate(5deg);
+      margin-left: 5%;
+      margin-bottom: 26px;
+      transform: rotate(4deg) translateX(4px);
     }
     .ag-menu-button:nth-child(3) {
-      width: 62%;
+      width: 60%;
       align-self: flex-end;
-      margin-right: 8%;
-      transform: rotate(-3deg);
+      margin-right: 10%;
+      margin-bottom: 14px;
+      transform: rotate(-2.5deg) translateX(8px);
     }
     .ag-menu-button:nth-child(4) {
-      width: 70%;
+      width: 75%;
       align-self: flex-start;
-      margin-left: 6%;
-      transform: rotate(6.5deg);
+      margin-left: 1%;
+      margin-bottom: 0;
+      transform: rotate(6deg) translateX(-4px);
     }
 
     /* 急救指引 — 藍綠 */
