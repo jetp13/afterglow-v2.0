@@ -604,12 +604,33 @@
     function initCapsuleGrid() {
       capsuleGrid.innerHTML = '';
 
-      substances.forEach(sub => {
+      // Pre-defined scatter transforms for each capsule position (15 substances)
+      const scatterTransforms = [
+        'rotate(-5deg) translateY(4px)',
+        'rotate(3.5deg) translateY(-3px)',
+        'rotate(-2deg) translateY(5px)',
+        'rotate(6deg) translateY(-2px)',
+        'rotate(-4deg) translateY(3px)',
+        'rotate(2.5deg) translateY(-5px)',
+        'rotate(-6.5deg) translateY(2px)',
+        'rotate(4deg) translateY(4px)',
+        'rotate(-3deg) translateY(-4px)',
+        'rotate(5.5deg) translateY(3px)',
+        'rotate(-2.5deg) translateY(-3px)',
+        'rotate(7deg) translateY(2px)',
+        'rotate(-4.5deg) translateY(-2px)',
+        'rotate(3deg) translateY(5px)',
+        'rotate(-6deg) translateY(-4px)',
+      ];
+
+      substances.forEach((sub, i) => {
         const btn = document.createElement('div');
         btn.className = 'ag-capsule-btn';
         btn.textContent = sub.name;
         btn.dataset.id = sub.id;
         btn.dataset.cat = sub.category;
+        btn.style.transform = scatterTransforms[i % scatterTransforms.length];
+        btn.style.transition = 'box-shadow 0.3s ease, background 0.3s ease, filter 0.3s ease';
         btn.onclick = () => toggleSubstance(sub, btn);
         capsuleGrid.appendChild(btn);
       });
