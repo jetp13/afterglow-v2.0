@@ -70,41 +70,49 @@
       flex: 1;
       padding: 24px 28px 16px;
     }
+    /* ── Neon ring (voice) — mirrors breathing.html circle style, purple ── */
     .ag-orb-wrap {
       position: relative;
-      width: 160px;
-      height: 160px;
+      width: 200px;
+      height: 200px;
       margin-bottom: 32px;
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     .ag-orb {
       position: absolute;
-      inset: 0;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
       border-radius: 50%;
-      background: radial-gradient(circle at 38% 38%,
-        rgba(189, 0, 255, 0.55) 0%,
-        rgba(120, 0, 200, 0.30) 45%,
-        transparent 70%);
+      border: 2px solid #bd00ff;
       box-shadow:
-        0 0 40px 12px rgba(189, 0, 255, 0.25),
-        0 0 90px 30px rgba(120, 0, 200, 0.12);
-      transition: transform 0.6s ease, box-shadow 0.6s ease;
+        0 0 10px rgba(189, 0, 255, 0.5),
+        0 0 30px rgba(189, 0, 255, 0.25),
+        inset 0 0 10px rgba(189, 0, 255, 0.08);
+      background: transparent;
+      transition: box-shadow 0.6s ease;
     }
     .ag-orb.is-playing {
-      animation: orb-pulse 4s ease-in-out infinite;
+      animation: ring-pulse 4s ease-in-out infinite;
     }
-    @keyframes orb-pulse {
+    @keyframes ring-pulse {
       0%, 100% {
-        transform: scale(1);
+        transform: scale(0.92);
+        opacity: 0.7;
         box-shadow:
-          0 0 40px 12px rgba(189, 0, 255, 0.25),
-          0 0 90px 30px rgba(120, 0, 200, 0.12);
+          0 0 10px rgba(189, 0, 255, 0.5),
+          0 0 30px rgba(189, 0, 255, 0.25),
+          inset 0 0 10px rgba(189, 0, 255, 0.08);
       }
       50% {
-        transform: scale(1.08);
+        transform: scale(1.04);
+        opacity: 1;
         box-shadow:
-          0 0 55px 18px rgba(189, 0, 255, 0.38),
-          0 0 120px 45px rgba(120, 0, 200, 0.18);
+          0 0 18px rgba(189, 0, 255, 0.8),
+          0 0 55px rgba(189, 0, 255, 0.45),
+          inset 0 0 18px rgba(189, 0, 255, 0.12);
       }
     }
     .ag-track-info {
@@ -123,36 +131,45 @@
       color: rgba(255,255,255,0.35);
       letter-spacing: 0.04em;
     }
+    /* ── Neon tube progress bar ── */
     .ag-progress-wrap {
       width: 100%;
       margin-bottom: 10px;
     }
+    /* Outer tube: dark track with faint neon glow */
     .ag-progress-bar {
       width: 100%;
-      height: 3px;
-      background: rgba(255,255,255,0.1);
+      height: 4px;
       border-radius: 2px;
       cursor: pointer;
       appearance: none;
       -webkit-appearance: none;
       outline: none;
+      background: rgba(255,255,255,0.08);
+      box-shadow: 0 0 4px rgba(189, 0, 255, 0.15);
     }
-    .ag-progress-bar::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: rgba(189, 0, 255, 0.9);
-      box-shadow: 0 0 6px rgba(189, 0, 255, 0.6);
-      cursor: pointer;
-      margin-top: -5.5px;
-    }
+    /* Filled portion: bright neon tube */
     .ag-progress-bar::-webkit-slider-runnable-track {
-      height: 3px;
+      height: 4px;
       border-radius: 2px;
       background: linear-gradient(to right,
-        rgba(189, 0, 255, 0.7) var(--progress, 0%),
-        rgba(255,255,255,0.1) var(--progress, 0%));
+        #bd00ff var(--progress, 0%),
+        rgba(255,255,255,0.08) var(--progress, 0%));
+      box-shadow: 0 0 6px rgba(189, 0, 255, 0.5);
+    }
+    /* Thumb: neon dot */
+    .ag-progress-bar::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: #bd00ff;
+      border: 1.5px solid rgba(255,255,255,0.6);
+      box-shadow:
+        0 0 6px rgba(189, 0, 255, 0.9),
+        0 0 14px rgba(189, 0, 255, 0.5);
+      cursor: pointer;
+      margin-top: -4px;
     }
     .ag-progress-times {
       display: flex;
