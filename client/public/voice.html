@@ -71,44 +71,40 @@
       padding: 24px 28px 16px;
     }
 
-    /* ── Circular waveform container ── */
+    /* ── Visualiser container ── */
     .ag-orb-wrap {
       position: relative;
-      width: 240px;
-      height: 240px;
+      width: 260px;
+      height: 260px;
       margin-bottom: 28px;
       flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
-    /* SVG fills the container; JS draws into it */
-    #agWaveformSvg {
+    /*
+      Layer order (back → front):
+        1. canvas#agCanvas  — waveform drawn here (behind ring)
+        2. div.ag-orb-ring  — static neon ring (SVG border-radius trick)
+    */
+    #agCanvas {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      overflow: visible;
     }
-    /* Static inner ring — always visible as reference */
-    #agBaseRing {
-      fill: none;
-      stroke: #bd00ff;
-      stroke-width: 1.5;
-      filter: drop-shadow(0 0 6px rgba(189,0,255,0.5))
-              drop-shadow(0 0 18px rgba(189,0,255,0.2));
+    /* Static neon ring — sits on top of canvas, masks inner area */
+    .ag-orb-ring {
+      position: absolute;
+      /* Ring is 140px, centred in 260px container → offset 60px */
+      top: 60px; left: 60px;
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      /* Black fill covers canvas inside the ring */
+      background: #050505;
+      border: 1.5px solid #bd00ff;
+      box-shadow:
+        0 0 10px rgba(189,0,255,0.55),
+        0 0 24px rgba(189,0,255,0.22),
+        inset 0 0 8px rgba(189,0,255,0.06);
+      pointer-events: none;
     }
-    /* Live waveform path — drawn by JS */
-    #agWavePath {
-      fill: none;
-      stroke: #bd00ff;
-      stroke-width: 1.5;
-      stroke-linejoin: round;
-      opacity: 0;
-      filter: drop-shadow(0 0 5px rgba(189,0,255,0.7))
-              drop-shadow(0 0 14px rgba(189,0,255,0.35));
-      transition: opacity 0.4s ease;
-    }
-    #agWavePath.visible { opacity: 1; }
 
     .ag-track-info {
       text-align: center;
@@ -128,91 +124,60 @@
     }
 
     /* ── Neon tube progress bar ── */
-    .ag-progress-wrap {
-      width: 100%;
-      margin-bottom: 10px;
-    }
+    .ag-progress-wrap { width: 100%; margin-bottom: 10px; }
     .ag-progress-bar {
-      width: 100%;
-      height: 4px;
-      border-radius: 2px;
-      cursor: pointer;
-      appearance: none;
-      -webkit-appearance: none;
-      outline: none;
+      width: 100%; height: 4px; border-radius: 2px;
+      cursor: pointer; appearance: none; -webkit-appearance: none; outline: none;
       background: rgba(255,255,255,0.08);
-      box-shadow: 0 0 4px rgba(189, 0, 255, 0.15);
+      box-shadow: 0 0 4px rgba(189,0,255,0.15);
     }
     .ag-progress-bar::-webkit-slider-runnable-track {
-      height: 4px;
-      border-radius: 2px;
+      height: 4px; border-radius: 2px;
       background: linear-gradient(to right,
         #bd00ff var(--progress, 0%),
         rgba(255,255,255,0.08) var(--progress, 0%));
-      box-shadow: 0 0 6px rgba(189, 0, 255, 0.5);
+      box-shadow: 0 0 6px rgba(189,0,255,0.5);
     }
     .ag-progress-bar::-webkit-slider-thumb {
       -webkit-appearance: none;
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
+      width: 12px; height: 12px; border-radius: 50%;
       background: #bd00ff;
       border: 1.5px solid rgba(255,255,255,0.6);
-      box-shadow:
-        0 0 6px rgba(189, 0, 255, 0.9),
-        0 0 14px rgba(189, 0, 255, 0.5);
-      cursor: pointer;
-      margin-top: -4px;
+      box-shadow: 0 0 6px rgba(189,0,255,0.9), 0 0 14px rgba(189,0,255,0.5);
+      cursor: pointer; margin-top: -4px;
     }
     .ag-progress-times {
-      display: flex;
-      justify-content: space-between;
-      font-size: 11px;
-      color: rgba(255,255,255,0.28);
-      margin-top: 6px;
-      letter-spacing: 0.04em;
+      display: flex; justify-content: space-between;
+      font-size: 11px; color: rgba(255,255,255,0.28);
+      margin-top: 6px; letter-spacing: 0.04em;
     }
 
     .ag-controls {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 36px;
-      margin-top: 24px;
+      display: flex; align-items: center; justify-content: center;
+      gap: 36px; margin-top: 24px;
     }
     .ag-ctrl-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 8px;
-      color: rgba(255,255,255,0.5);
-      line-height: 1;
+      background: none; border: none; cursor: pointer; padding: 8px;
+      color: rgba(255,255,255,0.5); line-height: 1;
       transition: color 0.2s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
     }
     .ag-ctrl-btn:hover { color: rgba(255,255,255,0.85); }
     .ag-ctrl-btn.ag-play-btn {
-      width: 60px;
-      height: 60px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(189, 0, 255, 0.5);
-      color: rgba(189, 0, 255, 0.9);
-      box-shadow: 0 0 16px rgba(189, 0, 255, 0.2);
+      width: 60px; height: 60px; border-radius: 50%;
+      border: 1.5px solid rgba(189,0,255,0.5);
+      color: rgba(189,0,255,0.9);
+      box-shadow: 0 0 16px rgba(189,0,255,0.2);
       transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
     }
     .ag-ctrl-btn.ag-play-btn:hover {
-      border-color: rgba(189, 0, 255, 0.9);
-      box-shadow: 0 0 28px rgba(189, 0, 255, 0.4);
+      border-color: rgba(189,0,255,0.9);
+      box-shadow: 0 0 28px rgba(189,0,255,0.4);
       color: #bd00ff;
     }
     .ag-status-text {
-      font-size: 12px;
-      color: rgba(255,255,255,0.25);
-      text-align: center;
-      margin-top: 20px;
-      letter-spacing: 0.06em;
+      font-size: 12px; color: rgba(255,255,255,0.25);
+      text-align: center; margin-top: 20px; letter-spacing: 0.06em;
     }
   </style>
 </head>
@@ -230,14 +195,11 @@
   <div class="ag-main-scroll">
     <section class="ag-voice-player" aria-label="語音引導播放器">
 
-      <!-- Circular waveform: SVG with base ring + live wave path -->
       <div class="ag-orb-wrap" id="agOrbWrap" aria-hidden="true">
-        <svg id="agWaveformSvg" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
-          <!-- Static base ring at radius 70, centred at 120,120 -->
-          <circle id="agBaseRing" cx="120" cy="120" r="70"/>
-          <!-- Live waveform path, updated by JS each frame -->
-          <path id="agWavePath" d=""/>
-        </svg>
+        <!-- Canvas: waveform drawn behind the ring -->
+        <canvas id="agCanvas" width="260" height="260"></canvas>
+        <!-- Static neon ring on top, black background masks canvas inside -->
+        <div class="ag-orb-ring"></div>
       </div>
 
       <div class="ag-track-info">
@@ -246,15 +208,9 @@
       </div>
 
       <div class="ag-progress-wrap">
-        <input
-          type="range"
-          class="ag-progress-bar"
-          id="agProgressBar"
-          min="0" max="100" value="0"
-          step="0.1"
-          aria-label="播放進度"
-          style="--progress: 0%"
-        >
+        <input type="range" class="ag-progress-bar" id="agProgressBar"
+          min="0" max="100" value="0" step="0.1"
+          aria-label="播放進度" style="--progress: 0%">
         <div class="ag-progress-times">
           <span id="agCurrentTime">0:00</span>
           <span id="agDuration">--:--</span>
@@ -262,36 +218,41 @@
       </div>
 
       <div class="ag-controls">
-        <!-- Rewind 15s -->
         <button class="ag-ctrl-btn" id="agRewindBtn" aria-label="倒退 15 秒">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14 5.5C9.306 5.5 5.5 9.306 5.5 14s3.806 8.5 8.5 8.5 8.5-3.806 8.5-8.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-            <path d="M14 5.5L11 3M14 5.5L11 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-            <text x="14" y="15.5" text-anchor="middle" font-size="6.5" font-family="system-ui,sans-serif" font-weight="300" fill="currentColor">15</text>
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M14 5.5C9.306 5.5 5.5 9.306 5.5 14s3.806 8.5 8.5 8.5 8.5-3.806 8.5-8.5"
+              stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M14 5.5L11 3M14 5.5L11 8"
+              stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="14" y="15.5" text-anchor="middle" font-size="6.5"
+              font-family="system-ui,sans-serif" font-weight="300" fill="currentColor">15</text>
           </svg>
         </button>
 
-        <!-- Play / Pause / Replay -->
         <button class="ag-ctrl-btn ag-play-btn" id="agPlayBtn" aria-label="播放">
-          <svg id="iconPlay" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg id="iconPlay" width="22" height="22" viewBox="0 0 22 22" fill="none">
             <polygon points="7,4 19,11 7,18" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" fill="none"/>
           </svg>
-          <svg id="iconPause" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
+          <svg id="iconPause" width="22" height="22" viewBox="0 0 22 22" fill="none" style="display:none">
             <line x1="8" y1="4.5" x2="8" y2="17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
             <line x1="14" y1="4.5" x2="14" y2="17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
-          <svg id="iconReplay" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
-            <path d="M11 4.5C7.41 4.5 4.5 7.41 4.5 11s2.91 6.5 6.5 6.5 6.5-2.91 6.5-6.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-            <path d="M11 4.5L8.5 2.5M11 4.5L8.5 6.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+          <svg id="iconReplay" width="22" height="22" viewBox="0 0 22 22" fill="none" style="display:none">
+            <path d="M11 4.5C7.41 4.5 4.5 7.41 4.5 11s2.91 6.5 6.5 6.5 6.5-2.91 6.5-6.5"
+              stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            <path d="M11 4.5L8.5 2.5M11 4.5L8.5 6.5"
+              stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
 
-        <!-- Forward 15s -->
         <button class="ag-ctrl-btn" id="agForwardBtn" aria-label="快進 15 秒">
-          <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M14 5.5C18.694 5.5 22.5 9.306 22.5 14s-3.806 8.5-8.5 8.5S5.5 18.694 5.5 14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
-            <path d="M14 5.5L17 3M14 5.5L17 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-            <text x="14" y="15.5" text-anchor="middle" font-size="6.5" font-family="system-ui,sans-serif" font-weight="300" fill="currentColor">15</text>
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <path d="M14 5.5C18.694 5.5 22.5 9.306 22.5 14s-3.806 8.5-8.5 8.5S5.5 18.694 5.5 14"
+              stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+            <path d="M14 5.5L17 3M14 5.5L17 8"
+              stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+            <text x="14" y="15.5" text-anchor="middle" font-size="6.5"
+              font-family="system-ui,sans-serif" font-weight="300" fill="currentColor">15</text>
           </svg>
         </button>
       </div>
@@ -301,7 +262,8 @@
     </section>
   </div>
 
-  <audio id="agAudio" preload="metadata" crossorigin="anonymous">
+  <!-- No crossorigin here — we use a separate AudioContext fetch approach -->
+  <audio id="agAudio" preload="metadata">
     <source src="/assets/audio/mvp-guide.mp3" type="audio/mpeg">
   </audio>
 
@@ -321,163 +283,176 @@
   </footer>
 
   <script>
-    /* ── DOM refs ── */
-    const audio         = document.getElementById('agAudio');
-    const playBtn       = document.getElementById('agPlayBtn');
-    const progressBar   = document.getElementById('agProgressBar');
-    const currentTimeEl = document.getElementById('agCurrentTime');
-    const durationEl    = document.getElementById('agDuration');
-    const statusText    = document.getElementById('agStatusText');
-    const rewindBtn     = document.getElementById('agRewindBtn');
-    const forwardBtn    = document.getElementById('agForwardBtn');
-    const iconPlay      = document.getElementById('iconPlay');
-    const iconPause     = document.getElementById('iconPause');
-    const iconReplay    = document.getElementById('iconReplay');
-    const wavePath      = document.getElementById('agWavePath');
+  /* ══════════════════════════════════════════════════════════════════════
+     Circular waveform visualiser
+     ──────────────────────────────────────────────────────────────────────
+     Architecture:
+       • Canvas (260×260) sits BEHIND the neon ring div
+       • Ring div has background:#050505 — masks canvas inside the circle
+       • Waveform is drawn ONLY in the annular band just outside the ring
+         (inner radius = 71px, outer max = 71 + MAX_DISP px)
+       • Web Audio: createMediaElementSource on the <audio> element
+         — works on same-origin Vercel deployment without crossorigin attr
+       • Fallback: animated sine wave when AudioContext unavailable
+  ══════════════════════════════════════════════════════════════════════ */
 
-    /* ── Icon helper ── */
-    function showIcon(which) {
-      iconPlay.style.display   = which === 'play'   ? '' : 'none';
-      iconPause.style.display  = which === 'pause'  ? '' : 'none';
-      iconReplay.style.display = which === 'replay' ? '' : 'none';
-    }
+    const audio        = document.getElementById('agAudio');
+    const canvas       = document.getElementById('agCanvas');
+    const ctx          = canvas.getContext('2d');
+    const playBtn      = document.getElementById('agPlayBtn');
+    const progressBar  = document.getElementById('agProgressBar');
+    const currentTimeEl= document.getElementById('agCurrentTime');
+    const durationEl   = document.getElementById('agDuration');
+    const statusText   = document.getElementById('agStatusText');
+    const rewindBtn    = document.getElementById('agRewindBtn');
+    const forwardBtn   = document.getElementById('agForwardBtn');
+    const iconPlay     = document.getElementById('iconPlay');
+    const iconPause    = document.getElementById('iconPause');
+    const iconReplay   = document.getElementById('iconReplay');
 
-    /* ── Time format ── */
-    function formatTime(s) {
-      if (!isFinite(s)) return '--:--';
-      const m = Math.floor(s / 60);
-      const sec = Math.floor(s % 60);
-      return m + ':' + String(sec).padStart(2, '0');
-    }
-
-    /* ── Circular waveform via Web Audio API ────────────────────────────────
-       Concept:
-         - Use AnalyserNode with time-domain data (waveform, not spectrum)
-         - Sample N evenly-spaced points around a circle of base radius R
-         - Each point's radius = R + amplitude[i] × MAX_DISPLACEMENT
-         - amplitude[i] is smoothed between frames for organic feel
-         - Connect points with a smooth closed cubic bezier path
-         - When paused/idle: path fades out, base ring remains
-    ─────────────────────────────────────────────────────────────────────── */
-    const CX = 120, CY = 120;   // SVG centre
-    const BASE_R = 70;           // base ring radius (matches <circle r="70">)
-    const MAX_DISP = 18;         // max outward displacement in SVG units
-    const N_POINTS = 64;         // number of sample points around the ring
-    const SMOOTH = 0.55;         // smoothing factor (0=instant, 1=no change)
+    /* Canvas logical size (matches HTML attrs) */
+    const W = 260, H = 260;
+    const CX = W / 2, CY = H / 2;
+    const BASE_R   = 71;   /* just outside the 140px ring (70px radius + 1px border) */
+    const MAX_DISP = 22;   /* max outward spike in canvas px */
+    const N        = 128;  /* sample points around the ring */
+    const SMOOTH   = 0.6;  /* frame-to-frame smoothing (higher = slower decay) */
 
     let audioCtx  = null;
     let analyser  = null;
-    let timeDomain = null;
+    let tdBuf     = null;   /* time-domain byte buffer */
     let rafId     = null;
-    let smoothed  = new Float32Array(N_POINTS).fill(0); // smoothed displacements
+    let isPlaying = false;
+    let smoothed  = new Float32Array(N); /* smoothed displacement per point */
 
+    /* ── Icon helper ── */
+    function showIcon(w) {
+      iconPlay.style.display   = w === 'play'   ? '' : 'none';
+      iconPause.style.display  = w === 'pause'  ? '' : 'none';
+      iconReplay.style.display = w === 'replay' ? '' : 'none';
+    }
+
+    /* ── Time format ── */
+    function fmt(s) {
+      if (!isFinite(s)) return '--:--';
+      return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0');
+    }
+
+    /* ── Init Web Audio (called on first user gesture) ── */
     function initAudio() {
       if (audioCtx) return;
       try {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const source = audioCtx.createMediaElementSource(audio);
-        analyser = audioCtx.createAnalyser();
-        analyser.fftSize = 512;                   // time-domain buffer = 512
+        const src = audioCtx.createMediaElementSource(audio);
+        analyser  = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
         analyser.smoothingTimeConstant = 0.8;
-        timeDomain = new Uint8Array(analyser.fftSize);
-        source.connect(analyser);
+        tdBuf = new Uint8Array(analyser.fftSize);
+        src.connect(analyser);
         analyser.connect(audioCtx.destination);
-      } catch (e) {
+      } catch(e) {
+        console.warn('Web Audio unavailable, using fallback:', e);
         audioCtx = null;
       }
     }
 
-    /* Build a smooth closed SVG path through N polar points */
-    function buildCircularPath(radii) {
-      // Convert polar → cartesian
-      const pts = radii.map((r, i) => {
-        const angle = (i / N_POINTS) * Math.PI * 2 - Math.PI / 2;
-        return {
-          x: CX + r * Math.cos(angle),
-          y: CY + r * Math.sin(angle),
-        };
-      });
+    /* ── Draw one frame ── */
+    function drawFrame(ts) {
+      ctx.clearRect(0, 0, W, H);
 
-      // Catmull-Rom → cubic bezier control points for smooth closed curve
-      function cp(prev, curr, next, t) {
-        return {
-          x: curr.x + (next.x - prev.x) * t,
-          y: curr.y + (next.y - prev.y) * t,
-        };
-      }
-      const T = 0.35; // tension
-      let d = '';
-      for (let i = 0; i < N_POINTS; i++) {
-        const p0 = pts[(i - 1 + N_POINTS) % N_POINTS];
-        const p1 = pts[i];
-        const p2 = pts[(i + 1) % N_POINTS];
-        const p3 = pts[(i + 2) % N_POINTS];
-        const c1 = cp(p0, p1, p2, T);
-        const c2 = cp(p3, p2, p1, T);  // reversed for exit control
-        if (i === 0) {
-          d += `M ${p1.x.toFixed(2)},${p1.y.toFixed(2)} `;
+      /* Read audio data or use fallback sine */
+      const raw = new Float32Array(N);
+      if (analyser && isPlaying) {
+        analyser.getByteTimeDomainData(tdBuf);
+        const step = Math.floor(tdBuf.length / N);
+        for (let i = 0; i < N; i++) {
+          raw[i] = (tdBuf[i * step] - 128) / 128; /* -1 … +1 */
         }
-        d += `C ${c1.x.toFixed(2)},${c1.y.toFixed(2)} ${c2.x.toFixed(2)},${c2.y.toFixed(2)} ${p2.x.toFixed(2)},${p2.y.toFixed(2)} `;
+      } else if (isPlaying) {
+        /* Fallback: gentle organic sine when no analyser */
+        const t = ts / 1000;
+        for (let i = 0; i < N; i++) {
+          const a = (i / N) * Math.PI * 2;
+          raw[i] = Math.sin(a * 4 + t * 2.2) * 0.4
+                 + Math.sin(a * 7 - t * 1.1) * 0.2;
+        }
       }
-      d += 'Z';
-      return d;
-    }
+      /* else: raw stays 0 → wave collapses to base ring */
 
-    function drawFrame() {
-      if (!audio.paused && !audio.ended) {
+      /* Smooth */
+      for (let i = 0; i < N; i++) {
+        smoothed[i] = smoothed[i] * SMOOTH + raw[i] * (1 - SMOOTH);
+      }
+
+      /* Build polar points */
+      const pts = [];
+      for (let i = 0; i < N; i++) {
+        const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
+        const r = BASE_R + smoothed[i] * MAX_DISP;
+        pts.push({ x: CX + r * Math.cos(angle), y: CY + r * Math.sin(angle) });
+      }
+
+      /* Draw smooth closed curve with Catmull-Rom tension */
+      ctx.beginPath();
+      const T = 0.3;
+      for (let i = 0; i < N; i++) {
+        const p0 = pts[(i - 1 + N) % N];
+        const p1 = pts[i];
+        const p2 = pts[(i + 1) % N];
+        const p3 = pts[(i + 2) % N];
+        const c1x = p1.x + (p2.x - p0.x) * T;
+        const c1y = p1.y + (p2.y - p0.y) * T;
+        const c2x = p2.x - (p3.x - p1.x) * T;
+        const c2y = p2.y - (p3.y - p1.y) * T;
+        if (i === 0) ctx.moveTo(p1.x, p1.y);
+        ctx.bezierCurveTo(c1x, c1y, c2x, c2y, p2.x, p2.y);
+      }
+      ctx.closePath();
+
+      /* Neon stroke: glow layers */
+      ctx.shadowBlur  = 0;
+      ctx.strokeStyle = 'rgba(189,0,255,0.18)';
+      ctx.lineWidth   = 8;
+      ctx.stroke();
+
+      ctx.shadowColor = '#bd00ff';
+      ctx.shadowBlur  = 14;
+      ctx.strokeStyle = 'rgba(189,0,255,0.55)';
+      ctx.lineWidth   = 2;
+      ctx.stroke();
+
+      ctx.shadowBlur  = 6;
+      ctx.strokeStyle = 'rgba(220,120,255,0.9)';
+      ctx.lineWidth   = 1;
+      ctx.stroke();
+
+      ctx.shadowBlur = 0;
+
+      if (isPlaying || smoothed.some(v => Math.abs(v) > 0.005)) {
         rafId = requestAnimationFrame(drawFrame);
       }
-
-      let radii = new Float32Array(N_POINTS).fill(BASE_R);
-
-      if (analyser) {
-        analyser.getByteTimeDomainData(timeDomain);
-        // Map fftSize samples → N_POINTS evenly
-        const step = Math.floor(timeDomain.length / N_POINTS);
-        for (let i = 0; i < N_POINTS; i++) {
-          // normalise: 128 = silence, 0/255 = max displacement
-          const raw = (timeDomain[i * step] - 128) / 128; // -1 to +1
-          // smooth towards new value
-          smoothed[i] = smoothed[i] * SMOOTH + raw * (1 - SMOOTH);
-          radii[i] = BASE_R + smoothed[i] * MAX_DISP;
-        }
-      } else {
-        // Fallback: gentle sine idle animation
-        const t = performance.now() / 1000;
-        for (let i = 0; i < N_POINTS; i++) {
-          const angle = (i / N_POINTS) * Math.PI * 2;
-          smoothed[i] = Math.sin(angle * 3 + t * 1.5) * 0.15;
-          radii[i] = BASE_R + smoothed[i] * MAX_DISP;
-        }
-      }
-
-      wavePath.setAttribute('d', buildCircularPath(radii));
     }
 
-    function startWave() {
-      wavePath.classList.add('visible');
+    function startVis() {
+      isPlaying = true;
       if (rafId) cancelAnimationFrame(rafId);
       rafId = requestAnimationFrame(drawFrame);
     }
 
-    function stopWave() {
-      wavePath.classList.remove('visible');
-      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
-      // Decay smoothed values back to zero
-      smoothed.fill(0);
-      // Reset path to perfect circle
-      const radii = new Float32Array(N_POINTS).fill(BASE_R);
-      wavePath.setAttribute('d', buildCircularPath(radii));
+    function stopVis() {
+      isPlaying = false;
+      /* Let the loop run a bit longer to decay smoothly */
+      if (!rafId) rafId = requestAnimationFrame(drawFrame);
     }
 
     /* ── Playback controls ── */
     audio.addEventListener('loadedmetadata', () => {
-      durationEl.textContent = formatTime(audio.duration);
+      durationEl.textContent = fmt(audio.duration);
       progressBar.max = audio.duration;
     });
 
     playBtn.addEventListener('click', () => {
-      if (audio.ended) { audio.currentTime = 0; }
+      if (audio.ended) audio.currentTime = 0;
       if (audio.paused) {
         initAudio();
         if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
@@ -491,14 +466,14 @@
       showIcon('pause');
       playBtn.setAttribute('aria-label', '暫停');
       statusText.textContent = '引導進行中 · 放鬆呼吸';
-      startWave();
+      startVis();
     });
 
     audio.addEventListener('pause', () => {
       showIcon('play');
       playBtn.setAttribute('aria-label', '播放');
       statusText.textContent = audio.currentTime > 0 ? '已暫停' : '點擊播放開始引導';
-      stopWave();
+      stopVis();
     });
 
     audio.addEventListener('ended', () => {
@@ -508,14 +483,14 @@
       progressBar.value = 0;
       progressBar.style.setProperty('--progress', '0%');
       currentTimeEl.textContent = '0:00';
-      stopWave();
+      stopVis();
     });
 
     audio.addEventListener('timeupdate', () => {
       const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
       progressBar.value = audio.currentTime;
       progressBar.style.setProperty('--progress', pct.toFixed(1) + '%');
-      currentTimeEl.textContent = formatTime(audio.currentTime);
+      currentTimeEl.textContent = fmt(audio.currentTime);
     });
 
     progressBar.addEventListener('input', () => {
@@ -524,13 +499,8 @@
       progressBar.style.setProperty('--progress', pct.toFixed(1) + '%');
     });
 
-    rewindBtn.addEventListener('click', () => {
-      audio.currentTime = Math.max(0, audio.currentTime - 15);
-    });
-
-    forwardBtn.addEventListener('click', () => {
-      audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 15);
-    });
+    rewindBtn.addEventListener('click',  () => { audio.currentTime = Math.max(0, audio.currentTime - 15); });
+    forwardBtn.addEventListener('click', () => { audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 15); });
   </script>
 
 </body>
