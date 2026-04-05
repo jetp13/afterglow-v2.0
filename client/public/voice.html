@@ -49,7 +49,8 @@
     }
     .ag-player-top {
       flex: 1; display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
+      align-items: center; justify-content: flex-end;
+      padding-bottom: 20px;
     }
     .ag-player-bottom {
       width: 100%; display: flex; flex-direction: column; align-items: center;
@@ -66,12 +67,11 @@
       width: 140px; height: 140px;
       border-radius: 50%;
       border: 1.5px solid #bd00ff;
-      /* glow is controlled by JS via CSS custom property --glow-a */
+      /* baseline glow — JS overrides boxShadow directly for iOS compat */
       box-shadow:
-        0 0 calc(8px + var(--glow-extra, 0px))  rgba(189,0,255, calc(0.55 + var(--glow-a, 0))),
-        0 0 calc(22px + var(--glow-extra, 0px)) rgba(189,0,255, calc(0.22 + var(--glow-a, 0) * 0.5)),
-        inset 0 0 8px rgba(189,0,255, calc(0.06 + var(--glow-a, 0) * 0.1));
-      transition: box-shadow 0.08s ease-out;
+        0 0 8px  rgba(189,0,255,0.55),
+        0 0 22px rgba(189,0,255,0.22),
+        inset 0 0 8px rgba(189,0,255,0.06);
     }
 
     .ag-track-info { text-align: center; margin-bottom: 20px; }
@@ -315,13 +315,17 @@
       const lerpRate = rawVol > smoothVol ? 0.25 : 0.06;
       smoothVol += (rawVol - smoothVol) * lerpRate;
 
-      /* Map smoothed volume to very subtle glow delta:
-         smoothVol 0..1 → glowA 0..0.28, extraPx 0..5 */
-      const glowA   = (smoothVol * 0.28).toFixed(4);
-      const extraPx = (smoothVol * 5).toFixed(1);
-
-      orbRing.style.setProperty('--glow-a',     glowA);
-      orbRing.style.setProperty('--glow-extra', extraPx + 'px');
+      /* Map smoothed volume to very subtle glow delta.
+         Direct boxShadow assignment for iOS Safari compat (CSS vars in calc don't update). */
+      const v = smoothVol; /* 0..1 */
+      const a1 = (0.55 + v * 0.30).toFixed(3); /* 0.55 → 0.85 */
+      const a2 = (0.22 + v * 0.18).toFixed(3); /* 0.22 → 0.40 */
+      const s1 = (8  + v * 6).toFixed(1);       /* 8px → 14px */
+      const s2 = (22 + v * 10).toFixed(1);      /* 22px → 32px */
+      orbRing.style.boxShadow =
+        `0 0 ${s1}px rgba(189,0,255,${a1}),` +
+        `0 0 ${s2}px rgba(189,0,255,${a2}),` +
+        `inset 0 0 8px rgba(189,0,255,0.06)`;
     }
 
     /* ── Playback ── */
