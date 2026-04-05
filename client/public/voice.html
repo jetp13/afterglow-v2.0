@@ -2,46 +2,271 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>語音引導｜Afterglow</title>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#050505">
   <link rel="stylesheet" href="/assets/layout.css">
   <script>
-    // Check for consent immediately
     if (localStorage.getItem('ag_consent') !== 'true') {
       window.location.href = '/index.html';
     }
   </script>
   <style>
-    .ag-container {
+    .ag-inner-header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: calc(14px + env(safe-area-inset-top)) 20px 10px;
+      box-sizing: border-box;
+      min-height: 64px;
+    }
+    .ag-back-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 18px;
+      line-height: 1;
+      transition: border-color 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+    .ag-back-btn:hover { border-color: rgba(255,255,255,0.6); color: #fff; }
+    .ag-inner-logo {
+      display: block;
+      width: 135px;
+      max-width: 38vw;
+      height: auto;
+      mix-blend-mode: screen;
+      opacity: 0.85;
+      margin-top: 6px;
+    }
+    .ag-page-title-block {
+      padding: 0 20px 8px;
+      flex-shrink: 0;
+    }
+    .ag-page-title {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .ag-page-title strong {
+      color: rgba(255,255,255,0.55);
+      font-weight: 500;
+    }
+    .ag-voice-player {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      min-height: 100vh;
-      text-align: center;
-      color: #fff;
+      flex: 1;
+      padding: 24px 28px 16px;
     }
-    .ag-wave {
-      font-size: 40px;
-      margin-bottom: 20px;
+    .ag-orb-wrap {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      margin-bottom: 32px;
+      flex-shrink: 0;
+    }
+    .ag-orb {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle at 38% 38%,
+        rgba(189, 0, 255, 0.55) 0%,
+        rgba(120, 0, 200, 0.30) 45%,
+        transparent 70%);
+      box-shadow:
+        0 0 40px 12px rgba(189, 0, 255, 0.25),
+        0 0 90px 30px rgba(120, 0, 200, 0.12);
+      transition: transform 0.6s ease, box-shadow 0.6s ease;
+    }
+    .ag-orb.is-playing {
+      animation: orb-pulse 4s ease-in-out infinite;
+    }
+    @keyframes orb-pulse {
+      0%, 100% {
+        transform: scale(1);
+        box-shadow:
+          0 0 40px 12px rgba(189, 0, 255, 0.25),
+          0 0 90px 30px rgba(120, 0, 200, 0.12);
+      }
+      50% {
+        transform: scale(1.08);
+        box-shadow:
+          0 0 55px 18px rgba(189, 0, 255, 0.38),
+          0 0 120px 45px rgba(120, 0, 200, 0.18);
+      }
+    }
+    .ag-track-info {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+    .ag-track-title {
+      font-size: 18px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.88);
+      letter-spacing: 0.03em;
+      margin-bottom: 6px;
+    }
+    .ag-track-hint {
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.04em;
+    }
+    .ag-progress-wrap {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    .ag-progress-bar {
+      width: 100%;
+      height: 3px;
+      background: rgba(255,255,255,0.1);
+      border-radius: 2px;
+      cursor: pointer;
+      appearance: none;
+      -webkit-appearance: none;
+      outline: none;
+    }
+    .ag-progress-bar::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: rgba(189, 0, 255, 0.9);
+      box-shadow: 0 0 6px rgba(189, 0, 255, 0.6);
+      cursor: pointer;
+      margin-top: -5.5px;
+    }
+    .ag-progress-bar::-webkit-slider-runnable-track {
+      height: 3px;
+      border-radius: 2px;
+      background: linear-gradient(to right,
+        rgba(189, 0, 255, 0.7) var(--progress, 0%),
+        rgba(255,255,255,0.1) var(--progress, 0%));
+    }
+    .ag-progress-times {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: rgba(255,255,255,0.28);
+      margin-top: 6px;
+      letter-spacing: 0.04em;
+    }
+    .ag-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 36px;
+      margin-top: 24px;
+    }
+    .ag-ctrl-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      color: rgba(255,255,255,0.5);
+      font-size: 22px;
+      line-height: 1;
+      transition: color 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .ag-ctrl-btn:hover { color: rgba(255,255,255,0.85); }
+    .ag-ctrl-btn.ag-play-btn {
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(189, 0, 255, 0.5);
+      color: rgba(189, 0, 255, 0.9);
+      font-size: 26px;
+      box-shadow: 0 0 16px rgba(189, 0, 255, 0.2);
+      transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
+    }
+    .ag-ctrl-btn.ag-play-btn:hover {
+      border-color: rgba(189, 0, 255, 0.9);
+      box-shadow: 0 0 28px rgba(189, 0, 255, 0.4);
       color: #bd00ff;
+    }
+    .ag-status-text {
+      font-size: 12px;
+      color: rgba(255,255,255,0.25);
+      text-align: center;
+      margin-top: 20px;
+      letter-spacing: 0.06em;
     }
   </style>
 </head>
 <body class="ag-page">
-  <!-- Back Button -->
-  <a href="/menu.html" class="ag-back-button neon-style" aria-label="返回選單">
-    <span class="ag-neon-icon-back"></span>
-  </a>
 
-  <div class="ag-container">
-    <div class="ag-wave">ılılllıllı</div>
-    <h2>語音引導模式</h2>
-    <p class="ag-text-gray ag-mt-10">請戴上耳機，閉上眼睛</p>
-    <a href="/menu.html" class="ag-mt-40 ag-text-gray ag-link-clean">← 結束引導</a>
+  <header class="ag-inner-header">
+    <a href="/home.html" class="ag-back-btn" aria-label="返回首頁">&#8592;</a>
+    <img src="/assets/logo-transparent.png" alt="Afterglow" class="ag-inner-logo">
+  </header>
+
+  <div class="ag-page-title-block">
+    <p class="ag-page-title"><strong>語音引導</strong> · VOICE GUIDE V1.0</p>
   </div>
 
-  <!-- Footer：共用模組 -->
+  <div class="ag-main-scroll">
+    <section class="ag-voice-player" aria-label="語音引導播放器">
+
+      <div class="ag-orb-wrap" aria-hidden="true">
+        <div class="ag-orb" id="agOrb"></div>
+      </div>
+
+      <div class="ag-track-info">
+        <p class="ag-track-title">MVP 引導</p>
+        <p class="ag-track-hint">請戴上耳機，閉上眼睛</p>
+      </div>
+
+      <div class="ag-progress-wrap">
+        <input
+          type="range"
+          class="ag-progress-bar"
+          id="agProgressBar"
+          min="0" max="100" value="0"
+          step="0.1"
+          aria-label="播放進度"
+          style="--progress: 0%"
+        >
+        <div class="ag-progress-times">
+          <span id="agCurrentTime">0:00</span>
+          <span id="agDuration">--:--</span>
+        </div>
+      </div>
+
+      <div class="ag-controls">
+        <button class="ag-ctrl-btn" id="agRewindBtn" aria-label="倒退 15 秒">
+          &#8635;<sub style="font-size:9px;margin-left:1px;">15</sub>
+        </button>
+        <button class="ag-ctrl-btn ag-play-btn" id="agPlayBtn" aria-label="播放">
+          &#9654;
+        </button>
+        <button class="ag-ctrl-btn" id="agForwardBtn" aria-label="快進 15 秒">
+          &#8634;<sub style="font-size:9px;margin-left:1px;">15</sub>
+        </button>
+      </div>
+
+      <p class="ag-status-text" id="agStatusText">點擊播放開始引導</p>
+
+    </section>
+  </div>
+
+  <audio id="agAudio" preload="metadata">
+    <source src="/assets/audio/mvp-guide.mp3" type="audio/mpeg">
+  </audio>
+
   <footer class="ag-footer-standard">
     <div class="ag-footer__inner">
       <nav class="ag-footer__links" aria-label="Legal and info links">
@@ -53,11 +278,85 @@
         <span class="ag-footer__separator">•</span>
         <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
       </nav>
-
-      <p class="ag-footer__copyright">
-        © 2025 Afterglow. All rights reserved.
-      </p>
+      <p class="ag-footer__copyright">© 2025 Afterglow. All rights reserved.</p>
     </div>
   </footer>
+
+  <script>
+    const audio       = document.getElementById('agAudio');
+    const playBtn     = document.getElementById('agPlayBtn');
+    const progressBar = document.getElementById('agProgressBar');
+    const currentTimeEl = document.getElementById('agCurrentTime');
+    const durationEl  = document.getElementById('agDuration');
+    const statusText  = document.getElementById('agStatusText');
+    const orb         = document.getElementById('agOrb');
+    const rewindBtn   = document.getElementById('agRewindBtn');
+    const forwardBtn  = document.getElementById('agForwardBtn');
+
+    function formatTime(s) {
+      if (!isFinite(s)) return '--:--';
+      const m = Math.floor(s / 60);
+      const sec = Math.floor(s % 60);
+      return m + ':' + String(sec).padStart(2, '0');
+    }
+
+    audio.addEventListener('loadedmetadata', () => {
+      durationEl.textContent = formatTime(audio.duration);
+      progressBar.max = audio.duration;
+    });
+
+    playBtn.addEventListener('click', () => {
+      if (audio.ended) { audio.currentTime = 0; }
+      if (audio.paused) {
+        audio.play().catch(() => {});
+      } else {
+        audio.pause();
+      }
+    });
+
+    audio.addEventListener('play', () => {
+      playBtn.innerHTML = '&#9646;&#9646;';
+      playBtn.setAttribute('aria-label', '暫停');
+      orb.classList.add('is-playing');
+      statusText.textContent = '引導進行中 · 放鬆呼吸';
+    });
+
+    audio.addEventListener('pause', () => {
+      playBtn.innerHTML = '&#9654;';
+      playBtn.setAttribute('aria-label', '播放');
+      orb.classList.remove('is-playing');
+      statusText.textContent = audio.currentTime > 0 ? '已暫停' : '點擊播放開始引導';
+    });
+
+    audio.addEventListener('ended', () => {
+      playBtn.innerHTML = '&#8635;';
+      playBtn.setAttribute('aria-label', '重新播放');
+      orb.classList.remove('is-playing');
+      statusText.textContent = '引導結束 · 慢慢回來';
+      progressBar.value = 0;
+      progressBar.style.setProperty('--progress', '0%');
+      currentTimeEl.textContent = '0:00';
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
+      progressBar.value = audio.currentTime;
+      progressBar.style.setProperty('--progress', pct.toFixed(1) + '%');
+      currentTimeEl.textContent = formatTime(audio.currentTime);
+    });
+
+    progressBar.addEventListener('input', () => {
+      audio.currentTime = parseFloat(progressBar.value);
+    });
+
+    rewindBtn.addEventListener('click', () => {
+      audio.currentTime = Math.max(0, audio.currentTime - 15);
+    });
+
+    forwardBtn.addEventListener('click', () => {
+      audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 15);
+    });
+  </script>
+
 </body>
 </html>
