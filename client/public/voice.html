@@ -71,60 +71,63 @@
       padding: 24px 28px 16px;
     }
 
-    /* ── Neon ring: fixed size, radiating glow on play ── */
+    /* ── Neon ring + audio-reactive ripple ── */
+    /*
+      Container is larger than the ring to give ripples room to expand.
+      Ring sits at the centre; ripple divs are absolutely positioned
+      and driven by JS (opacity + scale via CSS custom props).
+    */
     .ag-orb-wrap {
       position: relative;
-      width: 200px;
-      height: 200px;
-      margin-bottom: 32px;
+      /* 240px container, 140px ring → 50px breathing room each side */
+      width: 240px;
+      height: 240px;
+      margin-bottom: 28px;
       flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
     }
-    /* Static base ring — never scales */
+
+    /* Static base ring — 140px, never scales */
     .ag-orb {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      position: relative;
+      width: 140px;
+      height: 140px;
       border-radius: 50%;
       border: 1.5px solid #bd00ff;
       box-shadow:
         0 0 8px rgba(189, 0, 255, 0.45),
-        0 0 22px rgba(189, 0, 255, 0.18),
+        0 0 20px rgba(189, 0, 255, 0.18),
         inset 0 0 8px rgba(189, 0, 255, 0.06);
       background: transparent;
+      flex-shrink: 0;
+      z-index: 2;
+      transition: box-shadow 0.3s ease;
     }
-    /* Ripple rings: three concentric rings that radiate outward */
-    .ag-orb-ripple {
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 100%; height: 100%;
-      border-radius: 50%;
-      border: 1px solid rgba(189, 0, 255, 0.55);
-      transform: translate(-50%, -50%) scale(1);
-      opacity: 0;
-      pointer-events: none;
-    }
-    .ag-orb-wrap.is-playing .ag-orb-ripple:nth-child(1) {
-      animation: ripple-out 3s ease-out infinite 0s;
-    }
-    .ag-orb-wrap.is-playing .ag-orb-ripple:nth-child(2) {
-      animation: ripple-out 3s ease-out infinite 1s;
-    }
-    .ag-orb-wrap.is-playing .ag-orb-ripple:nth-child(3) {
-      animation: ripple-out 3s ease-out infinite 2s;
-    }
-    /* Playing: base ring brightens slightly */
     .ag-orb-wrap.is-playing .ag-orb {
       box-shadow:
         0 0 14px rgba(189, 0, 255, 0.7),
-        0 0 36px rgba(189, 0, 255, 0.3),
-        inset 0 0 12px rgba(189, 0, 255, 0.1);
+        0 0 32px rgba(189, 0, 255, 0.3),
+        inset 0 0 10px rgba(189, 0, 255, 0.1);
     }
-    @keyframes ripple-out {
-      0%   { transform: translate(-50%, -50%) scale(1);    opacity: 0.55; }
-      100% { transform: translate(-50%, -50%) scale(1.65); opacity: 0; }
+
+    /* Ripple rings — absolutely centred, driven by JS */
+    .ag-orb-ripple {
+      position: absolute;
+      top: 50%; left: 50%;
+      /* Match the base ring size; JS will scale outward */
+      width: 140px;
+      height: 140px;
+      margin-left: -70px;
+      margin-top: -70px;
+      border-radius: 50%;
+      border: 1px solid rgba(189, 0, 255, 0.6);
+      opacity: 0;
+      transform: scale(1);
+      pointer-events: none;
+      z-index: 1;
+      /* transition driven by JS rAF, no CSS animation here */
     }
 
     .ag-track-info {
@@ -247,11 +250,11 @@
   <div class="ag-main-scroll">
     <section class="ag-voice-player" aria-label="語音引導播放器">
 
-      <!-- Neon ring with three ripple layers -->
+      <!-- Neon ring: 3 ripple layers driven by Web Audio amplitude -->
       <div class="ag-orb-wrap" id="agOrbWrap" aria-hidden="true">
-        <div class="ag-orb-ripple"></div>
-        <div class="ag-orb-ripple"></div>
-        <div class="ag-orb-ripple"></div>
+        <div class="ag-orb-ripple" id="agRipple0"></div>
+        <div class="ag-orb-ripple" id="agRipple1"></div>
+        <div class="ag-orb-ripple" id="agRipple2"></div>
         <div class="ag-orb" id="agOrb"></div>
       </div>
 
@@ -277,39 +280,36 @@
       </div>
 
       <div class="ag-controls">
-        <!-- Rewind 15s — thin SVG icon -->
+        <!-- Rewind 15s -->
         <button class="ag-ctrl-btn" id="agRewindBtn" aria-label="倒退 15 秒">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M14 5.5C9.306 5.5 5.5 9.306 5.5 14s3.806 8.5 8.5 8.5 8.5-3.806 8.5-8.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
             <path d="M14 5.5L11 3M14 5.5L11 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-            <text x="14" y="15.5" text-anchor="middle" font-size="6.5" font-family="system-ui,sans-serif" font-weight="300" fill="currentColor" letter-spacing="0">15</text>
+            <text x="14" y="15.5" text-anchor="middle" font-size="6.5" font-family="system-ui,sans-serif" font-weight="300" fill="currentColor">15</text>
           </svg>
         </button>
 
-        <!-- Play / Pause — thin SVG icons -->
+        <!-- Play / Pause / Replay -->
         <button class="ag-ctrl-btn ag-play-btn" id="agPlayBtn" aria-label="播放">
-          <!-- Play icon (default) -->
           <svg id="iconPlay" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg">
             <polygon points="7,4 19,11 7,18" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" fill="none"/>
           </svg>
-          <!-- Pause icon (hidden by default) -->
           <svg id="iconPause" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
             <line x1="8" y1="4.5" x2="8" y2="17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
             <line x1="14" y1="4.5" x2="14" y2="17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
-          <!-- Replay icon (hidden by default) -->
           <svg id="iconReplay" width="22" height="22" viewBox="0 0 22 22" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:none">
             <path d="M11 4.5C7.41 4.5 4.5 7.41 4.5 11s2.91 6.5 6.5 6.5 6.5-2.91 6.5-6.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
             <path d="M11 4.5L8.5 2.5M11 4.5L8.5 6.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
 
-        <!-- Forward 15s — thin SVG icon -->
+        <!-- Forward 15s -->
         <button class="ag-ctrl-btn" id="agForwardBtn" aria-label="快進 15 秒">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M14 5.5C18.694 5.5 22.5 9.306 22.5 14s-3.806 8.5-8.5 8.5S5.5 18.694 5.5 14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
             <path d="M14 5.5L17 3M14 5.5L17 8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
-            <text x="14" y="15.5" text-anchor="middle" font-size="6.5" font-family="system-ui,sans-serif" font-weight="300" fill="currentColor" letter-spacing="0">15</text>
+            <text x="14" y="15.5" text-anchor="middle" font-size="6.5" font-family="system-ui,sans-serif" font-weight="300" fill="currentColor">15</text>
           </svg>
         </button>
       </div>
@@ -319,7 +319,7 @@
     </section>
   </div>
 
-  <audio id="agAudio" preload="metadata">
+  <audio id="agAudio" preload="metadata" crossorigin="anonymous">
     <source src="/assets/audio/mvp-guide.mp3" type="audio/mpeg">
   </audio>
 
@@ -339,6 +339,7 @@
   </footer>
 
   <script>
+    /* ── DOM refs ── */
     const audio        = document.getElementById('agAudio');
     const playBtn      = document.getElementById('agPlayBtn');
     const progressBar  = document.getElementById('agProgressBar');
@@ -351,13 +352,20 @@
     const iconPlay     = document.getElementById('iconPlay');
     const iconPause    = document.getElementById('iconPause');
     const iconReplay   = document.getElementById('iconReplay');
+    const ripples      = [
+      document.getElementById('agRipple0'),
+      document.getElementById('agRipple1'),
+      document.getElementById('agRipple2'),
+    ];
 
+    /* ── Icon helper ── */
     function showIcon(which) {
       iconPlay.style.display   = which === 'play'   ? '' : 'none';
       iconPause.style.display  = which === 'pause'  ? '' : 'none';
       iconReplay.style.display = which === 'replay' ? '' : 'none';
     }
 
+    /* ── Time format ── */
     function formatTime(s) {
       if (!isFinite(s)) return '--:--';
       const m = Math.floor(s / 60);
@@ -365,6 +373,149 @@
       return m + ':' + String(sec).padStart(2, '0');
     }
 
+    /* ── Web Audio: amplitude-reactive ripple ──────────────────────────────
+       Strategy:
+       - AudioContext + AnalyserNode reads RMS amplitude each rAF frame
+       - Each ripple is a "token" with its own lifecycle:
+           phase 0 (idle) → wait for a loud-enough trigger
+           phase 1 (expanding) → scale 1→2.2, opacity fades out
+       - Three tokens staggered so they don't all fire at once
+       - Trigger threshold adapts: fires when amplitude exceeds a rolling
+         average × 1.4 (voice peaks trigger ripples, silence does not)
+    ─────────────────────────────────────────────────────────────────────── */
+    let audioCtx = null;
+    let analyser = null;
+    let dataArray = null;
+    let rafId = null;
+
+    /* Ripple state machine */
+    const RIPPLE_DURATION = 1400; // ms for one ripple to fully expand
+    const RIPPLE_MAX_SCALE = 2.2;
+    const RIPPLE_MIN_INTERVAL = 180; // ms minimum between consecutive triggers
+
+    const rippleState = ripples.map(() => ({
+      active: false,
+      startTime: 0,
+      lastTriggered: 0,
+    }));
+
+    let rollingAvg = 0;
+    let lastTriggerTime = 0;
+    let nextRippleIdx = 0;
+
+    function getRMS(buf) {
+      let sum = 0;
+      for (let i = 0; i < buf.length; i++) {
+        const v = (buf[i] - 128) / 128;
+        sum += v * v;
+      }
+      return Math.sqrt(sum / buf.length);
+    }
+
+    function initAudio() {
+      if (audioCtx) return;
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const source = audioCtx.createMediaElementSource(audio);
+        analyser = audioCtx.createAnalyser();
+        analyser.fftSize = 256;
+        analyser.smoothingTimeConstant = 0.75;
+        dataArray = new Uint8Array(analyser.frequencyBinCount);
+        source.connect(analyser);
+        analyser.connect(audioCtx.destination);
+      } catch (e) {
+        // Web Audio not available — fall back to CSS-only timed ripples
+        audioCtx = null;
+      }
+    }
+
+    function triggerRipple(idx, now) {
+      rippleState[idx].active = true;
+      rippleState[idx].startTime = now;
+      rippleState[idx].lastTriggered = now;
+    }
+
+    function animateRipples(now) {
+      if (!audio.paused && !audio.ended) {
+        rafId = requestAnimationFrame(animateRipples);
+      }
+
+      /* Read amplitude */
+      let rms = 0;
+      if (analyser) {
+        analyser.getByteTimeDomainData(dataArray);
+        rms = getRMS(dataArray);
+      }
+
+      /* Update rolling average (slow decay) */
+      rollingAvg = rollingAvg * 0.96 + rms * 0.04;
+      const threshold = Math.max(0.02, rollingAvg * 1.35);
+
+      /* Trigger a new ripple on voice peak */
+      const timeSinceLast = now - lastTriggerTime;
+      if (rms > threshold && timeSinceLast > RIPPLE_MIN_INTERVAL) {
+        const idx = nextRippleIdx % 3;
+        if (!rippleState[idx].active) {
+          triggerRipple(idx, now);
+          nextRippleIdx++;
+          lastTriggerTime = now;
+        }
+      }
+
+      /* Animate each active ripple */
+      ripples.forEach((el, i) => {
+        const state = rippleState[i];
+        if (!state.active) {
+          el.style.opacity = '0';
+          el.style.transform = 'scale(1)';
+          return;
+        }
+        const elapsed = now - state.startTime;
+        const t = Math.min(elapsed / RIPPLE_DURATION, 1); // 0 → 1
+        const scale = 1 + (RIPPLE_MAX_SCALE - 1) * t;
+        // Opacity: fade in quickly (0→0.5 in first 15%), then fade out
+        const opacity = t < 0.15
+          ? (t / 0.15) * 0.5
+          : 0.5 * (1 - (t - 0.15) / 0.85);
+        el.style.transform = `scale(${scale.toFixed(3)})`;
+        el.style.opacity = Math.max(0, opacity).toFixed(3);
+        if (t >= 1) {
+          state.active = false;
+        }
+      });
+    }
+
+    /* Fallback: CSS-timed ripples when Web Audio unavailable */
+    function startFallbackRipples() {
+      let offset = 0;
+      function fire(idx) {
+        const state = rippleState[idx];
+        state.active = true;
+        state.startTime = performance.now();
+      }
+      // Fire ripples at ~500ms intervals regardless of audio
+      const interval = setInterval(() => {
+        if (audio.paused || audio.ended) { clearInterval(interval); return; }
+        fire(nextRippleIdx % 3);
+        nextRippleIdx++;
+      }, 500);
+    }
+
+    function startRippleLoop() {
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(animateRipples);
+    }
+
+    function stopRippleLoop() {
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      ripples.forEach(el => {
+        el.style.opacity = '0';
+        el.style.transform = 'scale(1)';
+      });
+      rippleState.forEach(s => { s.active = false; });
+    }
+
+    /* ── Playback controls ── */
     audio.addEventListener('loadedmetadata', () => {
       durationEl.textContent = formatTime(audio.duration);
       progressBar.max = audio.duration;
@@ -373,6 +524,10 @@
     playBtn.addEventListener('click', () => {
       if (audio.ended) { audio.currentTime = 0; }
       if (audio.paused) {
+        initAudio();
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
         audio.play().catch(() => {});
       } else {
         audio.pause();
@@ -384,6 +539,7 @@
       playBtn.setAttribute('aria-label', '暫停');
       orbWrap.classList.add('is-playing');
       statusText.textContent = '引導進行中 · 放鬆呼吸';
+      startRippleLoop();
     });
 
     audio.addEventListener('pause', () => {
@@ -391,6 +547,7 @@
       playBtn.setAttribute('aria-label', '播放');
       orbWrap.classList.remove('is-playing');
       statusText.textContent = audio.currentTime > 0 ? '已暫停' : '點擊播放開始引導';
+      stopRippleLoop();
     });
 
     audio.addEventListener('ended', () => {
@@ -401,6 +558,7 @@
       progressBar.value = 0;
       progressBar.style.setProperty('--progress', '0%');
       currentTimeEl.textContent = '0:00';
+      stopRippleLoop();
     });
 
     audio.addEventListener('timeupdate', () => {
