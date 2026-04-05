@@ -68,15 +68,15 @@
       align-items: center;
       justify-content: center;
       flex: 1;
-      padding: 24px 28px 16px;
+      padding: 8px 28px 8px;
     }
 
     /* ── Visualiser container ── */
     .ag-orb-wrap {
       position: relative;
-      width: 300px;
-      height: 300px;
-      margin-bottom: 32px;
+      width: 220px;
+      height: 220px;
+      margin-bottom: 20px;
       flex-shrink: 0;
     }
     /*
@@ -90,11 +90,11 @@
       width: 100%; height: 100%;
     }
     /* Static neon ring — sits on top of canvas, masks inner area */
-    /* Ring diameter = 160px, centred in 300px container → offset 70px */
+    /* Ring diameter = 120px, centred in 220px container → offset 50px */
     .ag-orb-ring {
       position: absolute;
-      top: 70px; left: 70px;
-      width: 160px; height: 160px;
+      top: 50px; left: 50px;
+      width: 120px; height: 120px;
       border-radius: 50%;
       background: #050505;
       border: 1.5px solid #bd00ff;
@@ -107,7 +107,7 @@
 
     .ag-track-info {
       text-align: center;
-      margin-bottom: 28px;
+      margin-bottom: 16px;
     }
     .ag-track-title {
       font-size: 18px;
@@ -153,7 +153,7 @@
 
     .ag-controls {
       display: flex; align-items: center; justify-content: center;
-      gap: 36px; margin-top: 24px;
+      gap: 36px; margin-top: 16px;
     }
     .ag-ctrl-btn {
       background: none; border: none; cursor: pointer; padding: 8px;
@@ -176,7 +176,7 @@
     }
     .ag-status-text {
       font-size: 12px; color: rgba(255,255,255,0.25);
-      text-align: center; margin-top: 20px; letter-spacing: 0.06em;
+      text-align: center; margin-top: 12px; letter-spacing: 0.06em;
     }
   </style>
 </head>
@@ -309,12 +309,12 @@
     const iconPause    = document.getElementById('iconPause');
     const iconReplay   = document.getElementById('iconReplay');
 
-    /* Canvas logical size — larger to give bars room to radiate */
-    const W = 300, H = 300;
+    /* Canvas logical size — matches container 220px */
+    const W = 220, H = 220;
     const CX = W / 2, CY = H / 2;
-    const RING_R    = 80;  /* inner ring radius (matches CSS ring 160px ÷ 2) */
+    const RING_R    = 60;  /* inner ring radius (matches CSS ring 120px ÷ 2) */
     const BAR_MIN   = 1.5; /* min bar length when silent (px) */
-    const BAR_MAX   = 48;  /* max bar length at peak volume (px) */
+    const BAR_MAX   = 38;  /* max bar length at peak volume (px) */
     const N         = 120; /* number of radial bars — denser = more refined */
     const SMOOTH    = 0.80;/* frame smoothing — higher = slower decay */
 
