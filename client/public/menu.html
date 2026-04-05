@@ -39,22 +39,40 @@
       background: transparent;
       box-sizing: border-box;
     }
-    /* Menu container takes remaining space, pushes footer down */
+
+    /* ── Logo: fixed top-right ── */
+    .ag-menu-logo {
+      position: fixed;
+      top: calc(16px + env(safe-area-inset-top, 0px));
+      right: 20px;
+      z-index: 100;
+      pointer-events: none;
+    }
+    .ag-menu-logo img {
+      width: 110px;
+      opacity: 0.85;
+      display: block;
+    }
+
+    /* ── Menu container: full height, evenly distribute content ── */
     .ag-menu-container {
       flex: 1;
       display: flex;
       flex-direction: column;
-      padding: 20px;
+      justify-content: space-evenly;
+      align-items: center;
+      padding: 60px 20px 20px; /* top padding clears logo area */
       text-align: center;
       position: relative;
       z-index: 1;
       width: 100%;
       box-sizing: border-box;
     }
+
     /* Breathing Sphere Background */
     .ag-breathing-sphere-bg {
       position: absolute;
-      top: 40%;
+      top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       width: 60vw;
@@ -71,30 +89,22 @@
       0%, 100% { transform: translate(-50%, -50%) scale(0.8); opacity: 0.3; }
       50% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.6; }
     }
-    /* Individual centering for content elements */
-    .ag-wild-header,
-    .ag-menu-title,
-    .ag-menu-list {
-      width: 100%;
-      max-width: 320px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .ag-wild-header {
-      text-align: center;
-    }
+
     .ag-menu-title {
       font-size: 20px;
       color: #fff;
-      margin-bottom: 24px;
+      margin: 0;
       letter-spacing: 2px;
       font-weight: 300;
       text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     }
+
     .ag-menu-list {
       display: flex;
       flex-direction: column;
       gap: 20px;
+      width: 100%;
+      max-width: 320px;
     }
     .ag-menu-item {
       display: block;
@@ -144,7 +154,6 @@
     /* Accordion Styles */
     .ag-menu-details {
       width: 100%;
-      margin-top: 10px;
     }
     .ag-menu-summary {
       list-style: none;
@@ -168,9 +177,8 @@
       flex-direction: column;
       gap: 10px;
     }
-    /* Footer: pushed to bottom via margin-top: auto */
+    /* Footer */
     .ag-footer-standard {
-      margin-top: auto;
       width: 100%;
       max-width: 100%;
       background: none;
@@ -183,14 +191,17 @@
   <a href="/home.html" class="ag-back-button" aria-label="返回首頁">
     <!-- Icon restored via CSS ::before -->
   </a>
+
+  <!-- Logo: fixed top-right -->
+  <div class="ag-menu-logo">
+    <img src="/assets/logo-handwritten.png" alt="Afterglow">
+  </div>
+
   <div class="ag-canvas-wrapper">
     <div class="ag-menu-container">
       <!-- Breathing Sphere Visual -->
       <div class="ag-breathing-sphere-bg"></div>
-      <!-- Compact Header -->
-      <div class="ag-wild-header" style="margin-bottom: 20px;">
-        <img src="/assets/logo-handwritten.png" class="ag-wild-logo" alt="Afterglow" style="width: 120px; opacity: 0.8;">
-      </div>
+
       <h1 class="ag-menu-title">選擇冥想模式</h1>
 
       <div class="ag-menu-list">

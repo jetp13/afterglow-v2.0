@@ -12,6 +12,19 @@
     }
   </script>
   <style>
+    /* Logo: fixed top-right */
+    .ag-page-logo {
+      position: fixed;
+      top: calc(16px + env(safe-area-inset-top, 0px));
+      right: 20px;
+      z-index: 100;
+      pointer-events: none;
+    }
+    .ag-page-logo img {
+      width: 110px;
+      opacity: 0.85;
+      display: block;
+    }
     .ag-container {
       display: flex;
       flex-direction: column;
@@ -68,6 +81,11 @@
   <a href="/menu.html" class="ag-back-button neon-style" aria-label="返回選單">
     <span class="ag-neon-icon-back"></span>
   </a>
+
+  <!-- Logo: fixed top-right -->
+  <div class="ag-page-logo">
+    <img src="/assets/logo-handwritten.png" alt="Afterglow">
+  </div>
 
   <!-- Removed ag-main-scroll to prevent scrolling (D1) -->
   <div class="ag-container">
