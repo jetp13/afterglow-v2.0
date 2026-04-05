@@ -23,22 +23,16 @@
       min-height: 64px;
     }
     .ag-back-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      width: 36px; height: 36px;
-      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 50%;
       border: 1px solid rgba(255,255,255,0.2);
       color: rgba(255,255,255,0.6);
-      text-decoration: none;
-      font-size: 18px; line-height: 1;
-      transition: border-color 0.2s, color 0.2s;
-      flex-shrink: 0;
+      text-decoration: none; font-size: 18px; line-height: 1;
+      transition: border-color 0.2s, color 0.2s; flex-shrink: 0;
     }
     .ag-back-btn:hover { border-color: rgba(255,255,255,0.6); color: #fff; }
     .ag-inner-logo {
-      display: block;
-      width: 135px; max-width: 38vw; height: auto;
+      display: block; width: 135px; max-width: 38vw; height: auto;
       mix-blend-mode: screen; opacity: 0.85; margin-top: 6px;
     }
     .ag-page-title-block { padding: 0 20px 8px; flex-shrink: 0; }
@@ -48,7 +42,7 @@
     }
     .ag-page-title strong { color: rgba(255,255,255,0.55); font-weight: 500; }
 
-    /* ── Player layout ── */
+    /* ── Player layout: top section fills space, bottom section near footer ── */
     .ag-voice-player {
       display: flex; flex-direction: column; align-items: center;
       flex: 1; padding: 0 28px 20px;
@@ -57,17 +51,27 @@
       flex: 1; display: flex; flex-direction: column;
       align-items: center; justify-content: center;
     }
-    .ag-player-bottom { width: 100%; display: flex; flex-direction: column; align-items: center; }
+    .ag-player-bottom {
+      width: 100%; display: flex; flex-direction: column; align-items: center;
+    }
 
-    /* ── Canvas orb ── */
+    /* ── Neon ring ── */
     .ag-orb-wrap {
       position: relative;
       width: 200px; height: 200px;
+      display: flex; align-items: center; justify-content: center;
       margin-bottom: 24px; flex-shrink: 0;
     }
-    #agCanvas {
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%;
+    .ag-orb-ring {
+      width: 140px; height: 140px;
+      border-radius: 50%;
+      border: 1.5px solid #bd00ff;
+      /* glow is controlled by JS via CSS custom property --glow-a */
+      box-shadow:
+        0 0 calc(8px + var(--glow-extra, 0px))  rgba(189,0,255, calc(0.55 + var(--glow-a, 0))),
+        0 0 calc(22px + var(--glow-extra, 0px)) rgba(189,0,255, calc(0.22 + var(--glow-a, 0) * 0.5)),
+        inset 0 0 8px rgba(189,0,255, calc(0.06 + var(--glow-a, 0) * 0.1));
+      transition: box-shadow 0.08s ease-out;
     }
 
     .ag-track-info { text-align: center; margin-bottom: 20px; }
@@ -151,8 +155,9 @@
 
       <div class="ag-player-top">
         <div class="ag-orb-wrap" aria-hidden="true">
-          <canvas id="agCanvas" width="400" height="400"></canvas>
+          <div class="ag-orb-ring" id="agOrbRing"></div>
         </div>
+
         <div class="ag-track-info">
           <p class="ag-track-title">MVP 引導</p>
           <p class="ag-track-hint">請戴上耳機，閉上眼睛</p>
@@ -237,157 +242,18 @@
 
   <script>
   /* ══════════════════════════════════════════════════════════════════════
-     ROTATING ARC VISUALISER
+     NEON RING GLOW VISUALISER
      ──────────────────────────────────────────────────────────────────────
-     Visual concept:
-       • A static neon ring (base circle) always visible
-       • 2–3 glowing arcs rotate around the ring at different speeds
-       • Arc rotation speed is driven by audio volume:
-           - Idle / paused : arcs rotate very slowly (or drift to a stop)
-           - Playing, quiet : moderate speed
-           - Playing, loud  : fast spin
-       • Arc opacity and glow intensity also scale with volume
-       • Smooth easing: target speed is lerped toward current speed each frame
-
-     Implementation: Canvas 2D, requestAnimationFrame loop
+     The ring is a static CSS element. Only its glow (box-shadow) changes.
+     
+     Logic:
+       • Web Audio API measures volume each frame
+       • Volume is smoothed (lerp) to avoid jitter
+       • Smoothed volume maps to --glow-a (0..0.3) and --glow-extra (0..6px)
+       • Changes are very subtle — the ring barely flickers, not strobes
+       • When paused: glow returns to baseline slowly
   ══════════════════════════════════════════════════════════════════════ */
 
-    const canvas      = document.getElementById('agCanvas');
-    const ctx         = canvas.getContext('2d');
-    const SIZE        = 400;   /* canvas resolution (retina-safe) */
-    const CX          = SIZE / 2;
-    const CY          = SIZE / 2;
-    const RING_R      = 140;   /* radius of the orbit ring */
-    const RING_W      = 1.5;
-
-    /* Arc definitions: [spanAngle_rad, baseSpeed_rad/frame, phaseOffset_rad] */
-    const ARCS = [
-      { span: Math.PI * 0.55, speed: 0.012, phase: 0,              alpha: 0.9 },
-      { span: Math.PI * 0.30, speed: 0.019, phase: Math.PI * 0.7,  alpha: 0.6 },
-      { span: Math.PI * 0.18, speed: 0.027, phase: Math.PI * 1.4,  alpha: 0.4 },
-    ];
-
-    /* Runtime state */
-    let angles    = ARCS.map(a => a.phase);  /* current head angle per arc */
-    let speedMult = 0.05;   /* current speed multiplier (lerped) */
-    let targetMult= 0.05;   /* target speed multiplier */
-    let glowAlpha = 0.5;    /* current glow intensity (lerped) */
-    let rafId     = null;
-    let isPlaying = false;
-
-    /* ── Web Audio ── */
-    let audioCtx = null, analyser = null, freqBuf = null;
-
-    function initAudio() {
-      if (audioCtx) return;
-      try {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const src = audioCtx.createMediaElementSource(audio);
-        analyser  = audioCtx.createAnalyser();
-        analyser.fftSize = 64;
-        analyser.smoothingTimeConstant = 0.75;
-        freqBuf = new Uint8Array(analyser.frequencyBinCount);
-        src.connect(analyser);
-        analyser.connect(audioCtx.destination);
-      } catch(e) { audioCtx = null; }
-    }
-
-    function getVolume() {
-      if (!analyser) return 0;
-      analyser.getByteFrequencyData(freqBuf);
-      let sum = 0;
-      for (let i = 0; i < freqBuf.length; i++) sum += freqBuf[i];
-      return sum / freqBuf.length / 255; /* 0..1 */
-    }
-
-    /* ── Draw one frame ── */
-    function draw() {
-      ctx.clearRect(0, 0, SIZE, SIZE);
-
-      /* --- Base ring (static, dim) --- */
-      ctx.beginPath();
-      ctx.arc(CX, CY, RING_R, 0, Math.PI * 2);
-      ctx.strokeStyle = `rgba(189,0,255,${0.18 + glowAlpha * 0.12})`;
-      ctx.lineWidth   = RING_W;
-      ctx.stroke();
-
-      /* --- Rotating arcs --- */
-      ARCS.forEach((arc, i) => {
-        const start = angles[i];
-        const end   = start + arc.span;
-
-        /* Glow layers: draw arc 3 times with increasing blur */
-        const layers = [
-          { lw: 10, alpha: arc.alpha * glowAlpha * 0.25 },
-          { lw: 5,  alpha: arc.alpha * glowAlpha * 0.55 },
-          { lw: 2,  alpha: arc.alpha * (0.5 + glowAlpha * 0.5) },
-        ];
-
-        layers.forEach(layer => {
-          ctx.beginPath();
-          ctx.arc(CX, CY, RING_R, start, end);
-          ctx.strokeStyle = `rgba(189,0,255,${layer.alpha.toFixed(3)})`;
-          ctx.lineWidth   = layer.lw;
-          ctx.lineCap     = 'round';
-          ctx.stroke();
-        });
-
-        /* Bright leading dot at arc head */
-        const dotX = CX + Math.cos(end) * RING_R;
-        const dotY = CY + Math.sin(end) * RING_R;
-        const dotR = 3 + glowAlpha * 3;
-        const grad = ctx.createRadialGradient(dotX, dotY, 0, dotX, dotY, dotR * 3);
-        grad.addColorStop(0,   `rgba(255,180,255,${0.9 * arc.alpha})`);
-        grad.addColorStop(0.4, `rgba(189,0,255,${0.6 * arc.alpha * glowAlpha})`);
-        grad.addColorStop(1,   'rgba(189,0,255,0)');
-        ctx.beginPath();
-        ctx.arc(dotX, dotY, dotR * 3, 0, Math.PI * 2);
-        ctx.fillStyle = grad;
-        ctx.fill();
-      });
-
-      /* --- Inner core glow --- */
-      const coreR = 28 + glowAlpha * 10;
-      const coreGrad = ctx.createRadialGradient(CX, CY, 0, CX, CY, coreR);
-      coreGrad.addColorStop(0,   `rgba(189,0,255,${0.12 + glowAlpha * 0.18})`);
-      coreGrad.addColorStop(0.5, `rgba(189,0,255,${0.04 + glowAlpha * 0.08})`);
-      coreGrad.addColorStop(1,   'rgba(189,0,255,0)');
-      ctx.beginPath();
-      ctx.arc(CX, CY, coreR, 0, Math.PI * 2);
-      ctx.fillStyle = coreGrad;
-      ctx.fill();
-    }
-
-    /* ── Animation loop ── */
-    function loop() {
-      rafId = requestAnimationFrame(loop);
-
-      /* Measure volume → set target speed */
-      const vol = getVolume();
-      if (isPlaying) {
-        /* Map volume 0..1 → speed multiplier 0.4..3.5 */
-        targetMult = 0.4 + vol * 3.1;
-        /* Glow scales with volume */
-        const targetGlow = 0.4 + vol * 0.6;
-        glowAlpha += (targetGlow - glowAlpha) * 0.08;
-      } else {
-        /* Idle: very slow drift */
-        targetMult = 0.05;
-        glowAlpha += (0.25 - glowAlpha) * 0.04;
-      }
-
-      /* Lerp speed toward target */
-      speedMult += (targetMult - speedMult) * 0.06;
-
-      /* Advance each arc angle */
-      ARCS.forEach((arc, i) => {
-        angles[i] += arc.speed * speedMult;
-      });
-
-      draw();
-    }
-
-    /* ── Playback helpers ── */
     const audio        = document.getElementById('agAudio');
     const playBtn      = document.getElementById('agPlayBtn');
     const progressBar  = document.getElementById('agProgressBar');
@@ -399,7 +265,14 @@
     const iconPlay     = document.getElementById('iconPlay');
     const iconPause    = document.getElementById('iconPause');
     const iconReplay   = document.getElementById('iconReplay');
+    const orbRing      = document.getElementById('agOrbRing');
 
+    let audioCtx = null, analyser = null, freqBuf = null;
+    let smoothVol = 0;   /* smoothed volume 0..1 */
+    let isPlaying = false;
+    let rafId = null;
+
+    /* ── Icon helper ── */
     function showIcon(w) {
       iconPlay.style.display   = w === 'play'   ? '' : 'none';
       iconPause.style.display  = w === 'pause'  ? '' : 'none';
@@ -410,6 +283,48 @@
       return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0');
     }
 
+    /* ── Web Audio init ── */
+    function initAudio() {
+      if (audioCtx) return;
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const src = audioCtx.createMediaElementSource(audio);
+        analyser  = audioCtx.createAnalyser();
+        analyser.fftSize = 64;
+        analyser.smoothingTimeConstant = 0.7;
+        freqBuf = new Uint8Array(analyser.frequencyBinCount);
+        src.connect(analyser);
+        analyser.connect(audioCtx.destination);
+      } catch(e) { audioCtx = null; }
+    }
+
+    /* ── Glow update loop ── */
+    function glowLoop() {
+      rafId = requestAnimationFrame(glowLoop);
+
+      /* Measure raw volume */
+      let rawVol = 0;
+      if (analyser && isPlaying) {
+        analyser.getByteFrequencyData(freqBuf);
+        let sum = 0;
+        for (let i = 0; i < freqBuf.length; i++) sum += freqBuf[i];
+        rawVol = sum / freqBuf.length / 255; /* 0..1 */
+      }
+
+      /* Smooth: attack fast, decay slow — prevents harsh strobing */
+      const lerpRate = rawVol > smoothVol ? 0.25 : 0.06;
+      smoothVol += (rawVol - smoothVol) * lerpRate;
+
+      /* Map smoothed volume to very subtle glow delta:
+         smoothVol 0..1 → glowA 0..0.28, extraPx 0..5 */
+      const glowA   = (smoothVol * 0.28).toFixed(4);
+      const extraPx = (smoothVol * 5).toFixed(1);
+
+      orbRing.style.setProperty('--glow-a',     glowA);
+      orbRing.style.setProperty('--glow-extra', extraPx + 'px');
+    }
+
+    /* ── Playback ── */
     audio.addEventListener('loadedmetadata', () => {
       durationEl.textContent = fmt(audio.duration);
       progressBar.max = audio.duration;
@@ -466,8 +381,8 @@
     rewindBtn.addEventListener('click',  () => { audio.currentTime = Math.max(0, audio.currentTime - 15); });
     forwardBtn.addEventListener('click', () => { audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 15); });
 
-    /* Start the render loop immediately (idle state) */
-    loop();
+    /* Start glow loop immediately */
+    glowLoop();
   </script>
 
 </body>
