@@ -314,9 +314,9 @@
     const W = 260, H = 260;
     const CX = W / 2, CY = H / 2;
     const BASE_R   = 71;   /* just outside the 140px ring (70px radius + 1px border) */
-    const MAX_DISP = 22;   /* max outward spike in canvas px */
-    const N        = 128;  /* sample points around the ring */
-    const SMOOTH   = 0.6;  /* frame-to-frame smoothing (higher = slower decay) */
+    const MAX_DISP = 38;   /* max outward spike — larger = more visible */
+    const N        = 24;   /* fewer points = smoother, more organic wave */
+    const SMOOTH   = 0.82; /* high smoothing = slow, elegant motion */
 
     let audioCtx  = null;
     let analyser  = null;
@@ -345,8 +345,8 @@
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const src = audioCtx.createMediaElementSource(audio);
         analyser  = audioCtx.createAnalyser();
-        analyser.fftSize = 256;
-        analyser.smoothingTimeConstant = 0.8;
+        analyser.fftSize = 512;
+        analyser.smoothingTimeConstant = 0.88; /* extra smoothing at analyser level */
         tdBuf = new Uint8Array(analyser.fftSize);
         src.connect(analyser);
         analyser.connect(audioCtx.destination);
@@ -363,18 +363,25 @@
       /* Read audio data or use fallback sine */
       const raw = new Float32Array(N);
       if (analyser && isPlaying) {
+        /* Use frequency data (not time-domain):
+           frequency bins are naturally smoother and represent energy,
+           not raw waveform jitter. Take only the low-freq half for
+           a calm, voice-like response. */
         analyser.getByteTimeDomainData(tdBuf);
-        const step = Math.floor(tdBuf.length / N);
+        /* Sample N evenly-spaced points from the first 1/3 of the buffer
+           (low-frequency region — voice fundamentals, no high-freq noise) */
+        const usable = Math.floor(tdBuf.length / 3);
+        const step   = Math.floor(usable / N);
         for (let i = 0; i < N; i++) {
-          raw[i] = (tdBuf[i * step] - 128) / 128; /* -1 … +1 */
+          raw[i] = (tdBuf[i * step] - 128) / 128;
         }
       } else if (isPlaying) {
-        /* Fallback: gentle organic sine when no analyser */
+        /* Fallback: very slow, large-scale sine — 2 harmonics only */
         const t = ts / 1000;
         for (let i = 0; i < N; i++) {
           const a = (i / N) * Math.PI * 2;
-          raw[i] = Math.sin(a * 4 + t * 2.2) * 0.4
-                 + Math.sin(a * 7 - t * 1.1) * 0.2;
+          raw[i] = Math.sin(a * 2 + t * 0.8) * 0.55
+                 + Math.sin(a * 3 - t * 0.5) * 0.25;
         }
       }
       /* else: raw stays 0 → wave collapses to base ring */
@@ -409,21 +416,24 @@
       }
       ctx.closePath();
 
-      /* Neon stroke: glow layers */
+      /* Neon stroke: 3 layers for tube glow effect */
+      /* Layer 1: wide soft outer halo */
       ctx.shadowBlur  = 0;
-      ctx.strokeStyle = 'rgba(189,0,255,0.18)';
-      ctx.lineWidth   = 8;
+      ctx.strokeStyle = 'rgba(189,0,255,0.12)';
+      ctx.lineWidth   = 16;
       ctx.stroke();
 
+      /* Layer 2: mid glow */
       ctx.shadowColor = '#bd00ff';
-      ctx.shadowBlur  = 14;
-      ctx.strokeStyle = 'rgba(189,0,255,0.55)';
-      ctx.lineWidth   = 2;
+      ctx.shadowBlur  = 20;
+      ctx.strokeStyle = 'rgba(189,0,255,0.5)';
+      ctx.lineWidth   = 3;
       ctx.stroke();
 
-      ctx.shadowBlur  = 6;
-      ctx.strokeStyle = 'rgba(220,120,255,0.9)';
-      ctx.lineWidth   = 1;
+      /* Layer 3: bright core line */
+      ctx.shadowBlur  = 8;
+      ctx.strokeStyle = 'rgba(230,140,255,0.95)';
+      ctx.lineWidth   = 1.5;
       ctx.stroke();
 
       ctx.shadowBlur = 0;
