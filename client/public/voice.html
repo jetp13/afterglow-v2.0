@@ -74,15 +74,15 @@
     /* ── Visualiser container ── */
     .ag-orb-wrap {
       position: relative;
-      width: 260px;
-      height: 260px;
-      margin-bottom: 28px;
+      width: 300px;
+      height: 300px;
+      margin-bottom: 32px;
       flex-shrink: 0;
     }
     /*
       Layer order (back → front):
-        1. canvas#agCanvas  — waveform drawn here (behind ring)
-        2. div.ag-orb-ring  — static neon ring (SVG border-radius trick)
+        1. canvas#agCanvas  — radial bars drawn here (behind ring)
+        2. div.ag-orb-ring  — static neon ring masks canvas inside
     */
     #agCanvas {
       position: absolute;
@@ -90,13 +90,12 @@
       width: 100%; height: 100%;
     }
     /* Static neon ring — sits on top of canvas, masks inner area */
+    /* Ring diameter = 160px, centred in 300px container → offset 70px */
     .ag-orb-ring {
       position: absolute;
-      /* Ring is 140px, centred in 260px container → offset 60px */
-      top: 60px; left: 60px;
-      width: 140px; height: 140px;
+      top: 70px; left: 70px;
+      width: 160px; height: 160px;
       border-radius: 50%;
-      /* Black fill covers canvas inside the ring */
       background: #050505;
       border: 1.5px solid #bd00ff;
       box-shadow:
@@ -196,8 +195,8 @@
     <section class="ag-voice-player" aria-label="語音引導播放器">
 
       <div class="ag-orb-wrap" id="agOrbWrap" aria-hidden="true">
-        <!-- Canvas: waveform drawn behind the ring -->
-        <canvas id="agCanvas" width="260" height="260"></canvas>
+        <!-- Canvas: radial bars drawn behind the ring -->
+        <canvas id="agCanvas" width="300" height="300"></canvas>
         <!-- Static neon ring on top, black background masks canvas inside -->
         <div class="ag-orb-ring"></div>
       </div>
@@ -310,20 +309,21 @@
     const iconPause    = document.getElementById('iconPause');
     const iconReplay   = document.getElementById('iconReplay');
 
-    /* Canvas logical size (matches HTML attrs) */
-    const W = 260, H = 260;
+    /* Canvas logical size — larger to give bars room to radiate */
+    const W = 300, H = 300;
     const CX = W / 2, CY = H / 2;
-    const BASE_R   = 71;   /* just outside the 140px ring (70px radius + 1px border) */
-    const MAX_DISP = 38;   /* max outward spike — larger = more visible */
-    const N        = 24;   /* fewer points = smoother, more organic wave */
-    const SMOOTH   = 0.82; /* high smoothing = slow, elegant motion */
+    const RING_R    = 80;  /* inner ring radius (matches CSS ring 160px ÷ 2) */
+    const BAR_MIN   = 2;   /* min bar length when silent (px) */
+    const BAR_MAX   = 52;  /* max bar length at peak volume (px) */
+    const N         = 72;  /* number of radial bars around the ring */
+    const SMOOTH    = 0.78;/* frame smoothing — higher = slower decay */
 
     let audioCtx  = null;
     let analyser  = null;
-    let tdBuf     = null;   /* time-domain byte buffer */
+    let freqBuf   = null;  /* frequency byte buffer */
     let rafId     = null;
     let isPlaying = false;
-    let smoothed  = new Float32Array(N); /* smoothed displacement per point */
+    let smoothed  = new Float32Array(N); /* smoothed bar lengths */
 
     /* ── Icon helper ── */
     function showIcon(w) {
@@ -345,9 +345,9 @@
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         const src = audioCtx.createMediaElementSource(audio);
         analyser  = audioCtx.createAnalyser();
-        analyser.fftSize = 512;
-        analyser.smoothingTimeConstant = 0.88; /* extra smoothing at analyser level */
-        tdBuf = new Uint8Array(analyser.fftSize);
+        analyser.fftSize = 256;
+        analyser.smoothingTimeConstant = 0.85;
+        freqBuf = new Uint8Array(analyser.frequencyBinCount); /* frequencyBinCount = fftSize/2 = 128 */
         src.connect(analyser);
         analyser.connect(audioCtx.destination);
       } catch(e) {
@@ -360,85 +360,72 @@
     function drawFrame(ts) {
       ctx.clearRect(0, 0, W, H);
 
-      /* Read audio data or use fallback sine */
+      /* ── 1. Read frequency data → normalised 0..1 per bar ── */
       const raw = new Float32Array(N);
       if (analyser && isPlaying) {
-        /* Use frequency data (not time-domain):
-           frequency bins are naturally smoother and represent energy,
-           not raw waveform jitter. Take only the low-freq half for
-           a calm, voice-like response. */
-        analyser.getByteTimeDomainData(tdBuf);
-        /* Sample N evenly-spaced points from the first 1/3 of the buffer
-           (low-frequency region — voice fundamentals, no high-freq noise) */
-        const usable = Math.floor(tdBuf.length / 3);
-        const step   = Math.floor(usable / N);
+        analyser.getByteFrequencyData(freqBuf);
+        /* Map N bars to the lower 60% of frequency bins (voice range) */
+        const usable = Math.floor(freqBuf.length * 0.6);
+        const step   = usable / N;
         for (let i = 0; i < N; i++) {
-          raw[i] = (tdBuf[i * step] - 128) / 128;
+          const idx = Math.floor(i * step);
+          raw[i] = freqBuf[idx] / 255; /* 0..1 */
         }
       } else if (isPlaying) {
-        /* Fallback: very slow, large-scale sine — 2 harmonics only */
+        /* Fallback: slow organic sine when AudioContext unavailable */
         const t = ts / 1000;
         for (let i = 0; i < N; i++) {
           const a = (i / N) * Math.PI * 2;
-          raw[i] = Math.sin(a * 2 + t * 0.8) * 0.55
-                 + Math.sin(a * 3 - t * 0.5) * 0.25;
+          raw[i] = (Math.sin(a * 3 + t * 0.7) * 0.4
+                  + Math.sin(a * 5 - t * 0.4) * 0.2 + 0.6) * 0.5;
         }
       }
-      /* else: raw stays 0 → wave collapses to base ring */
+      /* else: raw stays 0 → all bars at minimum */
 
-      /* Smooth */
+      /* ── 2. Smooth each bar ── */
       for (let i = 0; i < N; i++) {
         smoothed[i] = smoothed[i] * SMOOTH + raw[i] * (1 - SMOOTH);
       }
 
-      /* Build polar points */
-      const pts = [];
-      for (let i = 0; i < N; i++) {
-        const angle = (i / N) * Math.PI * 2 - Math.PI / 2;
-        const r = BASE_R + smoothed[i] * MAX_DISP;
-        pts.push({ x: CX + r * Math.cos(angle), y: CY + r * Math.sin(angle) });
-      }
-
-      /* Draw smooth closed curve with Catmull-Rom tension */
-      ctx.beginPath();
-      const T = 0.3;
-      for (let i = 0; i < N; i++) {
-        const p0 = pts[(i - 1 + N) % N];
-        const p1 = pts[i];
-        const p2 = pts[(i + 1) % N];
-        const p3 = pts[(i + 2) % N];
-        const c1x = p1.x + (p2.x - p0.x) * T;
-        const c1y = p1.y + (p2.y - p0.y) * T;
-        const c2x = p2.x - (p3.x - p1.x) * T;
-        const c2y = p2.y - (p3.y - p1.y) * T;
-        if (i === 0) ctx.moveTo(p1.x, p1.y);
-        ctx.bezierCurveTo(c1x, c1y, c2x, c2y, p2.x, p2.y);
-      }
-      ctx.closePath();
-
-      /* Neon stroke: 3 layers for tube glow effect */
-      /* Layer 1: wide soft outer halo */
-      ctx.shadowBlur  = 0;
-      ctx.strokeStyle = 'rgba(189,0,255,0.12)';
-      ctx.lineWidth   = 16;
-      ctx.stroke();
-
-      /* Layer 2: mid glow */
+      /* ── 3. Draw radial bars ── */
+      ctx.save();
       ctx.shadowColor = '#bd00ff';
-      ctx.shadowBlur  = 20;
-      ctx.strokeStyle = 'rgba(189,0,255,0.5)';
-      ctx.lineWidth   = 3;
-      ctx.stroke();
 
-      /* Layer 3: bright core line */
-      ctx.shadowBlur  = 8;
-      ctx.strokeStyle = 'rgba(230,140,255,0.95)';
-      ctx.lineWidth   = 1.5;
-      ctx.stroke();
+      for (let i = 0; i < N; i++) {
+        const angle  = (i / N) * Math.PI * 2 - Math.PI / 2;
+        const barLen = BAR_MIN + smoothed[i] * (BAR_MAX - BAR_MIN);
+        const x1 = CX + RING_R * Math.cos(angle);
+        const y1 = CY + RING_R * Math.sin(angle);
+        const x2 = CX + (RING_R + barLen) * Math.cos(angle);
+        const y2 = CY + (RING_R + barLen) * Math.sin(angle);
 
-      ctx.shadowBlur = 0;
+        /* Brightness scales with bar length */
+        const t = smoothed[i];  /* 0..1 */
+        const alpha = 0.35 + t * 0.65;
 
-      if (isPlaying || smoothed.some(v => Math.abs(v) > 0.005)) {
+        /* Outer glow pass */
+        ctx.shadowBlur  = 6 + t * 10;
+        ctx.strokeStyle = `rgba(189,0,255,${(alpha * 0.5).toFixed(2)})`;
+        ctx.lineWidth   = 1.8;
+        ctx.lineCap     = 'round';
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+
+        /* Bright core pass */
+        ctx.shadowBlur  = 3;
+        ctx.strokeStyle = `rgba(220,140,255,${alpha.toFixed(2)})`;
+        ctx.lineWidth   = 0.9;
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.stroke();
+      }
+
+      ctx.restore();
+
+      if (isPlaying || smoothed.some(v => v > 0.01)) {
         rafId = requestAnimationFrame(drawFrame);
       }
     }
