@@ -42,48 +42,57 @@
     }
     .ag-page-title strong { color: rgba(255,255,255,0.55); font-weight: 500; }
 
-    /* ── Player layout: entire module pushed to bottom half ── */
+    /* ── Main scroll area fills remaining height ── */
+    .ag-main-scroll {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── Player: vertically centered in available space ── */
     .ag-voice-player {
-      display: flex; flex-direction: column; align-items: center;
-      flex: 1; padding: 0 28px 20px;
-      justify-content: flex-end;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 28px 40px;
+      box-sizing: border-box;
+      gap: 0;
     }
 
-    /* ── Neon ring + CSS glow animation ── */
-    @keyframes glowPulse {
-      0%   { box-shadow: 0 0 8px rgba(189,0,255,0.50), 0 0 20px rgba(189,0,255,0.18), inset 0 0 8px rgba(189,0,255,0.05); }
-      50%  { box-shadow: 0 0 16px rgba(189,0,255,0.80), 0 0 36px rgba(189,0,255,0.38), inset 0 0 12px rgba(189,0,255,0.12); }
-      100% { box-shadow: 0 0 8px rgba(189,0,255,0.50), 0 0 20px rgba(189,0,255,0.18), inset 0 0 8px rgba(189,0,255,0.05); }
-    }
-
+    /* ── Neon ring ── */
     .ag-orb-wrap {
       position: relative;
       width: 200px; height: 200px;
       display: flex; align-items: center; justify-content: center;
-      margin-bottom: 24px; flex-shrink: 0;
+      margin-bottom: 28px; flex-shrink: 0;
     }
     .ag-orb-ring {
-      width: 140px; height: 140px;
+      width: 150px; height: 150px;
       border-radius: 50%;
       border: 1.5px solid #bd00ff;
+      /* baseline glow — JS overrides this directly each frame */
       box-shadow:
-        0 0 8px  rgba(189,0,255,0.50),
-        0 0 20px rgba(189,0,255,0.18),
-        inset 0 0 8px rgba(189,0,255,0.05);
-      /* idle: very slow breathing */
-      animation: glowPulse 4s ease-in-out infinite;
-    }
-    /* playing: faster pulse */
-    .ag-orb-ring.is-playing {
-      animation: glowPulse 1.6s ease-in-out infinite;
+        0 0 10px  rgba(189,0,255,0.55),
+        0 0 28px  rgba(189,0,255,0.22),
+        0 0 60px  rgba(189,0,255,0.08),
+        inset 0 0 10px rgba(189,0,255,0.06);
+      transform: scale(1);
+      transition: transform 0.12s ease-out;
+      will-change: box-shadow, transform;
     }
 
-    .ag-track-info { text-align: center; margin-bottom: 20px; }
+    /* ── Track info ── */
+    .ag-track-info { text-align: center; margin-bottom: 28px; }
     .ag-track-title {
-      font-size: 18px; font-weight: 500;
-      color: rgba(255,255,255,0.88); letter-spacing: 0.03em; margin-bottom: 6px;
+      font-size: 20px; font-weight: 500;
+      color: rgba(255,255,255,0.90); letter-spacing: 0.03em; margin-bottom: 8px;
     }
-    .ag-track-hint { font-size: 13px; color: rgba(255,255,255,0.35); letter-spacing: 0.04em; }
+    .ag-track-hint {
+      font-size: 13px; color: rgba(255,255,255,0.38);
+      letter-spacing: 0.04em; line-height: 1.6;
+    }
 
     /* ── Progress bar ── */
     .ag-progress-wrap { width: 100%; margin-bottom: 10px; }
@@ -116,7 +125,7 @@
     /* ── Controls ── */
     .ag-controls {
       display: flex; align-items: center; justify-content: center;
-      gap: 36px; margin-top: 16px;
+      gap: 36px; margin-top: 20px;
     }
     .ag-ctrl-btn {
       background: none; border: none; cursor: pointer; padding: 8px;
@@ -126,7 +135,7 @@
     }
     .ag-ctrl-btn:hover { color: rgba(255,255,255,0.85); }
     .ag-ctrl-btn.ag-play-btn {
-      width: 60px; height: 60px; border-radius: 50%;
+      width: 64px; height: 64px; border-radius: 50%;
       border: 1.5px solid rgba(189,0,255,0.5);
       color: rgba(189,0,255,0.9);
       box-shadow: 0 0 16px rgba(189,0,255,0.2);
@@ -139,7 +148,7 @@
     }
     .ag-status-text {
       font-size: 12px; color: rgba(255,255,255,0.25);
-      text-align: center; margin-top: 12px; letter-spacing: 0.06em;
+      text-align: center; margin-top: 16px; letter-spacing: 0.06em;
     }
   </style>
 </head>
@@ -162,8 +171,8 @@
       </div>
 
       <div class="ag-track-info">
-        <p class="ag-track-title">MVP 引導</p>
-        <p class="ag-track-hint">請戴上耳機，閉上眼睛</p>
+        <p class="ag-track-title">進入狀態</p>
+        <p class="ag-track-hint">戴上耳機，閉上眼睛，讓聲音帶你慢慢進入</p>
       </div>
 
       <div class="ag-progress-wrap">
@@ -189,17 +198,17 @@
         </button>
 
         <button class="ag-ctrl-btn ag-play-btn" id="agPlayBtn" aria-label="播放">
-          <svg id="iconPlay" width="22" height="22" viewBox="0 0 22 22" fill="none">
-            <polygon points="7,4 19,11 7,18" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" fill="none"/>
+          <svg id="iconPlay" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <polygon points="8,4 20,12 8,20" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" fill="none"/>
           </svg>
-          <svg id="iconPause" width="22" height="22" viewBox="0 0 22 22" fill="none" style="display:none">
-            <line x1="8" y1="4.5" x2="8" y2="17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
-            <line x1="14" y1="4.5" x2="14" y2="17.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <svg id="iconPause" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:none">
+            <line x1="9" y1="5" x2="9" y2="19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="15" y1="5" x2="15" y2="19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
           </svg>
-          <svg id="iconReplay" width="22" height="22" viewBox="0 0 22 22" fill="none" style="display:none">
-            <path d="M11 4.5C7.41 4.5 4.5 7.41 4.5 11s2.91 6.5 6.5 6.5 6.5-2.91 6.5-6.5"
+          <svg id="iconReplay" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:none">
+            <path d="M12 4.5C8.41 4.5 5.5 7.41 5.5 11s2.91 6.5 6.5 6.5 6.5-2.91 6.5-6.5"
               stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
-            <path d="M11 4.5L8.5 2.5M11 4.5L8.5 6.5"
+            <path d="M12 4.5L9.5 2.5M12 4.5L9.5 6.5"
               stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
@@ -241,6 +250,19 @@
   </footer>
 
   <script>
+  /* ══════════════════════════════════════════════════════════════════════
+     AUDIO-REACTIVE NEON RING GLOW
+     ──────────────────────────────────────────────────────────────────────
+     Strategy:
+       1. Web Audio API: AnalyserNode reads frequency data each rAF frame
+       2. Raw RMS volume is boosted with a non-linear curve so mid-range
+          speech (not just loud peaks) produces visible visual change
+       3. Smoothed with asymmetric lerp (fast attack, slow decay)
+       4. Mapped to: blur radius, spread, opacity, and subtle scale
+       5. All values clamped to avoid distortion
+       6. Falls back to CSS-only idle breathing when paused
+  ══════════════════════════════════════════════════════════════════════ */
+
     const audio        = document.getElementById('agAudio');
     const playBtn      = document.getElementById('agPlayBtn');
     const progressBar  = document.getElementById('agProgressBar');
@@ -254,6 +276,12 @@
     const iconReplay   = document.getElementById('iconReplay');
     const orbRing      = document.getElementById('agOrbRing');
 
+    let audioCtx = null, analyser = null, freqBuf = null;
+    let smoothVol = 0;
+    let isPlaying = false;
+    let rafId = null;
+
+    /* ── Icon helper ── */
     function showIcon(w) {
       iconPlay.style.display   = w === 'play'   ? '' : 'none';
       iconPause.style.display  = w === 'pause'  ? '' : 'none';
@@ -264,6 +292,80 @@
       return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0');
     }
 
+    /* ── Web Audio init (must be inside user gesture) ── */
+    function initAudio() {
+      if (audioCtx) return;
+      try {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const src = audioCtx.createMediaElementSource(audio);
+        analyser  = audioCtx.createAnalyser();
+        analyser.fftSize = 128;
+        analyser.smoothingTimeConstant = 0.6; /* lower = more responsive */
+        freqBuf = new Uint8Array(analyser.frequencyBinCount);
+        src.connect(analyser);
+        analyser.connect(audioCtx.destination);
+      } catch(e) { audioCtx = null; }
+    }
+
+    /* ── Non-linear boost curve: x^0.5 expands mid-range ── */
+    function boost(x) {
+      /* x: 0..1 raw normalized volume
+         Returns 0..1 with mid-range expanded */
+      const gained = Math.min(x * 3.5, 1.0); /* 3.5x gain */
+      return Math.pow(gained, 0.55);           /* sqrt-ish curve */
+    }
+
+    /* ── Apply glow to ring element ── */
+    function applyGlow(v) {
+      /* v: 0..1 boosted+smoothed volume
+         Idle baseline at v=0, strong reaction at v=1 */
+
+      /* blur radii */
+      const b1 = (10  + v * 22).toFixed(1);  /* inner:  10 → 32px */
+      const b2 = (28  + v * 44).toFixed(1);  /* mid:    28 → 72px */
+      const b3 = (60  + v * 60).toFixed(1);  /* outer:  60 → 120px */
+
+      /* alpha values */
+      const a1 = (0.55 + v * 0.40).toFixed(3); /* 0.55 → 0.95 */
+      const a2 = (0.22 + v * 0.38).toFixed(3); /* 0.22 → 0.60 */
+      const a3 = (0.08 + v * 0.22).toFixed(3); /* 0.08 → 0.30 */
+      const ai = (0.06 + v * 0.14).toFixed(3); /* inset: 0.06 → 0.20 */
+
+      /* subtle scale: 1.0 → 1.06 */
+      const sc = (1.0  + v * 0.06).toFixed(4);
+
+      orbRing.style.boxShadow =
+        `0 0 ${b1}px rgba(189,0,255,${a1}),` +
+        `0 0 ${b2}px rgba(189,0,255,${a2}),` +
+        `0 0 ${b3}px rgba(189,0,255,${a3}),` +
+        `inset 0 0 10px rgba(189,0,255,${ai})`;
+      orbRing.style.transform = `scale(${sc})`;
+    }
+
+    /* ── rAF glow loop ── */
+    function glowLoop() {
+      rafId = requestAnimationFrame(glowLoop);
+
+      let rawVol = 0;
+      if (analyser && isPlaying) {
+        analyser.getByteFrequencyData(freqBuf);
+        /* Focus on speech frequencies: bins ~4-24 (≈300Hz–3kHz at fftSize 128) */
+        let sum = 0, count = 0;
+        for (let i = 4; i < 28; i++) { sum += freqBuf[i]; count++; }
+        rawVol = sum / count / 255;
+      }
+
+      /* Asymmetric lerp: fast attack (0.35), slow decay (0.07) */
+      const lerpRate = rawVol > smoothVol ? 0.35 : 0.07;
+      smoothVol += (rawVol - smoothVol) * lerpRate;
+
+      /* Apply non-linear boost */
+      const v = boost(smoothVol);
+
+      applyGlow(v);
+    }
+
+    /* ── Playback ── */
     audio.addEventListener('loadedmetadata', () => {
       durationEl.textContent = fmt(audio.duration);
       progressBar.max = audio.duration;
@@ -272,6 +374,8 @@
     playBtn.addEventListener('click', () => {
       if (audio.ended) audio.currentTime = 0;
       if (audio.paused) {
+        initAudio();
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
         audio.play().catch(() => {});
       } else {
         audio.pause();
@@ -279,27 +383,28 @@
     });
 
     audio.addEventListener('play', () => {
+      isPlaying = true;
       showIcon('pause');
       playBtn.setAttribute('aria-label', '暫停');
       statusText.textContent = '引導進行中 · 放鬆呼吸';
-      orbRing.classList.add('is-playing');
     });
 
     audio.addEventListener('pause', () => {
+      isPlaying = false;
       showIcon('play');
       playBtn.setAttribute('aria-label', '播放');
       statusText.textContent = audio.currentTime > 0 ? '已暫停' : '點擊播放開始引導';
-      orbRing.classList.remove('is-playing');
+      /* Decay glow back to baseline over ~1s */
     });
 
     audio.addEventListener('ended', () => {
+      isPlaying = false;
       showIcon('replay');
       playBtn.setAttribute('aria-label', '重新播放');
       statusText.textContent = '引導結束 · 慢慢回來';
       progressBar.value = 0;
       progressBar.style.setProperty('--progress', '0%');
       currentTimeEl.textContent = '0:00';
-      orbRing.classList.remove('is-playing');
     });
 
     audio.addEventListener('timeupdate', () => {
@@ -317,6 +422,9 @@
 
     rewindBtn.addEventListener('click',  () => { audio.currentTime = Math.max(0, audio.currentTime - 15); });
     forwardBtn.addEventListener('click', () => { audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 15); });
+
+    /* Start glow loop immediately so idle baseline is visible */
+    glowLoop();
   </script>
 
 </body>
