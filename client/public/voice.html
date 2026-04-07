@@ -32,8 +32,13 @@
     }
     .ag-back-btn:hover { border-color: rgba(255,255,255,0.6); color: #fff; }
     .ag-inner-logo {
-      display: block; width: 135px; max-width: 38vw; height: auto;
-       opacity: 0.85; margin-top: 6px;
+      display: block; width: 110px; max-width: 38vw; height: auto;
+      opacity: 0.85; margin-top: 0;
+    }
+    .ag-inner-logo-link {
+      display: block;
+      text-decoration: none;
+      flex-shrink: 0;
     }
     .ag-page-title-block { padding: 0 20px 8px; flex-shrink: 0; }
     .ag-page-title {
@@ -156,7 +161,9 @@
 
   <header class="ag-inner-header">
     <a href="/home.html" class="ag-back-btn" aria-label="返回首頁">&#8592;</a>
-    <img src="/assets/logo-handwritten-nobg.png" alt="Afterglow" class="ag-inner-logo">
+    <a href="/home.html" class="ag-inner-logo-link" aria-label="回到首頁">
+      <img src="/assets/logo-handwritten-nobg.png" alt="Afterglow" class="ag-inner-logo">
+    </a>
   </header>
 
   <div class="ag-page-title-block">
