@@ -23,15 +23,7 @@
       box-sizing: border-box;
       min-height: 64px;
     }
-    .ag-back-btn {
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 36px; height: 36px; border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.2);
-      color: rgba(255,255,255,0.6);
-      text-decoration: none; font-size: 18px; line-height: 1;
-      transition: border-color 0.2s, color 0.2s; flex-shrink: 0;
-    }
-    .ag-back-btn:hover { border-color: rgba(255,255,255,0.6); color: #fff; }
+    /* 使用 layout.css 全域 .ag-back-button 樣式，不覆寫 */
     .ag-inner-logo {
       display: block; width: 110px; max-width: 38vw; height: auto;
       opacity: 0.85;
@@ -188,7 +180,7 @@
 <body class="ag-page">
 
   <header class="ag-inner-header">
-    <a href="/menu.html" class="ag-back-btn" aria-label="返回選單">&#8592;</a>
+    <a href="/menu.html" class="ag-back-button" aria-label="返回選單"></a>
     <a href="/home.html" class="ag-inner-logo-link" aria-label="回到首頁">
       <img src="/assets/logo-handwritten-nobg.png" alt="Afterglow" class="ag-inner-logo">
     </a>
