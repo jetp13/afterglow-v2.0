@@ -1,310 +1,87 @@
-<!DOCTYPE html>
-<html lang="zh-Hant">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Afterglow｜讓夜裡的光有方向</title>
-  <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#050505">
-  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
-  <link rel="stylesheet" href="/assets/layout.css">
-  <script>
-    if (localStorage.getItem('ag_consent') !== 'true') {
-      window.location.href = '/index.html';
-    }
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js').catch(() => {});
-      });
-    }
-  </script>
-  <style>
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       home.html — Flexbox 文件流版本
-       結構：body = flex column
-         .ag-hero   (flex: 0 0 auto) — Logo + 副標
-         .ag-cta    (flex: 0 0 auto) — 兩顆膠囊
-         .ag-spacer (flex: 1 1 auto) — 吸收剩餘空間
-         .ag-footer (flex: 0 0 auto) — 底部法律連結
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+<svg xmlns="http://www.w3.org/2000/svg"
+  id="ag-logo-svg"
+  viewBox="0 0 474 260"
+  width="474" height="260"
+  preserveAspectRatio="xMidYMid meet"
+  aria-label="Afterglow">
 
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  <defs>
+    <!-- glow-strong: 電流流過時的強光暈 -->
+    <filter id="ag-glow-strong" x="-25%" y="-25%" width="150%" height="150%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="b1"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="b2"/>
+      <feMerge>
+        <feMergeNode in="b2"/>
+        <feMergeNode in="b1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
 
-    html {
-      height: 100%;
-      -webkit-text-size-adjust: 100%;
-    }
+    <!-- glow-soft: 穩定亮起後的柔和光暈 -->
+    <filter id="ag-glow-soft" x="-12%" y="-12%" width="124%" height="124%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="b1"/>
+      <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b2"/>
+      <feMerge>
+        <feMergeNode in="b2"/>
+        <feMergeNode in="b1"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
 
-    body {
-      height: 100dvh;          /* Full viewport height */
-      overflow: hidden;        /* App Shell: lock body scroll */
-      background: #050505;
-      color: #fff;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
-      -webkit-font-smoothing: antialiased;
-      /* Flexbox 文件流 */
-      display: flex;
-      flex-direction: column;
-      /* iOS Safe Area */
-      padding-top: env(safe-area-inset-top, 0px);
-      padding-bottom: 0;       /* footer handles safe-area-inset-bottom itself */
-      padding-left: env(safe-area-inset-left, 0px);
-      padding-right: env(safe-area-inset-right, 0px);
-    }
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       A. HERO — Logo 偏左出血 + 副標靠右
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    .ag-hero {
-      flex: 0 0 auto;
-      position: relative;
-      padding-top: 0; /* 上側出血：不需要 padding-top，讓 Logo 直接頂住 */
-      overflow: visible; /* 讓 Logo 可以出血到 hero 外 */
-    }
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       Afterglow Logo — 電流一筆寫過 + 日光燈管通電
-       電流從筆劃起點一路衝到終點，最後整體穩定亮起
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-
-    /* Logo 容器：明確破框 — 左、右、上三邊出血 */
-    .ag-logo {
-      display: block;
-      width: clamp(360px, 118vw, 580px);
-      height: auto;
-      margin-left: -10vw;
-      margin-top: -32px;
-      overflow: visible;
-    }
-
-    /* 副標群組：靠右，在 Logo 下方緊接 */
-    .ag-text {
-      padding: 12px 20px 0;
-      text-align: right;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .ag-subtitle {
-      font-size: clamp(11px, 2.8vw, 13px);
-      font-weight: 300;
-      letter-spacing: 0.18em;
-      color: rgba(255, 255, 255, 0.72);
-      line-height: 1.5;
-    }
-
-    .ag-tagline {
-      font-size: clamp(8px, 2vw, 9.5px);
-      font-weight: 400;
-      letter-spacing: 0.12em;
-      color: rgba(255, 255, 255, 0.28);
-      text-transform: uppercase;
-      line-height: 1.4;
-    }
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       B. CTA — 微錯落：主左次右
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    .ag-cta {
-      flex: 0 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      padding: clamp(28px, 6vh, 52px) 24px 0;
-    }
-
-    /* 共用膠囊基底 */
-    .ag-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 50px;
-      border-radius: 999px;
-      font-size: 15px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      color: #fff;
-      text-decoration: none;
-      transition: box-shadow 0.35s ease, transform 0.30s ease;
-    }
-
-    /* 主 CTA：偏左，藍色 Glow */
-    .ag-btn--primary {
-      width: clamp(180px, 54vw, 220px);
-      align-self: flex-start;
-      margin-left: 4vw;
-      border: 1.5px solid #00aaff;
-      background: radial-gradient(ellipse at center, rgba(0,160,255,.18) 0%, transparent 70%);
-      box-shadow:
-        0 0 12px rgba(0,160,255,.45),
-        inset 0 0 14px rgba(0,160,255,.20);
-      animation: ag-breathe-blue 4s ease-in-out infinite;
-      transform: rotate(-1.2deg);
-    }
-
-    .ag-btn--primary:hover,
-    .ag-btn--primary:active {
-      box-shadow:
-        0 0 24px rgba(0,160,255,.72),
-        inset 0 0 20px rgba(0,160,255,.32);
-      transform: scale(1.03);
-      animation: none;
-    }
-
-    /* 次 CTA：偏右，紅色 Glow */
-    .ag-btn--secondary {
-      width: clamp(160px, 50vw, 200px);
-      align-self: flex-end;
-      margin-right: 6vw;
-      border: 1.5px solid rgba(255, 30, 60, 0.65);
-      background: radial-gradient(ellipse at center, rgba(255,0,51,.10) 0%, transparent 70%);
-      box-shadow:
-        0 0 8px rgba(255,0,51,.25),
-        inset 0 0 10px rgba(255,0,51,.12);
-      color: rgba(255,255,255,0.78);
-      font-weight: 400;
-      transform: rotate(1.5deg);
-    }
-
-    .ag-btn--secondary:hover,
-    .ag-btn--secondary:active {
-      box-shadow:
-        0 0 18px rgba(255,0,51,.52),
-        inset 0 0 16px rgba(255,0,51,.22);
-      transform: scale(1.03);
-      color: #fff;
-    }
-
-    @keyframes ag-breathe-blue {
-      0%, 100% {
-        box-shadow: 0 0 12px rgba(0,160,255,.45), inset 0 0 14px rgba(0,160,255,.20);
+    <style>
+      /* ── 電流寫過動畫（stroke-dashoffset） ── */
+      /* JS 會動態設定 stroke-dasharray 與初始 stroke-dashoffset */
+      @keyframes ag-electric-write {
+        0%   { opacity: 1; }
+        75%  { opacity: 1; }
+        100% { opacity: 0; }
       }
-      50% {
-        box-shadow: 0 0 20px rgba(0,160,255,.62), inset 0 0 18px rgba(0,160,255,.28);
+
+      /* ── 日光燈管通電：fill 層 ── */
+      /* 等待電流寫完（0–60%），再兩次閃亮，最後穩定 */
+      @keyframes ag-fluorescent-fill {
+        0%   { opacity: 0;    }
+        60%  { opacity: 0;    }
+        63%  { opacity: 0.3;  }
+        66%  { opacity: 0.04; }
+        72%  { opacity: 0.04; }
+        75%  { opacity: 0.65; }
+        82%  { opacity: 0.4;  }
+        85%  { opacity: 0.06; }
+        90%  { opacity: 1;    }
+        100% { opacity: 1;    }
       }
-    }
 
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       C. SPACER — 吸收剩餘空間，把 Footer 推到底部
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    /* spacer-top: hero 與 CTA 之間，吸收 60% 剩餘空間，讓 CTA 往下移 */
-    .ag-spacer-top {
-      flex: 3 1 0;
-      min-height: 16px;
-    }
-    /* spacer-bottom: CTA 與 footer 之間，吸收 40% 剩餘空間 */
-    .ag-spacer {
-      flex: 2 1 0;
-      min-height: 16px;
-    }
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       D. FOOTER — 文件流底部，iOS Safe Area 正確
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    /* footer uses global ag-footer-standard from layout.css */
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       桌機版微調（寬螢幕時讓 Logo 不要太大）
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    @media (min-width: 600px) {
-      body {
-        max-width: 480px;
-        margin: 0 auto;
+      /* ── glow 層：跟隨 fill，但更強 ── */
+      @keyframes ag-fluorescent-glow {
+        0%   { opacity: 0;    }
+        60%  { opacity: 0;    }
+        63%  { opacity: 0.45; }
+        66%  { opacity: 0;    }
+        72%  { opacity: 0;    }
+        75%  { opacity: 0.85; }
+        82%  { opacity: 0.55; }
+        85%  { opacity: 0;    }
+        90%  { opacity: 0.6;  }
+        100% { opacity: 0.5;  }
       }
-      .ag-logo {
-        /* 桌機：在 max-width 480px 容器內，左右出血相對容器 */
-        width: clamp(360px, 108%, 560px);
-        margin-left: -20px;
-        margin-top: -24px;
+
+      /* prefers-reduced-motion */
+      @media (prefers-reduced-motion: reduce) {
+        #ag-stroke-layer { display: none; }
+        #ag-fill-layer   { animation: none !important; opacity: 1; }
+        #ag-glow-layer   { animation: none !important; opacity: 0.5; }
       }
-    }
+    </style>
+  </defs>
 
-    /* 極小螢幕（高度 < 680px）收緊 */
-    @media (max-height: 680px) {
-      .ag-hero { padding-top: 0; }
-      .ag-logo { width: clamp(300px, 112vw, 440px); margin-top: -24px; }
-      .ag-cta { padding-top: 20px; gap: 10px; }
-      .ag-btn { height: 44px; font-size: 14px; }
-    }
+  <!-- potrace 座標系：scale(0.1,-0.1) translate(0,260) -->
+  <g transform="translate(0,260) scale(0.1,-0.1)">
 
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       Logo 動畫：電流一筆寫過 + 日光燈管通電
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    @keyframes ag-fluorescent-fill {
-      0%   { opacity: 0;    }
-      60%  { opacity: 0;    }
-      63%  { opacity: 0.3;  }
-      66%  { opacity: 0.04; }
-      72%  { opacity: 0.04; }
-      75%  { opacity: 0.65; }
-      82%  { opacity: 0.4;  }
-      85%  { opacity: 0.06; }
-      90%  { opacity: 1;    }
-      100% { opacity: 1;    }
-    }
-    @keyframes ag-fluorescent-glow {
-      0%   { opacity: 0;    }
-      60%  { opacity: 0;    }
-      63%  { opacity: 0.45; }
-      66%  { opacity: 0;    }
-      72%  { opacity: 0;    }
-      75%  { opacity: 0.85; }
-      82%  { opacity: 0.55; }
-      85%  { opacity: 0;    }
-      90%  { opacity: 0.6;  }
-      100% { opacity: 0.5;  }
-    }
-    #ag-logo-fill {
-      animation: ag-fluorescent-fill 4.2s linear 0.2s both;
-    }
-    #ag-logo-glow {
-      animation: ag-fluorescent-glow 4.2s linear 0.2s both;
-    }
-    #ag-logo-stroke {
-      /* JS 會設定 stroke-dasharray / stroke-dashoffset */
-      opacity: 1;
-      transition: stroke-dashoffset 2.5s cubic-bezier(0.3,0,0.7,1) 0.2s,
-                  opacity 0.4s ease;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      #ag-logo-stroke { display: none; }
-      #ag-logo-fill   { animation: none; opacity: 1; }
-      #ag-logo-glow   { animation: none; opacity: 0.5; }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Hero：Logo 偏左出血 -->
-  <section class="ag-hero" aria-label="品牌識別">
-    <svg
-      id="ag-logo-svg"
-      class="ag-logo"
-      viewBox="0 0 474 260"
-      xmlns="http://www.w3.org/2000/svg"
-      preserveAspectRatio="xMidYMid meet"
-      aria-label="Afterglow"
-      role="img">
-      <defs>
-        <filter id="ag-glow-strong" x="-25%" y="-25%" width="150%" height="150%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="b1"/>
-          <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="b2"/>
-          <feMerge><feMergeNode in="b2"/><feMergeNode in="b1"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-        <filter id="ag-glow-soft" x="-12%" y="-12%" width="124%" height="124%">
-          <feGaussianBlur in="SourceGraphic" stdDeviation="1" result="b1"/>
-          <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="b2"/>
-          <feMerge><feMergeNode in="b2"/><feMergeNode in="b1"/><feMergeNode in="SourceGraphic"/></feMerge>
-        </filter>
-      </defs>
-      <g transform="translate(0,260) scale(0.1,-0.1)">
-        <!-- 層 0：暗輪廓（燈管未通電） -->
-        <path id="ag-logo-outline" d="M3120 2510 c-18 -19 -40 -66 -59 -123 -32 -97 -87 -354 -97 -453 -15
+    <!-- 層 0：暗輪廓（燈管未通電） -->
+    <path
+      id="ag-outline-layer"
+      d="M3120 2510 c-18 -19 -40 -66 -59 -123 -32 -97 -87 -354 -97 -453 -15
 -150 -23 -178 -86 -302 -64 -126 -167 -295 -169 -277 0 6 -2 19 -3 30 -1 11 1
 76 5 145 4 68 5 129 2 135 -6 18 -139 58 -167 51 -45 -11 -88 -59 -123 -135
 -73 -161 -95 -198 -146 -255 -74 -82 -87 -76 -87 41 0 100 -10 127 -60 160
@@ -477,9 +254,15 @@ M2433 910 c-80 -120 -91 -142 -124 -225 -27 -70 -30 -89 -27 -155 4 -61 10
 -35 17 -17 41 -187 47 -339 5 -115 9 -143 16 -121 13 40 -8 321 -33 420 -20
 83 -40 120 -40 75z M1000 564 c1 -88 16 -307 26 -369 7 -49 22 -78 35 -70 14
 9 11 45 -5 45 -17 0 -23 42 -37 277 -6 104 -13 190 -15 192 -2 2 -4 -31 -4
--75z M1060 190 c0 -7 3 -10 7 -7 3 4 3 10 0 14 -4 3 -7 0 -7 -7z" fill="rgba(255,255,255,0.05)" stroke="none"/>
-        <!-- 層 1：電流寫過（stroke，JS 動態設定 dasharray） -->
-        <path id="ag-logo-stroke" d="M3120 2510 c-18 -19 -40 -66 -59 -123 -32 -97 -87 -354 -97 -453 -15
+-75z M1060 190 c0 -7 3 -10 7 -7 3 4 3 10 0 14 -4 3 -7 0 -7 -7z"
+      fill="rgba(255,255,255,0.05)"
+      stroke="none"
+    />
+
+    <!-- 層 1：電流寫過（stroke，JS 動態設定 dasharray） -->
+    <path
+      id="ag-stroke-layer"
+      d="M3120 2510 c-18 -19 -40 -66 -59 -123 -32 -97 -87 -354 -97 -453 -15
 -150 -23 -178 -86 -302 -64 -126 -167 -295 -169 -277 0 6 -2 19 -3 30 -1 11 1
 76 5 145 4 68 5 129 2 135 -6 18 -139 58 -167 51 -45 -11 -88 -59 -123 -135
 -73 -161 -95 -198 -146 -255 -74 -82 -87 -76 -87 41 0 100 -10 127 -60 160
@@ -652,12 +435,19 @@ M2433 910 c-80 -120 -91 -142 -124 -225 -27 -70 -30 -89 -27 -155 4 -61 10
 -35 17 -17 41 -187 47 -339 5 -115 9 -143 16 -121 13 40 -8 321 -33 420 -20
 83 -40 120 -40 75z M1000 564 c1 -88 16 -307 26 -369 7 -49 22 -78 35 -70 14
 9 11 45 -5 45 -17 0 -23 42 -37 277 -6 104 -13 190 -15 192 -2 2 -4 -31 -4
--75z M1060 190 c0 -7 3 -10 7 -7 3 4 3 10 0 14 -4 3 -7 0 -7 -7z" fill="none"
-          stroke="rgba(255,255,255,0.98)" stroke-width="5"
-          stroke-linecap="round" stroke-linejoin="round"
-          filter="url(#ag-glow-strong)"/>
-        <!-- 層 2：fill 穩定亮起 -->
-        <path id="ag-logo-fill" d="M3120 2510 c-18 -19 -40 -66 -59 -123 -32 -97 -87 -354 -97 -453 -15
+-75z M1060 190 c0 -7 3 -10 7 -7 3 4 3 10 0 14 -4 3 -7 0 -7 -7z"
+      fill="none"
+      stroke="rgba(255,255,255,0.98)"
+      stroke-width="5"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      filter="url(#ag-glow-strong)"
+    />
+
+    <!-- 層 2：fill 穩定亮起（日光燈管通電） -->
+    <path
+      id="ag-fill-layer"
+      d="M3120 2510 c-18 -19 -40 -66 -59 -123 -32 -97 -87 -354 -97 -453 -15
 -150 -23 -178 -86 -302 -64 -126 -167 -295 -169 -277 0 6 -2 19 -3 30 -1 11 1
 76 5 145 4 68 5 129 2 135 -6 18 -139 58 -167 51 -45 -11 -88 -59 -123 -135
 -73 -161 -95 -198 -146 -255 -74 -82 -87 -76 -87 41 0 100 -10 127 -60 160
@@ -830,10 +620,17 @@ M2433 910 c-80 -120 -91 -142 -124 -225 -27 -70 -30 -89 -27 -155 4 -61 10
 -35 17 -17 41 -187 47 -339 5 -115 9 -143 16 -121 13 40 -8 321 -33 420 -20
 83 -40 120 -40 75z M1000 564 c1 -88 16 -307 26 -369 7 -49 22 -78 35 -70 14
 9 11 45 -5 45 -17 0 -23 42 -37 277 -6 104 -13 190 -15 192 -2 2 -4 -31 -4
--75z M1060 190 c0 -7 3 -10 7 -7 3 4 3 10 0 14 -4 3 -7 0 -7 -7z" fill="rgba(255,255,255,0.92)" stroke="none"
-          filter="url(#ag-glow-soft)"/>
-        <!-- 層 3：glow 暈光 -->
-        <path id="ag-logo-glow" d="M3120 2510 c-18 -19 -40 -66 -59 -123 -32 -97 -87 -354 -97 -453 -15
+-75z M1060 190 c0 -7 3 -10 7 -7 3 4 3 10 0 14 -4 3 -7 0 -7 -7z"
+      fill="rgba(255,255,255,0.92)"
+      stroke="none"
+      filter="url(#ag-glow-soft)"
+      style="animation: ag-fluorescent-fill 4.2s linear 0.2s both;"
+    />
+
+    <!-- 層 3：glow 暈光 -->
+    <path
+      id="ag-glow-layer"
+      d="M3120 2510 c-18 -19 -40 -66 -59 -123 -32 -97 -87 -354 -97 -453 -15
 -150 -23 -178 -86 -302 -64 -126 -167 -295 -169 -277 0 6 -2 19 -3 30 -1 11 1
 76 5 145 4 68 5 129 2 135 -6 18 -139 58 -167 51 -45 -11 -88 -59 -123 -135
 -73 -161 -95 -198 -146 -255 -74 -82 -87 -76 -87 41 0 100 -10 127 -60 160
@@ -1006,65 +803,40 @@ M2433 910 c-80 -120 -91 -142 -124 -225 -27 -70 -30 -89 -27 -155 4 -61 10
 -35 17 -17 41 -187 47 -339 5 -115 9 -143 16 -121 13 40 -8 321 -33 420 -20
 83 -40 120 -40 75z M1000 564 c1 -88 16 -307 26 -369 7 -49 22 -78 35 -70 14
 9 11 45 -5 45 -17 0 -23 42 -37 277 -6 104 -13 190 -15 192 -2 2 -4 -31 -4
--75z M1060 190 c0 -7 3 -10 7 -7 3 4 3 10 0 14 -4 3 -7 0 -7 -7z" fill="rgba(255,255,255,0.38)" stroke="none"
-          filter="url(#ag-glow-strong)"/>
-      </g>
-    </svg>
-    <!-- 副標：靠右，在 Logo 下方 -->
-    <div class="ag-text">
-      <p class="ag-subtitle">讓夜裡的光有方向</p>
-      <p class="ag-tagline">Stay Safe · Care for Yourself · Seek Help</p>
-    </div>
-  </section>
+-75z M1060 190 c0 -7 3 -10 7 -7 3 4 3 10 0 14 -4 3 -7 0 -7 -7z"
+      fill="rgba(255,255,255,0.38)"
+      stroke="none"
+      filter="url(#ag-glow-strong)"
+      style="animation: ag-fluorescent-glow 4.2s linear 0.2s both;"
+    />
 
-  <!-- Spacer：把 CTA 往下推 -->
-  <div class="ag-spacer-top" aria-hidden="true"></div>
-
-  <!-- CTA：微錯落，主左次右 -->
-  <nav class="ag-cta" aria-label="主要功能入口">
-    <a href="/menu.html" class="ag-btn ag-btn--primary">開始冥想</a>
-    <a href="/support-main.html" class="ag-btn ag-btn--secondary">緊急支援</a>
-  </nav>
-
-  <!-- Spacer：把 Footer 推到底部 -->
-  <div class="ag-spacer" aria-hidden="true"></div>
-
-  <!-- Footer -->
-  <footer class="ag-footer-standard">
-    <div class="ag-footer__inner">
-      <nav class="ag-footer__links" aria-label="Legal and info links">
-        <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
-        <span class="ag-footer__separator">•</span>
-        <a href="/legal.html" class="ag-footer__link">法律免責</a>
-        <span class="ag-footer__separator">•</span>
-        <a href="/terms.html" class="ag-footer__link">使用條款</a>
-        <span class="ag-footer__separator">•</span>
-        <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
-      </nav>
-      <p class="ag-footer__copyright">© 2025 Afterglow. All rights reserved.</p>
-    </div>
-  </footer>
-
+  </g>
 
   <script>
-    /* Logo 電流動畫：動態計算路徑長度，確保電流完整走完 */
+    // 動態計算路徑長度，確保電流動畫完整走完整條筆劃
     (function() {
-      var el = document.getElementById('ag-logo-stroke');
-      if (!el || typeof el.getTotalLength !== 'function') return;
-      var len = el.getTotalLength();
-      el.style.strokeDasharray = len;
-      el.style.strokeDashoffset = len;
-      /* 觸發動畫需要雙 rAF，確保初始樣式已套用 */
+      var strokeEl = document.getElementById('ag-stroke-layer');
+      if (!strokeEl || !strokeEl.getTotalLength) return;
+
+      var len = strokeEl.getTotalLength();
+      strokeEl.style.strokeDasharray = len;
+      strokeEl.style.strokeDashoffset = len;
+
+      // 電流動畫：2.5s 內從頭寫到尾，然後 fade out
+      strokeEl.style.transition =
+        'stroke-dashoffset 2.5s cubic-bezier(0.3,0,0.7,1) 0.2s, ' +
+        'opacity 0.4s ease 2.7s';
+
+      // 觸發動畫（需要 rAF 確保樣式已套用）
       requestAnimationFrame(function() {
         requestAnimationFrame(function() {
-          el.style.strokeDashoffset = '0';
-          /* 電流寫完後 fade out，讓 fill 層接手 */
+          strokeEl.style.strokeDashoffset = '0';
+          // 2.7s 後 fade out（電流消失，讓 fill 層接手）
           setTimeout(function() {
-            el.style.opacity = '0';
+            strokeEl.style.opacity = '0';
           }, 2700);
         });
       });
     })();
   </script>
-</body>
-</html>
+</svg>
