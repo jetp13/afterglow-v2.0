@@ -14,99 +14,94 @@
     }
   </script>
   <style>
-    /* ── Page container ── */
-    .ag-about-container {
+    /* ── 頁面容器 ── */
+    .ag-doc-container {
       max-width: 640px;
       margin: 0 auto;
-      padding: calc(80px + env(safe-area-inset-top)) 24px 100px;
+      padding: calc(80px + env(safe-area-inset-top)) 24px calc(48px + env(safe-area-inset-bottom));
       box-sizing: border-box;
     }
 
-    /* ── Header ── */
-    .ag-about-header {
-      margin-bottom: 64px;
-      padding-bottom: 36px;
+    /* ── 頁首 ── */
+    .ag-doc-header {
+      margin-bottom: 52px;
+      padding-bottom: 32px;
       border-bottom: 1px solid rgba(255,255,255,0.08);
       text-align: left;
     }
-    .ag-about-title {
-      font-size: 26px;
+    .ag-doc-title {
+      font-size: 24px;
       font-weight: 300;
       letter-spacing: 0.12em;
       color: #fff;
-      margin: 0 0 10px;
-      line-height: 1.3;
-      text-align: left;
+      margin: 0 0 8px;
     }
-    .ag-about-subtitle {
-      font-size: 13px;
-      color: rgba(255,255,255,0.38);
-      letter-spacing: 0.08em;
+    .ag-doc-subtitle {
+      font-size: 12px;
+      color: rgba(255,255,255,0.32);
+      letter-spacing: 0.06em;
       margin: 0;
-      text-align: left;
+    }
+
+    /* ── 螢光引用區塊（紫色） ── */
+    @keyframes aboutGlowSlideUp {
+      0%   { opacity: 0; transform: translateY(8px); text-shadow: none; }
+      100% { opacity: 1; transform: translateY(0);
+             text-shadow: 0 0 4px rgba(189,0,255,0.5), 0 0 12px rgba(189,0,255,0.18); }
+    }
+    .ag-doc-quote {
+      border-left: 1.5px solid rgba(189, 0, 255, 0.55);
+      padding: 10px 0 10px 16px;
+      margin: 0 0 52px;
+    }
+    .ag-doc-quote p {
+      font-size: 14px;
+      color: rgba(189, 0, 255, 0.9);
+      letter-spacing: 0.06em;
+      line-height: 1.7;
+      margin: 0;
+      text-shadow:
+        0 0 4px rgba(189, 0, 255, 0.5),
+        0 0 12px rgba(189, 0, 255, 0.18);
+      animation: aboutGlowSlideUp 1.0s ease-out 0.5s both;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ag-doc-quote p { animation: none; }
     }
 
     /* ── Section ── */
-    .ag-about-section {
-      margin-bottom: 56px;
+    .ag-doc-section {
+      margin-bottom: 48px;
     }
-    .ag-about-section:last-of-type {
+    .ag-doc-section:last-of-type {
       margin-bottom: 0;
     }
-    .ag-about-section-title {
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.12em;
+    .ag-doc-section-title {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.38);
-      margin: 0 0 20px;
+      color: rgba(255,255,255,0.35);
+      margin: 0 0 16px;
     }
-
-    /* ── Body text ── */
-    .ag-about-body {
-      font-size: 15px;
-      line-height: 1.9;
-      color: rgba(255,255,255,0.72);
-      margin: 0 0 14px;
+    .ag-doc-body {
+      font-size: 14px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.68);
+      margin: 0 0 12px;
       word-break: break-word;
     }
-    .ag-about-body:last-child {
+    .ag-doc-body:last-child {
       margin-bottom: 0;
     }
 
-    /* ── Quote ── */
-    @keyframes aboutGlowIgnite {
-      0%   { text-shadow: none; opacity: 0.35; }
-      60%  { text-shadow: 0 0 8px rgba(189,0,255,0.7), 0 0 20px rgba(189,0,255,0.3); opacity: 1; }
-      100% { text-shadow: 0 0 4px rgba(189,0,255,0.5), 0 0 12px rgba(189,0,255,0.18); opacity: 1; }
-    }
-    .ag-about-quote {
-      border-left: 1.5px solid rgba(189,0,255,0.55);
-      padding: 2px 0 2px 18px;
-      margin: 28px 0;
-      font-size: 15px;
-      font-style: italic;
-      color: rgba(255,255,255,0.55);
-      line-height: 1.75;
-    }
-    .ag-about-quote p {
-      animation: aboutGlowIgnite 1.8s ease-out 0.4s both;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .ag-about-quote p { animation: none; opacity: 1; }
-    }
-
-    /* ── Back button ── */
-    /* 使用 layout.css 全域 .ag-back-button 樣式，不覆寫 */
-
-    /* ── Signature ── */
-    .ag-about-signature {
+    /* ── 簽名 ── */
+    .ag-doc-signature {
       margin-top: 64px;
-      margin-bottom: 8px;
       display: flex;
       justify-content: flex-start;
     }
-    .ag-signature-img {
+    .ag-doc-signature img {
       width: 160px;
       max-width: 44vw;
       height: auto;
@@ -116,13 +111,14 @@
         drop-shadow(0 0 5px rgba(255,255,255,0.28));
     }
 
-    /* ── Responsive ── */
+    /* ── 手機 ── */
     @media (max-width: 480px) {
-      .ag-about-container {
-        padding: calc(52px + env(safe-area-inset-top)) 20px 80px;
+      .ag-doc-container {
+        padding-left: 20px;
+        padding-right: 20px;
       }
-      .ag-about-title {
-        font-size: 22px;
+      .ag-doc-title {
+        font-size: 20px;
       }
     }
   </style>
@@ -133,82 +129,76 @@
   <a href="/home.html" class="ag-site-logo" aria-label="回到首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
 
   <div class="ag-main-scroll">
-    <div class="ag-about-container">
+    <div class="ag-doc-container">
 
-      <header class="ag-about-header">
-        <h1 class="ag-about-title">關於 Afterglow</h1>
-        <p class="ag-about-subtitle">讓夜裡的光有方向</p>
+      <header class="ag-doc-header">
+        <h1 class="ag-doc-title">關於 Afterglow</h1>
+        <p class="ag-doc-subtitle">讓夜裡的光有方向</p>
       </header>
 
-      <section class="ag-about-section">
-        <p class="ag-about-section-title">我的理念</p>
-        <p class="ag-about-body">
-          Afterglow 不是答案。<br>
-          它比較像一個位置。
+      <div class="ag-doc-quote">
+        <p>不評判，只留下光。</p>
+      </div>
+
+      <section class="ag-doc-section">
+        <p class="ag-doc-section-title">我的理念</p>
+        <p class="ag-doc-body">
+          Afterglow 不是答案。它比較像一個位置。
         </p>
-        <p class="ag-about-body">
-          在混亂、疲憊，或暫時失去方向的時候，<br>
+        <p class="ag-doc-body">
+          在混亂、疲憊，或暫時失去方向的時候，
           可以先停下來，稍微靠近一點光的地方。
         </p>
-        <p class="ag-about-body">
-          我整理心理健康、減害、風險與自我保護相關的資訊。<br>
-          不是為了替任何人決定什麼，<br>
-          只是希望在需要的時候，<br>
-          手上不至於什麼都沒有。
+        <p class="ag-doc-body">
+          我整理心理健康、減害、風險與自我保護相關的資訊，
+          不是為了替任何人決定什麼，
+          只是希望在需要的時候，手上不至於什麼都沒有。
         </p>
-        <blockquote class="ag-about-quote">
-          不評判，只留下光。
-        </blockquote>
       </section>
 
-      <section class="ag-about-section">
-        <p class="ag-about-section-title">為什麼是 Afterglow？</p>
-        <p class="ag-about-body">
+      <section class="ag-doc-section">
+        <p class="ag-doc-section-title">為什麼是 Afterglow？</p>
+        <p class="ag-doc-body">
           Afterglow 是日落之後，還留在天邊的那一點光。
         </p>
-        <p class="ag-about-body">
-          它不強，也不明顯。<br>
-          但在視線開始模糊的時候，反而剛好。
+        <p class="ag-doc-body">
+          它不強，也不明顯。但在視線開始模糊的時候，反而剛好。
         </p>
-        <p class="ag-about-body">
-          這個名字對我來說，比較接近一種狀態——<br>
-          不是帶人離開黑暗，<br>
-          而是在黑暗裡，讓人還看得見一點方向。
+        <p class="ag-doc-body">
+          這個名字對我來說，比較接近一種狀態——
+          不是帶人離開黑暗，而是在黑暗裡，讓人還看得見一點方向。
         </p>
       </section>
 
-      <section class="ag-about-section">
-        <p class="ag-about-section-title">這個計畫</p>
-        <p class="ag-about-body">
+      <section class="ag-doc-section">
+        <p class="ag-doc-section-title">這個計畫</p>
+        <p class="ag-doc-body">
           這裡沒有要解決所有事情。
         </p>
-        <p class="ag-about-body">
-          我只是把一些原本很難靠近、<br>
-          很難開口、或在壓力之下更難處理的內容，<br>
+        <p class="ag-doc-body">
+          我只是把一些原本很難靠近、很難開口、
+          或在壓力之下更難處理的內容，
           慢慢整理成比較可以被使用的樣子。
         </p>
-        <p class="ag-about-body">
-          至少在第一步，<br>
-          不用完全自己摸索。
+        <p class="ag-doc-body">
+          至少在第一步，不用完全自己摸索。
         </p>
       </section>
 
-      <section class="ag-about-section">
-        <p class="ag-about-section-title">我相信</p>
-        <p class="ag-about-body">
-          人在脆弱或混亂的時候，<br>
-          需要的通常不是更多聲音。
+      <section class="ag-doc-section">
+        <p class="ag-doc-section-title">我相信</p>
+        <p class="ag-doc-body">
+          人在脆弱或混亂的時候，需要的通常不是更多聲音。
         </p>
-        <p class="ag-about-body">
-          而是一個<br>
-          不急著定義、不急著糾正、<br>
+        <p class="ag-doc-body">
+          而是一個不急著定義、不急著糾正、
           也不讓人更難受的入口。
         </p>
       </section>
 
       <!-- 簽名 -->
-      <div class="ag-about-signature">
-        <img src="/assets/signature.png" alt="正仁" class="ag-signature-img">
+      <div class="ag-doc-signature">
+        <img src="/assets/signature.png" alt="正仁">
       </div>
 
     </div>
