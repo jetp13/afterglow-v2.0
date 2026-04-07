@@ -86,10 +86,13 @@
       margin-top: -32px;   /* 上側出血，切進 safe-area */
       /* 極簡通電動畫：0.9s 一次性，結束後維持穩定亮起 */
       animation: agLogoIgnite 0.9s ease-out 1 forwards;
-      /* 極簡光暈：僅 2 層小半徑，保持筆劃錐利 */
+      /* 統一 glow 語言：接近截圖首頁版本的冷靜電器感
+         筆劃清晰 + 適度光暈層次 + 極輕微偏移立體感 */
       filter:
-        drop-shadow(0 0 1.5px rgba(255,255,255,0.9))
-        drop-shadow(0 0 4px rgba(255,255,255,0.25));
+        drop-shadow(0 0 1px rgba(255,255,255,0.95))
+        drop-shadow(0 0 6px rgba(255,255,255,0.55))
+        drop-shadow(0 0 18px rgba(255,255,255,0.22))
+        drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6));
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
