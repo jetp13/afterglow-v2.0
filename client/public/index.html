@@ -166,13 +166,50 @@
     .ag-gate-link:hover {
       color: #fff;
     }
+
+    /* ── Gate Logo: floating handwritten light ── */
+    .ag-gate-logo-wrap {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: calc(env(safe-area-inset-top, 0px) + 8px);
+      margin-bottom: 32px;
+    }
+    .ag-gate-logo-wrap::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 300px;
+      height: 130px;
+      border-radius: 50%;
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.055) 0%, rgba(255,255,255,0) 70%);
+      filter: blur(28px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .ag-gate-logo {
+      position: relative;
+      z-index: 1;
+      width: 220px;
+      display: block;
+      filter:
+        drop-shadow(0 0 3px rgba(255,255,255,0.95))
+        drop-shadow(0 0 10px rgba(255,255,255,0.72))
+        drop-shadow(0 0 24px rgba(255,255,255,0.42))
+        drop-shadow(0 0 56px rgba(255,255,255,0.16));
+    }
   </style>
 </head>
 <body class="ag-page">
   <div class="ag-gate-container">
     
-    <!-- Logo -->
-    <img src="/assets/logo-handwritten.png" class="ag-logo" alt="Afterglow Logo" style="width: 200px; margin: 0 auto 24px; display: block; filter: drop-shadow(0 0 8px rgba(255,255,255,0.65)) drop-shadow(0 0 28px rgba(255,255,255,0.28)) drop-shadow(0 0 60px rgba(255,255,255,0.12));">
+    <!-- Logo: floating handwritten light -->
+    <div class="ag-gate-logo-wrap">
+      <img src="/assets/logo-handwritten.png" class="ag-gate-logo" alt="Afterglow">
+    </div>
     
     <!-- Warning -->
     <div class="ag-warning-text">
