@@ -191,20 +191,20 @@
       z-index: 0;
     }
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       Gate Logo — 白色霓虹燈管語言（靜態版）
-       與首頁 Logo 統一同一套 glow 語言，克制、安靜、不閃爍
+       Gate Logo — 玻璃霓虹燈管語言（靜態版）
+       與首頁 Logo 統一同一套 glow 語言：燈管芯 + 薄薄一圈外暈
+       不大面積模糊，不白霧感
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     .ag-gate-logo {
       position: relative;
       z-index: 1;
       width: 220px;
       display: block;
-      /* 統一首頁的穩定亮起狀態：清晰燈管 + 柔和層次光暈 */
+      /* 收斂光暈：燈管芯清晰 + 薄薄一圈外暈，不做大面積白霧 */
       filter:
-        drop-shadow(0 0 3px rgba(255,255,255,0.92))
-        drop-shadow(0 0 10px rgba(255,255,255,0.68))
-        drop-shadow(0 0 24px rgba(255,255,255,0.36))
-        drop-shadow(0 0 52px rgba(255,255,255,0.16));
+        brightness(1)
+        drop-shadow(0 0 2px rgba(255,255,255,0.90))
+        drop-shadow(0 0 5px rgba(255,255,255,0.24));
     }
   </style>
 </head>
