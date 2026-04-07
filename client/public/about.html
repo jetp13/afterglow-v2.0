@@ -2,126 +2,200 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>關於我們｜Afterglow</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>關於 Afterglow</title>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#050505">
   <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
   <link rel="stylesheet" href="/assets/layout.css">
   <script>
-    // Check for consent immediately
     if (localStorage.getItem('ag_consent') !== 'true') {
       window.location.href = '/index.html';
     }
   </script>
   <style>
-    .ag-doc-container {
-      max-width: 800px;
+    /* ── Page container ── */
+    .ag-about-container {
+      max-width: 640px;
       margin: 0 auto;
-      padding: 80px 20px 120px;
-      color: #ddd;
+      padding: 72px 24px 100px;
+      box-sizing: border-box;
     }
 
-    .ag-doc-header {
-      text-align: center;
-      margin-bottom: 60px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding-bottom: 40px;
+    /* ── Header ── */
+    .ag-about-header {
+      margin-bottom: 64px;
+      padding-bottom: 36px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
     }
-
-    .ag-doc-title {
-      font-size: 28px;
+    .ag-about-title {
+      font-size: 26px;
+      font-weight: 300;
+      letter-spacing: 0.12em;
       color: #fff;
-      margin-bottom: 16px;
-      letter-spacing: 2px;
+      margin: 0 0 10px;
+      line-height: 1.3;
+    }
+    .ag-about-subtitle {
+      font-size: 13px;
+      color: rgba(255,255,255,0.38);
+      letter-spacing: 0.08em;
+      margin: 0;
     }
 
-    .ag-doc-subtitle {
-      font-size: 14px;
-      color: #aaa;
+    /* ── Section ── */
+    .ag-about-section {
+      margin-bottom: 56px;
+    }
+    .ag-about-section:last-of-type {
+      margin-bottom: 0;
+    }
+    .ag-about-section-title {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.38);
+      margin: 0 0 20px;
     }
 
-    .ag-section {
-      margin-bottom: 40px;
-    }
-
-    .ag-section-title {
-      font-size: 18px;
-      color: #fff;
-      margin-bottom: 16px;
-      padding-left: 12px;
-      border-left: 3px solid #bd00ff;
-    }
-
-    .ag-text {
+    /* ── Body text ── */
+    .ag-about-body {
       font-size: 15px;
-      line-height: 1.8;
-      margin-bottom: 16px;
-      color: #ccc;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.72);
+      margin: 0 0 14px;
+      word-break: break-word;
+    }
+    .ag-about-body:last-child {
+      margin-bottom: 0;
     }
 
-    .ag-quote-box {
-      background: rgba(255, 255, 255, 0.05);
-      border-left: 2px solid #bd00ff;
-      padding: 20px;
-      margin: 30px 0;
+    /* ── Quote ── */
+    .ag-about-quote {
+      border-left: 2px solid rgba(189,0,255,0.55);
+      padding: 2px 0 2px 18px;
+      margin: 28px 0;
+      font-size: 15px;
       font-style: italic;
-      color: #e0e0e0;
-      font-size: 16px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.75;
+    }
+
+    /* ── Back button ── */
+    .ag-back-button {
+      position: fixed;
+      top: calc(16px + env(safe-area-inset-top));
+      left: 20px;
+      z-index: 100;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.2);
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      font-size: 18px;
+      line-height: 1;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .ag-back-button:hover {
+      border-color: rgba(255,255,255,0.6);
+      color: #fff;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 480px) {
+      .ag-about-container {
+        padding: 68px 20px 80px;
+      }
+      .ag-about-title {
+        font-size: 22px;
+      }
     }
   </style>
 </head>
 <body class="ag-page">
-  <!-- Back Button (Fixed Position) -->
-  <a href="/home.html" class="ag-back-button neon-style" aria-label="返回首頁">
-    <span class="ag-neon-icon-back"></span>
-  </a>
+
+  <a href="/home.html" class="ag-back-button" aria-label="返回首頁">&#8592;</a>
 
   <div class="ag-main-scroll">
-    <div class="ag-doc-container">
-      <header class="ag-doc-header">
-        <h1 class="ag-doc-title">關於 Afterglow</h1>
-        <p class="ag-doc-subtitle">讓夜裡的光有方向</p>
+    <div class="ag-about-container">
+
+      <header class="ag-about-header">
+        <h1 class="ag-about-title">關於 Afterglow</h1>
+        <p class="ag-about-subtitle">讓夜裡的光有方向</p>
       </header>
 
-      <section class="ag-section">
-        <h2 class="ag-section-title">我們的理念</h2>
-        <p class="ag-text">
-          Afterglow 是一個專注於心理健康與減害知識的數位平台。我們相信，在面對身心挑戰或風險情境時，正確的資訊與即時的引導，是每個人都應享有的權利。
+      <section class="ag-about-section">
+        <p class="ag-about-section-title">我的理念</p>
+        <p class="ag-about-body">
+          Afterglow 不是答案。<br>
+          它比較像一個位置。
         </p>
-        <div class="ag-quote-box">
-          「我們不評判，我們只提供光亮。在最黑暗的時刻，希望能成為你手中的一盞燈。」
-        </div>
-        <p class="ag-text">
-          我們的目標是建立一個安全、隱私且易於取得的資源中心，協助使用者在需要時能夠冷靜應對，並做出對自己最有利的決定。
+        <p class="ag-about-body">
+          在混亂、疲憊，或暫時失去方向的時候，<br>
+          可以先停下來，稍微靠近一點光的地方。
+        </p>
+        <p class="ag-about-body">
+          我整理心理健康、減害、風險與自我保護相關的資訊。<br>
+          不是為了替任何人決定什麼，<br>
+          只是希望在需要的時候，<br>
+          手上不至於什麼都沒有。
+        </p>
+        <blockquote class="ag-about-quote">
+          不評判，只留下光。
+        </blockquote>
+      </section>
+
+      <section class="ag-about-section">
+        <p class="ag-about-section-title">為什麼是 Afterglow？</p>
+        <p class="ag-about-body">
+          Afterglow 是日落之後，還留在天邊的那一點光。
+        </p>
+        <p class="ag-about-body">
+          它不強，也不明顯。<br>
+          但在視線開始模糊的時候，反而剛好。
+        </p>
+        <p class="ag-about-body">
+          這個名字對我來說，比較接近一種狀態——<br>
+          不是帶人離開黑暗，<br>
+          而是在黑暗裡，讓人還看得見一點方向。
         </p>
       </section>
 
-      <section class="ag-section">
-        <h2 class="ag-section-title">為什麼叫 Afterglow？</h2>
-        <p class="ag-text">
-          "Afterglow" 原意指日落後的餘暉，也常用來形容經歷強烈體驗後的身心狀態。我們希望這個平台能像那道溫柔的餘暉一樣，陪伴使用者度過高張力後的緩衝期，回歸平靜與安穩。
+      <section class="ag-about-section">
+        <p class="ag-about-section-title">這個計畫</p>
+        <p class="ag-about-body">
+          這裡沒有要解決所有事情。
+        </p>
+        <p class="ag-about-body">
+          我只是把一些原本很難靠近、<br>
+          很難開口、或在壓力之下更難處理的內容，<br>
+          慢慢整理成比較可以被使用的樣子。
+        </p>
+        <p class="ag-about-body">
+          至少在第一步，<br>
+          不用完全自己摸索。
         </p>
       </section>
 
-      <section class="ag-section">
-        <h2 class="ag-section-title">隱私至上</h2>
-        <p class="ag-text">
-          我們深知信任是這一切的基礎。因此，Afterglow 堅持「零資料蒐集」政策。我們不追蹤、不紀錄、不分析。你的使用歷程，只屬於你自己。
+      <section class="ag-about-section">
+        <p class="ag-about-section-title">我相信</p>
+        <p class="ag-about-body">
+          人在脆弱或混亂的時候，<br>
+          需要的通常不是更多聲音。
+        </p>
+        <p class="ag-about-body">
+          而是一個<br>
+          不急著定義、不急著糾正、<br>
+          也不讓人更難受的入口。
         </p>
       </section>
 
-      <section class="ag-section">
-        <h2 class="ag-section-title">聯絡我們</h2>
-        <p class="ag-text">
-          Afterglow 是一個持續成長的專案。若您有任何建議、合作提案或發現內容錯誤，歡迎隨時與我們聯繫：
-          <br><br>
-          <a href="mailto:contact@afterglow.tw" class="ag-link-purple">contact@afterglow.tw</a>
-        </p>
-      </section>
     </div>
 
-    <!-- Footer：共用模組 -->
     <footer class="ag-footer-standard">
       <div class="ag-footer__inner">
         <nav class="ag-footer__links" aria-label="Legal and info links">
@@ -133,16 +207,12 @@
           <span class="ag-footer__separator">•</span>
           <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
         </nav>
-
-        <p class="ag-footer__copyright">
-          © 2025 Afterglow. All rights reserved.
-        </p>
+        <p class="ag-footer__copyright">© 2025 Afterglow. All rights reserved.</p>
       </div>
     </footer>
   </div>
 
   <script>
-    // Register Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js');
