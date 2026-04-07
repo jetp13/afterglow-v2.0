@@ -18,7 +18,7 @@
     .ag-doc-container {
       max-width: 640px;
       margin: 0 auto;
-      padding: calc(64px + env(safe-area-inset-top)) 24px calc(48px + env(safe-area-inset-bottom));
+      padding: calc(80px + env(safe-area-inset-top)) 24px calc(48px + env(safe-area-inset-bottom));
       box-sizing: border-box;
     }
 
@@ -27,7 +27,7 @@
       margin-bottom: 52px;
       padding-bottom: 32px;
       border-bottom: 1px solid rgba(255,255,255,0.08);
-      text-align: right;
+      text-align: left;
     }
     .ag-doc-title {
       font-size: 24px;
@@ -44,10 +44,28 @@
     }
 
     /* ── 螢光引用區塊（琥珀/橙） ── */
+    @keyframes legalLineExpand {
+      from { height: 0; }
+      to   { height: 100%; }
+    }
+    @keyframes legalTextReveal {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
     .ag-doc-quote {
-      border-left: 2px solid rgba(255, 165, 0, 0.75);
-      padding: 10px 0 10px 16px;
+      position: relative;
+      border-left: none;
+      padding: 10px 0 10px 18px;
       margin: 0 0 52px;
+    }
+    .ag-doc-quote::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0;
+      width: 2px;
+      background: rgba(255, 165, 0, 0.75);
+      height: 0;
+      animation: legalLineExpand 0.6s ease-out 0.2s forwards;
     }
     .ag-doc-quote p {
       font-size: 14px;
@@ -56,8 +74,14 @@
       line-height: 1.7;
       margin: 0;
       text-shadow:
-        0 0 6px rgba(255, 165, 0, 0.6),
-        0 0 18px rgba(255, 165, 0, 0.25);
+        0 0 6px rgba(255, 165, 0, 0.55),
+        0 0 16px rgba(255, 165, 0, 0.2);
+      opacity: 0;
+      animation: legalTextReveal 0.5s ease-out 0.7s forwards;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ag-doc-quote::before { height: 100%; animation: none; }
+      .ag-doc-quote p { opacity: 1; animation: none; }
     }
 
     /* ── Section ── */
@@ -123,6 +147,7 @@
 <body class="ag-page">
 
   <a href="/home.html" class="ag-back-button" aria-label="返回首頁"></a>
+  <a href="/home.html" class="ag-site-logo" aria-label="回到首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
 
   <div class="ag-main-scroll">
     <div class="ag-doc-container">

@@ -18,7 +18,7 @@
     .ag-doc-container {
       max-width: 640px;
       margin: 0 auto;
-      padding: calc(64px + env(safe-area-inset-top)) 24px calc(48px + env(safe-area-inset-bottom));
+      padding: calc(80px + env(safe-area-inset-top)) 24px calc(48px + env(safe-area-inset-bottom));
       box-sizing: border-box;
     }
 
@@ -27,7 +27,7 @@
       margin-bottom: 52px;
       padding-bottom: 32px;
       border-bottom: 1px solid rgba(255,255,255,0.08);
-      text-align: right;
+      text-align: left;
     }
     .ag-doc-title {
       font-size: 24px;
@@ -44,10 +44,15 @@
     }
 
     /* ── 螢光引用區塊（紫） ── */
+    @keyframes termsPulse {
+      0%, 100% { border-left-color: rgba(189, 0, 255, 0.75); }
+      50%       { border-left-color: rgba(189, 0, 255, 0.32); }
+    }
     .ag-doc-quote {
-      border-left: 2px solid rgba(189, 0, 255, 0.75);
+      border-left: 2.5px solid rgba(189, 0, 255, 0.75);
       padding: 10px 0 10px 16px;
       margin: 0 0 52px;
+      animation: termsPulse 6s ease-in-out infinite;
     }
     .ag-doc-quote p {
       font-size: 14px;
@@ -56,8 +61,11 @@
       line-height: 1.7;
       margin: 0;
       text-shadow:
-        0 0 6px rgba(189, 0, 255, 0.6),
-        0 0 18px rgba(189, 0, 255, 0.25);
+        0 0 6px rgba(189, 0, 255, 0.55),
+        0 0 16px rgba(189, 0, 255, 0.2);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ag-doc-quote { animation: none; }
     }
 
     /* ── Section ── */
@@ -123,6 +131,7 @@
 <body class="ag-page">
 
   <a href="/home.html" class="ag-back-button" aria-label="返回首頁"></a>
+  <a href="/home.html" class="ag-site-logo" aria-label="回到首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
 
   <div class="ag-main-scroll">
     <div class="ag-doc-container">
