@@ -2,145 +2,197 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>使用條款｜Afterglow</title>
   <link rel="manifest" href="/manifest.json">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#050505">
   <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
   <link rel="stylesheet" href="/assets/layout.css">
   <script>
-    // Check for consent immediately
     if (localStorage.getItem('ag_consent') !== 'true') {
       window.location.href = '/index.html';
     }
   </script>
   <style>
+    /* ── 頁面容器 ── */
     .ag-doc-container {
-      max-width: 800px;
+      max-width: 640px;
       margin: 0 auto;
-      padding: 80px 20px 120px;
-      color: #ddd;
+      padding: calc(64px + env(safe-area-inset-top)) 24px calc(48px + env(safe-area-inset-bottom));
+      box-sizing: border-box;
     }
 
+    /* ── 頁首 ── */
     .ag-doc-header {
-      text-align: center;
-      margin-bottom: 60px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding-bottom: 40px;
+      margin-bottom: 52px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      text-align: right;
     }
-
     .ag-doc-title {
-      font-size: 28px;
+      font-size: 24px;
+      font-weight: 300;
+      letter-spacing: 0.12em;
       color: #fff;
-      margin-bottom: 16px;
-      letter-spacing: 2px;
+      margin: 0 0 8px;
     }
-
     .ag-doc-subtitle {
+      font-size: 12px;
+      color: rgba(255,255,255,0.32);
+      letter-spacing: 0.06em;
+      margin: 0;
+    }
+
+    /* ── 螢光引用區塊（紫） ── */
+    .ag-doc-quote {
+      border-left: 2px solid rgba(189, 0, 255, 0.75);
+      padding: 10px 0 10px 16px;
+      margin: 0 0 52px;
+    }
+    .ag-doc-quote p {
       font-size: 14px;
-      color: #aaa;
+      color: rgba(189, 0, 255, 0.9);
+      letter-spacing: 0.06em;
+      line-height: 1.7;
+      margin: 0;
+      text-shadow:
+        0 0 6px rgba(189, 0, 255, 0.6),
+        0 0 18px rgba(189, 0, 255, 0.25);
     }
 
-    .ag-section {
-      margin-bottom: 40px;
+    /* ── Section ── */
+    .ag-doc-section {
+      margin-bottom: 48px;
     }
-
-    .ag-section-title {
-      font-size: 18px;
-      color: #fff;
-      margin-bottom: 16px;
-      padding-left: 12px;
-      border-left: 3px solid #00e5ff;
+    .ag-doc-section:last-of-type {
+      margin-bottom: 0;
     }
-
-    .ag-text {
-      font-size: 15px;
+    .ag-doc-section-title {
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      margin: 0 0 16px;
+    }
+    .ag-doc-body {
+      font-size: 14px;
       line-height: 1.8;
-      margin-bottom: 16px;
-      color: #ccc;
+      color: rgba(255,255,255,0.68);
+      margin: 0 0 12px;
+      word-break: break-word;
     }
-
-    .ag-list {
-      padding-left: 24px;
-      margin-bottom: 16px;
+    .ag-doc-body:last-child {
+      margin-bottom: 0;
     }
-
-    .ag-list li {
+    .ag-doc-list {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 12px;
+    }
+    .ag-doc-list li {
+      font-size: 14px;
+      line-height: 1.8;
+      color: rgba(255,255,255,0.68);
+      padding-left: 16px;
+      position: relative;
       margin-bottom: 8px;
-      line-height: 1.6;
+    }
+    .ag-doc-list li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: rgba(255,255,255,0.25);
+    }
+    .ag-doc-em {
+      color: rgba(189, 0, 255, 0.9);
     }
 
-    .ag-highlight {
-      color: #00e5ff;
-      font-weight: bold;
+    /* ── 手機 ── */
+    @media (max-width: 480px) {
+      .ag-doc-container {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      .ag-doc-title {
+        font-size: 20px;
+      }
     }
   </style>
 </head>
 <body class="ag-page">
-  <!-- Back Button (Fixed Position) -->
-  <a href="/home.html" class="ag-back-button neon-style" aria-label="返回首頁">
-    <span class="ag-neon-icon-back"></span>
-  </a>
+
+  <a href="/home.html" class="ag-back-button" aria-label="返回首頁"></a>
 
   <div class="ag-main-scroll">
     <div class="ag-doc-container">
+
       <header class="ag-doc-header">
         <h1 class="ag-doc-title">使用條款</h1>
-        <p class="ag-doc-subtitle">最後更新日期：2025 年 1 月 19 日</p>
+        <p class="ag-doc-subtitle">最後更新：2025 年 1 月 19 日</p>
       </header>
 
-      <section class="ag-section">
-        <h2 class="ag-section-title">1. 同意條款</h2>
-        <p class="ag-text">
-          歡迎使用 Afterglow（以下簡稱「本平台」）。當您訪問或使用本平台時，即表示您已閱讀、理解並同意遵守本使用條款。若您不同意本條款的任何部分，請立即停止使用本平台。
+      <div class="ag-doc-quote">
+        <p>使用這裡的內容，代表你理解它的邊界。<br>它是一個入口，不是答案。</p>
+      </div>
+
+      <section class="ag-doc-section">
+        <p class="ag-doc-section-title">同意條款</p>
+        <p class="ag-doc-body">
+          當你訪問或使用 Afterglow，即表示你已閱讀、理解並同意遵守本使用條款。
+          若你不同意本條款的任何部分，請停止使用。
         </p>
       </section>
 
-      <section class="ag-section">
-        <h2 class="ag-section-title">2. 服務性質與免責</h2>
-        <p class="ag-text">
-          本平台旨在提供<span class="ag-highlight">教育性資訊</span>與<span class="ag-highlight">減害知識</span>，內容涵蓋心理健康、急救指引與法律權利。
+      <section class="ag-doc-section">
+        <p class="ag-doc-section-title">服務性質與免責</p>
+        <p class="ag-doc-body">
+          本計畫旨在提供<span class="ag-doc-em">教育性資訊</span>與<span class="ag-doc-em">減害知識</span>，
+          內容涵蓋心理健康、急救指引與法律權利。
         </p>
-        <ul class="ag-list">
-          <li><strong>非醫療建議：</strong> 本平台內容不構成醫療診斷、治療或處方建議。若有身體不適，請立即尋求專業醫療協助。</li>
-          <li><strong>非法律意見：</strong> 法律權利相關內容僅供參考，具體個案請諮詢合格律師。</li>
-          <li><strong>緊急狀況：</strong> 本平台非緊急救助系統。若遇危及生命之緊急狀況，請立即撥打 119 或當地緊急電話。</li>
+        <ul class="ag-doc-list">
+          <li>非醫療建議：內容不構成醫療診斷、治療或處方建議。若有身體不適，請立即尋求專業醫療協助</li>
+          <li>非法律意見：法律權利相關內容僅供參考，具體個案請諮詢合格律師</li>
+          <li>緊急狀況：本計畫非緊急救助系統。若遇危及生命之緊急狀況，請立即撥打 119</li>
         </ul>
       </section>
 
-      <section class="ag-section">
-        <h2 class="ag-section-title">3. 使用者行為規範</h2>
-        <p class="ag-text">您同意在使用本平台時遵守以下規範：</p>
-        <ul class="ag-list">
-          <li>不得利用本平台進行任何違反當地法律或法規的活動。</li>
-          <li>不得試圖破壞、干擾或攻擊本平台的伺服器與網路系統。</li>
-          <li>不得將本平台內容用於誤導他人或從事詐欺行為。</li>
+      <section class="ag-doc-section">
+        <p class="ag-doc-section-title">使用者行為規範</p>
+        <p class="ag-doc-body">你同意在使用本計畫時遵守以下規範：</p>
+        <ul class="ag-doc-list">
+          <li>不得利用本計畫進行任何違反當地法律或法規的活動</li>
+          <li>不得試圖破壞、干擾或攻擊本計畫的伺服器與網路系統</li>
+          <li>不得將本計畫內容用於誤導他人或從事詐欺行為</li>
         </ul>
       </section>
 
-      <section class="ag-section">
-        <h2 class="ag-section-title">4. 智慧財產權</h2>
-        <p class="ag-text">
-          本平台之所有內容（包括但不限於文字、圖像、標誌、程式碼）均受著作權法及其他智慧財產權法律保護。未經本平台書面授權，不得擅自重製、修改、散布或用於商業用途。
+      <section class="ag-doc-section">
+        <p class="ag-doc-section-title">智慧財產權</p>
+        <p class="ag-doc-body">
+          本計畫之所有內容（包括但不限於文字、圖像、標誌、程式碼）均受著作權法保護。
+          未經書面授權，不得擅自重製、修改、散布或用於商業用途。
         </p>
       </section>
 
-      <section class="ag-section">
-        <h2 class="ag-section-title">5. 服務變更與終止</h2>
-        <p class="ag-text">
-          我們保留隨時修改、暫停或終止本平台部分或全部服務的權利，且無需事先通知。對於服務的中斷或終止，我們不對使用者或第三方承擔任何責任。
+      <section class="ag-doc-section">
+        <p class="ag-doc-section-title">服務變更與終止</p>
+        <p class="ag-doc-body">
+          我保留隨時修改、暫停或終止本計畫部分或全部服務的權利，且無需事先通知。
+          對於服務的中斷或終止，不對使用者或第三方承擔任何責任。
         </p>
       </section>
 
-      <section class="ag-section">
-        <h2 class="ag-section-title">6. 準據法與管轄</h2>
-        <p class="ag-text">
-          本使用條款之解釋與適用，以及與本條款有關的爭議，均應依照中華民國法律處理，並以臺灣臺北地方法院為第一審管轄法院。
+      <section class="ag-doc-section">
+        <p class="ag-doc-section-title">準據法與管轄</p>
+        <p class="ag-doc-body">
+          本使用條款之解釋與適用，以及與本條款有關的爭議，
+          均應依照中華民國法律處理，並以臺灣臺北地方法院為第一審管轄法院。
         </p>
       </section>
+
     </div>
 
-    <!-- Footer -->
     <footer class="ag-footer-standard">
       <div class="ag-footer__inner">
         <nav class="ag-footer__links" aria-label="Legal and info links">
@@ -152,16 +204,12 @@
           <span class="ag-footer__separator">•</span>
           <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
         </nav>
-
-        <p class="ag-footer__copyright">
-          © 2025 Afterglow. All rights reserved.
-        </p>
+        <p class="ag-footer__copyright">© 2025 Afterglow. All rights reserved.</p>
       </div>
     </footer>
   </div>
 
   <script>
-    // Register Service Worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js');
