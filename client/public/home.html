@@ -67,59 +67,14 @@
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       Afterglow Logo — 玻璃霓虹燈管通電導通動畫
-       核心原則：線在發光，不是光包住整個字
-       光暈極度收斂，只留燈管芯 + 薄薄一圈外暈
+       Afterglow Logo — 極簡通電動畫
+       原則：字是主角，光是配角
+       筆劃錐利、光暈極薄、不模糊、不白霧
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     @keyframes agLogoIgnite {
-      /* 初始：幾乎不亮，燈管剛通電前 */
-      0% {
-        opacity: 0.08;
-        filter:
-          brightness(0.55)
-          drop-shadow(0 0 0px rgba(255,255,255,0))
-          drop-shadow(0 0 1px rgba(255,255,255,0.08));
-      }
-      /* 輕微不穩定：電流開始流動 */
-      10% {
-        opacity: 0.18;
-        filter:
-          brightness(0.72)
-          drop-shadow(0 0 1px rgba(255,255,255,0.28))
-          drop-shadow(0 0 2px rgba(255,255,255,0.10));
-      }
-      /* 短暫回落：導通前的最後一次不穩定 */
-      18% {
-        opacity: 0.12;
-        filter:
-          brightness(0.62)
-          drop-shadow(0 0 0.5px rgba(255,255,255,0.18))
-          drop-shadow(0 0 1.5px rgba(255,255,255,0.08));
-      }
-      /* 導通：燈管快速亮起 */
-      30% {
-        opacity: 0.48;
-        filter:
-          brightness(0.90)
-          drop-shadow(0 0 1.5px rgba(255,255,255,0.70))
-          drop-shadow(0 0 4px rgba(255,255,255,0.18));
-      }
-      /* 穩定中：接近最終亮度 */
-      55% {
-        opacity: 0.88;
-        filter:
-          brightness(1.02)
-          drop-shadow(0 0 2px rgba(255,255,255,0.88))
-          drop-shadow(0 0 5px rgba(255,255,255,0.22));
-      }
-      /* 穩定亮起：最終狀態 */
-      100% {
-        opacity: 1;
-        filter:
-          brightness(1)
-          drop-shadow(0 0 2px rgba(255,255,255,0.92))
-          drop-shadow(0 0 6px rgba(255,255,255,0.28));
-      }
+      0%   { opacity: 0.2; }
+      40%  { opacity: 0.6; }
+      100% { opacity: 1;   }
     }
 
     /* Logo：明確破框 — 左、右、上三邊出血，讓裁切是刻意設計而非失誤 */
@@ -129,9 +84,14 @@
       height: auto;
       margin-left: -10vw;  /* 左側出血 */
       margin-top: -32px;   /* 上側出血，切進 safe-area */
-      /* 通電導通動畫：1.35s 一次性，結束後維持穩定亮起狀態 */
-      animation: agLogoIgnite 1.35s ease-out 1 both;
-      will-change: opacity, filter;
+      /* 極簡通電動畫：0.9s 一次性，結束後維持穩定亮起 */
+      animation: agLogoIgnite 0.9s ease-out 1 forwards;
+      /* 極簡光暈：僅 2 層小半徑，保持筆劃錐利 */
+      filter:
+        drop-shadow(0 0 1.5px rgba(255,255,255,0.9))
+        drop-shadow(0 0 4px rgba(255,255,255,0.25));
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
     }
 
     /* 若使用者偏好減少動態，直接顯示穩定亮起狀態 */
@@ -139,10 +99,6 @@
       .ag-logo {
         animation: none;
         opacity: 1;
-        filter:
-          brightness(1)
-          drop-shadow(0 0 2px rgba(255,255,255,0.92))
-          drop-shadow(0 0 6px rgba(255,255,255,0.28));
       }
     }
 

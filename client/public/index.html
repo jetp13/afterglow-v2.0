@@ -200,11 +200,10 @@
       z-index: 1;
       width: 220px;
       display: block;
-      /* 收斂光暈：燈管芯清晰 + 薄薄一圈外暈，不做大面積白霧 */
+      /* 極簡光暈：僅 2 層小半徑，筆劃錐利，不模糊，不白霧（與首頁同一語言，略微克制） */
       filter:
-        brightness(1)
-        drop-shadow(0 0 2px rgba(255,255,255,0.90))
-        drop-shadow(0 0 5px rgba(255,255,255,0.24));
+        drop-shadow(0 0 1.5px rgba(255,255,255,0.88))
+        drop-shadow(0 0 3.5px rgba(255,255,255,0.20));
     }
   </style>
 </head>
