@@ -44,30 +44,50 @@
     }
 
     /* ── 螢光引用區塊（紫色）── 日光燈管通電效果 ── */
+    /*
+     * 真實物理機制：
+     *
+     * 階段一：Starter 加熱期（約 0–1.0s）
+     *   雙金屬片通電加熱，燈絲預熱發射電子至氣體中。
+     *   此階段燈管尚未發光，完全暗。
+     *
+     * 階段二：Starter 開路，Ballast 釋放高壓（約 1.0–1.2s）
+     *   雙金屬片冷卻开路，電感磁場崩潰，
+     *   釋放高壓衝擊至燈管兩端。
+     *   氣體第一次放電：亮了一下，但尚不穩定。
+     *
+     * 階段三：放電失敗，Starter 再度嘗試（約 1.2–2.0s）
+     *   高壓衝擊不夠，燈管熄滅。
+     *   Starter 再度加熱開路，第二次高壓衝擊。
+     *   氣體已部分電離，這次亮得更久一點。
+     *
+     * 階段四：穩定放電，燈管完全點亮（約 2.0s 後）
+     *   電流終於建立穩定等離子體，
+     *   Ballast 限流，glow 收斂至燈管正常工作狀態。
+     *
+     * 關鍵特徵：
+     *   - 第一次閃亮很短，不夠亮（電子尚不夠）
+     *   - 第二次亮得比第一次久，但會消失（放電失敗）
+     *   - 兩次閃亮之間有一段明顯的暗期（再加熱期）
+     *   - 穩定後不是马上最亮，而是慢慢达到正常亮度
+     */
     @keyframes fluorescentTube {
-      /*
-       * 模擬老式日光燈管通電時序：
-       * 0–8%   第一次嘗試點火，微弱閃一下
-       * 8–14%  熄滅，沉默
-       * 14–22% 第二次嘗試，稍微亮一點，但還不穩
-       * 22–30% 又暗下去，電流還在跳
-       * 30–42% 第三次，幾乎要亮了，但還在抖
-       * 42–50% 短暫熄滅，最後一次猶豫
-       * 50–68% 終於穩定點亮，glow 擴散
-       * 68–100% 穩定，glow 收斂至最終狀態
-       */
+      /* 階段一：Starter 加熱期，完全暗 */
       0%   { opacity: 0;    text-shadow: none; }
-      5%   { opacity: 0.55; text-shadow: 0 0 3px rgba(189,0,255,0.6); }
-      8%   { opacity: 0.05; text-shadow: none; }
-      14%  { opacity: 0.7;  text-shadow: 0 0 5px rgba(189,0,255,0.65), 0 0 14px rgba(189,0,255,0.2); }
-      18%  { opacity: 0.15; text-shadow: none; }
-      24%  { opacity: 0.8;  text-shadow: 0 0 4px rgba(189,0,255,0.7); }
-      28%  { opacity: 0.35; text-shadow: 0 0 2px rgba(189,0,255,0.3); }
-      34%  { opacity: 0.9;  text-shadow: 0 0 6px rgba(189,0,255,0.75), 0 0 18px rgba(189,0,255,0.25); }
-      38%  { opacity: 0.6;  text-shadow: 0 0 3px rgba(189,0,255,0.5); }
-      44%  { opacity: 0.95; text-shadow: 0 0 8px rgba(189,0,255,0.8), 0 0 22px rgba(189,0,255,0.3); }
-      48%  { opacity: 0.25; text-shadow: none; }
-      58%  { opacity: 1;    text-shadow: 0 0 10px rgba(189,0,255,0.85), 0 0 28px rgba(189,0,255,0.35); }
+
+      /* 階段二：第一次放電，微弱且短暫 */
+      28%  { opacity: 0;    text-shadow: none; }
+      30%  { opacity: 0.45; text-shadow: 0 0 4px rgba(189,0,255,0.55); }
+      34%  { opacity: 0;    text-shadow: none; }
+
+      /* 階段三：Starter 再度加熱，暗期明顯較長 */
+      52%  { opacity: 0;    text-shadow: none; }
+      55%  { opacity: 0.75; text-shadow: 0 0 6px rgba(189,0,255,0.7), 0 0 16px rgba(189,0,255,0.2); }
+      62%  { opacity: 0.55; text-shadow: 0 0 3px rgba(189,0,255,0.45); }
+      65%  { opacity: 0.1;  text-shadow: none; }
+
+      /* 階段四：穩定點亮，glow 由大收斂 */
+      72%  { opacity: 1;    text-shadow: 0 0 10px rgba(189,0,255,0.9), 0 0 28px rgba(189,0,255,0.35); }
       100% { opacity: 1;    text-shadow: 0 0 4px rgba(189,0,255,0.5), 0 0 12px rgba(189,0,255,0.18); }
     }
     .ag-doc-quote {
@@ -84,7 +104,7 @@
       text-shadow:
         0 0 4px rgba(189, 0, 255, 0.5),
         0 0 12px rgba(189, 0, 255, 0.18);
-      animation: fluorescentTube 2.4s ease-out 0.6s both;
+      animation: fluorescentTube 3.2s linear 0.5s both;
     }
     @media (prefers-reduced-motion: reduce) {
       .ag-doc-quote p { animation: none; }
