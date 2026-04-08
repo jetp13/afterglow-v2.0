@@ -71,10 +71,24 @@
        原則：字是主角，光是配角
        筆劃錐利、光暈極薄、不模糊、不白霧
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    /*
+     * Logo 通電動畫設計原則：
+     * 模擬螢光燈管剛通電的物理行為：
+     *   1. 初始微暗（燈絲預熱）
+     *   2. 一次輕微的亮度跳升（第一次放電嘗試）
+     *   3. 極短暫收回（放電不穩定）
+     *   4. 穩定點亮（等離子體建立）
+     * 節奏短、克制、有物理感，不戲劇化
+     */
     @keyframes agLogoIgnite {
-      0%   { opacity: 0.2; }
-      40%  { opacity: 0.6; }
-      100% { opacity: 1;   }
+      0%   { opacity: 0.15; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      18%  { opacity: 0.15; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      22%  { opacity: 0.72; filter: drop-shadow(0 0 1px rgba(255,255,255,0.8)) drop-shadow(0 0 4px rgba(255,255,255,0.3)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      28%  { opacity: 0.30; filter: drop-shadow(0 0 0.5px rgba(255,255,255,0.4)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      38%  { opacity: 0.30; filter: drop-shadow(0 0 0.5px rgba(255,255,255,0.4)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      52%  { opacity: 1;    filter: drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 8px rgba(255,255,255,0.45)) drop-shadow(0 0 20px rgba(255,255,255,0.18)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      72%  { opacity: 1;    filter: drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 5px rgba(255,255,255,0.35)) drop-shadow(0 0 14px rgba(255,255,255,0.14)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      100% { opacity: 1;    filter: drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 5px rgba(255,255,255,0.35)) drop-shadow(0 0 14px rgba(255,255,255,0.14)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
     }
 
     /* Logo：明確破框 — 左、右、上三邊出血，讓裁切是刻意設計而非失誤 */
@@ -84,22 +98,24 @@
       height: auto;
       margin-left: -10vw;  /* 左側出血 */
       margin-top: -32px;   /* 上側出血，切進 safe-area */
-      /* 極簡通電動畫：0.9s 一次性，結束後維持穩定亮起 */
-      animation: agLogoIgnite 0.9s ease-out 1 forwards;
-      /* 統一 glow 語言：接近截圖首頁版本的冷靜電器感
-         筆劃清晰 + 適度光暈層次 + 極輕微偏移立體感 */
+      cursor: pointer;
+      /* 穩定亮起後的靜止狀態（動畫結束後維持此 filter） */
       filter:
         drop-shadow(0 0 1px rgba(255,255,255,0.95))
-        drop-shadow(0 0 6px rgba(255,255,255,0.55))
-        drop-shadow(0 0 18px rgba(255,255,255,0.22))
+        drop-shadow(0 0 5px rgba(255,255,255,0.35))
+        drop-shadow(0 0 14px rgba(255,255,255,0.14))
         drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6));
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
+    /* 初次載入觸發動畫 */
+    .ag-logo--igniting {
+      animation: agLogoIgnite 1.1s ease-out 1 forwards;
+    }
 
     /* 若使用者偏好減少動態，直接顯示穩定亮起狀態 */
     @media (prefers-reduced-motion: reduce) {
-      .ag-logo {
+      .ag-logo, .ag-logo--igniting {
         animation: none;
         opacity: 1;
       }
@@ -264,7 +280,10 @@
     <img
       src="/assets/logo-handwritten-nobg.png"
       alt="Afterglow"
-      class="ag-logo"
+      class="ag-logo ag-logo--igniting"
+      role="button"
+      tabindex="0"
+      aria-label="Afterglow 首頁"
     />
     <!-- 副標：靠右，在 Logo 下方 -->
     <div class="ag-text">
@@ -301,5 +320,25 @@
     </div>
   </footer>
 
+  <script>
+    (function () {
+      var logo = document.querySelector('.ag-logo');
+      if (!logo) return;
+
+      /* 點擊重播：移除 class → 強制 reflow → 重新加回 */
+      function reIgnite(e) {
+        /* 阻止預設行為（img 無預設，但保持乾淨） */
+        logo.classList.remove('ag-logo--igniting');
+        /* 強制瀏覽器重新計算，確保 animation 重播 */
+        void logo.offsetWidth;
+        logo.classList.add('ag-logo--igniting');
+      }
+
+      logo.addEventListener('click', reIgnite);
+      logo.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') reIgnite(e);
+      });
+    })();
+  </script>
 </body>
 </html>
