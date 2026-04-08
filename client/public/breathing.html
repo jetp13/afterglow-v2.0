@@ -11,20 +11,22 @@
     }
   </script>
   <style>
-    /* Logo: fixed top-right，可點擊回首頁 */
-    .ag-page-logo {
-      position: fixed;
-      top: calc(16px + env(safe-area-inset-top, 0px));
-      right: 20px;
-      z-index: 100;
-      display: block;
-      text-decoration: none;
+    /* ── Inner header (matches voice / white-noise) ── */
+    .ag-inner-header {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: calc(14px + env(safe-area-inset-top)) 20px 10px;
+      box-sizing: border-box;
+      min-height: 64px;
     }
-    .ag-page-logo img {
-      width: 110px;
-      opacity: 0.85;
-      display: block;
+    .ag-page-title-block { padding: 0 20px 8px; flex-shrink: 0; }
+    .ag-page-title {
+      font-size: 13px; color: rgba(255,255,255,0.35);
+      letter-spacing: 0.08em; text-transform: uppercase; margin: 0;
     }
+    .ag-page-title strong { color: rgba(255,255,255,0.55); font-weight: 500; }
 
     .ag-container {
       display: flex;
@@ -100,15 +102,18 @@
 </head>
 <body class="ag-page">
 
-  <!-- Back Button -->
-  <a href="/menu.html" class="ag-back-button neon-style" aria-label="返回選單">
-    <span class="ag-neon-icon-back"></span>
-  </a>
+  <!-- Logo: fixed top-right -->
+  <a href="/home.html" class="ag-site-logo" aria-label="回到首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
 
-  <!-- Logo: fixed top-right，點擊回首頁 -->
-  <a href="/home.html" class="ag-page-logo" aria-label="回到首頁">
-    <img src="/assets/logo-handwritten-nobg.png" alt="Afterglow">
-  </a>
+  <!-- Header with back button (matches voice / white-noise) -->
+  <header class="ag-inner-header">
+    <a href="/menu.html" class="ag-back-button" aria-label="返回選單"></a>
+  </header>
+
+  <!-- Page title block -->
+  <div class="ag-page-title-block">
+    <p class="ag-page-title"><strong>呼吸練習</strong> · BREATHING PRACTICE</p>
+  </div>
 
   <div class="ag-container">
     <div class="ag-breathing-wrapper">

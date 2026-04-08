@@ -24,15 +24,6 @@
       min-height: 64px;
     }
     /* 使用 layout.css 全域 .ag-back-button 樣式，不覆寫 */
-    .ag-inner-logo {
-      display: block;
-      width: 135px;
-      max-width: 38vw;
-      height: auto;
-      
-      opacity: 0.85;
-      margin-top: 6px;
-    }
     .ag-page-title-block {
       padding: 0 20px 8px;
       flex-shrink: 0;
@@ -340,12 +331,11 @@
 </head>
 <body class="ag-page">
   
-  <!-- Inner Header: Back + Logo -->
+  <a href="/home.html" class="ag-site-logo" aria-label="回到首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
+
+  <!-- Inner Header: Back Button -->
   <header class="ag-inner-header">
     <a href="/support-main.html" class="ag-back-button" aria-label="返回上一頁"></a>
-    <a href="/home.html" aria-label="返回首頁">
-      <img src="/assets/logo-handwritten-nobg.png" class="ag-inner-logo" alt="Afterglow">
-    </a>
   </header>
   <div class="ag-page-title-block">
     <p class="ag-page-title">權利知識 · Know Your Rights</p>
