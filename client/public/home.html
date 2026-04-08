@@ -91,14 +91,15 @@
       0%   { opacity: 0.12; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
       45%  { opacity: 0.12; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
 
-      /* 後段：切分音急促收尾，全部壓在 45–65% 內 */
-      /* 第一次放電：輕閃 */
-      49%  { opacity: 0.65; filter: drop-shadow(0 0 1px rgba(255,255,255,0.75)) drop-shadow(0 0 3px rgba(255,255,255,0.25)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      /* 暗期：極短，只有 3% */
-      52%  { opacity: 0.08; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      /* 穩定點亮：一次到位 */
-      62%  { opacity: 1;    filter: drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 6px rgba(255,255,255,0.40)) drop-shadow(0 0 16px rgba(255,255,255,0.16)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      /* 光暈收斂至靜止狀態，後段留長讓收斂自然 */
+      /* 後段：切分音結構 */
+      /* 第一次放電：輕閃，留久一點（讓人感覺到它存在） */
+      49%  { opacity: 0.60; filter: drop-shadow(0 0 1px rgba(255,255,255,0.70)) drop-shadow(0 0 3px rgba(255,255,255,0.22)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      58%  { opacity: 0.60; filter: drop-shadow(0 0 1px rgba(255,255,255,0.70)) drop-shadow(0 0 3px rgba(255,255,255,0.22)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      /* 暗期：極短，只有 2%（約 0.03s） */
+      60%  { opacity: 0.06; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      /* 穩定點亮：急促到位，只有 5% */
+      65%  { opacity: 1;    filter: drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 6px rgba(255,255,255,0.40)) drop-shadow(0 0 16px rgba(255,255,255,0.16)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      /* 光暈緩慢收斂，後段留長 */
       100% { opacity: 1;    filter: drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 5px rgba(255,255,255,0.35)) drop-shadow(0 0 14px rgba(255,255,255,0.14)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
     }
 
