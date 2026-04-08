@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>æ‚–%Š©è³‡ç†ï½œAfterglow</title>
+  <title>æ±‚åŠ©è³‡æºï½œAfterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
   <script>
     if (localStorage.getItem('ag_consent') !== 'true') {
@@ -11,8 +11,7 @@
     }
   </script>
   <style>
-    body { background: #000; }
-
+    /* é é¢ç‰¹å®šæ¨£å¼ */
     .ag-page-logo {
       position: fixed;
       top: calc(16px + env(safe-area-inset-top, 0px));
@@ -28,161 +27,344 @@
     }
 
     .ag-page-title-block {
-      padding: calc(88px + env(safe-area-inset-top, 0px)) 20px 8px;
+      padding: calc(88px + env(safe-area-inset-top, 0px)) 20px 4px;
       flex-shrink: 0;
       box-sizing: border-box;
     }
     .ag-page-title {
-      font-size: 13px;
-      color: rgba(255,255,255,0.35);
+      font-size: 12px;
+      color: rgba(255,255,255,0.3);
       letter-spacing: 0.08em;
       text-transform: uppercase;
       margin: 0;
     }
 
     .ag-main-scroll {
-      /* inherits flex:1 overflow-y:auto from layout.css */
-    }
-
-    .ag-help-container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 8px 20px 32px;
-      text-align: center;
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      padding: 16px 20px 40px;
       box-sizing: border-box;
     }
 
-    .ag-help-title {
-      font-size: 22px;
-      color: #ff6bd9;
-      margin-bottom: 32px;
-      text-shadow: 0 0 15px rgba(255, 107, 217, 0.4);
+    .ag-help-container {
+      max-width: 480px;
+      margin: 0 auto;
     }
 
-    /* â”€â”€ Footer âˆâˆ uses global ag-footer-standard from layout.css */
+    /* å€å¡Šæ¨™é¡Œ */
+    .ag-section-title {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.5);
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
+      margin-top: 32px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .ag-section-title:first-child {
+      margin-top: 0;
+    }
 
-    /* â”â” Help Page Specific â”€â”€ */
+    /* ç·Šæ€¥ç´…è‰²å€å¡Š */
     .ag-emergency-box {
-      border: 1px solid rgba(255, 60, 60, 0.5);
-      background: rgba(255, 60, 60, 0.08);
-      border-radius: 14px;
-      padding: 20px;
-      margin-bottom: 28px;
+      border: 1.5px solid rgba(255, 68, 68, 0.4);
+      background: radial-gradient(ellipse at center, rgba(255, 68, 68, 0.1) 0%, transparent 80%);
+      border-radius: 16px;
+      padding: 24px 20px;
+      margin-bottom: 24px;
       text-align: center;
+      box-shadow: 0 0 15px rgba(255, 68, 68, 0.15), inset 0 0 20px rgba(255, 68, 68, 0.05);
     }
     .ag-emergency-title {
       color: #ff4444;
-      font-weight: bold;
-      font-size: 15px;
-      margin-bottom: 10px;
-      letter-spacing: 0.04em;
+      font-weight: 500;
+      font-size: 16px;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+      text-shadow: 0 0 8px rgba(255, 68, 68, 0.4);
     }
-    .ag-emergency-box p {
-      color: rgba(255,255,255,0.75);
+    .ag-emergency-desc {
+      color: rgba(255, 255, 255, 0.7);
       font-size: 14px;
-      line-height: 1.7;
-      margin: 0 0 14px;
+      line-height: 1.6;
+      margin-bottom: 16px;
     }
-    .ag-help-phone {
+    .ag-phone-large {
       display: inline-block;
-      font-size: 28px;
-      font-weight: bold;
+      font-size: 32px;
+      font-weight: 600;
       color: #ff4444;
       text-decoration: none;
       letter-spacing: 0.05em;
-      text-shadow: 0 0 12px rgba(255,60,60,0.5);
+      text-shadow: 0 0 12px rgba(255, 68, 68, 0.6);
+      transition: opacity 0.3s;
     }
-    .ag-help-phone:hover { text-shadow: 0 0 20px rgba(255,60,60,0.8); }
-    .ag-help-list {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 24px;
+    .ag-phone-large:active {
+      opacity: 0.7;
+    }
+
+    /* è³‡æºå¡ç‰‡åˆ—è¡¨ */
+    .ag-resource-list {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 16px;
     }
-    .ag-help-item {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 12px;
-      padding: 16px 18px;
+
+    /* è³‡æºå¡ç‰‡ */
+    .ag-resource-card {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 14px;
+      padding: 20px;
       display: flex;
       flex-direction: column;
+      gap: 12px;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .ag-resource-card:active {
+      background: rgba(255, 255, 255, 0.06);
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .ag-resource-header {
+      display: flex;
+      justify-content: space-between;
       align-items: flex-start;
-      gap: 4px;
-      text-align: left;
+      gap: 12px;
     }
-    .ag-help-name {
-      font-size: 14px;
-      font-weight: 600;
-      color: rgba(255,255,255,0.85);
+
+    .ag-resource-name {
+      font-size: 16px;
+      font-weight: 500;
+      color: rgba(255, 255, 255, 0.9);
+      letter-spacing: 0.05em;
+      margin: 0;
     }
-    .ag-help-item .ag-help-phone {
-      font-size: 22px;
-      color: #7ecfff;
-      text-shadow: 0 0 10px rgba(126,207,255,0.5);
+
+    .ag-resource-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 6px;
     }
-    .ag-help-item span:last-child {
+    .ag-tag {
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.6);
+    }
+    .ag-tag--green {
+      background: rgba(0, 255, 136, 0.15);
+      color: #00ff88;
+      border: 1px solid rgba(0, 255, 136, 0.3);
+    }
+    .ag-tag--blue {
+      background: rgba(0, 170, 255, 0.15);
+      color: #00aaff;
+      border: 1px solid rgba(0, 170, 255, 0.3);
+    }
+
+    .ag-resource-desc {
       font-size: 13px;
-      color: rgba(255,255,255,0.5);
-      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.5);
+      line-height: 1.6;
+      margin: 0;
     }
-    .ag-mt-40 { margin-top: 32px; }
-    .ag-text-sm { font-size: 13px; }
-    .ag-text-dark-gray { color: rgba(255,255,255,0.4); line-height: 1.7; }
-    .ag-text-red { color: #ff4444 !important; }
+
+    .ag-resource-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .ag-action-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      transition: opacity 0.3s;
+    }
+    .ag-action-btn:active {
+      opacity: 0.7;
+    }
+
+    .ag-action-btn--phone {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .ag-action-btn--line {
+      background: rgba(0, 195, 0, 0.15);
+      color: #00e000;
+      border: 1px solid rgba(0, 195, 0, 0.3);
+    }
+
+    .ag-action-note {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.3);
+      text-align: center;
+      margin-top: -4px;
+    }
+
   </style>
 </head>
 <body class="ag-page">
-
   <a href="/support-main.html" class="ag-back-button" aria-label="è¿”å›ä¸Šä¸€é "></a>
-
   <a href="/home.html" class="ag-page-logo" aria-label="è¿”å›é¦–é ">
     <img src="/assets/logo-handwritten-nobg.png" alt="Afterglow">
   </a>
 
   <div class="ag-page-title-block">
-    <p class="ag-page-title">æ‚–%Š©è³‡æº Âµ Help Resources</p>
+    <p class="ag-page-title">æ±‚åŠ©è³‡æº Â· Help Resources</p>
   </div>
 
-  <!-- Main Content -->
   <main class="ag-main-scroll">
     <div class="ag-help-container">
-      <h1 class="ag-help-title">æ±‚åŠ©è·ˆæº </h1>
-
+      
+      <!-- 1. ç¾å ´ç·Šæ€¥ -->
       <div class="ag-emergency-box">
-        <div class="ag-emergency-title">
-          <span class="ag-neon-icon ag-icon-alert"></span> ç´ å‚£ç‹ æ³
-        </div>
-        <p>
-          è‹¥æ‚¨æˆ–èº¨é‚Šçš„äººç”±å‡ºç¾èº©é«”ç†ä¸é©ã€å‘¼å¸å›°é¤¨ã€€å¤±è‰æ„æ¨›ç­‰å±æ€¥æƒ…çš„æƒ…æ³ï¼Œè«‹ç«‹å³æ’¥æ‰“ç´§æ€¥è†«é»‘è©§é›»è¨¿ã€‚
-	       </p>
-        <a href="tel:119" class="ag-help-phone ag-text-red" style="display: block;">119</a>
+        <div class="ag-emergency-title">ç¾å ´ç·Šæ€¥ç‹€æ³</div>
+        <p class="ag-emergency-desc">
+          è‹¥ç¾å ´æœ‰äººå‡ºç¾æ˜è¿·ä¸é†’ã€å‘¼å¸å›°é›£ã€åš´é‡æŠ½æç­‰å±åŠç”Ÿå‘½çš„ç‹€æ³ï¼Œè«‹ç«‹å³å°‹æ±‚é†«ç™‚å”åŠ©ã€‚
+        </p>
+        <a href="tel:119" class="ag-phone-large">119</a>
       </div>
 
-      <ul class="ag-help-list">
-        <li class="ag-help-item">
-          <span class="ag-help-name">è¡›ç”Ÿç§åˆ©éƒ¨å­¹å¿ƒå³‚ç·šå¥‡å³ª</span>
-          <a href="tel:1925" class="ag-help-phone">1925</a>
-          <span>æä¾›å¿ƒç†è³¹è¿›èˆ‡è‡ªæ¬šé˜²æ²»æœå‹™ï¼ˆ24å°æ™‚ï¼‰</span>
-        </li>
+      <!-- 2. è—¥æ„›èˆ‡æ¸›å®³å°ˆæ¥­è³‡æº -->
+      <div class="ag-section-title">è—¥æ„›èˆ‡æ¸›å®³å°ˆæ¥­è³‡æºï¼ˆç„¡é€šå ±ç–‘æ…®ï¼‰</div>
+      <div class="ag-resource-list">
+        
+        <!-- éœ²å¾·å”æœƒ -->
+        <div class="ag-resource-card">
+          <div class="ag-resource-header">
+            <div>
+              <h3 class="ag-resource-name">å°ç£éœ²å¾·å”æœƒ</h3>
+              <div class="ag-resource-tags">
+                <span class="ag-tag ag-tag--green">è—¥æ„›æ¸›å®³</span>
+                <span class="ag-tag">åŒå¿—å‹å–„</span>
+              </div>
+            </div>
+          </div>
+          <p class="ag-resource-desc">
+            å°ˆæ³¨æ–¼æ„›æ»‹èˆ‡è—¥ç™®æ¸›å®³æœå‹™ï¼Œç†è§£ Chemsex å ´æ™¯ï¼Œæä¾›ä¸è©•åˆ¤çš„è«®è©¢èˆ‡åŒå„•æ”¯æŒã€‚
+          </p>
+          <div class="ag-resource-actions">
+            <a href="https://line.me/R/ti/p/@lourdes" target="_blank" class="ag-action-btn ag-action-btn--line">LINE è«®è©¢ï¼š@lourdes</a>
+            <div class="ag-action-note">æœå‹™æ™‚é–“ï¼šé€±ä¸€è‡³é€±äº” 13:00â€“21:00</div>
+            <a href="tel:02-2585-0773" class="ag-action-btn ag-action-btn--phone">æ’¥æ‰“é›»è©±ï¼š02-2585-0773</a>
+          </div>
+        </div>
 
-        <li class="ag-help-item">
-          <span class="ag-help-name">ç”Ÿå³ç·šåèª­å³‰ç·šå¥‡æ¡ˆ</span>
-          <a href="tel:1995" class="ag-help-phone">1995</a>
-          <span>æä¾›å„éå¿ƒå›æ‰°è‡ªç˜çš”å‡°ç†å³‚ç­‰è¿‹å—é¢ˆì¦¾è«‚ï¼ˆ</span>
-        </li>
+        <!-- åŒå¿—è«®è©¢ç†±ç·š -->
+        <div class="ag-resource-card">
+          <div class="ag-resource-header">
+            <div>
+              <h3 class="ag-resource-name">å°ç£åŒå¿—è«®è©¢ç†±ç·š</h3>
+              <div class="ag-resource-tags">
+                <span class="ag-tag ag-tag--green">åŒå¿—ç¤¾ç¾¤</span>
+                <span class="ag-tag">æƒ…ç·’æ”¯æŒ</span>
+              </div>
+            </div>
+          </div>
+          <p class="ag-resource-desc">
+            ç”±å—éå°ˆæ¥­è¨“ç·´çš„åŒå¿—å¿—å·¥æ¥è½ï¼Œç†è§£åŒå¿—ç¤¾ç¾¤æ–‡åŒ–èˆ‡è—¥æ„›è­°é¡Œï¼Œæä¾›å®‰å…¨çš„å‚¾è½ç©ºé–“ã€‚
+          </p>
+          <div class="ag-resource-actions">
+            <a href="tel:02-2392-1970" class="ag-action-btn ag-action-btn--phone">æ’¥æ‰“é›»è©±ï¼š02-2392-1970</a>
+            <div class="ag-action-note">æœå‹™æ™‚é–“ï¼šé€±äºŒ 18:00â€“21:00ã€é€±å›› 14:00â€“17:00</div>
+          </div>
+        </div>
 
-        <li class="ag-help-item">
-          <span class="ag-help-name">å¼µæµå¤«éºµè¼åº¤åŠ¯å—ç·š</span>
-          <a href="tel:1980" class="ag-help-phone">1980</a>
-          <span>æä¾›æƒ…ç·’å›°æ’“èˆ‡å¿ƒç†è¼”å°æœå‹™</span>
-        </li>
+        <!-- HERO ä¸­å¿ƒ -->
+        <div class="ag-resource-card">
+          <div class="ag-resource-header">
+            <div>
+              <h3 class="ag-resource-name">HERO è—¥æ„›ç™‚ç™’å¾©å…ƒä¸­å¿ƒ</h3>
+              <div class="ag-resource-tags">
+                <span class="ag-tag ag-tag--green">é†«ç™‚æ•´åˆ</span>
+                <span class="ag-tag">é«˜é›„åœ°å€</span>
+              </div>
+            </div>
+          </div>
+          <p class="ag-resource-desc">
+            ä½æ–¼é«˜é›„å¸‚æ°‘ç”Ÿé†«é™¢ï¼Œæä¾›è—¥æ„›ç›¸é—œçš„é†«ç™‚ã€å¿ƒç†èˆ‡æ¸›å®³æ•´åˆæœå‹™ã€‚
+          </p>
+          <div class="ag-resource-actions">
+            <a href="https://line.me/R/ti/p/@166dftrx" target="_blank" class="ag-action-btn ag-action-btn--line">LINE è«®è©¢ï¼š@166dftrx</a>
+            <a href="tel:07-751-1131" class="ag-action-btn ag-action-btn--phone">æ’¥æ‰“é›»è©±ï¼š07-751-1131 è½‰ 8010</a>
+          </div>
+        </div>
 
-        <li class="ag-help-item">
-          <span class="ag-help-name">å‹¥é•¨å‹çµé‡‘æœƒ3Â÷7ãà¢Æ‡&VcÒ'FVÃ£#ƒ“ƒS“R"6Æ73Ò&rÖ†VÇ×†öæR#ã"Óƒ“ÓƒS“SÂöà¢Ç7ãîhùKé¾h
-~KªŞZë>ˆˆ~Zën[ªŞi©NX©¾Xù~j,¾ˆ^iJşhø3Â÷7ãà¢ÂöÆ“à¢Â÷VÃà ¢ÆF—b6Æ73Ò&rÖ×BÓCr×FW‡B×6Òr×FW‡BÖF&²Öw&’#à¢iÊÎšn™Ú.‹8~Šˆ®X8~Kè¾Kè¾Kè~jÎˆ ûÈÎˆº^ˆş{x®h
-^XÛ™º>ûÈÎŠ¸¾XJ®XXˆŞ	£R’k.Xª8#Æ'#à¢gFW&vÆ÷r™yÎ[ø>Z	h*y¨NZë~[š‚Kˆ.8 ¢ÂöF—cà¢ÂöF—cà¢ÂöÖ–ãà ¢ÂÒÒfö÷FW"ÒÓà¢Æfö÷FW"6Æ73Ò&rÖfö÷FW"×7FæF&B#à¢ÆF—b6Æ73Ò&rÖfö÷FW%õö–ææW"#à¢Ææb6Æ73Ò&rÖfö÷FW%õöÆ–æ·2"&–ÖÆ&VÃÒ$ÆVvÂæB–æfòÆ–æ·2#à¢Æ‡&VcÒ"÷&—f7’æ‡FÖÂ"6Æ73Ò&rÖfö÷FW%õöÆ–æ²#î™«zxjÈ®iKşzÙcÂöà¢Ç7â6Æ73Ò&rÖfö÷FW%õ÷6W&F÷"#î(
-#Â÷7ãà¢Æ‡&VcÒ"öÆVvÂæ‡FÖÂ"6Æ73Ò&rÖfö÷FW%õöÆ–æ²#îk9^[è¾XXŞ‹*ÃÂöà¢Ç7â6Æ73Ò&rÖfö÷FW%õ÷6W&F÷"#î(
-#Â÷7ãà¢Æ‡&VcÒ"÷FW&×2æ‡FÖÂ"6Æ73Ò&rÖfö÷FW%õöÆ–æ²#îKÛşyJj)ŞjËãÂöà¢Ç7â6Æ73Ò&rÖfö÷FW%õ÷6W&F÷"#î(
-#Â÷7ãà¢Æ‡&VcÒ"ö&÷WBæ‡FÖÂ"6Æ73Ò&rÖfö÷FW%õöÆ–æ²#î™yÎikÂgFW&vÆ÷sÂöà¢Âöæcà¢Ç6Æ73Ò&rÖfö÷FW%õö6÷—&–v‡B#ì*’##RgFW&vÆ÷râÆÂ&–v‡G2&W6W'fVBãÂ÷à¢ÂöF—cà¢Âöfö÷FW#à £Âö&öG“à£Âö‡FÖÃà
+      </div>
+
+      <!-- 3. å®˜æ–¹èˆ‡ä¸€èˆ¬å¿ƒç†è³‡æº -->
+      <div class="ag-section-title">å®˜æ–¹èˆ‡ä¸€èˆ¬å¿ƒç†è³‡æº</div>
+      <div class="ag-resource-list">
+        
+        <!-- æ¯’é˜²ä¸­å¿ƒ -->
+        <div class="ag-resource-card">
+          <div class="ag-resource-header">
+            <div>
+              <h3 class="ag-resource-name">æ¯’å“å±å®³é˜²åˆ¶ä¸­å¿ƒ</h3>
+              <div class="ag-resource-tags">
+                <span class="ag-tag ag-tag--blue">å®˜æ–¹è³‡æº</span>
+                <span class="ag-tag">æˆ’æ²»å°å‘</span>
+              </div>
+            </div>
+          </div>
+          <p class="ag-resource-desc">
+            æ”¿åºœè¨­ç«‹çš„ 24 å°æ™‚å…ä»˜è²»å°ˆç·šï¼Œä¸»è¦æä¾›è—¥ç‰©æˆ’æ²»ç›¸é—œè³‡è¨Šèˆ‡è½‰ä»‹æœå‹™ã€‚
+          </p>
+          <div class="ag-resource-actions">
+            <a href="tel:0800-770-885" class="ag-action-btn ag-action-btn--phone">æ’¥æ‰“å°ˆç·šï¼š0800-770-885</a>
+          </div>
+        </div>
+
+        <!-- 1925 å®‰å¿ƒå°ˆç·š -->
+        <div class="ag-resource-card">
+          <div class="ag-resource-header">
+            <div>
+              <h3 class="ag-resource-name">è¡›ç¦éƒ¨å®‰å¿ƒå°ˆç·š</h3>
+              <div class="ag-resource-tags">
+                <span class="ag-tag ag-tag--blue">å®˜æ–¹è³‡æº</span>
+                <span class="ag-tag">å¿ƒç†å±æ©Ÿ</span>
+              </div>
+            </div>
+          </div>
+          <p class="ag-resource-desc">
+            24 å°æ™‚å…ä»˜è²»å¿ƒç†è«®è©¢å°ˆç·šï¼Œä¸»è¦é‡å°åš´é‡æƒ…ç·’ä½è½æˆ–è‡ªæ®ºå±æ©Ÿæä¾›å³æ™‚æ”¯æŒã€‚
+          </p>
+          <div class="ag-resource-actions">
+            <a href="tel:1925" class="ag-action-btn ag-action-btn--phone">æ’¥æ‰“å°ˆç·šï¼š1925</a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <footer class="ag-footer-standard">
+    <div class="ag-footer__inner">
+      <nav class="ag-footer__links" aria-label="Legal and info links">
+        <a href="/privacy.html" class="ag-footer__link">éš±ç§æ¬Šæ”¿ç­–</a>
+        <span class="ag-footer__separator">â€¢</span>
+        <a href="/legal.html" class="ag-footer__link">æ³•å¾‹å…è²¬</a>
+        <span class="ag-footer__separator">â€¢</span>
+        <a href="/terms.html" class="ag-footer__link">ä½¿ç”¨æ¢æ¬¾</a>
+        <span class="ag-footer__separator">â€¢</span>
+        <a href="/about.html" class="ag-footer__link">é—œæ–¼ Afterglow</a>
+      </nav>
+      <p class="ag-footer__copyright">Â© 2026 Afterglow. All rights reserved.</p>
+    </div>
+  </footer>
+</body>
+</html>
