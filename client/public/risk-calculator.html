@@ -586,59 +586,65 @@
     function initCapsuleGrid() {
       capsuleGrid.innerHTML = '';
 
-      // 每顆膠囊的個性設定：
-      // [width%, alignSelf, marginSide%, marginBottom(px), rotate(deg), height(px), borderRadius(px)]
-      // 形狀變化：有的接近正圓、有的是長條、有的是偏方形的膠囊
-      const capsuleLayouts = [
-        // 搖頭丸 — 偏胖的橢圓，靠右，微微上翹
-        [52, 'flex-end',   '5%', 10,  -1.2,  52, 28],
-        // 酒精 — 細長條，靠左，幾乎不轉
-        [60, 'flex-start', '8%', 16,   0.5,  42, 999],
-        // 海洛因/鴉片類 — 寬扁，置中偏右，微轉
-        [74, 'flex-end',   '3%', 12,   1.8,  46, 18],
-        // 迷幻蘑菇 — 中等，靠左，小角度
-        [58, 'flex-start', '6%', 14,  -0.8,  44, 999],
-        // 安非他命 — 最寬，靠左，幾乎水平
-        [82, 'flex-start', '2%', 10,   0.3,  50, 14],
-        // G水 — 偏小偏圓，靠右，有點歪
-        [44, 'flex-end',   '7%', 18,  -2.2,  48, 24],
-        // 依托 — 中長，靠左，微轉
-        [66, 'flex-start', '4%', 12,   1.4,  44, 999],
-        // 鎮靜劑 — 寬，靠右，稍微歪
-        [70, 'flex-end',   '4%', 10,  -1.6,  46, 16],
-        // 咖啡因 — 細短，靠左，幾乎不轉
-        [42, 'flex-start', '9%', 16,   0.6,  40, 999],
-        // 大麻 — 中等偏胖，靠右，微轉
-        [56, 'flex-end',   '5%', 14,   1.0,  50, 22],
-        // RUSH — 短胖近正方，靠左，有點歪
-        [40, 'flex-start', '7%', 12,  -1.8,  46, 16],
-        // K他命 — 中長，靠右，幾乎水平
-        [62, 'flex-end',   '3%', 10,   0.4,  44, 999],
-        // 古柯鹼 — 偏圓胖，靠左，微轉
-        [50, 'flex-start', '6%', 16,  -1.2,  50, 26],
-        // 威而鋼 — 長條，靠右，稍歪
-        [68, 'flex-end',   '4%', 12,   1.6,  42, 999],
-        // LSD — 短小，靠左，有點歪
-        [46, 'flex-start', '8%',  8,  -2.0,  44, 20],
+      // 打散順序：顏色混雜，不按類別聚集
+      // 排列逿輯：同類色不連續出現，讓人慢慢自己發現規律
+      const shuffledSubstances = [
+        substances.find(s => s.id === 'mdma'),       // 紅
+        substances.find(s => s.id === 'alcohol'),    // 藍
+        substances.find(s => s.id === 'mushrooms'),  // 綠
+        substances.find(s => s.id === 'meth'),       // 紅
+        substances.find(s => s.id === 'ghb'),        // 藍
+        substances.find(s => s.id === 'lsd'),        // 綠
+        substances.find(s => s.id === 'cocaine'),    // 紅
+        substances.find(s => s.id === 'opioids'),    // 藍
+        substances.find(s => s.id === 'poppers'),    // 紫
+        substances.find(s => s.id === 'caffeine'),   // 紅
+        substances.find(s => s.id === 'ketamine'),   // 藍
+        substances.find(s => s.id === 'cannabis'),   // 綠
+        substances.find(s => s.id === 'viagra'),     // 紫
+        substances.find(s => s.id === 'benzos'),     // 藍
+        substances.find(s => s.id === 'etomidate'),  // 藍
+      ].filter(Boolean);
+
+      // 每顆膠囊的位置性格：[alignSelf, marginSide%, marginBottom(px), rotate(deg)]
+      // 排列打破左右左右的規律：連續同側、偏中、跳跟、間距不同
+      const posLayouts = [
+        ['flex-end',    '4%',  8,  -1.2],  // 靠右
+        ['flex-start',  '7%', 14,   0.4],  // 靠左
+        ['flex-start',  '3%', 10,  -0.6],  // 靠左（連續）
+        ['flex-end',    '9%', 16,   1.8],  // 靠右，間距大
+        ['flex-start',  '5%',  8,   0.8],  // 靠左
+        ['flex-end',    '2%', 12,  -1.6],  // 靠右，小間距
+        ['flex-end',    '6%', 10,   0.3],  // 靠右（連續）
+        ['flex-start',  '8%', 18,  -0.9],  // 靠左，間距大
+        ['flex-start',  '4%',  8,   1.4],  // 靠左
+        ['flex-end',    '5%', 14,  -0.5],  // 靠右
+        ['flex-start', '10%', 10,   2.0],  // 靠左，間距大
+        ['flex-end',    '3%',  8,  -1.8],  // 靠右
+        ['flex-start',  '6%', 12,   0.6],  // 靠左
+        ['flex-end',    '7%', 16,  -0.4],  // 靠右
+        ['flex-start',  '4%',  8,   1.2],  // 靠左
       ];
 
-      substances.forEach((sub, i) => {
+      shuffledSubstances.forEach((sub, i) => {
         const btn = document.createElement('div');
         btn.className = 'ag-capsule-btn';
         btn.textContent = sub.name;
         btn.dataset.id = sub.id;
         btn.dataset.cat = sub.category;
 
-        const layout = capsuleLayouts[i] || capsuleLayouts[i % capsuleLayouts.length];
-        const [w, align, mSide, mBottom, rot, h, radius] = layout;
+        // 形狀由文字長度自然決定：不硬塞，讓內容撑出寬度
+        // 只設定 padding，寬度自然流動，不強制指定寬度
+        btn.style.padding = '0 20px';
+        btn.style.height = '46px';
+        btn.style.borderRadius = '999px'; // 所有膠囊都是橢圓，形狀差異來自文字長度
+        btn.style.whiteSpace = 'nowrap';
+        btn.style.display = 'inline-flex'; // 讓寬度自然適配文字
 
-        btn.style.width = `clamp(130px, ${w}%, 360px)`;
-        btn.style.height = `${h}px`;
-        btn.style.borderRadius = `${radius}px`;
+        const [align, mSide, mBottom, rot] = posLayouts[i] || posLayouts[i % posLayouts.length];
         btn.style.alignSelf = align;
         btn.style.marginBottom = `${mBottom}px`;
         btn.style.transform = `rotate(${rot}deg)`;
-        // 儲存原始旋轉角度供 active 狀態使用
         btn.dataset.rot = rot;
         if (align === 'flex-end') {
           btn.style.marginRight = mSide;
