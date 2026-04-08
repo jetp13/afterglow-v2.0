@@ -127,20 +127,36 @@ var AgPlayer = (function () {
     }
 
     /* Web Audio 初始化（使用者手勢後呼叫）
-     * 採用 createMediaElementSource → analyser → destination
-     * 聲音走 AudioContext 輸出，熄屏時透過 visibilitychange 處理 */
+     *
+     * 使用 captureStream() 而非 createMediaElementSource()。
+     * captureStream() 只複製一份串流給 AudioContext 分析，
+     * 不接管 audio element 的原生輸出路由。
+     * 熄屏後聲音繼續走原生 HTMLAudioElement → 系統，
+     * AudioContext 被 suspend 只影響視覺分析，不影響聲音。
+     *
+     * 相容性：iOS Safari 不支援 captureStream()，
+     * 偵測到不支援時直接跳過（光環退回 CSS 動畫，聲音不受影響）。
+     */
     function initWebAudio() {
       if (audioCtx || !orbRing) return;
+      if (typeof audio.captureStream !== 'function' &&
+          typeof audio.mozCaptureStream !== 'function') {
+        /* 不支援 captureStream（例如 iOS Safari）：直接用 CSS 動畫 */
+        return;
+      }
       try {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        var src = audioCtx.createMediaElementSource(audio);
+        var stream = audio.captureStream
+          ? audio.captureStream()
+          : audio.mozCaptureStream();
+        var streamSrc = audioCtx.createMediaStreamSource(stream);
         analyser = audioCtx.createAnalyser();
         analyser.fftSize = 128;
         analyser.smoothingTimeConstant = 0.6;
         freqBuf = new Uint8Array(analyser.frequencyBinCount);
-        /* 聲音路由：src → analyser → destination（保持正常輸出）*/
-        src.connect(analyser);
-        analyser.connect(audioCtx.destination);
+        /* 分析路由：streamSrc → analyser（不接 destination，純分析）
+         * 原生輸出路由完全不受影響 */
+        streamSrc.connect(analyser);
       } catch (e) {
         audioCtx = null;
       }
