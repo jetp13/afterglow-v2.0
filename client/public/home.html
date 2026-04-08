@@ -80,14 +80,25 @@
      *   4. 穩定點亮（等離子體建立）
      * 節奏短、克制、有物理感，不戲劇化
      */
+    /*
+     * agLogoIgnite 節奏設計：切分音感
+     * 前段長暗（燈絲預熱，等待感）
+     * 後段急促：一次輕閃→极短暗期→穩定點亮，全部在後 40% 內完成
+     * 總長 1.4s
+     */
     @keyframes agLogoIgnite {
-      0%   { opacity: 0.15; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      18%  { opacity: 0.15; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      22%  { opacity: 0.72; filter: drop-shadow(0 0 1px rgba(255,255,255,0.8)) drop-shadow(0 0 4px rgba(255,255,255,0.3)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      28%  { opacity: 0.30; filter: drop-shadow(0 0 0.5px rgba(255,255,255,0.4)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      38%  { opacity: 0.30; filter: drop-shadow(0 0 0.5px rgba(255,255,255,0.4)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      52%  { opacity: 1;    filter: drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 8px rgba(255,255,255,0.45)) drop-shadow(0 0 20px rgba(255,255,255,0.18)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      72%  { opacity: 1;    filter: drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 5px rgba(255,255,255,0.35)) drop-shadow(0 0 14px rgba(255,255,255,0.14)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      /* 前段：長暗，燈絲預熱 */
+      0%   { opacity: 0.12; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      45%  { opacity: 0.12; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+
+      /* 後段：切分音急促收尾 */
+      /* 第一次放電：輕閃，很短 */
+      52%  { opacity: 0.65; filter: drop-shadow(0 0 1px rgba(255,255,255,0.75)) drop-shadow(0 0 3px rgba(255,255,255,0.25)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      /* 暗期：极短 */
+      58%  { opacity: 0.10; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      /* 穩定點亮：一次到位 */
+      70%  { opacity: 1;    filter: drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 6px rgba(255,255,255,0.40)) drop-shadow(0 0 16px rgba(255,255,255,0.16)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      /* 光暈收斂至静止狀態 */
       100% { opacity: 1;    filter: drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 5px rgba(255,255,255,0.35)) drop-shadow(0 0 14px rgba(255,255,255,0.14)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
     }
 
@@ -110,7 +121,7 @@
     }
     /* 初次載入觸發動畫 */
     .ag-logo--igniting {
-      animation: agLogoIgnite 1.1s ease-out 1 forwards;
+      animation: agLogoIgnite 1.4s ease-out 1 forwards;
     }
 
     /* 若使用者偏好減少動態，直接顯示穩定亮起狀態 */
