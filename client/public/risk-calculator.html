@@ -117,7 +117,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      /* border-radius & height 由 JS 動態設定，實現每顆膠囊的形狀個性 */
+      /* border-radius, border-width, height 由 JS 動態設定，實現每顆膠囊的形狀個性 */
       font-size: 14px;
       font-weight: 400;
       letter-spacing: 0.06em;
@@ -125,7 +125,8 @@
       cursor: pointer;
       white-space: nowrap;
       background: rgba(255,255,255,0.02);
-      border: 1px solid rgba(255,255,255,0.12);
+      border-style: solid;
+      border-color: rgba(255,255,255,0.12);
       padding: 0 18px;
       transition: box-shadow 0.35s ease, background 0.35s ease, transform 0.35s ease;
     }
@@ -587,7 +588,6 @@
       capsuleGrid.innerHTML = '';
 
       // 打散順序：顏色混雜，不按類別聚集
-      // 排列逿輯：同類色不連續出現，讓人慢慢自己發現規律
       const shuffledSubstances = [
         substances.find(s => s.id === 'mdma'),       // 紅
         substances.find(s => s.id === 'alcohol'),    // 藍
@@ -606,24 +606,27 @@
         substances.find(s => s.id === 'etomidate'),  // 藍
       ].filter(Boolean);
 
-      // 每顆膠囊的位置性格：[alignSelf, marginSide%, marginBottom(px), rotate(deg)]
-      // 排列打破左右左右的規律：連續同側、偏中、跳跟、間距不同
-      const posLayouts = [
-        ['flex-end',    '4%',  8,  -1.2],  // 靠右
-        ['flex-start',  '7%', 14,   0.4],  // 靠左
-        ['flex-start',  '3%', 10,  -0.6],  // 靠左（連續）
-        ['flex-end',    '9%', 16,   1.8],  // 靠右，間距大
-        ['flex-start',  '5%',  8,   0.8],  // 靠左
-        ['flex-end',    '2%', 12,  -1.6],  // 靠右，小間距
-        ['flex-end',    '6%', 10,   0.3],  // 靠右（連續）
-        ['flex-start',  '8%', 18,  -0.9],  // 靠左，間距大
-        ['flex-start',  '4%',  8,   1.4],  // 靠左
-        ['flex-end',    '5%', 14,  -0.5],  // 靠右
-        ['flex-start', '10%', 10,   2.0],  // 靠左，間距大
-        ['flex-end',    '3%',  8,  -1.8],  // 靠右
-        ['flex-start',  '6%', 12,   0.6],  // 靠左
-        ['flex-end',    '7%', 16,  -0.4],  // 靠右
-        ['flex-start',  '4%',  8,   1.2],  // 靠左
+      // 每顆膠囊的個性：[alignSelf, marginSide, marginBottom(px), rotate(deg), borderRadius, borderWidth(px), glowSpread(px)]
+      // 圓角：999px=完全膠囊 / 22-28px=偏橢圓方形 / 14-16px=接近方形
+      // 光暈：glowSpread 小=暗管 / 大=亮管
+      // 管線：borderWidth 1px=細管 / 2px=粗管
+      // 排列：打破左右交替，有時連續同側，有時跳
+      const capsulePersonalities = [
+        ['flex-end',   '5%',  10,  -0.8,  '999px', 1.5,  8],   // 靠右，細管，標準膠囊
+        ['flex-start', '8%',  16,   0.5,  '22px',  1,   14],   // 靠左，暗管，偏方
+        ['flex-start', '4%',   8,  -0.4,  '999px', 2,    6],   // 靠左連續，粗管，完全橢圓
+        ['flex-end',  '10%',  18,   1.2,  '18px',  1.5, 10],   // 靠右，中等圓角
+        ['flex-start', '6%',   6,   0.3,  '999px', 1,   16],   // 靠左，亮管
+        ['flex-end',   '3%',  12,  -1.4,  '26px',  2,    8],   // 靠右，粗管，偏方
+        ['flex-end',   '7%',   8,   0.6,  '999px', 1.5, 12],   // 靠右連續，標準
+        ['flex-start', '9%',  20,  -0.7,  '14px',  1,    6],   // 靠左，暗管，最方
+        ['flex-start', '5%',   8,   1.0,  '999px', 2,   18],   // 靠左，粗管，亮
+        ['flex-end',   '4%',  14,  -0.3,  '20px',  1.5, 10],   // 靠右
+        ['flex-start','11%',  10,   1.8,  '999px', 1,    8],   // 靠左，細管，偏遠
+        ['flex-end',   '2%',   8,  -1.6,  '24px',  2,   14],   // 靠右，粗管
+        ['flex-start', '7%',  12,   0.4,  '999px', 1.5,  6],   // 靠左，暗管
+        ['flex-end',   '6%',  16,  -0.5,  '16px',  1,   12],   // 靠右，接近方形
+        ['flex-start', '4%',   8,   0.9,  '999px', 2,   10],   // 靠左，粗管
       ];
 
       shuffledSubstances.forEach((sub, i) => {
@@ -633,15 +636,20 @@
         btn.dataset.id = sub.id;
         btn.dataset.cat = sub.category;
 
-        // 形狀由文字長度自然決定：不硬塞，讓內容撑出寬度
-        // 只設定 padding，寬度自然流動，不強制指定寬度
+        const [align, mSide, mBottom, rot, radius, bw, glow] = capsulePersonalities[i] || capsulePersonalities[i % capsulePersonalities.length];
+
+        // 形狀由文字長度自然撐出，不強制寬度
+        btn.style.display = 'inline-flex';
         btn.style.padding = '0 20px';
         btn.style.height = '46px';
-        btn.style.borderRadius = '999px'; // 所有膠囊都是橢圓，形狀差異來自文字長度
+        btn.style.borderRadius = radius;
+        btn.style.borderWidth = `${bw}px`;
         btn.style.whiteSpace = 'nowrap';
-        btn.style.display = 'inline-flex'; // 讓寬度自然適配文字
+        // 儲存光暈強度供 active 狀態使用
+        btn.dataset.glow = glow;
+        btn.dataset.bw = bw;
+        btn.dataset.radius = radius;
 
-        const [align, mSide, mBottom, rot] = posLayouts[i] || posLayouts[i % posLayouts.length];
         btn.style.alignSelf = align;
         btn.style.marginBottom = `${mBottom}px`;
         btn.style.transform = `rotate(${rot}deg)`;
