@@ -42,12 +42,13 @@
 
     .ag-breathing-wrapper {
       position: relative;
-      width: 240px;
-      height: 240px;
+      width: min(240px, 55vmin);
+      height: min(240px, 55vmin);
+      flex-shrink: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 40px;
+      margin-bottom: 32px;
     }
 
     .ag-circle-glow {
