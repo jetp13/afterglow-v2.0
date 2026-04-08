@@ -587,77 +587,92 @@
     function initCapsuleGrid() {
       capsuleGrid.innerHTML = '';
 
-      // 打散順序：顏色混雜，不按類別聚集
-      const shuffledSubstances = [
-        substances.find(s => s.id === 'mdma'),       // 紅
-        substances.find(s => s.id === 'alcohol'),    // 藍
-        substances.find(s => s.id === 'mushrooms'),  // 綠
-        substances.find(s => s.id === 'meth'),       // 紅
-        substances.find(s => s.id === 'ghb'),        // 藍
-        substances.find(s => s.id === 'lsd'),        // 綠
-        substances.find(s => s.id === 'cocaine'),    // 紅
-        substances.find(s => s.id === 'opioids'),    // 藍
-        substances.find(s => s.id === 'poppers'),    // 紫
-        substances.find(s => s.id === 'caffeine'),   // 紅
-        substances.find(s => s.id === 'ketamine'),   // 藍
-        substances.find(s => s.id === 'cannabis'),   // 綠
-        substances.find(s => s.id === 'viagra'),     // 紫
-        substances.find(s => s.id === 'benzos'),     // 藍
-        substances.find(s => s.id === 'etomidate'),  // 藍
-      ].filter(Boolean);
+      // 每種物質的形狀語言：形狀由物質實體型態抄象决定，大小由場景常見度決定
+      // 格式：{ id, align, marginSide, marginBottom, rotate, borderRadius, height, paddingH, borderWidth, glowSpread }
+      // borderRadius: 999px=完全膠囊 | 40-60px=寬扁橢圓 | 16-24px=偏方 | 6-10px=鎖角方形
+      // height: 大=常見/重要 | 小=邊緣/輔助
+      const substanceShapes = {
+        // MDMA: 橫蹲藥丸形，常見度高，寬扁完全膠囊
+        'mdma':      { align: 'flex-end',   mSide: '4%',  mBottom: 8,  rot: -1.2, radius: '999px', h: 52, pH: 28, bw: 2,   glow: 16 },
+        // 酒精: 酒杯寬扁，常見度高，寬扁偏矮
+        'alcohol':   { align: 'flex-start', mSide: '3%',  mBottom: 6,  rot:  0.8, radius: '999px', h: 44, pH: 26, bw: 1.5, glow: 12 },
+        // 迷幻蘑菇: 有機圓潤，偏圓潤膠囊
+        'mushrooms': { align: 'flex-start', mSide: '9%',  mBottom: 5,  rot:  2.1, radius: '60px',  h: 48, pH: 22, bw: 1.5, glow: 14 },
+        // 安非他命: 冒晶鎖角，常見度最高，偏高鎖角
+        'meth':      { align: 'flex-end',   mSide: '2%',  mBottom: 10, rot: -2.8, radius: '8px',   h: 58, pH: 24, bw: 2,   glow: 18 },
+        // G水: 液體水滴，常見度高，偏高細橢圓
+        'ghb':       { align: 'flex-start', mSide: '12%', mBottom: 6,  rot:  1.5, radius: '999px', h: 56, pH: 18, bw: 2,   glow: 16 },
+        // LSD: 郵票小方塊，偏方形偏小
+        'lsd':       { align: 'flex-end',   mSide: '14%', mBottom: 5,  rot: -1.8, radius: '12px',  h: 42, pH: 20, bw: 1,   glow: 10 },
+        // 古柯鹼: 粉末細長，常見度中，細長膠囊
+        'cocaine':   { align: 'flex-start', mSide: '5%',  mBottom: 7,  rot:  0.6, radius: '999px', h: 40, pH: 32, bw: 1.5, glow: 10 },
+        // 海洛因: 粉末/注射，常見度中，偏寬扁方形
+        'opioids':   { align: 'flex-end',   mSide: '6%',  mBottom: 8,  rot: -0.5, radius: '18px',  h: 50, pH: 22, bw: 2,   glow: 12 },
+        // RUSH: 小瓶細長，輔助性常見，細長偏方
+        'poppers':   { align: 'flex-start', mSide: '16%', mBottom: 5,  rot:  3.2, radius: '14px',  h: 54, pH: 16, bw: 1.5, glow: 14 },
+        // 咊啊因: 輔助性，常見度低，偏小膠囊
+        'caffeine':  { align: 'flex-end',   mSide: '18%', mBottom: 4,  rot: -0.4, radius: '999px', h: 38, pH: 18, bw: 1,   glow:  6 },
+        // K他命: 粉末鎖角，常見度高，鎖角偏方
+        'ketamine':  { align: 'flex-start', mSide: '4%',  mBottom: 8,  rot:  1.0, radius: '10px',  h: 50, pH: 22, bw: 2,   glow: 14 },
+        // 大麻: 葉片有機，偏圓潤寬扁
+        'cannabis':  { align: 'flex-end',   mSide: '8%',  mBottom: 6,  rot: -1.6, radius: '50px',  h: 46, pH: 24, bw: 1.5, glow: 12 },
+        // 威而剛: 菱形V字，輔助性，偏方形偏小
+        'viagra':    { align: 'flex-start', mSide: '20%', mBottom: 5,  rot:  2.4, radius: '10px',  h: 42, pH: 20, bw: 1,   glow:  8 },
+        // 鎮靜劑: 常見度中，偏寬扁膠囊
+        'benzos':    { align: 'flex-end',   mSide: '5%',  mBottom: 7,  rot: -0.9, radius: '999px', h: 46, pH: 24, bw: 1.5, glow: 10 },
+        // 依托: 黎床專業用，常見度低，細長偏方
+        'etomidate': { align: 'flex-start', mSide: '22%', mBottom: 4,  rot:  1.8, radius: '16px',  h: 40, pH: 18, bw: 1,   glow:  8 },
+      };
 
-      // 每顆膠囊的個性：[alignSelf, marginSide, marginBottom(px), rotate(deg), borderRadius, borderWidth(px), glowSpread(px)]
-      // 圓角：999px=完全膠囊 / 22-28px=偏橢圓方形 / 14-16px=接近方形
-      // 光暈：glowSpread 小=暗管 / 大=亮管
-      // 管線：borderWidth 1px=細管 / 2px=粗管
-      // 排列：打破左右交替，有時連續同側，有時跳
-      const capsulePersonalities = [
-        ['flex-end',   '5%',   6,  -0.8,  '999px', 1.5,  8],   // 靠右，細管，標準膠囊
-        ['flex-start', '8%',   8,   0.5,  '22px',  1,   14],   // 靠左，暗管，偏方
-        ['flex-start', '4%',   4,  -0.4,  '999px', 2,    6],   // 靠左連續，粗管，完全橢圓
-        ['flex-end',  '10%',  10,   1.2,  '18px',  1.5, 10],   // 靠右，中等圓角
-        ['flex-start', '6%',   4,   0.3,  '999px', 1,   16],   // 靠左，亮管
-        ['flex-end',   '3%',   6,  -1.4,  '26px',  2,    8],   // 靠右，粗管，偏方
-        ['flex-end',   '7%',   4,   0.6,  '999px', 1.5, 12],   // 靠右連續，標準
-        ['flex-start', '9%',  10,  -0.7,  '14px',  1,    6],   // 靠左，暗管，最方
-        ['flex-start', '5%',   4,   1.0,  '999px', 2,   18],   // 靠左，粗管，亮
-        ['flex-end',   '4%',   6,  -0.3,  '20px',  1.5, 10],   // 靠右
-        ['flex-start','11%',   4,   1.8,  '999px', 1,    8],   // 靠左，細管，偏遠
-        ['flex-end',   '2%',   4,  -1.6,  '24px',  2,   14],   // 靠右，粗管
-        ['flex-start', '7%',   6,   0.4,  '999px', 1.5,  6],   // 靠左，暗管
-        ['flex-end',   '6%',   8,  -0.5,  '16px',  1,   12],   // 靠右，接近方形
-        ['flex-start', '4%',   4,   0.9,  '999px', 2,   10],   // 靠左，粗管
+      // 排列順序：顏色混雜，大小交錯，打破規律
+      const orderedIds = [
+        'meth',      // 紅 大
+        'alcohol',   // 藍 中
+        'ghb',       // 藍 高
+        'mdma',      // 紅 寬
+        'mushrooms', // 綠 偏圓
+        'ketamine',  // 藍 鎖角
+        'cocaine',   // 紅 細
+        'opioids',   // 藍 偏方
+        'poppers',   // 紫 細長
+        'lsd',       // 綠 小方
+        'cannabis',  // 綠 寬圓
+        'benzos',    // 藍 膠囊
+        'viagra',    // 紫 小方
+        'caffeine',  // 紅 小
+        'etomidate', // 藍 細長
       ];
 
-      shuffledSubstances.forEach((sub, i) => {
+      orderedIds.forEach(id => {
+        const sub = substances.find(s => s.id === id);
+        if (!sub) return;
+        const s = substanceShapes[id];
+        if (!s) return;
+
         const btn = document.createElement('div');
         btn.className = 'ag-capsule-btn';
         btn.textContent = sub.name;
         btn.dataset.id = sub.id;
         btn.dataset.cat = sub.category;
 
-        const [align, mSide, mBottom, rot, radius, bw, glow] = capsulePersonalities[i] || capsulePersonalities[i % capsulePersonalities.length];
-
-        // 形狀由文字長度自然撐出，不強制寬度
         btn.style.display = 'inline-flex';
-        btn.style.padding = '0 20px';
-        btn.style.height = '46px';
-        btn.style.borderRadius = radius;
-        btn.style.borderWidth = `${bw}px`;
+        btn.style.padding = `0 ${s.pH}px`;
+        btn.style.height = `${s.h}px`;
+        btn.style.borderRadius = s.radius;
+        btn.style.borderWidth = `${s.bw}px`;
         btn.style.whiteSpace = 'nowrap';
-        // 儲存光暈強度供 active 狀態使用
-        btn.dataset.glow = glow;
-        btn.dataset.bw = bw;
-        btn.dataset.radius = radius;
+        btn.dataset.glow = s.glow;
+        btn.dataset.bw = s.bw;
+        btn.dataset.radius = s.radius;
 
-        btn.style.alignSelf = align;
-        btn.style.marginBottom = `${mBottom}px`;
-        btn.style.transform = `rotate(${rot}deg)`;
-        btn.dataset.rot = rot;
-        if (align === 'flex-end') {
-          btn.style.marginRight = mSide;
+        btn.style.alignSelf = s.align;
+        btn.style.marginBottom = `${s.mBottom}px`;
+        btn.style.transform = `rotate(${s.rot}deg)`;
+        btn.dataset.rot = s.rot;
+        if (s.align === 'flex-end') {
+          btn.style.marginRight = s.mSide;
         } else {
-          btn.style.marginLeft = mSide;
+          btn.style.marginLeft = s.mSide;
         }
         btn.style.transition = 'box-shadow 0.35s ease, background 0.35s ease, transform 0.35s ease';
         btn.onclick = () => toggleSubstance(sub, btn);
