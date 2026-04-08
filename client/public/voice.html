@@ -7,146 +7,12 @@
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#050505">
   <link rel="stylesheet" href="/assets/layout.css">
+  <link rel="stylesheet" href="/assets/ag-player.css">
   <script>
     if (localStorage.getItem('ag_consent') !== 'true') {
       window.location.href = '/index.html';
     }
   </script>
-  <style>
-    .ag-page-logo {
-      position: fixed;
-      top: calc(16px + env(safe-area-inset-top, 0px));
-      right: 20px;
-      z-index: 100;
-      display: block;
-      text-decoration: none;
-    }
-    .ag-page-logo img {
-      width: 110px;
-      opacity: 0.85;
-      display: block;
-    }
-
-    .ag-page-title-block {
-      padding: calc(88px + env(safe-area-inset-top, 0px)) 20px 8px;
-      flex-shrink: 0;
-      box-sizing: border-box;
-    }
-    .ag-page-title {
-      font-size: 13px; color: rgba(255,255,255,0.35);
-      letter-spacing: 0.08em; text-transform: uppercase; margin: 0;
-    }
-    .ag-page-title strong { color: rgba(255,255,255,0.55); font-weight: 500; }
-
-    /* ── Main scroll area fills remaining height ── */
-    .ag-main-scroll {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    /* ── Player: vertically centered in available space ── */
-    .ag-voice-player {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 28px 40px;
-      box-sizing: border-box;
-      gap: 0;
-    }
-
-    /* ── Neon ring ── */
-    .ag-orb-wrap {
-      position: relative;
-      width: 200px; height: 200px;
-      display: flex; align-items: center; justify-content: center;
-      margin-bottom: 28px; flex-shrink: 0;
-    }
-    .ag-orb-ring {
-      width: 150px; height: 150px;
-      border-radius: 50%;
-      border: 1.5px solid #bd00ff;
-      /* baseline glow — JS overrides this directly each frame */
-      box-shadow:
-        0 0 10px  rgba(189,0,255,0.55),
-        0 0 28px  rgba(189,0,255,0.22),
-        0 0 60px  rgba(189,0,255,0.08),
-        inset 0 0 10px rgba(189,0,255,0.06);
-      transform: scale(1);
-      transition: transform 0.12s ease-out;
-      will-change: box-shadow, transform;
-    }
-
-    /* ── Track info ── */
-    .ag-track-info { text-align: center; margin-bottom: 28px; }
-    .ag-track-title {
-      font-size: 20px; font-weight: 500;
-      color: rgba(255,255,255,0.90); letter-spacing: 0.03em; margin-bottom: 8px;
-    }
-    .ag-track-hint {
-      font-size: 13px; color: rgba(255,255,255,0.38);
-      letter-spacing: 0.04em; line-height: 1.6;
-    }
-
-    /* ── Progress bar ── */
-    .ag-progress-wrap { width: 100%; margin-bottom: 10px; }
-    .ag-progress-bar {
-      width: 100%; height: 4px; border-radius: 2px;
-      cursor: pointer; appearance: none; -webkit-appearance: none; outline: none;
-      background: rgba(255,255,255,0.08);
-    }
-    .ag-progress-bar::-webkit-slider-runnable-track {
-      height: 4px; border-radius: 2px;
-      background: linear-gradient(to right,
-        #bd00ff var(--progress, 0%),
-        rgba(255,255,255,0.08) var(--progress, 0%));
-      box-shadow: 0 0 6px rgba(189,0,255,0.5);
-    }
-    .ag-progress-bar::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 12px; height: 12px; border-radius: 50%;
-      background: #bd00ff;
-      border: 1.5px solid rgba(255,255,255,0.6);
-      box-shadow: 0 0 6px rgba(189,0,255,0.9), 0 0 14px rgba(189,0,255,0.5);
-      cursor: pointer; margin-top: -4px;
-    }
-    .ag-progress-times {
-      display: flex; justify-content: space-between;
-      font-size: 11px; color: rgba(255,255,255,0.28);
-      margin-top: 6px; letter-spacing: 0.04em;
-    }
-
-    /* ── Controls ── */
-    .ag-controls {
-      display: flex; align-items: center; justify-content: center;
-      gap: 36px; margin-top: 20px;
-    }
-    .ag-ctrl-btn {
-      background: none; border: none; cursor: pointer; padding: 8px;
-      color: rgba(255,255,255,0.5); line-height: 1;
-      transition: color 0.2s;
-      display: flex; align-items: center; justify-content: center;
-    }
-    .ag-ctrl-btn:hover { color: rgba(255,255,255,0.85); }
-    .ag-ctrl-btn.ag-play-btn {
-      width: 64px; height: 64px; border-radius: 50%;
-      border: 1.5px solid rgba(189,0,255,0.5);
-      color: rgba(189,0,255,0.9);
-      box-shadow: 0 0 16px rgba(189,0,255,0.2);
-      transition: border-color 0.2s, color 0.2s, box-shadow 0.2s;
-    }
-    .ag-ctrl-btn.ag-play-btn:hover {
-      border-color: rgba(189,0,255,0.9);
-      box-shadow: 0 0 28px rgba(189,0,255,0.4);
-      color: #bd00ff;
-    }
-    .ag-status-text {
-      font-size: 12px; color: rgba(255,255,255,0.25);
-      text-align: center; margin-top: 16px; letter-spacing: 0.06em;
-    }
-  </style>
 </head>
 <body class="ag-page">
 
@@ -161,17 +27,20 @@
   </div>
 
   <div class="ag-main-scroll">
-    <section class="ag-voice-player" aria-label="語音引導播放器">
+    <section class="ag-player ag-player--voice" aria-label="語音引導播放器">
 
-      <div class="ag-orb-wrap" aria-hidden="true">
+      <!-- 視覺：霓虹光環 -->
+      <div class="ag-player-visual ag-player-visual--voice" aria-hidden="true">
         <div class="ag-orb-ring" id="agOrbRing"></div>
       </div>
 
+      <!-- 曲目資訊 -->
       <div class="ag-track-info">
         <p class="ag-track-title">進入狀態</p>
         <p class="ag-track-hint">戴上耳機，閉上眼睛，讓聲音帶你慢慢進入</p>
       </div>
 
+      <!-- 進度條 -->
       <div class="ag-progress-wrap">
         <input type="range" class="ag-progress-bar" id="agProgressBar"
           min="0" max="100" value="0" step="0.1"
@@ -182,7 +51,9 @@
         </div>
       </div>
 
+      <!-- 控制列 -->
       <div class="ag-controls">
+
         <button class="ag-ctrl-btn" id="agRewindBtn" aria-label="倒退 15 秒">
           <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
             <path d="M14 5.5C9.306 5.5 5.5 9.306 5.5 14s3.806 8.5 8.5 8.5 8.5-3.806 8.5-8.5"
@@ -220,6 +91,7 @@
               font-family="system-ui,sans-serif" font-weight="300" fill="currentColor">15</text>
           </svg>
         </button>
+
       </div>
 
       <p class="ag-status-text" id="agStatusText">點擊播放開始引導</p>
@@ -246,183 +118,37 @@
     </div>
   </footer>
 
+  <script src="/assets/ag-player.js"></script>
   <script>
-  /* ══════════════════════════════════════════════════════════════════════
-     AUDIO-REACTIVE NEON RING GLOW
-     ──────────────────────────────────────────────────────────────────────
-     Strategy:
-       1. Web Audio API: AnalyserNode reads frequency data each rAF frame
-       2. Raw RMS volume is boosted with a non-linear curve so mid-range
-          speech (not just loud peaks) produces visible visual change
-       3. Smoothed with asymmetric lerp (fast attack, slow decay)
-       4. Mapped to: blur radius, spread, opacity, and subtle scale
-       5. All values clamped to avoid distortion
-       6. Falls back to CSS-only idle breathing when paused
-  ══════════════════════════════════════════════════════════════════════ */
+    AgPlayer.init({
+      audioId:       'agAudio',
+      playBtnId:     'agPlayBtn',
+      progressBarId: 'agProgressBar',
+      currentTimeId: 'agCurrentTime',
+      durationId:    'agDuration',
+      rewindBtnId:   'agRewindBtn',
+      forwardBtnId:  'agForwardBtn',
+      orbRingId:     'agOrbRing',
+      statusTextId:  'agStatusText',
+      iconPlayId:    'iconPlay',
+      iconPauseId:   'iconPause',
+      iconReplayId:  'iconReplay',
+      isLoop:        false,
+      mediaTitle:    '語音引導 · 進入狀態',
+      mediaArtist:   'Afterglow',
+      artworkSrc:    '/assets/icons/icon-192x192.png',
+      artworkSrc512: '/assets/icons/icon-512x512.png',
+      statusPlaying: '引導進行中 · 放鬆呼吸',
+      statusPaused:  '已暫停',
+      statusIdle:    '點擊播放開始引導',
+      statusEnded:   '引導結束 · 慢慢回來'
+    });
 
-    const audio        = document.getElementById('agAudio');
-    const playBtn      = document.getElementById('agPlayBtn');
-    const progressBar  = document.getElementById('agProgressBar');
-    const currentTimeEl= document.getElementById('agCurrentTime');
-    const durationEl   = document.getElementById('agDuration');
-    const statusText   = document.getElementById('agStatusText');
-    const rewindBtn    = document.getElementById('agRewindBtn');
-    const forwardBtn   = document.getElementById('agForwardBtn');
-    const iconPlay     = document.getElementById('iconPlay');
-    const iconPause    = document.getElementById('iconPause');
-    const iconReplay   = document.getElementById('iconReplay');
-    const orbRing      = document.getElementById('agOrbRing');
-
-    let audioCtx = null, analyser = null, freqBuf = null;
-    let smoothVol = 0;
-    let isPlaying = false;
-    let rafId = null;
-
-    /* ── Icon helper ── */
-    function showIcon(w) {
-      iconPlay.style.display   = w === 'play'   ? '' : 'none';
-      iconPause.style.display  = w === 'pause'  ? '' : 'none';
-      iconReplay.style.display = w === 'replay' ? '' : 'none';
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js');
+      });
     }
-    function fmt(s) {
-      if (!isFinite(s)) return '--:--';
-      return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0');
-    }
-
-    /* ── Web Audio init (must be inside user gesture) ── */
-    function initAudio() {
-      if (audioCtx) return;
-      try {
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        const src = audioCtx.createMediaElementSource(audio);
-        analyser  = audioCtx.createAnalyser();
-        analyser.fftSize = 128;
-        analyser.smoothingTimeConstant = 0.6; /* lower = more responsive */
-        freqBuf = new Uint8Array(analyser.frequencyBinCount);
-        src.connect(analyser);
-        analyser.connect(audioCtx.destination);
-      } catch(e) { audioCtx = null; }
-    }
-
-    /* ── Non-linear boost curve: x^0.5 expands mid-range ── */
-    function boost(x) {
-      /* x: 0..1 raw normalized volume
-         Returns 0..1 with mid-range expanded */
-      const gained = Math.min(x * 3.5, 1.0); /* 3.5x gain */
-      return Math.pow(gained, 0.55);           /* sqrt-ish curve */
-    }
-
-    /* ── Apply glow to ring element ── */
-    function applyGlow(v) {
-      /* v: 0..1 boosted+smoothed volume
-         Idle baseline at v=0, strong reaction at v=1 */
-
-      /* blur radii */
-      const b1 = (10  + v * 22).toFixed(1);  /* inner:  10 → 32px */
-      const b2 = (28  + v * 44).toFixed(1);  /* mid:    28 → 72px */
-      const b3 = (60  + v * 60).toFixed(1);  /* outer:  60 → 120px */
-
-      /* alpha values */
-      const a1 = (0.55 + v * 0.40).toFixed(3); /* 0.55 → 0.95 */
-      const a2 = (0.22 + v * 0.38).toFixed(3); /* 0.22 → 0.60 */
-      const a3 = (0.08 + v * 0.22).toFixed(3); /* 0.08 → 0.30 */
-      const ai = (0.06 + v * 0.14).toFixed(3); /* inset: 0.06 → 0.20 */
-
-      /* subtle scale: 1.0 → 1.06 */
-      const sc = (1.0  + v * 0.06).toFixed(4);
-
-      orbRing.style.boxShadow =
-        `0 0 ${b1}px rgba(189,0,255,${a1}),` +
-        `0 0 ${b2}px rgba(189,0,255,${a2}),` +
-        `0 0 ${b3}px rgba(189,0,255,${a3}),` +
-        `inset 0 0 10px rgba(189,0,255,${ai})`;
-      orbRing.style.transform = `scale(${sc})`;
-    }
-
-    /* ── rAF glow loop ── */
-    function glowLoop() {
-      rafId = requestAnimationFrame(glowLoop);
-
-      let rawVol = 0;
-      if (analyser && isPlaying) {
-        analyser.getByteFrequencyData(freqBuf);
-        /* Focus on speech frequencies: bins ~4-24 (≈300Hz–3kHz at fftSize 128) */
-        let sum = 0, count = 0;
-        for (let i = 4; i < 28; i++) { sum += freqBuf[i]; count++; }
-        rawVol = sum / count / 255;
-      }
-
-      /* Asymmetric lerp: fast attack (0.35), slow decay (0.07) */
-      const lerpRate = rawVol > smoothVol ? 0.35 : 0.07;
-      smoothVol += (rawVol - smoothVol) * lerpRate;
-
-      /* Apply non-linear boost */
-      const v = boost(smoothVol);
-
-      applyGlow(v);
-    }
-
-    /* ── Playback ── */
-    audio.addEventListener('loadedmetadata', () => {
-      durationEl.textContent = fmt(audio.duration);
-      progressBar.max = audio.duration;
-    });
-
-    playBtn.addEventListener('click', () => {
-      if (audio.ended) audio.currentTime = 0;
-      if (audio.paused) {
-        initAudio();
-        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-        audio.play().catch(() => {});
-      } else {
-        audio.pause();
-      }
-    });
-
-    audio.addEventListener('play', () => {
-      isPlaying = true;
-      showIcon('pause');
-      playBtn.setAttribute('aria-label', '暫停');
-      statusText.textContent = '引導進行中 · 放鬆呼吸';
-    });
-
-    audio.addEventListener('pause', () => {
-      isPlaying = false;
-      showIcon('play');
-      playBtn.setAttribute('aria-label', '播放');
-      statusText.textContent = audio.currentTime > 0 ? '已暫停' : '點擊播放開始引導';
-      /* Decay glow back to baseline over ~1s */
-    });
-
-    audio.addEventListener('ended', () => {
-      isPlaying = false;
-      showIcon('replay');
-      playBtn.setAttribute('aria-label', '重新播放');
-      statusText.textContent = '引導結束 · 慢慢回來';
-      progressBar.value = 0;
-      progressBar.style.setProperty('--progress', '0%');
-      currentTimeEl.textContent = '0:00';
-    });
-
-    audio.addEventListener('timeupdate', () => {
-      const pct = audio.duration ? (audio.currentTime / audio.duration) * 100 : 0;
-      progressBar.value = audio.currentTime;
-      progressBar.style.setProperty('--progress', pct.toFixed(1) + '%');
-      currentTimeEl.textContent = fmt(audio.currentTime);
-    });
-
-    progressBar.addEventListener('input', () => {
-      audio.currentTime = progressBar.value;
-      const pct = audio.duration ? (progressBar.value / audio.duration) * 100 : 0;
-      progressBar.style.setProperty('--progress', pct.toFixed(1) + '%');
-    });
-
-    rewindBtn.addEventListener('click',  () => { audio.currentTime = Math.max(0, audio.currentTime - 15); });
-    forwardBtn.addEventListener('click', () => { audio.currentTime = Math.min(audio.duration || 0, audio.currentTime + 15); });
-
-    /* Start glow loop immediately so idle baseline is visible */
-    glowLoop();
   </script>
-
 </body>
 </html>

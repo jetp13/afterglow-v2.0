@@ -7,190 +7,12 @@
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#050505">
   <link rel="stylesheet" href="/assets/layout.css">
+  <link rel="stylesheet" href="/assets/ag-player.css">
   <script>
     if (localStorage.getItem('ag_consent') !== 'true') {
       window.location.href = '/index.html';
     }
   </script>
-  <style>
-    .ag-page-logo {
-      position: fixed;
-      top: calc(16px + env(safe-area-inset-top, 0px));
-      right: 20px;
-      z-index: 100;
-      display: block;
-      text-decoration: none;
-    }
-    .ag-page-logo img {
-      display: block;
-      width: 110px;
-      max-width: 38vw;
-      height: auto;
-      opacity: 0.85;
-    }
-
-    .ag-page-title-block {
-      padding: calc(88px + env(safe-area-inset-top, 0px)) 20px 8px;
-      flex-shrink: 0;
-      box-sizing: border-box;
-    }
-    .ag-page-title {
-      font-size: 13px;
-      color: rgba(255,255,255,0.35);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin: 0;
-    }
-    .ag-page-title strong {
-      color: rgba(255,255,255,0.55);
-      font-weight: 500;
-    }
-
-    .ag-main-scroll {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .ag-noise-player {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 40px 28px;
-      box-sizing: border-box;
-      gap: 0;
-    }
-
-    .ag-noise-visualizer {
-      width: 240px;
-      height: 240px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0) 70%);
-      position: relative;
-      margin-bottom: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.5s ease;
-    }
-    .ag-noise-visualizer::before {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 100%; height: 100%;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.1);
-      animation: pulse-ring 4s infinite linear;
-    }
-    .ag-noise-visualizer::after {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 80%; height: 80%;
-      border-radius: 50%;
-      border: 1px solid rgba(255,255,255,0.15);
-      animation: pulse-ring 4s infinite linear reverse;
-    }
-    @keyframes pulse-ring {
-      0%   { transform: translate(-50%,-50%) scale(0.85) rotate(0deg);   opacity: 0.3; }
-      50%  { transform: translate(-50%,-50%) scale(1.08) rotate(180deg); opacity: 0.55; }
-      100% { transform: translate(-50%,-50%) scale(0.85) rotate(360deg); opacity: 0.3; }
-    }
-    .ag-noise-visualizer.playing {
-      box-shadow: 0 0 40px rgba(255,255,255,0.08);
-    }
-    .ag-noise-visualizer.playing::before {
-      animation-duration: 3s;
-      border-color: rgba(255,255,255,0.25);
-    }
-    .ag-noise-icon {
-      width: 46px;
-      height: 46px;
-      z-index: 2;
-      opacity: 0.72;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .ag-noise-icon svg {
-      width: 100%;
-      height: 100%;
-      display: block;
-    }
-
-    .ag-track-info {
-      text-align: center;
-      margin-bottom: 36px;
-    }
-    .ag-track-title {
-      font-size: 22px;
-      font-weight: 300;
-      letter-spacing: 0.06em;
-      color: #fff;
-      margin: 0 0 6px;
-    }
-    .ag-track-hint {
-      font-size: 13px;
-      color: rgba(255,255,255,0.45);
-      margin: 0;
-      letter-spacing: 0.03em;
-    }
-
-    .ag-play-btn {
-      width: 64px;
-      height: 64px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(255,255,255,0.55);
-      background: none;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: border-color 0.2s, background 0.2s;
-      margin-bottom: 32px;
-    }
-    .ag-play-btn:hover {
-      border-color: rgba(255,255,255,0.9);
-      background: rgba(255,255,255,0.06);
-    }
-    .ag-play-btn.active {
-      border-color: rgba(255,255,255,0.9);
-      background: rgba(255,255,255,0.12);
-    }
-
-    .ag-volume-container {
-      width: 220px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      color: rgba(255,255,255,0.4);
-    }
-    .ag-volume-slider {
-      -webkit-appearance: none;
-      width: 100%;
-      height: 3px;
-      background: rgba(255,255,255,0.18);
-      border-radius: 2px;
-      outline: none;
-    }
-    .ag-volume-slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background: #fff;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    .ag-volume-slider::-webkit-slider-thumb:hover {
-      transform: scale(1.2);
-    }
-  </style>
 </head>
 <body class="ag-page">
 
@@ -205,10 +27,12 @@
   </div>
 
   <div class="ag-main-scroll">
-    <section class="ag-noise-player" aria-label="白噪音播放器">
+    <section class="ag-player" aria-label="白噪音播放器">
 
-      <div class="ag-noise-visualizer" id="visualizer">
-        <div class="ag-noise-icon" aria-hidden="true">
+      <!-- 視覺：脈衝環 -->
+      <div class="ag-player-visual ag-player-visual--noise" id="agVisual">
+        <div class="ag-visual-ring" id="agVisualRing"></div>
+        <div class="ag-visual-icon" aria-hidden="true">
           <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 18C16 16.2 20 16.2 24 18C28 19.8 32 19.8 36 18" stroke="rgba(255,255,255,0.78)" stroke-width="1.8" stroke-linecap="round"/>
             <path d="M12 24C16 22.2 20 22.2 24 24C28 25.8 32 25.8 36 24" stroke="rgba(255,255,255,0.92)" stroke-width="1.8" stroke-linecap="round"/>
@@ -217,31 +41,55 @@
         </div>
       </div>
 
+      <!-- 曲目資訊 -->
       <div class="ag-track-info">
         <p class="ag-track-title">專注與放鬆</p>
-        <p class="ag-track-hint">譳背景音幫你沉澱下來</p>
+        <p class="ag-track-hint">讓背景音幫你沉澱下來</p>
       </div>
 
-      <button class="ag-play-btn" id="playBtn" aria-label="播放/暫停">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      </button>
+      <!-- 進度條（白噪音為循環音，顯示已播放時間）-->
+      <div class="ag-progress-wrap">
+        <input type="range" class="ag-progress-bar" id="agProgressBar"
+          min="0" max="100" value="0" step="0.1"
+          aria-label="播放進度" style="--progress: 0%">
+        <div class="ag-progress-times">
+          <span id="agCurrentTime">0:00</span>
+          <span id="agDuration">--:--</span>
+        </div>
+      </div>
 
+      <!-- 控制列 -->
+      <div class="ag-controls">
+        <button class="ag-ctrl-btn ag-play-btn" id="agPlayBtn" aria-label="播放">
+          <svg id="iconPlay" width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <polygon points="8,4 20,12 8,20" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" fill="none"/>
+          </svg>
+          <svg id="iconPause" width="24" height="24" viewBox="0 0 24 24" fill="none" style="display:none">
+            <line x1="9" y1="5" x2="9" y2="19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <line x1="15" y1="5" x2="15" y2="19" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- 音量控制 -->
       <div class="ag-volume-container">
         <span aria-hidden="true">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><line x1="15" y1="10" x2="15" y2="14"/></svg>
         </span>
-        <input type="range" min="0" max="1" step="0.01" value="0.5" class="ag-volume-slider" id="volumeSlider" aria-label="音量調整">
+        <input type="range" min="0" max="1" step="0.01" value="0.5" class="ag-volume-slider" id="agVolumeSlider" aria-label="音量調整">
         <span aria-hidden="true">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.4)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-3px"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
         </span>
       </div>
 
-      <audio id="noiseAudio" loop preload="auto">
-        <source src="/assets/audio/fire-loop.mp3" type="audio/mpeg">
-      </audio>
+      <p class="ag-status-text" id="agStatusText">點擊播放</p>
 
     </section>
   </div>
+
+  <audio id="agAudio" loop preload="auto">
+    <source src="/assets/audio/fire-loop.mp3" type="audio/mpeg">
+  </audio>
 
   <footer class="ag-footer-standard">
     <div class="ag-footer__inner">
@@ -258,37 +106,32 @@
     </div>
   </footer>
 
+  <script src="/assets/ag-player.js"></script>
   <script>
-    const audio = document.getElementById('noiseAudio');
-    const playBtn = document.getElementById('playBtn');
-    const visualizer = document.getElementById('visualizer');
-    const volumeSlider = document.getElementById('volumeSlider');
-
-    audio.volume = volumeSlider.value;
-
-    const iconPlay = '<svg width="20" height="20" viewBox="0 0 24 24" fill="white" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>';
-    const iconPause = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>';
-
-    playBtn.addEventListener('click', () => {
-      if (audio.paused) {
-        audio.play();
-        playBtn.innerHTML = iconPause;
-        playBtn.classList.add('active');
-        visualizer.classList.add('playing');
-      } else {
-        audio.pause();
-        playBtn.innerHTML = iconPlay;
-        playBtn.classList.remove('active');
-        visualizer.classList.remove('playing');
-      }
-    });
-
-    volumeSlider.addEventListener('input', (e) => {
-      audio.volume = e.target.value;
+    AgPlayer.init({
+      audioId:        'agAudio',
+      playBtnId:      'agPlayBtn',
+      progressBarId:  'agProgressBar',
+      currentTimeId:  'agCurrentTime',
+      durationId:     'agDuration',
+      volumeSliderId: 'agVolumeSlider',
+      visualId:       'agVisual',
+      statusTextId:   'agStatusText',
+      iconPlayId:     'iconPlay',
+      iconPauseId:    'iconPause',
+      isLoop:         true,
+      mediaTitle:     '白噪音 · 專注與放鬆',
+      mediaArtist:    'Afterglow',
+      artworkSrc:     '/assets/icons/icon-192x192.png',
+      artworkSrc512:  '/assets/icons/icon-512x512.png',
+      statusPlaying:  '播放中 · 讓聲音帶你沉澱',
+      statusPaused:   '已暫停',
+      statusIdle:     '點擊播放',
+      statusEnded:    '播放結束'
     });
 
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
+      window.addEventListener('load', function () {
         navigator.serviceWorker.register('/sw.js');
       });
     }

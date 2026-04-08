@@ -1,0 +1,306 @@
+/*
+ * ag-player.css — Afterglow 共用音訊播放器樣式
+ * 適用於：white-noise.html、voice.html
+ * 設計原則：安靜、克制、乾淨，不做成商業音樂 App 風格
+ */
+
+/* ── 頁面 Logo（固定右上）── */
+.ag-page-logo {
+  position: fixed;
+  top: calc(16px + env(safe-area-inset-top, 0px));
+  right: 20px;
+  z-index: 100;
+  display: block;
+  text-decoration: none;
+}
+.ag-page-logo img {
+  display: block;
+  width: 110px;
+  max-width: 38vw;
+  height: auto;
+  opacity: 0.85;
+}
+
+/* ── 頁面標題區 ── */
+.ag-page-title-block {
+  padding: calc(88px + env(safe-area-inset-top, 0px)) 20px 8px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+.ag-page-title {
+  font-size: 13px;
+  color: rgba(255,255,255,0.35);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0;
+}
+.ag-page-title strong {
+  color: rgba(255,255,255,0.55);
+  font-weight: 500;
+}
+
+/* ── 播放器主容器 ── */
+.ag-player {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 28px;
+  box-sizing: border-box;
+  gap: 0;
+}
+
+/* ── 視覺元素容器（orb / visualizer）── */
+.ag-player-visual {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 32px;
+  flex-shrink: 0;
+}
+
+/* ── 白噪音：脈衝環 ── */
+.ag-player-visual--noise .ag-visual-ring {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0) 70%);
+  position: absolute;
+  transition: box-shadow 0.5s ease;
+}
+.ag-player-visual--noise .ag-visual-ring::before,
+.ag-player-visual--noise .ag-visual-ring::after {
+  content: '';
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.ag-player-visual--noise .ag-visual-ring::before {
+  width: 100%; height: 100%;
+  animation: agPulseRing 4s infinite linear;
+}
+.ag-player-visual--noise .ag-visual-ring::after {
+  width: 80%; height: 80%;
+  border-color: rgba(255,255,255,0.15);
+  animation: agPulseRing 4s infinite linear reverse;
+}
+.ag-player-visual--noise.playing .ag-visual-ring {
+  box-shadow: 0 0 40px rgba(255,255,255,0.08);
+}
+.ag-player-visual--noise.playing .ag-visual-ring::before {
+  animation-duration: 3s;
+  border-color: rgba(255,255,255,0.25);
+}
+@keyframes agPulseRing {
+  0%   { transform: translate(-50%,-50%) scale(0.85) rotate(0deg);   opacity: 0.3; }
+  50%  { transform: translate(-50%,-50%) scale(1.08) rotate(180deg); opacity: 0.55; }
+  100% { transform: translate(-50%,-50%) scale(0.85) rotate(360deg); opacity: 0.3; }
+}
+.ag-visual-icon {
+  width: 46px;
+  height: 46px;
+  z-index: 2;
+  opacity: 0.72;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.ag-visual-icon svg { width: 100%; height: 100%; display: block; }
+
+/* ── 語音引導：霓虹光環 ── */
+.ag-player-visual--voice .ag-orb-ring {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 1.5px solid #bd00ff;
+  box-shadow:
+    0 0 10px  rgba(189,0,255,0.55),
+    0 0 28px  rgba(189,0,255,0.22),
+    0 0 60px  rgba(189,0,255,0.08),
+    inset 0 0 10px rgba(189,0,255,0.06);
+  transform: scale(1);
+  transition: transform 0.12s ease-out;
+  will-change: box-shadow, transform;
+}
+
+/* ── 曲目資訊 ── */
+.ag-track-info {
+  text-align: center;
+  margin-bottom: 28px;
+}
+.ag-track-title {
+  font-size: 20px;
+  font-weight: 300;
+  letter-spacing: 0.06em;
+  color: rgba(255,255,255,0.90);
+  margin: 0 0 8px;
+}
+.ag-track-hint {
+  font-size: 13px;
+  color: rgba(255,255,255,0.40);
+  letter-spacing: 0.04em;
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* ── 進度條 ── */
+.ag-progress-wrap {
+  width: 100%;
+  max-width: 320px;
+  margin-bottom: 10px;
+}
+.ag-progress-bar {
+  width: 100%;
+  height: 4px;
+  border-radius: 2px;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+  outline: none;
+  background: rgba(255,255,255,0.08);
+}
+.ag-progress-bar::-webkit-slider-runnable-track {
+  height: 4px;
+  border-radius: 2px;
+  background: linear-gradient(to right,
+    rgba(255,255,255,0.65) var(--progress, 0%),
+    rgba(255,255,255,0.08) var(--progress, 0%));
+}
+/* 語音引導頁面覆寫：紫色進度 */
+.ag-player--voice .ag-progress-bar::-webkit-slider-runnable-track {
+  background: linear-gradient(to right,
+    #bd00ff var(--progress, 0%),
+    rgba(255,255,255,0.08) var(--progress, 0%));
+  box-shadow: 0 0 6px rgba(189,0,255,0.5);
+}
+.ag-progress-bar::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.9);
+  border: 1.5px solid rgba(255,255,255,0.6);
+  cursor: pointer;
+  margin-top: -4px;
+}
+.ag-player--voice .ag-progress-bar::-webkit-slider-thumb {
+  background: #bd00ff;
+  box-shadow: 0 0 6px rgba(189,0,255,0.9), 0 0 14px rgba(189,0,255,0.5);
+}
+.ag-progress-times {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: rgba(255,255,255,0.28);
+  margin-top: 6px;
+  letter-spacing: 0.04em;
+}
+
+/* ── 控制列 ── */
+.ag-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 36px;
+  margin-top: 20px;
+}
+.ag-ctrl-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: rgba(255,255,255,0.5);
+  line-height: 1;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ag-ctrl-btn:hover { color: rgba(255,255,255,0.85); }
+
+/* 主播放按鈕 */
+.ag-ctrl-btn.ag-play-btn {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255,255,255,0.55);
+  color: rgba(255,255,255,0.9);
+  transition: border-color 0.2s, color 0.2s, box-shadow 0.2s, background 0.2s;
+}
+.ag-ctrl-btn.ag-play-btn:hover {
+  border-color: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.06);
+}
+.ag-ctrl-btn.ag-play-btn.active {
+  border-color: rgba(255,255,255,0.9);
+  background: rgba(255,255,255,0.10);
+}
+/* 語音引導：紫色播放按鈕 */
+.ag-player--voice .ag-ctrl-btn.ag-play-btn {
+  border-color: rgba(189,0,255,0.5);
+  color: rgba(189,0,255,0.9);
+  box-shadow: 0 0 16px rgba(189,0,255,0.2);
+}
+.ag-player--voice .ag-ctrl-btn.ag-play-btn:hover {
+  border-color: rgba(189,0,255,0.9);
+  box-shadow: 0 0 28px rgba(189,0,255,0.4);
+  color: #bd00ff;
+  background: none;
+}
+.ag-player--voice .ag-ctrl-btn.ag-play-btn.active {
+  border-color: rgba(189,0,255,0.9);
+  box-shadow: 0 0 28px rgba(189,0,255,0.4);
+  background: rgba(189,0,255,0.08);
+}
+
+/* ── 音量控制（白噪音專用）── */
+.ag-volume-container {
+  width: 220px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255,255,255,0.4);
+  margin-top: 28px;
+}
+.ag-volume-slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 3px;
+  background: rgba(255,255,255,0.18);
+  border-radius: 2px;
+  outline: none;
+}
+.ag-volume-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #fff;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+.ag-volume-slider::-webkit-slider-thumb:hover { transform: scale(1.2); }
+
+/* ── 狀態文字 ── */
+.ag-status-text {
+  font-size: 12px;
+  color: rgba(255,255,255,0.25);
+  text-align: center;
+  margin-top: 16px;
+  letter-spacing: 0.06em;
+}
+
+/* ── 無障礙：減少動態 ── */
+@media (prefers-reduced-motion: reduce) {
+  .ag-player-visual--noise .ag-visual-ring::before,
+  .ag-player-visual--noise .ag-visual-ring::after {
+    animation: none;
+  }
+}
