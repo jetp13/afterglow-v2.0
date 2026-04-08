@@ -13,26 +13,25 @@
     }
   </script>
   <style>
-    .ag-inner-header {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: calc(14px + env(safe-area-inset-top)) 20px 10px;
-      box-sizing: border-box;
-      min-height: 64px;
-    }
-    /* 使用 layout.css 全域 .ag-back-button 樣式，不覆寫 */
-    .ag-inner-logo {
-      display: block; width: 110px; max-width: 38vw; height: auto;
-      opacity: 0.85; margin-top: 0;
-    }
-    .ag-inner-logo-link {
+    .ag-page-logo {
+      position: fixed;
+      top: calc(16px + env(safe-area-inset-top, 0px));
+      right: 20px;
+      z-index: 100;
       display: block;
       text-decoration: none;
-      flex-shrink: 0;
     }
-    .ag-page-title-block { padding: 0 20px 8px; flex-shrink: 0; }
+    .ag-page-logo img {
+      width: 110px;
+      opacity: 0.85;
+      display: block;
+    }
+
+    .ag-page-title-block {
+      padding: calc(88px + env(safe-area-inset-top, 0px)) 20px 8px;
+      flex-shrink: 0;
+      box-sizing: border-box;
+    }
     .ag-page-title {
       font-size: 13px; color: rgba(255,255,255,0.35);
       letter-spacing: 0.08em; text-transform: uppercase; margin: 0;
@@ -151,12 +150,11 @@
 </head>
 <body class="ag-page">
 
-  <header class="ag-inner-header">
-    <a href="/home.html" class="ag-back-button" aria-label="返回首頁"></a>
-    <a href="/home.html" class="ag-inner-logo-link" aria-label="回到首頁">
-      <img src="/assets/logo-handwritten-nobg.png" alt="Afterglow" class="ag-inner-logo">
-    </a>
-  </header>
+  <a href="/menu.html" class="ag-back-button" aria-label="返回選單"></a>
+
+  <a href="/home.html" class="ag-page-logo" aria-label="回到首頁">
+    <img src="/assets/logo-handwritten-nobg.png" alt="Afterglow">
+  </a>
 
   <div class="ag-page-title-block">
     <p class="ag-page-title"><strong>語音引導</strong> · VOICE GUIDE V1.0</p>
