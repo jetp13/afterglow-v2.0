@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>素傣揗建繜️Afterglow</title>
+  <title>緊急醫療與減害支援｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
   <script>
     // Check for consent immediately
@@ -12,24 +12,22 @@
     }
   </script>
   <style>
-    .ag-page-logo {
-      position: fixed;
-      top: calc(16px + env(safe-area-inset-top, 0px));
-      right: 20px;
-      z-index: 100;
-      display: block;
-      text-decoration: none;
-    }
-    .ag-page-logo img {
-      display: block;
-      width: 110px;
-      opacity: 0.85;
-    }
-
-    .ag-page-title-block {
-      padding: calc(88px + env(safe-area-inset-top, 0px)) 20px 8px;
+    /* ── Inner Header Shell ── */
+    /* NOTE: body height/overflow and .ag-page layout are defined in layout.css.
+       Do NOT override them here — overriding breaks the sticky footer. */
+    .ag-inner-header {
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: calc(14px + env(safe-area-inset-top)) 20px 10px;
       box-sizing: border-box;
+      min-height: 64px;
+    }
+    /* 使用 layout.css 全域 .ag-back-button 樣式，不覆寫 */
+    .ag-page-title-block {
+      padding: 0 20px 8px;
+      flex-shrink: 0;
     }
     .ag-page-title {
       font-size: 13px;
@@ -46,7 +44,7 @@
     }
 
     .ag-aid-title {
-      font-size: 24px;
+      font-size: 24px; /* 手機版字體微調 */
       color: #00e5ff;
       font-weight: bold;
       text-shadow: 0 0 20px rgba(0, 229, 255, 0.6);
@@ -59,10 +57,11 @@
       font-size: 14px;
     }
 
+    /* Emergency Call Buttons */
     .ag-emergency-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 12px; /* 手機版間距微調 */
       margin-bottom: 24px;
     }
 
@@ -107,6 +106,7 @@
     .ag-btn-label { font-size: 18px; }
     .ag-btn-desc { font-size: 12px; opacity: 0.8; font-weight: normal; margin-top: 4px; }
 
+    /* Section Headers */
     .ag-section-title {
       color: #00e5ff;
       font-size: 18px;
@@ -119,6 +119,7 @@
       gap: 8px;
     }
 
+    /* Process Steps */
     .ag-process-step {
       background: rgba(255, 255, 255, 0.03);
       border-radius: 12px;
@@ -153,6 +154,7 @@
       line-height: 1.5;
     }
 
+    /* Accordion Styles */
     .ag-accordion-item {
       margin-bottom: 15px;
       border-radius: 12px;
@@ -160,19 +162,22 @@
       background: rgba(255, 255, 255, 0.03);
       border: 1px solid rgba(255, 255, 255, 0.1);
     }
+    
     .ag-accordion-header {
-      padding: 16px 16px;
+      padding: 16px 16px; /* 增加點擊區域 */
       cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: rgba(255, 255, 255, 0.05);
       transition: background 0.3s ease;
-      min-height: 56px;
+      min-height: 56px; /* 確保最小點擊高度 */
     }
+    
     .ag-accordion-header:hover {
       background: rgba(255, 255, 255, 0.1);
     }
+    
     .ag-accordion-title {
       font-size: 16px;
       font-weight: bold;
@@ -181,26 +186,32 @@
       align-items: center;
       gap: 10px;
     }
+    
     .ag-accordion-icon {
       transition: transform 0.3s ease;
       color: #00e5ff;
     }
+    
     .ag-accordion-content {
       max-height: 0;
       overflow: hidden;
       transition: max-height 0.3s ease-out;
       padding: 0 20px;
     }
+    
     .ag-accordion-item.active .ag-accordion-icon {
       transform: rotate(180deg);
     }
+    
     .ag-accordion-item.active .ag-accordion-content {
-      max-height: 1000px;
+      max-height: 1000px; /* Large enough to fit content */
       padding: 20px;
       border-top: 1px solid rgba(255, 255, 255, 0.05);
     }
 
+    /* Substance Cards (Modified for Accordion) */
     .ag-substance-card {
+      /* Removed background/border as it's now handled by accordion item */
       background: transparent;
       border: none;
       padding: 0;
@@ -212,7 +223,11 @@
       align-items: center;
       margin-bottom: 15px;
     }
-    .ag-sub-title { color: #ff6bd9; font-size: 18px; font-weight: bold; }
+    .ag-sub-title {
+      color: #ff6bd9;
+      font-size: 18px;
+      font-weight: bold;
+    }
     .ag-sub-tag {
       background: rgba(255, 107, 217, 0.1);
       color: #ff6bd9;
@@ -220,7 +235,9 @@
       border-radius: 4px;
       font-size: 12px;
     }
-    .ag-sub-section { margin-bottom: 15px; }
+    .ag-sub-section {
+      margin-bottom: 15px;
+    }
     .ag-sub-label {
       color: #ddd;
       font-weight: bold;
@@ -235,7 +252,9 @@
     }
     .ag-sub-text li { margin-bottom: 4px; }
 
+    /* Legal Box (Modified for Accordion) */
     .ag-legal-box {
+      /* Removed background/border as it's now handled by accordion item */
       border: none;
       background: transparent;
       padding: 0;
@@ -253,6 +272,7 @@
       line-height: 1.6;
     }
 
+    /* Recovery Position SVG Grid */
     .ag-recovery-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -267,6 +287,7 @@
       justify-content: center;
     }
 
+    /* Footer Seal */
     .ag-seal-section {
       margin-top: 50px;
       padding-top: 20px;
@@ -291,239 +312,242 @@
 </head>
 <body class="ag-page">
 
-  <a href="/support-main.html" class="ag-back-button" aria-label="返回上一頁"></a>
-
-  <a href="/home.html" class="ag-page-logo" aria-label="返回首頁">
-    <img src="/assets/logo-handwritten-nobg.png" alt="Afterglow">
-  </a>
-
+  <!-- Inner Header: Back + Logo -->
+  <header class="ag-inner-header">
+    <a href="/support-main.html" class="ag-back-button" aria-label="返回上一頁"></a>
+    <a href="/home.html" aria-label="返回首頁">
+    <a href="/home.html" class="ag-site-logo" aria-label="回到首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
+    </a>
+  </header>
   <div class="ag-page-title-block">
-    <p class="ag-page-title">悖%��指弗 · Emergency Guide v1.2</p>
+    <p class="ag-page-title">急救指引 · Emergency Guide v1.2</p>
   </div>
 
   <div class="ag-main-scroll">
     <div class="ag-container ag-container-sm">
       <div class="ag-aid-header">
-        <h1 class="ag-aid-title ag-visually-hidden">級劚支壁与<br>減活支揃模組</h1>
+        <h1 class="ag-aid-title ag-visually-hidden">緊急醫療與<br>減害支援模組</h1>
       </div>
 
       <!-- Emergency Buttons -->
       <div class="ag-emergency-grid">
         <a href="tel:119" class="ag-emergency-btn ag-btn-119">
           <div class="ag-btn-icon"><span class="ag-neon-icon ag-icon-medical"></span></div>
-          <div class="ag-btn-label">搬打 119</div>
-          <div class="ag-btn-desc">消防與救譤</div>
+          <div class="ag-btn-label">撥打 119</div>
+          <div class="ag-btn-desc">消防與救護</div>
         </a>
         <a href="tel:110" class="ag-emergency-btn ag-btn-110">
           <div class="ag-btn-icon"><span class="ag-neon-icon ag-icon-law"></span></div>
-          <div class="ag-btn-label">播打 110</div>
-          <div class="ag-btn-desc">刚或或人身安全</div>
+          <div class="ag-btn-label">撥打 110</div>
+          <div class="ag-btn-desc">刑案或人身安全</div>
         </a>
       </div>
 
       <!-- 119 Process (Always Visible) -->
-      <div class="ag-section-title"><span class="ag-neon-icon ag-icon-alert"></span> 搬打 119：標準流程</div>
+      <div class="ag-section-title"><span class="ag-neon-icon ag-icon-alert"></span> 撥打 119：標準流程</div>
       <div class="ag-process-step">
         <div class="ag-step-num">1</div>
         <div class="ag-step-content">
-          <h4>誮蘌位置与苍況</h4>
-          <p>提供粰確��地址	地標、患者狀況與意識、呼吸、脈搶授。</p>
+          <h4>說明位置與狀況</h4>
+          <p>提供精確地址、地標、患者狀況與意識、呼吸、脈搏。</p>
         </div>
       </div>
       <div class="ag-process-step">
         <div class="ag-step-num">2</div>
         <div class="ag-step-content">
           <h4>依指示行動</h4>
-          <p>保持寫誱，電冰接線續周指示始潺暶虚理（如偷焳、清理口鼻）。</p>
+          <p>保持通話，遵循接線員指示進行初步處置（如側臥、清理口鼻）。</p>
         </div>
       </div>
       <div class="ag-process-step">
         <div class="ag-step-num">3</div>
         <div class="ag-step-content">
-          <h4>莎接救譴</h4>
-          <p>派人到路口引峎攵敷譗嶦证，廢倉大門與電梯.</p>
+          <h4>迎接救護</h4>
+          <p>派人到路口引導救護車，準備大門與電梯。</p>
         </div>
       </div>
 
-      <div class="ag-section-title"><span class="ag-neon-icon ag-icon-shield"></span> 緊救與減害指引</div>
+      <div class="ag-section-title"><span class="ag-neon-icon ag-icon-shield"></span> 急救與減害指引</div>
 
       <!-- Recovery Position Accordion -->
       <div class="ag-accordion-item">
         <div class="ag-accordion-header" onclick="toggleAccordion(this)">
           <div class="ag-accordion-title">
-            <span class="ag-neon-icon ag-icon-hospital"></span> 復諥姿勢 (Recovery Position)
+            <span class="ag-neon-icon ag-icon-hospital"></span> 復甦姿勢 (Recovery Position)
           </div>
-          <div class="ag-accordion-icon">▾</div>
+          <div class="ag-accordion-icon">▼</div>
         </div>
         <div class="ag-accordion-content">
           <div class="ag-substance-card">
             <div class="ag-sub-text">
               <ol class="ag-pl-20 ag-mb-15">
-                <li>碾認環境安全</li>
+                <li>確認環境安全</li>
                 <li>檢查反應與呼吸</li>
-                <li>將对停扳苂臂樫過胸前</li>
-                <li>將清方膝賢屠曳</li>
-                <li>由遠側颢向近側，讓患者側臉</li>
-                <li>打开氣道、保持口麻天�c���쥭蛍小緛續狑</li>
+                <li>將對側手臂橫過胸前</li>
+                <li>將遠側膝蓋屈起</li>
+                <li>由遠側翻向近側，讓患者側臥</li>
+                <li>打開氣道、保持口鼻通暢並持續監測</li>
               </ol>
             </div>
             
             <div class="ag-recovery-grid">
               <div class="ag-illustration">
+                <!-- SVG: Recovery Position Step 1 -->
                 <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
                   <path d="M60 80 L140 80" stroke="#333" />
                   <circle cx="80" cy="70" r="10" />
                   <path d="M80 80 L130 80" />                <path d="M80 80 L70 60" /> <!-- Arm Up -->
-                  <path d="M130 80 L140 90" />
-                  <text x="10" y="20" fill="#ddd" font-size="12" stroke="none">1. 手臂舉高</text>
-                </svg>
-              </div>
-              <div class="ag-illustration">
-                <!-- SVG: Recovery Position Step 2 -->
-                <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
-                  <path d="M60 80 L140 80" stroke="#333" />
-                  <circle cx="90" cy="75" r="10" />
-                  <path d="M90 85 L130 85" />
-                  <path d="M130 85 L120 65" /> <!-- Leg Bent -->
-                  <text x="10" y="20" fill="#ddd" font-size="12" stroke="none">2. 另七腳彎曳</text>
-                </svg>
-              </div>
-              <div class="ag-illustration">
-                <!-- SVG: Recovery Position Final -->
-                <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
-                  <path d="M60 80 L140 80" stroke="#333" />
-                  <circle cx="100" cy="75" r="10" />
-                  <path d="M100 85 L130 85" />
-                  <path d="M100 85 L90 95" /> <!-- Arm Support -->
-                  <path d="M130 85 L120 95" /> <!-- Leg Support -->
-                  <text x="10" y="20" fill="#00e5ff" font-size="12" stroke="none" font-weight="bold">3. 偍登基曼</text>
-                </svg>
-              </div>
+                <path d="M130 80 L140 90" />
+                <text x="10" y="20" fill="#ddd" font-size="12" stroke="none">1. 手臂舉高</text>
+              </svg>
+            </div>
+            <div class="ag-illustration">
+              <!-- SVG: Recovery Position Step 2 -->
+              <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
+                <path d="M60 80 L140 80" stroke="#333" />
+                <circle cx="90" cy="75" r="10" />
+                <path d="M90 85 L130 85" />
+                <path d="M130 85 L120 65" /> <!-- Leg Bent -->
+                <text x="10" y="20" fill="#ddd" font-size="12" stroke="none">2. 另一腳彎曲</text>
+              </svg>
+            </div>
+            <div class="ag-illustration">
+              <!-- SVG: Recovery Position Final -->
+              <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
+                <path d="M60 80 L140 80" stroke="#333" />
+                <circle cx="100" cy="75" r="10" />
+                <path d="M100 85 L130 85" />
+                <path d="M100 85 L90 95" /> <!-- Arm Support -->
+                <path d="M130 85 L120 95" /> <!-- Leg Support -->
+                <text x="10" y="20" fill="#00e5ff" font-size="12" stroke="none" font-weight="bold">3. 側翻固定</text>
+              </svg>
             </div>
           </div>
-        </div>
-      </div>
-
-      <!-- GHB/GBL Accordion -->
-      <div class="ag-accordion-item">
-        <div class="ag-accordion-header" onclick="toggleAccordion(this)">
-          <div class="ag-accordion-title">
-            <span class="ag-text-magenta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span> GHB / GBL
-          </div>
-          <div class="ag-accordion-icon">▾</div>
-        </div>
-        <div class="ag-accordion-content">
-          <div class="ag-substance-card">
-            <div class="ag-sub-header">
-              <div class="ag-sub-title">GHB / GBL</div>
-              <div class="ag-sub-tag">重點注意</div>
-            </div>
-            <div class="ag-sub-section">
-              <span class="ag-sub-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:5px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>警訊</span>
-              <div class="ag-sub-text">楑度嬭生墺惁或無反應憁、��各(nor-IN), 呼吸裇次或訋律異常。</div>
-            </div>
-            <div class="ag-sub-section">
-              <span class="ag-sub-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:5px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>減宯應導</span>
-              <ul class="ag-sub-text ag-pl-20">
-                <li>絕导遷免與酒粽、苯減蹑泅釐镍霈 混使。</li>
-                <li>不清楠刑量時不要追加。</li>
-                <li>如出現奀岟毗或呼吸裞皸，重箭捒 419 ，采用側臉保持氣道。</li>
-                <li><strong>不要傯同，不要留喳。</strong></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Ketamine Accordion -->
-      <div class="ag-accordion-item">
-        <div class="ag-accordion-header" onclick="toggleAccordion(this)">
-          <div class="ag-accordion-title">
-            <span class="ag-text-magenta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span> K 他名
-          </div>
-          <div class="ag-accordion-icon">▾</div>
-        </div>
-        <div class="ag-accordion-content">
-          <div class="ag-substance-card">
-            <div class="ag-sub-header">
-              <div class="ag-sub-title">K 他名</div>
-              <div class="ag-sub-tag">濖浿版</div>
-            </div>
-            <div class="ag-sub-section">
-              <span class="ag-sub-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:5px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>十権必西 你倭</span>
-              <div class="ag-sub-text">持纼生攞、無法喙鬓、呼歸不觓侫叨騚、斧世、最攨不万回驕。</div>
-            </div>
-            <div class="ag-sub-section">
-              <span class="ag-sub-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:5px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>應�~</span>
-              <div class="ag-sub-text">安置在安全环境、避免刺激，必要時偶臉�e如有呼吸難難或抽該，立刳播 119。</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Alcohol Mix Accordion -->
-      <div class="ag-accordion-item">
-        <div class="ag-accordion-header" onclick="toggleAccordion(this)">
-          <div class="ag-accordion-title">
-            <span class="ag-text-magenta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span> 酒粽混合
-          </div>
-          <div class="ag-accordion-icon">▾</div>
-        </div>
-        <div class="ag-accordion-content">
-          <div class="ag-substance-card">
-            <div class="ag-sub-header">
-              <div class="ag-sub-title">酒粽混合</div>
-            </div>
-            <div class="ag-sub-section">
-              <div class="ag-sub-text">與鎮靜劉（含 GHB/GBL、苹二氞亗陝粽）混合因平稻會增加呼歸我風陗風菙叟。</div>
-            </div>
-            <div class="ag-sub-section">
-              <span class="ag-sub-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:5px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>減宯甲务</span>
-              <div class="ag-sub-text">避免同時使用�e如已混使，切動喆留同伴头，密切監密嘤和意識，一有異常題実到 119。</div>
-            </div>
-          </div>
-      </div>
-
-      <!-- Legal Info Accordion -->
-      <div class="ag-accordion-item">
-        <div class="ag-accordion-header" onclick="toggleAccordion(this)">
-          <div class="ag-accordion-title">
-            <span class="ag-text-purple"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span> 法律與欆盦(TW)"
-          </div>
-          <div class="ag-accordion-icon">▾</div>
-        </div>
-        <div class="ag-accordion-content">
-          <div class="ag-legal-box">
-            <div class="ag-legal-title">法律與保密</div>
-            <div class="ag-legal-text">
-              <ul class="ag-pl-20">
-                <li>119 接級分鍳自案不屬生紛，侽記据下不會通報服解。</li>
-                <li>鲫聘審똯務：衟療庌尿個人賆料有保密義務，餢非涊支详兀理囡�介重大市楍濟有法盈情庺陆甛颁之合法程序。</li>
-                <li>若時場嶃牚出明须刚戾曺索缈，譲菗揻交陲題之爭先适。不昏救輎儚先。/li>
-              </ul>
-            </div>
-          </div>
-
-          <div class="ag-legal-box ag-mt-20">
-            <div class="ag-legal-title">自動求治 §21（要黛中)</div>
-            <div class="ag-legal-text">
-              「揉뉩 119」不等同啟�"毒防條例之�"自動求治/」程序。需依規定向指定单位辦理。
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Footer Seal -->
-      <div class="ag-seal-section">
-        <div class="ag-seal-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:4px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Legal Compliance Seal — TW 2025 v1.2</div>
-        <div class="ag-version-info">
-          依據 Evidence Appendix v1.2 通過 2025 台灣法序合觏読。<br>
-          Emergency Module v1.2 (2025-11)<br>
-          <br>
-          <span class="ag-text-dark-gray">本內容僅仅供多忓等呲途用途甘邎庣は和法例前信息，霻畂情況一式更屡先搬打 119，。</span>
         </div>
       </div>
     </div>
+
+    <!-- GHB/GBL Accordion -->
+    <div class="ag-accordion-item">
+      <div class="ag-accordion-header" onclick="toggleAccordion(this)">
+        <div class="ag-accordion-title">
+          <span class="ag-text-magenta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span> GHB / GBL
+        </div>
+        <div class="ag-accordion-icon">▼</div>
+      </div>
+      <div class="ag-accordion-content">
+        <div class="ag-substance-card">
+          <div class="ag-sub-header">
+            <div class="ag-sub-title">GHB / GBL</div>
+            <div class="ag-sub-tag">重點注意</div>
+          </div>
+          <div class="ag-sub-section">
+            <span class="ag-sub-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:5px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>警訊</span>
+            <div class="ag-sub-text">極度嗜睡或無反應、呼吸變慢或規律異常、嘔吐、抽搐。</div>
+          </div>
+          <div class="ag-sub-section">
+            <span class="ag-sub-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:5px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>減害應對</span>
+            <ul class="ag-sub-text ag-pl-20">
+              <li>絕對避免與酒精、苯二氮平類混用。</li>
+              <li>不清楚劑量時不要追加。</li>
+              <li>如出現嗜睡或呼吸變慢，立即撥 119，採側臥保持氣道。</li>
+              <li><strong>不要催吐，不要留單。</strong></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Ketamine Accordion -->
+    <div class="ag-accordion-item">
+      <div class="ag-accordion-header" onclick="toggleAccordion(this)">
+        <div class="ag-accordion-title">
+          <span class="ag-text-magenta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span> K 他命
+        </div>
+        <div class="ag-accordion-icon">▼</div>
+      </div>
+      <div class="ag-accordion-content">
+        <div class="ag-substance-card">
+          <div class="ag-sub-header">
+            <div class="ag-sub-title">K 他命</div>
+            <div class="ag-sub-tag">修正版</div>
+          </div>
+          <div class="ag-sub-section">
+            <span class="ag-sub-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:5px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>危險徵象</span>
+            <div class="ag-sub-text">持續嘔吐、無法喚醒、呼吸不規律、體溫異常、暴力或嚴重迷失。</div>
+          </div>
+          <div class="ag-sub-section">
+            <span class="ag-sub-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:5px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>應對</span>
+            <div class="ag-sub-text">安置在安全環境、避免刺激，必要時側臥；若有呼吸困難、抽搐或無反應，立即撥 119。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Alcohol Mix Accordion -->
+    <div class="ag-accordion-item">
+      <div class="ag-accordion-header" onclick="toggleAccordion(this)">
+        <div class="ag-accordion-title">
+          <span class="ag-text-magenta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span> 酒精混用
+        </div>
+        <div class="ag-accordion-icon">▼</div>
+      </div>
+      <div class="ag-accordion-content">
+        <div class="ag-substance-card">
+          <div class="ag-sub-header">
+            <div class="ag-sub-title">酒精混用</div>
+          </div>
+          <div class="ag-sub-section">
+            <div class="ag-sub-text">與鎮靜劑（含 GHB/GBL、苯二氮平類）混用會顯著增加呼吸抑制風險。</div>
+          </div>
+          <div class="ag-sub-section">
+            <span class="ag-sub-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:5px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>減害</span>
+            <div class="ag-sub-text">避免同時使用；若已混用，切勿單獨留下同伴，密切監測呼吸與意識，一有異常即撥 119。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Legal Info Accordion -->
+    <div class="ag-accordion-item">
+      <div class="ag-accordion-header" onclick="toggleAccordion(this)">
+        <div class="ag-accordion-title">
+          <span class="ag-text-purple"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span> 法律與權益 (TW)
+        </div>
+        <div class="ag-accordion-icon">▼</div>
+      </div>
+      <div class="ag-accordion-content">
+        <div class="ag-legal-box">
+          <div class="ag-legal-title">法律與保密</div>
+          <div class="ag-legal-text">
+            <ul class="ag-pl-20">
+              <li>119 接線與救護流程不屬警方偵查，原則上不會通報服藥情形。</li>
+              <li>醫療秘密義務：醫療機構對個人資料有保密義務，除非涉及重大刑案偵查需求之合法程序。</li>
+              <li>若現場涉及明確刑案線索，警方可依法處置；求助者之急救優先。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="ag-legal-box ag-mt-20">
+          <div class="ag-legal-title">自動求治 §21（要點）</div>
+          <div class="ag-legal-text">
+            「撥 119」不等同啟動毒防條例之「自動求治」程序。需依規定向指定單位辦理。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer Seal -->
+    <div class="ag-seal-section">
+      <div class="ag-seal-badge"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:4px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>Legal Compliance Seal — TW 2025 v1.2</div>
+      <div class="ag-version-info">
+        依據 Evidence Appendix v1.2 通過 2025 台灣法律合規審核。<br>
+        Emergency Module v1.2 (2025-11)<br>
+        <br>
+        <span class="ag-text-dark-gray">本內容僅供教育用途，非醫療或法律建議。<br>緊急情況一律優先撥打 119。</span>
+      </div>
+    </div>
+  </div>
   </div><!-- /ag-main-scroll -->
 
   <!-- Footer -->
