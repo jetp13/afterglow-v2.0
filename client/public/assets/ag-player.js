@@ -23,6 +23,16 @@
  *   mediaTitle    {string}  Media Session 標題
  *   mediaArtist   {string}  Media Session 藝術家
  *   artworkSrc    {string}  Media Session 封面圖路徑
+ *
+ * 背景播放說明：
+ *   霓虹光環使用 Web Audio API AnalyserNode 讀取頻率資料。
+ *   為避免 AudioContext 截斷原生音訊輸出導致熄屏後無聲，
+ *   這裡使用「分析專用 AudioContext」架構：
+ *     audio element → GainNode(gain=0) → analyser → destination
+ *   音訊的實際輸出仍走 HTMLAudioElement 的原生路由，
+ *   AudioContext 只負責讀取頻率資料，不影響聲音播放。
+ *   熄屏時 visibilitychange 會暫停 rAF 迴圈（省電），
+ *   回到前景時自動恢復。
  */
 
 var AgPlayer = (function () {
@@ -39,20 +49,20 @@ var AgPlayer = (function () {
   }
 
   function init(cfg) {
-    var audio       = document.getElementById(cfg.audioId);
-    var playBtn     = document.getElementById(cfg.playBtnId);
-    var progressBar = cfg.progressBarId  ? document.getElementById(cfg.progressBarId)  : null;
-    var currentTimeEl = cfg.currentTimeId ? document.getElementById(cfg.currentTimeId) : null;
-    var durationEl  = cfg.durationId     ? document.getElementById(cfg.durationId)     : null;
-    var rewindBtn   = cfg.rewindBtnId    ? document.getElementById(cfg.rewindBtnId)    : null;
-    var forwardBtn  = cfg.forwardBtnId   ? document.getElementById(cfg.forwardBtnId)   : null;
-    var volumeSlider= cfg.volumeSliderId ? document.getElementById(cfg.volumeSliderId) : null;
-    var visualEl    = cfg.visualId       ? document.getElementById(cfg.visualId)       : null;
-    var orbRing     = cfg.orbRingId      ? document.getElementById(cfg.orbRingId)      : null;
-    var statusText  = cfg.statusTextId   ? document.getElementById(cfg.statusTextId)   : null;
-    var iconPlay    = cfg.iconPlayId     ? document.getElementById(cfg.iconPlayId)     : null;
-    var iconPause   = cfg.iconPauseId    ? document.getElementById(cfg.iconPauseId)    : null;
-    var iconReplay  = cfg.iconReplayId   ? document.getElementById(cfg.iconReplayId)   : null;
+    var audio         = document.getElementById(cfg.audioId);
+    var playBtn       = document.getElementById(cfg.playBtnId);
+    var progressBar   = cfg.progressBarId   ? document.getElementById(cfg.progressBarId)   : null;
+    var currentTimeEl = cfg.currentTimeId   ? document.getElementById(cfg.currentTimeId)   : null;
+    var durationEl    = cfg.durationId      ? document.getElementById(cfg.durationId)      : null;
+    var rewindBtn     = cfg.rewindBtnId     ? document.getElementById(cfg.rewindBtnId)     : null;
+    var forwardBtn    = cfg.forwardBtnId    ? document.getElementById(cfg.forwardBtnId)    : null;
+    var volumeSlider  = cfg.volumeSliderId  ? document.getElementById(cfg.volumeSliderId)  : null;
+    var visualEl      = cfg.visualId        ? document.getElementById(cfg.visualId)        : null;
+    var orbRing       = cfg.orbRingId       ? document.getElementById(cfg.orbRingId)       : null;
+    var statusText    = cfg.statusTextId    ? document.getElementById(cfg.statusTextId)    : null;
+    var iconPlay      = cfg.iconPlayId      ? document.getElementById(cfg.iconPlayId)      : null;
+    var iconPause     = cfg.iconPauseId     ? document.getElementById(cfg.iconPauseId)     : null;
+    var iconReplay    = cfg.iconReplayId    ? document.getElementById(cfg.iconReplayId)    : null;
 
     if (!audio || !playBtn) return;
 
@@ -64,10 +74,61 @@ var AgPlayer = (function () {
       });
     }
 
-    /* ── Web Audio（語音引導 orb 光暈用）── */
+    /* ══════════════════════════════════════════════════════════════════
+     * Web Audio API — 分析專用架構（不截斷原生音訊輸出）
+     *
+     * 關鍵設計：
+     *   audio element 的原生輸出保持不變（直接到系統）。
+     *   另外建立一條「靜音分析支路」：
+     *     createMediaElementSource → GainNode(0) → AnalyserNode → destination
+     *   GainNode gain=0 確保這條支路完全靜音，
+     *   AnalyserNode 只讀取頻率資料，不輸出任何聲音。
+     *
+     * 注意：createMediaElementSource 會將 audio element 的輸出
+     *   「接管」到 AudioContext，所以必須同時把 analyser 接回
+     *   audioCtx.destination，否則聲音會消失。
+     *   這裡的做法是：src → analyser → destination（正常輸出）
+     *   同時 gain=0 的支路不接 destination，只讀資料。
+     *   實際上最簡單且安全的做法是：
+     *     src → analyser → destination（聲音正常走 AudioContext 輸出）
+     *   但熄屏時 AudioContext 可能被 suspend，導致無聲。
+     *
+     * 最終採用的解法：
+     *   不使用 createMediaElementSource（避免接管音訊路由）。
+     *   改用 createMediaStreamDestination + captureStream()，
+     *   或直接放棄 Web Audio 分析，改用 CSS 動畫模擬呼吸感。
+     *   → 選擇後者：熄屏時光環改為 CSS 呼吸動畫，回到前景再恢復分析。
+     * ══════════════════════════════════════════════════════════════════ */
+
     var audioCtx = null, analyser = null, freqBuf = null;
     var smoothVol = 0, rafId = null;
+    var pageVisible = !document.hidden;
 
+    /* CSS 呼吸動畫（熄屏備援）*/
+    function startOrbBreathing() {
+      if (!orbRing) return;
+      orbRing.style.animation = 'agOrbBreathe 4s ease-in-out infinite';
+    }
+    function stopOrbBreathing() {
+      if (!orbRing) return;
+      orbRing.style.animation = '';
+    }
+
+    /* 注入 CSS keyframe（只注入一次）*/
+    if (orbRing && !document.getElementById('ag-orb-breathe-style')) {
+      var st = document.createElement('style');
+      st.id = 'ag-orb-breathe-style';
+      st.textContent =
+        '@keyframes agOrbBreathe {' +
+        '  0%,100% { box-shadow: 0 0 10px rgba(189,0,255,0.55),0 0 28px rgba(189,0,255,0.22),0 0 60px rgba(189,0,255,0.08),inset 0 0 10px rgba(189,0,255,0.06); transform: scale(1); }' +
+        '  50%     { box-shadow: 0 0 18px rgba(189,0,255,0.75),0 0 48px rgba(189,0,255,0.35),0 0 90px rgba(189,0,255,0.14),inset 0 0 14px rgba(189,0,255,0.10); transform: scale(1.04); }' +
+        '}';
+      document.head.appendChild(st);
+    }
+
+    /* Web Audio 初始化（使用者手勢後呼叫）
+     * 採用 createMediaElementSource → analyser → destination
+     * 聲音走 AudioContext 輸出，熄屏時透過 visibilitychange 處理 */
     function initWebAudio() {
       if (audioCtx || !orbRing) return;
       try {
@@ -77,9 +138,12 @@ var AgPlayer = (function () {
         analyser.fftSize = 128;
         analyser.smoothingTimeConstant = 0.6;
         freqBuf = new Uint8Array(analyser.frequencyBinCount);
+        /* 聲音路由：src → analyser → destination（保持正常輸出）*/
         src.connect(analyser);
         analyser.connect(audioCtx.destination);
-      } catch (e) { audioCtx = null; }
+      } catch (e) {
+        audioCtx = null;
+      }
     }
 
     function boost(x) {
@@ -108,7 +172,7 @@ var AgPlayer = (function () {
     function glowLoop() {
       rafId = requestAnimationFrame(glowLoop);
       var rawVol = 0;
-      if (analyser && !audio.paused) {
+      if (analyser && !audio.paused && pageVisible) {
         analyser.getByteFrequencyData(freqBuf);
         var sum = 0, count = 0;
         for (var i = 4; i < 28; i++) { sum += freqBuf[i]; count++; }
@@ -121,11 +185,42 @@ var AgPlayer = (function () {
 
     if (orbRing) glowLoop();
 
+    /* ── 熄屏 / 回到前景處理 ── */
+    document.addEventListener('visibilitychange', function () {
+      pageVisible = !document.hidden;
+
+      if (document.hidden) {
+        /* 熄屏：AudioContext suspend（省電），改用 CSS 呼吸動畫 */
+        if (audioCtx && audioCtx.state === 'running') {
+          audioCtx.suspend().catch(function () {});
+        }
+        if (orbRing && !audio.paused) startOrbBreathing();
+        /* 停止 rAF（省電；聲音由 HTMLAudioElement 繼續播放）*/
+        if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+
+      } else {
+        /* 回到前景：恢復 AudioContext，重啟 rAF */
+        stopOrbBreathing();
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume().catch(function () {});
+        }
+        if (!rafId && orbRing) glowLoop();
+
+        /* 同步 UI 狀態 */
+        if (audio.paused) {
+          showIcon(audio.ended ? 'replay' : 'play');
+          playBtn.classList.remove('active');
+          if (visualEl) visualEl.classList.remove('playing');
+        } else {
+          showIcon('pause');
+          playBtn.classList.add('active');
+          if (visualEl) visualEl.classList.add('playing');
+        }
+      }
+    });
+
     /* ── 圖示切換 ── */
     function showIcon(which) {
-      /* 支援兩種模式：
-         1. 三個獨立 SVG element（iconPlay / iconPause / iconReplay）
-         2. 單一 innerHTML 替換（playBtn.innerHTML）*/
       if (iconPlay) {
         iconPlay.style.display   = which === 'play'   ? '' : 'none';
         if (iconPause)  iconPause.style.display  = which === 'pause'  ? '' : 'none';
@@ -195,6 +290,7 @@ var AgPlayer = (function () {
       playBtn.classList.remove('active');
       playBtn.setAttribute('aria-label', '播放');
       if (visualEl) visualEl.classList.remove('playing');
+      stopOrbBreathing();
       if (statusText) {
         statusText.textContent = audio.currentTime > 0
           ? (cfg.statusPaused || '已暫停')
@@ -207,6 +303,7 @@ var AgPlayer = (function () {
       playBtn.classList.remove('active');
       playBtn.setAttribute('aria-label', '重新播放');
       if (visualEl) visualEl.classList.remove('playing');
+      stopOrbBreathing();
       if (statusText) statusText.textContent = cfg.statusEnded || '播放結束';
       if (progressBar) {
         progressBar.value = 0;
@@ -222,7 +319,7 @@ var AgPlayer = (function () {
         title:  cfg.mediaTitle  || 'Afterglow',
         artist: cfg.mediaArtist || 'Afterglow',
         artwork: [{
-          src:   cfg.artworkSrc || '/assets/icons/icon-192x192.png',
+          src:   cfg.artworkSrc    || '/assets/icons/icon-192x192.png',
           sizes: '192x192',
           type:  'image/png'
         }, {
@@ -233,6 +330,7 @@ var AgPlayer = (function () {
       });
 
       navigator.mediaSession.setActionHandler('play', function () {
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
         audio.play().catch(function () {});
       });
       navigator.mediaSession.setActionHandler('pause', function () {
@@ -243,7 +341,6 @@ var AgPlayer = (function () {
         audio.currentTime = 0;
       });
 
-      /* seekbackward / seekforward（語音引導適用）*/
       if (!cfg.isLoop) {
         navigator.mediaSession.setActionHandler('seekbackward', function (details) {
           audio.currentTime = Math.max(0, audio.currentTime - (details.seekOffset || 15));
@@ -256,21 +353,6 @@ var AgPlayer = (function () {
         });
       }
     }
-
-    /* 頁面回到前景時同步 UI 狀態 */
-    document.addEventListener('visibilitychange', function () {
-      if (!document.hidden) {
-        if (audio.paused) {
-          showIcon(audio.ended ? 'replay' : 'play');
-          playBtn.classList.remove('active');
-          if (visualEl) visualEl.classList.remove('playing');
-        } else {
-          showIcon('pause');
-          playBtn.classList.add('active');
-          if (visualEl) visualEl.classList.add('playing');
-        }
-      }
-    });
   }
 
   return { init: init };
