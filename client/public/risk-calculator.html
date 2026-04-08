@@ -117,7 +117,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 999px;
+      /* border-radius & height 由 JS 動態設定，實現每顆膠囊的形狀個性 */
       font-size: 14px;
       font-weight: 400;
       letter-spacing: 0.06em;
@@ -126,9 +126,8 @@
       white-space: nowrap;
       background: rgba(255,255,255,0.02);
       border: 1px solid rgba(255,255,255,0.12);
-      height: 44px;
-      padding: 0 22px;
-      transition: box-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease;
+      padding: 0 18px;
+      transition: box-shadow 0.35s ease, background 0.35s ease, transform 0.35s ease;
     }
 
     /* Category colours — 對齊首頁霓虹語言 */
@@ -587,27 +586,40 @@
     function initCapsuleGrid() {
       capsuleGrid.innerHTML = '';
 
-      // 每顆膠囊的版面配置：[width%, alignSelf, marginSide%, marginBottom(px), rotate(deg)]
+      // 每顆膠囊的個性設定：
+      // [width%, alignSelf, marginSide%, marginBottom(px), rotate(deg), height(px), borderRadius(px)]
+      // 形狀變化：有的接近正圓、有的是長條、有的是偏方形的膠囊
       const capsuleLayouts = [
-        // 興奮劑 stimulant (4顆)
-        [62, 'flex-end',   '6%', 14,  -1.8],
-        [78, 'flex-start', '3%', 12,   1.5],
-        [56, 'flex-end',   '8%', 14,  -1.2],
-        [70, 'flex-start', '5%', 20,   2.0],
-        // 鎮靜劑 depressant (6顆)
-        [80, 'flex-start', '2%', 12,   1.2],
-        [64, 'flex-end',   '5%', 12,  -1.6],
-        [74, 'flex-start', '4%', 12,   1.8],
-        [58, 'flex-end',   '7%', 12,  -1.0],
-        [68, 'flex-start', '3%', 12,   1.4],
-        [60, 'flex-end',   '6%', 20,  -2.0],
-        // 迷幻劑 psychedelic (3顆)
-        [72, 'flex-start', '3%', 12,   1.6],
-        [60, 'flex-end',   '5%', 12,  -1.4],
-        [66, 'flex-start', '4%', 20,   1.0],
-        // 其他 other (2顆)
-        [62, 'flex-end',   '6%', 12,  -1.8],
-        [74, 'flex-start', '3%',  0,   1.6],
+        // 搖頭丸 — 偏胖的橢圓，靠右，微微上翹
+        [52, 'flex-end',   '5%', 10,  -1.2,  52, 28],
+        // 酒精 — 細長條，靠左，幾乎不轉
+        [60, 'flex-start', '8%', 16,   0.5,  42, 999],
+        // 海洛因/鴉片類 — 寬扁，置中偏右，微轉
+        [74, 'flex-end',   '3%', 12,   1.8,  46, 18],
+        // 迷幻蘑菇 — 中等，靠左，小角度
+        [58, 'flex-start', '6%', 14,  -0.8,  44, 999],
+        // 安非他命 — 最寬，靠左，幾乎水平
+        [82, 'flex-start', '2%', 10,   0.3,  50, 14],
+        // G水 — 偏小偏圓，靠右，有點歪
+        [44, 'flex-end',   '7%', 18,  -2.2,  48, 24],
+        // 依托 — 中長，靠左，微轉
+        [66, 'flex-start', '4%', 12,   1.4,  44, 999],
+        // 鎮靜劑 — 寬，靠右，稍微歪
+        [70, 'flex-end',   '4%', 10,  -1.6,  46, 16],
+        // 咖啡因 — 細短，靠左，幾乎不轉
+        [42, 'flex-start', '9%', 16,   0.6,  40, 999],
+        // 大麻 — 中等偏胖，靠右，微轉
+        [56, 'flex-end',   '5%', 14,   1.0,  50, 22],
+        // RUSH — 短胖近正方，靠左，有點歪
+        [40, 'flex-start', '7%', 12,  -1.8,  46, 16],
+        // K他命 — 中長，靠右，幾乎水平
+        [62, 'flex-end',   '3%', 10,   0.4,  44, 999],
+        // 古柯鹼 — 偏圓胖，靠左，微轉
+        [50, 'flex-start', '6%', 16,  -1.2,  50, 26],
+        // 威而鋼 — 長條，靠右，稍歪
+        [68, 'flex-end',   '4%', 12,   1.6,  42, 999],
+        // LSD — 短小，靠左，有點歪
+        [46, 'flex-start', '8%',  8,  -2.0,  44, 20],
       ];
 
       substances.forEach((sub, i) => {
@@ -617,17 +629,23 @@
         btn.dataset.id = sub.id;
         btn.dataset.cat = sub.category;
 
-        const [w, align, mSide, mBottom, rot] = capsuleLayouts[i] || capsuleLayouts[i % capsuleLayouts.length];
-        btn.style.width = `clamp(140px, ${w}%, 340px)`;
+        const layout = capsuleLayouts[i] || capsuleLayouts[i % capsuleLayouts.length];
+        const [w, align, mSide, mBottom, rot, h, radius] = layout;
+
+        btn.style.width = `clamp(130px, ${w}%, 360px)`;
+        btn.style.height = `${h}px`;
+        btn.style.borderRadius = `${radius}px`;
         btn.style.alignSelf = align;
         btn.style.marginBottom = `${mBottom}px`;
         btn.style.transform = `rotate(${rot}deg)`;
+        // 儲存原始旋轉角度供 active 狀態使用
+        btn.dataset.rot = rot;
         if (align === 'flex-end') {
           btn.style.marginRight = mSide;
         } else {
           btn.style.marginLeft = mSide;
         }
-        btn.style.transition = 'box-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease';
+        btn.style.transition = 'box-shadow 0.35s ease, background 0.35s ease, transform 0.35s ease';
         btn.onclick = () => toggleSubstance(sub, btn);
         capsuleGrid.appendChild(btn);
       });
@@ -640,6 +658,9 @@
         // 取消選擇
         selectedSubstances.splice(index, 1);
         btn.classList.remove('active');
+        // 恢復原始旋轉角度
+        const rot = parseFloat(btn.dataset.rot || 0);
+        btn.style.transform = `rotate(${rot}deg)`;
         // 恢復所有禁用狀態
         document.querySelectorAll('.ag-capsule-btn.disabled').forEach(b => b.classList.remove('disabled'));
       } else {
@@ -649,6 +670,9 @@
         }
         selectedSubstances.push(sub);
         btn.classList.add('active');
+        // active 時保留原始旋轉角度，只加強發光
+        const rot = parseFloat(btn.dataset.rot || 0);
+        btn.style.transform = `rotate(${rot}deg) scale(1.03)`;
         // 如果已選滿 2 個，禁用其餘未選的
         if (selectedSubstances.length >= 2) {
           document.querySelectorAll('.ag-capsule-btn:not(.active)').forEach(b => b.classList.add('disabled'));
