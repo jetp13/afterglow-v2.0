@@ -64,93 +64,135 @@
       padding: 0 4px;
     }
 
+    /* 共用膠囊基底：對齊首頁藥丸視覺語言 */
     .ag-menu-button {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
       border-radius: 999px;
       font-size: 15px;
-      font-weight: 400;
-      color: white;
+      font-weight: 500;
+      letter-spacing: 0.10em;
+      color: #fff;
       text-decoration: none;
-      background: rgba(0,0,0,0.2);
-      position: relative;
       white-space: nowrap;
-      padding: 0 28px;
-      transition: box-shadow 0.25s ease, background 0.25s ease;
+      position: relative;
+      transition: box-shadow 0.35s ease, transform 0.30s ease;
     }
 
+    /* 急救指引 — 最細最短，靠右，微小轉角 */
     .ag-menu-button:nth-child(1) {
       height: 44px;
-      width: 64%;
+      width: clamp(160px, 52%, 240px);
       align-self: flex-end;
-      margin-right: 3%;
-      margin-bottom: 30px;
-      transform: rotate(-3.5deg);
+      margin-right: 5%;
+      margin-bottom: 22px;
+      transform: rotate(-1.8deg);
     }
+    /* 風險計算器 — 最寬最高，靠左，視覺重心 */
     .ag-menu-button:nth-child(2) {
-      height: 52px;
-      width: 80%;
+      height: 56px;
+      width: clamp(240px, 84%, 380px);
       align-self: flex-start;
       margin-left: 2%;
-      margin-bottom: 14px;
-      transform: rotate(2.8deg) translateY(4px);
+      margin-bottom: 18px;
+      transform: rotate(1.4deg);
     }
+    /* 權利知識 — 中等，靠右，略低 */
     .ag-menu-button:nth-child(3) {
-      height: 40px;
-      width: 58%;
-      align-self: flex-end;
-      margin-right: 12%;
-      margin-bottom: 24px;
-      transform: rotate(-1.5deg) translateY(-2px);
-    }
-    .ag-menu-button:nth-child(4) {
       height: 48px;
-      width: 74%;
+      width: clamp(190px, 64%, 290px);
+      align-self: flex-end;
+      margin-right: 7%;
+      margin-bottom: 20px;
+      transform: rotate(-1.0deg) translateY(2px);
+    }
+    /* 求助資源 — 偏寬，靠左，收尾 */
+    .ag-menu-button:nth-child(4) {
+      height: 52px;
+      width: clamp(210px, 74%, 340px);
       align-self: flex-start;
-      margin-left: 5%;
+      margin-left: 4%;
       margin-bottom: 0;
-      transform: rotate(4.5deg) translateY(2px);
+      transform: rotate(1.8deg) translateY(-1px);
     }
 
+    /* 急救指引 — 青 Cyan */
     .ag-menu-button--first-aid {
       border: 1.5px solid #00e5ff;
-      box-shadow: 0 0 12px rgba(0,229,255,0.35), inset 0 0 8px rgba(0,229,255,0.08);
+      background: radial-gradient(ellipse at center, rgba(0,229,255,0.14) 0%, transparent 70%);
+      box-shadow: 0 0 10px rgba(0,229,255,0.42), inset 0 0 14px rgba(0,229,255,0.18);
       color: #d8feff;
+      animation: ag-breathe-cyan 4.5s ease-in-out infinite;
     }
-    .ag-menu-button--first-aid:hover {
-      box-shadow: 0 0 22px rgba(0,229,255,0.65), inset 0 0 12px rgba(0,229,255,0.18);
-      background: rgba(0,229,255,0.08);
+    .ag-menu-button--first-aid:hover,
+    .ag-menu-button--first-aid:active {
+      box-shadow: 0 0 24px rgba(0,229,255,0.72), inset 0 0 20px rgba(0,229,255,0.30);
+      transform: rotate(-1.8deg) scale(1.03);
+      animation: none;
     }
 
+    /* 風險計算器 — 粉紫 Magenta */
     .ag-menu-button--risk {
       border: 1.5px solid #ff6bd9;
-      box-shadow: 0 0 12px rgba(255,107,217,0.35), inset 0 0 8px rgba(255,107,217,0.08);
+      background: radial-gradient(ellipse at center, rgba(255,107,217,0.14) 0%, transparent 70%);
+      box-shadow: 0 0 10px rgba(255,107,217,0.42), inset 0 0 14px rgba(255,107,217,0.18);
       color: #ffe0f5;
+      animation: ag-breathe-pink 4s ease-in-out infinite;
     }
-    .ag-menu-button--risk:hover {
-      box-shadow: 0 0 22px rgba(255,107,217,0.65), inset 0 0 12px rgba(255,107,217,0.18);
-      background: rgba(255,107,217,0.08);
+    .ag-menu-button--risk:hover,
+    .ag-menu-button--risk:active {
+      box-shadow: 0 0 24px rgba(255,107,217,0.72), inset 0 0 20px rgba(255,107,217,0.30);
+      transform: rotate(1.4deg) scale(1.03);
+      animation: none;
     }
 
+    /* 權利知識 — 紫色 Purple */
     .ag-menu-button--rights {
       border: 1.5px solid #bd00ff;
-      box-shadow: 0 0 12px rgba(189,0,255,0.35), inset 0 0 8px rgba(189,0,255,0.08);
+      background: radial-gradient(ellipse at center, rgba(189,0,255,0.14) 0%, transparent 70%);
+      box-shadow: 0 0 10px rgba(189,0,255,0.42), inset 0 0 14px rgba(189,0,255,0.18);
       color: #f0e0ff;
+      animation: ag-breathe-purple 5s ease-in-out infinite;
     }
-    .ag-menu-button--rights:hover {
-      box-shadow: 0 0 22px rgba(189,0,255,0.65), inset 0 0 12px rgba(189,0,255,0.18);
-      background: rgba(189,0,255,0.08);
+    .ag-menu-button--rights:hover,
+    .ag-menu-button--rights:active {
+      box-shadow: 0 0 24px rgba(189,0,255,0.72), inset 0 0 20px rgba(189,0,255,0.30);
+      transform: rotate(-1.0deg) scale(1.03);
+      animation: none;
     }
 
+    /* 求助資源 — 綠色 Green */
     .ag-menu-button--help {
       border: 1.5px solid #00ff88;
-      box-shadow: 0 0 12px rgba(0,255,136,0.35), inset 0 0 8px rgba(0,255,136,0.08);
+      background: radial-gradient(ellipse at center, rgba(0,255,136,0.14) 0%, transparent 70%);
+      box-shadow: 0 0 10px rgba(0,255,136,0.42), inset 0 0 14px rgba(0,255,136,0.18);
       color: #d8fff0;
+      animation: ag-breathe-green 4.8s ease-in-out infinite;
     }
-    .ag-menu-button--help:hover {
-      box-shadow: 0 0 22px rgba(0,255,136,0.65), inset 0 0 12px rgba(0,255,136,0.18);
-      background: rgba(0,255,136,0.08);
+    .ag-menu-button--help:hover,
+    .ag-menu-button--help:active {
+      box-shadow: 0 0 24px rgba(0,255,136,0.72), inset 0 0 20px rgba(0,255,136,0.30);
+      transform: rotate(1.8deg) scale(1.03);
+      animation: none;
+    }
+
+    /* 呼吸動畫—各色自己的節奏略有差異 */
+    @keyframes ag-breathe-cyan {
+      0%, 100% { box-shadow: 0 0 10px rgba(0,229,255,0.42), inset 0 0 14px rgba(0,229,255,0.18); }
+      50%       { box-shadow: 0 0 18px rgba(0,229,255,0.60), inset 0 0 18px rgba(0,229,255,0.26); }
+    }
+    @keyframes ag-breathe-pink {
+      0%, 100% { box-shadow: 0 0 10px rgba(255,107,217,0.42), inset 0 0 14px rgba(255,107,217,0.18); }
+      50%       { box-shadow: 0 0 18px rgba(255,107,217,0.60), inset 0 0 18px rgba(255,107,217,0.26); }
+    }
+    @keyframes ag-breathe-purple {
+      0%, 100% { box-shadow: 0 0 10px rgba(189,0,255,0.42), inset 0 0 14px rgba(189,0,255,0.18); }
+      50%       { box-shadow: 0 0 18px rgba(189,0,255,0.60), inset 0 0 18px rgba(189,0,255,0.26); }
+    }
+    @keyframes ag-breathe-green {
+      0%, 100% { box-shadow: 0 0 10px rgba(0,255,136,0.42), inset 0 0 14px rgba(0,255,136,0.18); }
+      50%       { box-shadow: 0 0 18px rgba(0,255,136,0.60), inset 0 0 18px rgba(0,255,136,0.26); }
     }
   </style>
 </head>

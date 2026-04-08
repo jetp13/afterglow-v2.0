@@ -106,85 +106,92 @@
     /* Neon Capsule Grid */
     .ag-capsule-grid {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 12px;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
       margin-bottom: 40px;
+      padding: 0 4px;
     }
 
     .ag-capsule-btn {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 50px;
-      padding: 12px 20px;
-      color: #ddd;
-      font-size: 14px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       justify-content: center;
-      min-height: 48px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      color: #ccc;
+      cursor: pointer;
       white-space: nowrap;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.12);
+      height: 44px;
+      padding: 0 22px;
+      transition: box-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease;
     }
 
-    /* Category colours */
+    /* Category colours — 對齊首頁霓虹語言 */
     .ag-capsule-btn[data-cat="stimulant"] {
-      border-color: rgba(255, 77, 77, 0.5);
-      box-shadow: 0 0 6px rgba(255, 77, 77, 0.15);
+      border-color: rgba(255, 77, 77, 0.55);
+      background: radial-gradient(ellipse at center, rgba(255,77,77,0.08) 0%, transparent 70%);
+      box-shadow: 0 0 8px rgba(255, 77, 77, 0.20), inset 0 0 10px rgba(255,77,77,0.08);
+      color: #ffcccc;
     }
     .ag-capsule-btn[data-cat="depressant"] {
-      border-color: rgba(77, 184, 255, 0.5);
-      box-shadow: 0 0 6px rgba(77, 184, 255, 0.15);
+      border-color: rgba(77, 184, 255, 0.55);
+      background: radial-gradient(ellipse at center, rgba(77,184,255,0.08) 0%, transparent 70%);
+      box-shadow: 0 0 8px rgba(77, 184, 255, 0.20), inset 0 0 10px rgba(77,184,255,0.08);
+      color: #cce8ff;
     }
     .ag-capsule-btn[data-cat="psychedelic"] {
-      border-color: rgba(77, 255, 154, 0.5);
-      box-shadow: 0 0 6px rgba(77, 255, 154, 0.15);
+      border-color: rgba(77, 255, 154, 0.55);
+      background: radial-gradient(ellipse at center, rgba(77,255,154,0.08) 0%, transparent 70%);
+      box-shadow: 0 0 8px rgba(77, 255, 154, 0.20), inset 0 0 10px rgba(77,255,154,0.08);
+      color: #ccffe8;
     }
     .ag-capsule-btn[data-cat="other"] {
-      border-color: rgba(199, 125, 255, 0.5);
-      box-shadow: 0 0 6px rgba(199, 125, 255, 0.15);
+      border-color: rgba(199, 125, 255, 0.55);
+      background: radial-gradient(ellipse at center, rgba(199,125,255,0.08) 0%, transparent 70%);
+      box-shadow: 0 0 8px rgba(199, 125, 255, 0.20), inset 0 0 10px rgba(199,125,255,0.08);
+      color: #eeccff;
     }
 
     .ag-capsule-btn:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.3);
+      filter: brightness(1.25);
     }
 
     .ag-capsule-btn.active[data-cat="stimulant"] {
-      background: rgba(255, 77, 77, 0.18);
+      background: radial-gradient(ellipse at center, rgba(255,77,77,0.22) 0%, transparent 70%);
       border-color: #ff4d4d;
       color: #fff;
-      box-shadow: 0 0 16px rgba(255, 77, 77, 0.5), inset 0 0 8px rgba(255, 77, 77, 0.15);
-      font-weight: bold;
-      text-shadow: 0 0 6px rgba(255, 77, 77, 0.7);
+      box-shadow: 0 0 20px rgba(255,77,77,0.60), inset 0 0 14px rgba(255,77,77,0.22);
+      font-weight: 500;
+      text-shadow: 0 0 8px rgba(255,77,77,0.80);
     }
     .ag-capsule-btn.active[data-cat="depressant"] {
-      background: rgba(77, 184, 255, 0.18);
+      background: radial-gradient(ellipse at center, rgba(77,184,255,0.22) 0%, transparent 70%);
       border-color: #4db8ff;
       color: #fff;
-      box-shadow: 0 0 16px rgba(77, 184, 255, 0.5), inset 0 0 8px rgba(77, 184, 255, 0.15);
-      font-weight: bold;
-      text-shadow: 0 0 6px rgba(77, 184, 255, 0.7);
+      box-shadow: 0 0 20px rgba(77,184,255,0.60), inset 0 0 14px rgba(77,184,255,0.22);
+      font-weight: 500;
+      text-shadow: 0 0 8px rgba(77,184,255,0.80);
     }
     .ag-capsule-btn.active[data-cat="psychedelic"] {
-      background: rgba(77, 255, 154, 0.18);
+      background: radial-gradient(ellipse at center, rgba(77,255,154,0.22) 0%, transparent 70%);
       border-color: #4dff9a;
       color: #fff;
-      box-shadow: 0 0 16px rgba(77, 255, 154, 0.5), inset 0 0 8px rgba(77, 255, 154, 0.15);
-      font-weight: bold;
-      text-shadow: 0 0 6px rgba(77, 255, 154, 0.7);
+      box-shadow: 0 0 20px rgba(77,255,154,0.60), inset 0 0 14px rgba(77,255,154,0.22);
+      font-weight: 500;
+      text-shadow: 0 0 8px rgba(77,255,154,0.80);
     }
     .ag-capsule-btn.active[data-cat="other"] {
-      background: rgba(199, 125, 255, 0.18);
+      background: radial-gradient(ellipse at center, rgba(199,125,255,0.22) 0%, transparent 70%);
       border-color: #c77dff;
       color: #fff;
-      box-shadow: 0 0 16px rgba(199, 125, 255, 0.5), inset 0 0 8px rgba(199, 125, 255, 0.15);
-      font-weight: bold;
-      text-shadow: 0 0 6px rgba(199, 125, 255, 0.7);
+      box-shadow: 0 0 20px rgba(199,125,255,0.60), inset 0 0 14px rgba(199,125,255,0.22);
+      font-weight: 500;
+      text-shadow: 0 0 8px rgba(199,125,255,0.80);
     }
 
     .ag-capsule-btn.disabled {
@@ -580,23 +587,27 @@
     function initCapsuleGrid() {
       capsuleGrid.innerHTML = '';
 
-      // Pre-defined scatter transforms for each capsule position (15 substances)
-      const scatterTransforms = [
-        'rotate(-5deg) translateY(4px)',
-        'rotate(3.5deg) translateY(-3px)',
-        'rotate(-2deg) translateY(5px)',
-        'rotate(6deg) translateY(-2px)',
-        'rotate(-4deg) translateY(3px)',
-        'rotate(2.5deg) translateY(-5px)',
-        'rotate(-6.5deg) translateY(2px)',
-        'rotate(4deg) translateY(4px)',
-        'rotate(-3deg) translateY(-4px)',
-        'rotate(5.5deg) translateY(3px)',
-        'rotate(-2.5deg) translateY(-3px)',
-        'rotate(7deg) translateY(2px)',
-        'rotate(-4.5deg) translateY(-2px)',
-        'rotate(3deg) translateY(5px)',
-        'rotate(-6deg) translateY(-4px)',
+      // 每顆膠囊的版面配置：[width%, alignSelf, marginSide%, marginBottom(px), rotate(deg)]
+      const capsuleLayouts = [
+        // 興奮劑 stimulant (4顆)
+        [62, 'flex-end',   '6%', 14,  -1.8],
+        [78, 'flex-start', '3%', 12,   1.5],
+        [56, 'flex-end',   '8%', 14,  -1.2],
+        [70, 'flex-start', '5%', 20,   2.0],
+        // 鎮靜劑 depressant (6顆)
+        [80, 'flex-start', '2%', 12,   1.2],
+        [64, 'flex-end',   '5%', 12,  -1.6],
+        [74, 'flex-start', '4%', 12,   1.8],
+        [58, 'flex-end',   '7%', 12,  -1.0],
+        [68, 'flex-start', '3%', 12,   1.4],
+        [60, 'flex-end',   '6%', 20,  -2.0],
+        // 迷幻劑 psychedelic (3顆)
+        [72, 'flex-start', '3%', 12,   1.6],
+        [60, 'flex-end',   '5%', 12,  -1.4],
+        [66, 'flex-start', '4%', 20,   1.0],
+        // 其他 other (2顆)
+        [62, 'flex-end',   '6%', 12,  -1.8],
+        [74, 'flex-start', '3%',  0,   1.6],
       ];
 
       substances.forEach((sub, i) => {
@@ -605,8 +616,18 @@
         btn.textContent = sub.name;
         btn.dataset.id = sub.id;
         btn.dataset.cat = sub.category;
-        btn.style.transform = scatterTransforms[i % scatterTransforms.length];
-        btn.style.transition = 'box-shadow 0.3s ease, background 0.3s ease, filter 0.3s ease';
+
+        const [w, align, mSide, mBottom, rot] = capsuleLayouts[i] || capsuleLayouts[i % capsuleLayouts.length];
+        btn.style.width = `clamp(140px, ${w}%, 340px)`;
+        btn.style.alignSelf = align;
+        btn.style.marginBottom = `${mBottom}px`;
+        btn.style.transform = `rotate(${rot}deg)`;
+        if (align === 'flex-end') {
+          btn.style.marginRight = mSide;
+        } else {
+          btn.style.marginLeft = mSide;
+        }
+        btn.style.transition = 'box-shadow 0.3s ease, background 0.3s ease, transform 0.3s ease';
         btn.onclick = () => toggleSubstance(sub, btn);
         capsuleGrid.appendChild(btn);
       });
