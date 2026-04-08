@@ -12,29 +12,23 @@
     }
   </script>
   <style>
-    /* ── Inner Header Shell ── */
-    .ag-inner-header {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: calc(14px + env(safe-area-inset-top)) 20px 10px;
-      box-sizing: border-box;
-      min-height: 64px;
-    }
-    /* 使用 layout.css 全域 .ag-back-button 樣式，不覆寫 */
-    .ag-inner-logo {
+    .ag-page-logo {
+      position: fixed;
+      top: calc(16px + env(safe-area-inset-top, 0px));
+      right: 20px;
+      z-index: 100;
       display: block;
-      width: 135px;
-      max-width: 38vw;
-      height: auto;
-      
+      text-decoration: none;
+    }
+    .ag-page-logo img {
+      display: block;
+      width: 110px;
       opacity: 0.85;
-      margin-top: 6px;
     }
     .ag-page-title-block {
-      padding: 0 20px 8px;
+      padding: calc(88px + env(safe-area-inset-top, 0px)) 20px 8px;
       flex-shrink: 0;
+      box-sizing: border-box;
     }
     .ag-page-title {
       font-size: 13px;
@@ -423,13 +417,12 @@
 </head>
 <body class="ag-page">
 
-  <!-- Inner Header: Back + Logo -->
-  <header class="ag-inner-header">
-    <a href="/support-main.html" class="ag-back-button" aria-label="返回上一頁"></a>
-    <a href="/home.html" aria-label="返回首頁">
-      <img src="/assets/logo-handwritten-nobg.png" class="ag-inner-logo" alt="Afterglow">
-    </a>
-  </header>
+  <a href="/support-main.html" class="ag-back-button" aria-label="返回上一頁"></a>
+
+  <a href="/home.html" class="ag-page-logo" aria-label="返回首頁">
+    <img src="/assets/logo-handwritten-nobg.png" alt="Afterglow">
+  </a>
+
   <div class="ag-page-title-block">
     <p class="ag-page-title">風險計算器 · Risk Calculator</p>
   </div>
@@ -507,7 +500,7 @@
         <span class="ag-footer__separator">•</span>
         <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
       </nav>
-      <p class="ag-footer__copyright">© 2025 Afterglow. All rights reserved.</p>
+      <p class="ag-footer__copyright">© 2026 Afterglow. All rights reserved.</p>
     </div>
   </footer>
 
