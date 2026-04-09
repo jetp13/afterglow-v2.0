@@ -139,7 +139,24 @@
       text-align: right;
       display: flex;
       flex-direction: column;
-      gap: 4px;
+      gap: 6px;
+    }
+
+    /* 引導問句：兩行，白色，克制 */
+    .ag-question {
+      font-size: clamp(13px, 3.2vw, 15px);
+      font-weight: 300;
+      letter-spacing: 0.08em;
+      color: rgba(255, 255, 255, 0.90);
+      line-height: 1.7;
+    }
+
+    .ag-question .ag-question-line1 {
+      display: block;
+      font-size: clamp(11px, 2.8vw, 13px);
+      color: rgba(255, 255, 255, 0.50);
+      letter-spacing: 0.14em;
+      margin-bottom: 2px;
     }
 
     .ag-subtitle {
@@ -299,7 +316,10 @@
     />
     <!-- 副標：靠右，在 Logo 下方 -->
     <div class="ag-text">
-      <p class="ag-subtitle">讓夜裡的光有方向</p>
+      <p class="ag-question">
+        <span class="ag-question-line1">天快亮了。</span>
+        現在，你需要什麼？
+      </p>
       <p class="ag-tagline">Stay Safe · Care for Yourself · Seek Help</p>
     </div>
   </section>
@@ -309,8 +329,8 @@
 
   <!-- CTA：微錯落，主左次右 -->
   <nav class="ag-cta" aria-label="主要功能入口">
-    <a href="/menu.html" class="ag-btn ag-btn--primary">開始冥想</a>
-    <a href="/support-main.html" class="ag-btn ag-btn--secondary">緊急支援</a>
+    <a href="/menu.html" class="ag-btn ag-btn--primary">我需要重新開機</a>
+    <a href="/support-main.html" class="ag-btn ag-btn--secondary">我需要緊急協助</a>
   </nav>
 
   <!-- Spacer：把 Footer 推到底部 -->
