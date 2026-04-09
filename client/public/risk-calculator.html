@@ -54,15 +54,16 @@
       border: 1px solid #ff6bd9;
       background: rgba(255, 107, 217, 0.1);
       border-radius: 16px;
-      padding: 24px;
+      padding: 20px 24px;
       margin-bottom: 30px;
       display: flex;
-      gap: 16px;
+      gap: 12px;
       align-items: center;
       justify-content: center;
       flex-direction: column;
       text-align: center;
       box-shadow: 0 0 15px rgba(255, 107, 217, 0.1);
+      min-height: 0;
     }
 
     .ag-info-icon {
@@ -110,6 +111,7 @@
       line-height: 0; /* 消除 inline-block 間距 */
       margin-bottom: 32px;
       padding: 4px 4px;
+      text-align: center;
     }
 
     .ag-capsule-btn {
@@ -594,35 +596,35 @@
       // margin: [top, right, bottom, left] 讓膠囊擠在一起但不完全靠擠
       const substanceShapes = {
         // MDMA: 橫蹲藥丸，寬扁膠囊，常見度高
-        'mdma':      { shape: 'pill',   name: '搖頭丸\nMDMA',          w: null, h: 54, pH: 28, pV: 0,  radius: '999px',                bw: 2,   glow: 16, rot: -2.5, m: [2,2,2,2]   },
+        'mdma':      { shape: 'pill',   name: '搖頭丸\nMDMA',          w: null, h: 54, pH: 28, pV: 0,  radius: '999px',                bw: 2,   glow: 16, rot: -2.5, m: [1,1,1,1]   },
         // 酒精: 寬扁横條，常見度高
-        'alcohol':   { shape: 'wide',   name: '酒精',                  w: null, h: 44, pH: 32, pV: 0,  radius: '999px',                bw: 1.5, glow: 12, rot:  1.2, m: [2,2,2,2]   },
+        'alcohol':   { shape: 'wide',   name: '酒精',                  w: null, h: 44, pH: 32, pV: 0,  radius: '999px',                bw: 1.5, glow: 12, rot:  1.2, m: [1,1,1,1]   },
         // 迷幻蘑菇: 有機不規則圓角，大小中等
-        'mushrooms': { shape: 'blob',   name: '迷幻蘑菇',              w: null, h: 50, pH: 22, pV: 0,  radius: '38px 60px 44px 52px',  bw: 1.5, glow: 14, rot:  3.8, m: [2,2,2,2]  },
+        'mushrooms': { shape: 'blob',   name: '迷幻蘑菇',              w: null, h: 50, pH: 22, pV: 0,  radius: '38px 60px 44px 52px',  bw: 1.5, glow: 14, rot:  3.8, m: [1,1,1,1]  },
         // 安非他命: 冰晶鎖角，最大最重要
-        'meth':      { shape: 'square', name: '安非他命\n(Meth)',        w: 96,  h: 96, pH: 16, pV: 12, radius: '10px 6px 14px 8px',    bw: 2,   glow: 20, rot: -3.2, m: [2,2,2,2]   },
+        'meth':      { shape: 'square', name: '安非他命\n(Meth)',        w: 96,  h: 96, pH: 16, pV: 12, radius: '10px 6px 14px 8px',    bw: 2,   glow: 20, rot: -3.2, m: [1,1,1,1]   },
         // G水: 液體水滴，高瘦細長
-        'ghb':       { shape: 'tall',   name: 'G水',                  w: 56,  h: 96, pH: 18, pV: 0,  radius: '999px',                bw: 2,   glow: 16, rot:  1.8, m: [2,2,2,2]  },
+        'ghb':       { shape: 'tall',   name: 'G水',                  w: 56,  h: 96, pH: 18, pV: 0,  radius: '999px',                bw: 2,   glow: 16, rot:  1.8, m: [1,1,1,1]  },
         // LSD: 郵票小方塊，小方形
-        'lsd':       { shape: 'square', name: 'LSD',                   w: 52,  h: 52, pH: 14, pV: 10, radius: '12px',                 bw: 1,   glow: 10, rot: -1.5, m: [2,2,2,2]   },
+        'lsd':       { shape: 'square', name: 'LSD',                   w: 52,  h: 52, pH: 14, pV: 10, radius: '12px',                 bw: 1,   glow: 10, rot: -1.5, m: [1,1,1,1]   },
         // 古柯鹼: 粉末細長，細長膠囊
-        'cocaine':   { shape: 'pill',   name: '古柯鹼',                w: null, h: 36, pH: 30, pV: 0,  radius: '999px',                bw: 1.5, glow: 10, rot:  0.8, m: [2,2,2,2]  },
+        'cocaine':   { shape: 'pill',   name: '古柯鹼',                w: null, h: 36, pH: 30, pV: 0,  radius: '999px',                bw: 1.5, glow: 10, rot:  0.8, m: [1,1,1,1]  },
         // 海洛因: 粉末/注射，偏寬方形
-        'opioids':   { shape: 'wide',   name: '海洛因/鴉片類',        w: null, h: 52, pH: 22, pV: 0,  radius: '16px 20px 12px 18px',  bw: 2,   glow: 14, rot: -1.0, m: [2,2,2,2]   },
+        'opioids':   { shape: 'wide',   name: '海洛因/鴉片類',        w: null, h: 52, pH: 22, pV: 0,  radius: '16px 20px 12px 18px',  bw: 2,   glow: 14, rot: -1.0, m: [1,1,1,1]   },
         // RUSH: 小瓶細長方形
-        'poppers':   { shape: 'tall',   name: 'RUSH',                  w: 54,  h: 80, pH: 16, pV: 0,  radius: '14px 10px 16px 12px',  bw: 1.5, glow: 14, rot:  5.5, m: [2,2,2,2]  },
+        'poppers':   { shape: 'tall',   name: 'RUSH',                  w: 54,  h: 80, pH: 16, pV: 0,  radius: '14px 10px 16px 12px',  bw: 1.5, glow: 14, rot:  5.5, m: [1,1,1,1]  },
         // 咖啡因: 輔助性，最小膠囊
-        'caffeine':  { shape: 'pill',   name: '咖啡因',                w: null, h: 30, pH: 14, pV: 0,  radius: '999px',                bw: 1,   glow:  6, rot: -0.6, m: [2,2,2,2]  },
+        'caffeine':  { shape: 'pill',   name: '咖啡因',                w: null, h: 30, pH: 14, pV: 0,  radius: '999px',                bw: 1,   glow:  6, rot: -0.6, m: [1,1,1,1]  },
         // K他命: 粉末鎖角，小方形
-        'ketamine':  { shape: 'square', name: 'K他命\n(Ketamine)',       w: 78,  h: 78, pH: 14, pV: 10, radius: '8px 12px 6px 10px',    bw: 2,   glow: 14, rot:  2.2, m: [2,2,2,2]   },
+        'ketamine':  { shape: 'square', name: 'K他命\n(Ketamine)',       w: 78,  h: 78, pH: 14, pV: 10, radius: '8px 12px 6px 10px',    bw: 2,   glow: 14, rot:  2.2, m: [1,1,1,1]   },
         // 大麻: 葉片有機，寬圓潤形
-        'cannabis':  { shape: 'blob',   name: '大麻',                  w: null, h: 46, pH: 26, pV: 0,  radius: '50px 36px 44px 60px',  bw: 1.5, glow: 12, rot: -2.8, m: [2,2,2,2]   },
+        'cannabis':  { shape: 'blob',   name: '大麻',                  w: null, h: 46, pH: 26, pV: 0,  radius: '50px 36px 44px 60px',  bw: 1.5, glow: 12, rot: -2.8, m: [1,1,1,1]   },
         // 威而鋼: 菱形V字，小方形
-        'viagra':    { shape: 'square', name: '威而鋼',                w: 54,  h: 54, pH: 12, pV: 8,  radius: '10px 6px 12px 8px',    bw: 1,   glow:  8, rot:  3.0, m: [2,2,2,2]  },
+        'viagra':    { shape: 'square', name: '威而鋼',                w: 54,  h: 54, pH: 12, pV: 8,  radius: '10px 6px 12px 8px',    bw: 1,   glow:  8, rot:  3.0, m: [1,1,1,1]  },
         // 鎮靜劑: 膠囊形，常見度中
-        'benzos':    { shape: 'pill',   name: '鎮靜劑',                w: null, h: 44, pH: 24, pV: 0,  radius: '999px',                bw: 1.5, glow: 10, rot: -1.8, m: [2,2,2,2]  },
+        'benzos':    { shape: 'pill',   name: '鎮靜劑',                w: null, h: 44, pH: 24, pV: 0,  radius: '999px',                bw: 1.5, glow: 10, rot: -1.8, m: [1,1,1,1]  },
         // 依托: 專業用，細長偏方
-        'etomidate': { shape: 'tall',   name: '依托',                  w: 50,  h: 70, pH: 14, pV: 0,  radius: '16px 12px 18px 10px',  bw: 1,   glow:  8, rot:  1.4, m: [2,2,2,2]  },
+        'etomidate': { shape: 'tall',   name: '依托',                  w: 50,  h: 70, pH: 14, pV: 0,  radius: '16px 12px 18px 10px',  bw: 1,   glow:  8, rot:  1.4, m: [1,1,1,1]  },
       };
 
       // 排列順序：顏色混雜，大小交錯，形狀多樣
