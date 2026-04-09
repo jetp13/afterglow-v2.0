@@ -293,6 +293,10 @@ var AgPlayer = (function () {
 
     /* ── 播放狀態事件 ── */
     audio.addEventListener('play', function () {
+      initWebAudio();
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(function () {});
+      stopOrbBreathing();
+      if (!rafId && orbRing) glowLoop();
       showIcon('pause');
       playBtn.classList.add('active');
       playBtn.setAttribute('aria-label', '暫停');
