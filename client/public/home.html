@@ -81,65 +81,80 @@
      * 節奏短、克制、有物理感，不戲劇化
      */
     /*
-     * agLogoIgnite 節奏設計：切分音感
-     * 前段長暗（燈絲預熱，等待感）
-     * 後段急促：一次輕閃→极短暗期→穩定點亮，全部在後 40% 內完成
-     * 總長 1.4s
+     * agLogoIgnite — 長短短三次放電
+     * 前段長暗（燈絲預熱）→ 長閃（第一次，持續較長）→ 消
+     * → 短閃（第二次）→ 消 → 短閃（第三次）→ 穩定點亮
+     * 總時長 2.2s
      */
     @keyframes agLogoIgnite {
       /* 前段：長暗，燈絲預熱 */
-      0%   { opacity: 0.12; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      45%  { opacity: 0.12; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      0%   { opacity: 0.06; filter: blur(2.0px) drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      30%  { opacity: 0.06; filter: blur(2.0px) drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
 
-      /* 後段：切分音結構 */
-      /* 第一次放電：輕閃，留久一點（讓人感覺到它存在） */
-      49%  { opacity: 0.60; filter: drop-shadow(0 0 1px rgba(255,255,255,0.70)) drop-shadow(0 0 3px rgba(255,255,255,0.22)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      58%  { opacity: 0.60; filter: drop-shadow(0 0 1px rgba(255,255,255,0.70)) drop-shadow(0 0 3px rgba(255,255,255,0.22)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      /* 暗期：極短，只有 2%（約 0.03s） */
-      60%  { opacity: 0.06; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      /* 穩定點亮：急促到位，只有 5% */
-      65%  { opacity: 1;    filter: drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 6px rgba(255,255,255,0.40)) drop-shadow(0 0 16px rgba(255,255,255,0.16)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      /* 光暈緩慢收斂，後段留長 */
-      100% { opacity: 1;    filter: drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 5px rgba(255,255,255,0.35)) drop-shadow(0 0 14px rgba(255,255,255,0.14)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      /* 第一次：長閃，持續較長 */
+      34%  { opacity: 0.55; filter: blur(1.4px) drop-shadow(0 0 1px rgba(255,255,255,0.65)) drop-shadow(0 0 4px rgba(255,255,255,0.22)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      44%  { opacity: 0.55; filter: blur(1.4px) drop-shadow(0 0 1px rgba(255,255,255,0.65)) drop-shadow(0 0 4px rgba(255,255,255,0.22)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      47%  { opacity: 0.04; filter: blur(2.0px) drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+
+      /* 第二次：短閃，快 */
+      51%  { opacity: 0.70; filter: blur(1.2px) drop-shadow(0 0 1px rgba(255,255,255,0.80)) drop-shadow(0 0 5px rgba(255,255,255,0.28)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      55%  { opacity: 0.70; filter: blur(1.2px) drop-shadow(0 0 1px rgba(255,255,255,0.80)) drop-shadow(0 0 5px rgba(255,255,255,0.28)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      57%  { opacity: 0.03; filter: blur(2.0px) drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+
+      /* 第三次：短閃，更快 */
+      60%  { opacity: 0.85; filter: blur(1.0px) drop-shadow(0 0 1px rgba(255,255,255,0.90)) drop-shadow(0 0 6px rgba(255,255,255,0.35)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      63%  { opacity: 0.85; filter: blur(1.0px) drop-shadow(0 0 1px rgba(255,255,255,0.90)) drop-shadow(0 0 6px rgba(255,255,255,0.35)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      65%  { opacity: 0.03; filter: blur(2.0px) drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+
+      /* 穩定點亮：急促到位，緩慢收斂 */
+      70%  { opacity: 0.50; filter: blur(1.2px) drop-shadow(0 0 1px rgba(255,255,255,0.80)) drop-shadow(0 0 5px rgba(255,255,255,0.28)) drop-shadow(0 0 12px rgba(255,255,255,0.10)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      100% { opacity: 0.50; filter: blur(1.2px) drop-shadow(0 0 1px rgba(255,255,255,0.80)) drop-shadow(0 0 5px rgba(255,255,255,0.28)) drop-shadow(0 0 12px rgba(255,255,255,0.10)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
     }
 
     /* Logo：明確破框 — 左、右、上三邊出血，讓裁切是刻意設計而非失誤 */
     .ag-logo {
       display: block;
-      width: clamp(360px, 118vw, 580px); /* 比視窗更寬，左右都出血 */
+      width: clamp(360px, 118vw, 580px);
       height: auto;
-      margin-left: -10vw;  /* 左側出血 */
-      margin-top: -32px;   /* 上側出血，切進 safe-area */
+      margin-left: -10vw;
+      margin-top: -32px;
       cursor: pointer;
-      /* 穩定亮起後的靜止狀態（動畫結束後維持此 filter） */
+      /* 靜止態：退到背景，比前景暗，加模糊強化遠景感 */
+      opacity: 0.50;
       filter:
-        drop-shadow(0 0 1px rgba(255,255,255,0.95))
-        drop-shadow(0 0 5px rgba(255,255,255,0.35))
-        drop-shadow(0 0 14px rgba(255,255,255,0.14))
+        blur(1.2px)
+        drop-shadow(0 0 1px rgba(255,255,255,0.80))
+        drop-shadow(0 0 5px rgba(255,255,255,0.28))
+        drop-shadow(0 0 12px rgba(255,255,255,0.10))
         drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6));
       -webkit-font-smoothing: antialiased;
       text-rendering: optimizeLegibility;
     }
-    /* 初次載入觸發動畫 */
     .ag-logo--igniting {
-      animation: agLogoIgnite 1.4s ease-out 1 forwards;
+      animation: agLogoIgnite 2.2s ease-out 1 forwards;
     }
 
-    /* 若使用者偏好減少動態，直接顯示穩定亮起狀態 */
     @media (prefers-reduced-motion: reduce) {
       .ag-logo, .ag-logo--igniting {
         animation: none;
-        opacity: 1;
+        opacity: 0.50;
       }
     }
 
-    /* 副標群組：靠右，在 Logo 下方緊接 */
+    /* 副標群組：靠右，在 Logo 下方緊接，跟著 Logo 淡入 */
+    @keyframes agFadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
     .ag-text {
       padding: 12px 20px 0;
       text-align: right;
       display: flex;
       flex-direction: column;
       gap: 6px;
+      opacity: 0;
+      animation: agFadeIn 1.2s ease-out 1.0s 1 forwards;
     }
 
     .ag-subtitle {
@@ -171,17 +186,13 @@
     }
 
     /*
-     * agContextCrystallize — 模糊凝結（方案 Z）
-     * 模擬記憶從霧中被拉回來的感覺：模糊 → 清晰，同時極緩慢上浮
-     * 節奏：Logo 通電結束 → 長停頓 → 第一行從霧中極慢凝結 → 第二行接續
-     * 時長：2.8s，極慢，有重量感
+     * agContextGlow — 極慢純淡入，無位移無模糊
+     * 像光慢慢夠了，文字一直都在那裡
+     * 第一行 delay 2.4s（Logo 長短短結束後），第二行 delay 3.6s
      */
-    @keyframes agContextCrystallize {
-      0%   { opacity: 0;    filter: blur(10px);  transform: translateY(12px); }
-      25%  { opacity: 0.15; filter: blur(7px);   transform: translateY(9px);  }
-      55%  { opacity: 0.50; filter: blur(3px);   transform: translateY(4px);  }
-      80%  { opacity: 0.85; filter: blur(0.8px); transform: translateY(1px);  }
-      100% { opacity: 1;    filter: blur(0px);   transform: translateY(0);    }
+    @keyframes agContextGlow {
+      from { opacity: 0; }
+      to   { opacity: 1; }
     }
 
     .ag-context__title {
@@ -190,9 +201,9 @@
       letter-spacing: 0.06em;
       color: rgba(255, 255, 255, 0.88);
       line-height: 1.5;
-      /* 初始隱藏，動畫結束後維持終態 */
+      text-shadow: 0 0 20px rgba(255,255,255,0.08);
       opacity: 0;
-      animation: agContextCrystallize 2.8s ease-out 2.2s 1 forwards;
+      animation: agContextGlow 1.8s ease-out 2.4s 1 forwards;
     }
 
     .ag-context__hint {
@@ -201,9 +212,9 @@
       letter-spacing: 0.10em;
       color: rgba(255, 255, 255, 0.42);
       line-height: 1.5;
-      /* 第二行比第一行晚 1.2s */
+      text-shadow: 0 0 20px rgba(255,255,255,0.06);
       opacity: 0;
-      animation: agContextCrystallize 2.8s ease-out 3.4s 1 forwards;
+      animation: agContextGlow 3.5s ease-in 3.6s 1 forwards;
     }
 
     /* 偏好減少動態：直接顯示，不動畫 */
@@ -212,7 +223,6 @@
       .ag-context__hint {
         animation: none;
         opacity: 1;
-        transform: none;
       }
     }
 
@@ -242,18 +252,20 @@
       transition: box-shadow 0.35s ease, transform 0.30s ease;
     }
 
-    /* 主 CTA：偏左，藍色 Glow */
+    /* 主 CTA：偏左，藍色 Glow，最先出現 */
     .ag-btn--primary {
       width: clamp(180px, 54vw, 220px);
       align-self: flex-start;
       margin-left: 4vw;
       border: 1.5px solid #00aaff;
-      background: radial-gradient(ellipse at center, rgba(0,160,255,.18) 0%, transparent 70%);
+      background: radial-gradient(ellipse at center, rgba(0,160,255,.22) 0%, transparent 70%);
       box-shadow:
-        0 0 12px rgba(0,160,255,.45),
-        inset 0 0 14px rgba(0,160,255,.20);
-      animation: ag-breathe-blue 4s ease-in-out infinite;
+        0 0 14px rgba(0,160,255,.54),
+        0 0 28px rgba(0,160,255,.18),
+        inset 0 0 16px rgba(0,160,255,.24);
       transform: rotate(-1.2deg);
+      opacity: 0;
+      animation: agFadeIn 0.6s ease-out 0.3s 1 forwards, ag-breathe-blue 4s ease-in-out 1.0s infinite;
     }
 
     .ag-btn--primary:hover,
@@ -265,19 +277,22 @@
       animation: none;
     }
 
-    /* 次 CTA：偏右，紅色 Glow */
+    /* 次 CTA：偏右，紅色 Glow，藍色後 0.5s 出現 */
     .ag-btn--secondary {
       width: clamp(160px, 50vw, 200px);
       align-self: flex-end;
       margin-right: 6vw;
-      border: 1.5px solid rgba(255, 30, 60, 0.65);
-      background: radial-gradient(ellipse at center, rgba(255,0,51,.10) 0%, transparent 70%);
+      border: 1.5px solid rgba(255, 30, 60, 0.75);
+      background: radial-gradient(ellipse at center, rgba(255,0,51,.13) 0%, transparent 70%);
       box-shadow:
-        0 0 8px rgba(255,0,51,.25),
-        inset 0 0 10px rgba(255,0,51,.12);
-      color: rgba(255,255,255,0.78);
+        0 0 10px rgba(255,0,51,.30),
+        0 0 22px rgba(255,0,51,.10),
+        inset 0 0 12px rgba(255,0,51,.15);
+      color: rgba(255,255,255,0.82);
       font-weight: 400;
       transform: rotate(1.5deg);
+      opacity: 0;
+      animation: agFadeIn 0.7s ease-out 0.8s 1 forwards;
     }
 
     .ag-btn--secondary:hover,
@@ -291,10 +306,10 @@
 
     @keyframes ag-breathe-blue {
       0%, 100% {
-        box-shadow: 0 0 12px rgba(0,160,255,.45), inset 0 0 14px rgba(0,160,255,.20);
+        box-shadow: 0 0 14px rgba(0,160,255,.54), 0 0 28px rgba(0,160,255,.18), inset 0 0 16px rgba(0,160,255,.24);
       }
       50% {
-        box-shadow: 0 0 20px rgba(0,160,255,.62), inset 0 0 18px rgba(0,160,255,.28);
+        box-shadow: 0 0 22px rgba(0,160,255,.70), 0 0 36px rgba(0,160,255,.24), inset 0 0 20px rgba(0,160,255,.32);
       }
     }
 
