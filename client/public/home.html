@@ -170,12 +170,31 @@
       gap: 8px;
     }
 
+    /*
+     * agContextReveal — 逐行淡入上浮
+     * 模擬文字從霧中緩緩浮現，不搶 Logo 通電的戲
+     * 節奏：Logo 通電 1.4s → 短暫停頓 → 第一行浮現 → 第二行接續
+     */
+    @keyframes agContextReveal {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     .ag-context__title {
       font-size: clamp(15px, 3.8vw, 18px);
       font-weight: 300;
       letter-spacing: 0.06em;
       color: rgba(255, 255, 255, 0.88);
       line-height: 1.5;
+      /* 初始隱藏，動畫結束後維持終態 */
+      opacity: 0;
+      animation: agContextReveal 0.7s ease-out 1.6s 1 forwards;
     }
 
     .ag-context__hint {
@@ -184,6 +203,19 @@
       letter-spacing: 0.10em;
       color: rgba(255, 255, 255, 0.42);
       line-height: 1.5;
+      /* 第二行比第一行晚 0.35s */
+      opacity: 0;
+      animation: agContextReveal 0.7s ease-out 1.95s 1 forwards;
+    }
+
+    /* 偏好減少動態：直接顯示，不動畫 */
+    @media (prefers-reduced-motion: reduce) {
+      .ag-context__title,
+      .ag-context__hint {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
