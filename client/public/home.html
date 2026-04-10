@@ -20,12 +20,15 @@
   </script>
   <style>
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       home.html — Flexbox 文件流版本
-       結構：body = flex column
-         .ag-hero   (flex: 0 0 auto) — Logo + 副標
-         .ag-cta    (flex: 0 0 auto) — 兩顆膠囊
-         .ag-spacer (flex: 1 1 auto) — 吸收剩餘空間
-         .ag-footer (flex: 0 0 auto) — 底部法律連結
+       home.html — App Shell 版本
+       首屏：100svh，overflow hidden
+       結構：
+         .ag-screen  — 首屏容器（100svh，flex column）
+           .ag-bg-logo  — 背景層 Logo（position absolute）
+           .ag-body     — 前景層（flex: 1，flex column，z-index 1）
+             .ag-prompt   — 中文問句（主體）
+             .ag-cta      — 兩顆按鈕
+         .ag-below   — 首屏以下（Footer 等次要資訊）
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 
     *, *::before, *::after {
@@ -40,151 +43,127 @@
     }
 
     body {
-      height: 100dvh;          /* Full viewport height */
-      overflow: hidden;        /* App Shell: lock body scroll */
       background: #050505;
       color: #fff;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans TC", sans-serif;
       -webkit-font-smoothing: antialiased;
-      /* Flexbox 文件流 */
-      display: flex;
-      flex-direction: column;
+      overflow-x: hidden;
       /* iOS Safe Area */
-      padding-top: env(safe-area-inset-top, 0px);
-      padding-bottom: 0;       /* footer handles safe-area-inset-bottom itself */
       padding-left: env(safe-area-inset-left, 0px);
       padding-right: env(safe-area-inset-right, 0px);
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       A. HERO — Logo 偏左出血 + 副標靠右
+       A. 首屏容器 — 100svh，鎖住捲動
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    .ag-hero {
-      flex: 0 0 auto;
+    .ag-screen {
       position: relative;
-      padding-top: 0; /* 上側出血：不需要 padding-top，讓 Logo 直接頂住 */
-      overflow: visible; /* 讓 Logo 可以出血到 hero 外 */
+      width: 100%;
+      height: 100svh;           /* 使用 svh 避免 iOS Safari 底部 bar 問題 */
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      padding-top: env(safe-area-inset-top, 0px);
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       Afterglow Logo — 極簡通電動畫
-       原則：字是主角，光是配角
-       筆劃錐利、光暈極薄、不模糊、不白霧
+       B. 背景層 Logo — 氣氛層，不是主角
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    /*
-     * Logo 通電動畫設計原則：
-     * 模擬螢光燈管剛通電的物理行為：
-     *   1. 初始微暗（燈絲預熱）
-     *   2. 一次輕微的亮度跳升（第一次放電嘗試）
-     *   3. 極短暫收回（放電不穩定）
-     *   4. 穩定點亮（等離子體建立）
-     * 節奏短、克制、有物理感，不戲劇化
-     */
-    /*
-     * agLogoIgnite 節奏設計：切分音感
-     * 前段長暗（燈絲預熱，等待感）
-     * 後段急促：一次輕閃→极短暗期→穩定點亮，全部在後 40% 內完成
-     * 總長 1.4s
-     */
-    @keyframes agLogoIgnite {
-      /* 前段：長暗，燈絲預熱 */
-      0%   { opacity: 0.12; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      45%  { opacity: 0.12; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-
-      /* 後段：切分音結構 */
-      /* 第一次放電：輕閃，留久一點（讓人感覺到它存在） */
-      49%  { opacity: 0.60; filter: drop-shadow(0 0 1px rgba(255,255,255,0.70)) drop-shadow(0 0 3px rgba(255,255,255,0.22)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      58%  { opacity: 0.60; filter: drop-shadow(0 0 1px rgba(255,255,255,0.70)) drop-shadow(0 0 3px rgba(255,255,255,0.22)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      /* 暗期：極短，只有 2%（約 0.03s） */
-      60%  { opacity: 0.06; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      /* 穩定點亮：急促到位，只有 5% */
-      65%  { opacity: 1;    filter: drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 6px rgba(255,255,255,0.40)) drop-shadow(0 0 16px rgba(255,255,255,0.16)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
-      /* 光暈緩慢收斂，後段留長 */
-      100% { opacity: 1;    filter: drop-shadow(0 0 1px rgba(255,255,255,0.95)) drop-shadow(0 0 5px rgba(255,255,255,0.35)) drop-shadow(0 0 14px rgba(255,255,255,0.14)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+    .ag-bg-logo {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 0;
+      pointer-events: none;     /* 不攔截點擊 */
+      width: 100%;
+      overflow: hidden;
     }
 
-    /* Logo：明確破框 — 左、右、上三邊出血，讓裁切是刻意設計而非失誤 */
     .ag-logo {
       display: block;
-      width: clamp(360px, 118vw, 580px); /* 比視窗更寬，左右都出血 */
+      width: clamp(280px, 90vw, 420px);   /* 縮小至約 75% */
       height: auto;
-      margin-left: -10vw;  /* 左側出血 */
-      margin-top: -32px;   /* 上側出血，切進 safe-area */
+      margin-left: -8vw;        /* 左側出血 */
+      margin-top: -20px;        /* 上側出血 */
+      opacity: 0.72;            /* 降低主導性，退為背景氣氛 */
       cursor: pointer;
-      /* 穩定亮起後的靜止狀態（動畫結束後維持此 filter） */
+      pointer-events: auto;     /* Logo 本身仍可點擊重播動畫 */
       filter:
-        drop-shadow(0 0 1px rgba(255,255,255,0.95))
-        drop-shadow(0 0 5px rgba(255,255,255,0.35))
-        drop-shadow(0 0 14px rgba(255,255,255,0.14))
+        drop-shadow(0 0 0.5px rgba(255,255,255,0.90))
+        drop-shadow(0 0 3px rgba(255,255,255,0.22))
+        drop-shadow(0 0 8px rgba(255,255,255,0.08))
         drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6));
       -webkit-font-smoothing: antialiased;
-      text-rendering: optimizeLegibility;
     }
-    /* 初次載入觸發動畫 */
+
+    /* Logo 通電動畫 — 切分音節奏，前長後急 */
+    @keyframes agLogoIgnite {
+      0%   { opacity: 0.08; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      45%  { opacity: 0.08; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      49%  { opacity: 0.55; filter: drop-shadow(0 0 1px rgba(255,255,255,0.65)) drop-shadow(0 0 3px rgba(255,255,255,0.18)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      58%  { opacity: 0.55; filter: drop-shadow(0 0 1px rgba(255,255,255,0.65)) drop-shadow(0 0 3px rgba(255,255,255,0.18)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      60%  { opacity: 0.04; filter: drop-shadow(0 0 0px rgba(255,255,255,0)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      65%  { opacity: 0.72; filter: drop-shadow(0 0 0.5px rgba(255,255,255,0.90)) drop-shadow(0 0 3px rgba(255,255,255,0.22)) drop-shadow(0 0 8px rgba(255,255,255,0.08)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+      100% { opacity: 0.72; filter: drop-shadow(0 0 0.5px rgba(255,255,255,0.90)) drop-shadow(0 0 3px rgba(255,255,255,0.22)) drop-shadow(0 0 8px rgba(255,255,255,0.08)) drop-shadow(0.5px 1px 0px rgba(0,0,0,0.6)); }
+    }
+
     .ag-logo--igniting {
       animation: agLogoIgnite 1.4s ease-out 1 forwards;
     }
 
-    /* 若使用者偏好減少動態，直接顯示穩定亮起狀態 */
     @media (prefers-reduced-motion: reduce) {
       .ag-logo, .ag-logo--igniting {
         animation: none;
-        opacity: 1;
+        opacity: 0.72;
       }
     }
 
-    /* 副標群組：靠右，在 Logo 下方緊接 */
-    .ag-text {
-      padding: 12px 20px 0;
-      text-align: right;
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       C. 前景層 — 問句 + 按鈕，z-index 1
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .ag-body {
+      position: relative;
+      z-index: 1;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;  /* 問句 + 按鈕靠下，Logo 佔上方 */
+      padding: 0 28px clamp(32px, 8vh, 64px);
+      gap: clamp(28px, 6vh, 48px);
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       D. 問句區 — 首屏主體文字
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .ag-prompt {
       display: flex;
       flex-direction: column;
       gap: 6px;
     }
 
-    /* 引導問句：兩行，白色，克制 */
-    .ag-question {
-      font-size: clamp(13px, 3.2vw, 15px);
+    .ag-prompt__line1 {
+      font-size: clamp(14px, 3.8vw, 17px);
       font-weight: 300;
-      letter-spacing: 0.08em;
-      color: rgba(255, 255, 255, 0.90);
-      line-height: 1.7;
-    }
-
-    .ag-question .ag-question-line1 {
-      display: block;
-      font-size: clamp(11px, 2.8vw, 13px);
-      color: rgba(255, 255, 255, 0.50);
-      letter-spacing: 0.14em;
-      margin-bottom: 2px;
-    }
-
-    .ag-subtitle {
-      font-size: clamp(11px, 2.8vw, 13px);
-      font-weight: 300;
-      letter-spacing: 0.18em;
-      color: rgba(255, 255, 255, 0.72);
+      letter-spacing: 0.06em;
+      color: rgba(255, 255, 255, 0.45);
       line-height: 1.5;
     }
 
-    .ag-tagline {
-      font-size: clamp(8px, 2vw, 9.5px);
-      font-weight: 400;
-      letter-spacing: 0.12em;
-      color: rgba(255, 255, 255, 0.28);
-      text-transform: uppercase;
+    .ag-prompt__line2 {
+      font-size: clamp(20px, 5.5vw, 26px);
+      font-weight: 300;
+      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.92);
       line-height: 1.4;
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       B. CTA — 微錯落：主左次右
+       E. 按鈕區 — App 核心入口，同寬，微錯落
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     .ag-cta {
-      flex: 0 0 auto;
       display: flex;
       flex-direction: column;
-      gap: 18px;
-      padding: clamp(28px, 6vh, 52px) 24px 0;
+      gap: 12px;
     }
 
     /* 共用膠囊基底 */
@@ -192,93 +171,72 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 50px;
+      width: 100%;              /* 同寬 */
+      height: 52px;
       border-radius: 999px;
       font-size: 15px;
       font-weight: 500;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.10em;
       color: #fff;
       text-decoration: none;
-      transition: box-shadow 0.35s ease, transform 0.30s ease;
+      transition: box-shadow 0.35s ease, transform 0.25s ease;
     }
 
-    /* 主 CTA：偏左，藍色 Glow */
+    /* 主 CTA：藍色，微左偏 */
     .ag-btn--primary {
-      width: clamp(180px, 54vw, 220px);
-      align-self: flex-start;
-      margin-left: 4vw;
+      margin-left: -4px;
       border: 1.5px solid #00aaff;
-      background: radial-gradient(ellipse at center, rgba(0,160,255,.18) 0%, transparent 70%);
+      background: radial-gradient(ellipse at center, rgba(0,160,255,.16) 0%, transparent 70%);
       box-shadow:
-        0 0 12px rgba(0,160,255,.45),
-        inset 0 0 14px rgba(0,160,255,.20);
+        0 0 12px rgba(0,160,255,.40),
+        inset 0 0 12px rgba(0,160,255,.18);
       animation: ag-breathe-blue 4s ease-in-out infinite;
-      transform: rotate(-1.2deg);
     }
 
     .ag-btn--primary:hover,
     .ag-btn--primary:active {
       box-shadow:
-        0 0 24px rgba(0,160,255,.72),
-        inset 0 0 20px rgba(0,160,255,.32);
-      transform: scale(1.03);
+        0 0 22px rgba(0,160,255,.68),
+        inset 0 0 18px rgba(0,160,255,.28);
+      transform: scale(1.02);
       animation: none;
     }
 
-    /* 次 CTA：偏右，紅色 Glow */
+    /* 次 CTA：紅色，微右偏 */
     .ag-btn--secondary {
-      width: clamp(160px, 50vw, 200px);
-      align-self: flex-end;
-      margin-right: 6vw;
-      border: 1.5px solid rgba(255, 30, 60, 0.65);
-      background: radial-gradient(ellipse at center, rgba(255,0,51,.10) 0%, transparent 70%);
+      margin-right: -4px;
+      border: 1.5px solid rgba(255, 30, 60, 0.60);
+      background: radial-gradient(ellipse at center, rgba(255,0,51,.08) 0%, transparent 70%);
       box-shadow:
-        0 0 8px rgba(255,0,51,.25),
-        inset 0 0 10px rgba(255,0,51,.12);
-      color: rgba(255,255,255,0.78);
+        0 0 8px rgba(255,0,51,.22),
+        inset 0 0 8px rgba(255,0,51,.10);
+      color: rgba(255,255,255,0.75);
       font-weight: 400;
-      transform: rotate(1.5deg);
     }
 
     .ag-btn--secondary:hover,
     .ag-btn--secondary:active {
       box-shadow:
-        0 0 18px rgba(255,0,51,.52),
-        inset 0 0 16px rgba(255,0,51,.22);
-      transform: scale(1.03);
+        0 0 16px rgba(255,0,51,.48),
+        inset 0 0 14px rgba(255,0,51,.20);
+      transform: scale(1.02);
       color: #fff;
     }
 
     @keyframes ag-breathe-blue {
-      0%, 100% {
-        box-shadow: 0 0 12px rgba(0,160,255,.45), inset 0 0 14px rgba(0,160,255,.20);
-      }
-      50% {
-        box-shadow: 0 0 20px rgba(0,160,255,.62), inset 0 0 18px rgba(0,160,255,.28);
-      }
+      0%, 100% { box-shadow: 0 0 12px rgba(0,160,255,.40), inset 0 0 12px rgba(0,160,255,.18); }
+      50%       { box-shadow: 0 0 20px rgba(0,160,255,.58), inset 0 0 16px rgba(0,160,255,.26); }
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       C. SPACER — 吸收剩餘空間，把 Footer 推到底部
+       F. 首屏以下 — Footer 等次要資訊
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    /* spacer-top: hero 與 CTA 之間，吸收 60% 剩餘空間，讓 CTA 往下移 */
-    .ag-spacer-top {
-      flex: 3 1 0;
-      min-height: 16px;
-    }
-    /* spacer-bottom: CTA 與 footer 之間，吸收 40% 剩餘空間 */
-    .ag-spacer {
-      flex: 2 1 0;
-      min-height: 16px;
+    .ag-below {
+      padding-bottom: env(safe-area-inset-bottom, 0px);
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       D. FOOTER — 文件流底部，iOS Safe Area 正確
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    /* footer uses global ag-footer-standard from layout.css */
-
-    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-       桌機版微調（寬螢幕時讓 Logo 不要太大）
+       桌機版微調
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     @media (min-width: 600px) {
       body {
@@ -286,89 +244,91 @@
         margin: 0 auto;
       }
       .ag-logo {
-        /* 桌機：在 max-width 480px 容器內，左右出血相對容器 */
-        width: clamp(360px, 108%, 560px);
-        margin-left: -20px;
-        margin-top: -24px;
+        width: clamp(260px, 85%, 380px);
+        margin-left: -16px;
+        margin-top: -16px;
+      }
+      .ag-body {
+        padding-left: 36px;
+        padding-right: 36px;
       }
     }
 
     /* 極小螢幕（高度 < 680px）收緊 */
     @media (max-height: 680px) {
-      .ag-hero { padding-top: 0; }
-      .ag-logo { width: clamp(300px, 112vw, 440px); margin-top: -24px; }
-      .ag-cta { padding-top: 20px; gap: 10px; }
-      .ag-btn { height: 44px; font-size: 14px; }
+      .ag-logo { width: clamp(220px, 80vw, 320px); margin-top: -12px; }
+      .ag-body { gap: 20px; padding-bottom: 24px; }
+      .ag-btn { height: 46px; font-size: 14px; }
+      .ag-prompt__line2 { font-size: clamp(18px, 5vw, 22px); }
     }
   </style>
 </head>
 <body>
 
-  <!-- Hero：Logo 偏左出血 -->
-  <section class="ag-hero" aria-label="品牌識別">
-    <img
-      src="/assets/logo-handwritten-nobg.png"
-      alt="Afterglow"
-      class="ag-logo ag-logo--igniting"
-      role="button"
-      tabindex="0"
-      aria-label="Afterglow 首頁"
-    />
-    <!-- 副標：靠右，在 Logo 下方 -->
-    <div class="ag-text">
-      <p class="ag-question">
-        <span class="ag-question-line1">天快亮了。</span>
-        現在，你需要什麼？
-      </p>
-      <p class="ag-tagline">Stay Safe · Care for Yourself · Seek Help</p>
+  <!-- 首屏：100svh，Logo 背景層 + 問句前景層 -->
+  <div class="ag-screen">
+
+    <!-- 背景層：Logo 氣氛 -->
+    <div class="ag-bg-logo" aria-hidden="true">
+      <img
+        src="/assets/logo-handwritten-nobg.png"
+        alt=""
+        class="ag-logo ag-logo--igniting"
+        id="ag-logo-el"
+      />
     </div>
-  </section>
 
-  <!-- Spacer：把 CTA 往下推 -->
-  <div class="ag-spacer-top" aria-hidden="true"></div>
+    <!-- 前景層：問句 + 按鈕 -->
+    <div class="ag-body">
 
-  <!-- CTA：微錯落，主左次右 -->
-  <nav class="ag-cta" aria-label="主要功能入口">
-    <a href="/menu.html" class="ag-btn ag-btn--primary">我需要重新開機</a>
-    <a href="/support-main.html" class="ag-btn ag-btn--secondary">我需要緊急協助</a>
-  </nav>
+      <!-- 問句：首屏主體 -->
+      <div class="ag-prompt">
+        <p class="ag-prompt__line1">天快亮了。</p>
+        <p class="ag-prompt__line2">現在，你需要什麼？</p>
+      </div>
 
-  <!-- Spacer：把 Footer 推到底部 -->
-  <div class="ag-spacer" aria-hidden="true"></div>
-
-  <!-- Footer -->
-  <footer class="ag-footer-standard">
-    <div class="ag-footer__inner">
-      <nav class="ag-footer__links" aria-label="Legal and info links">
-        <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
-        <span class="ag-footer__separator">•</span>
-        <a href="/legal.html" class="ag-footer__link">法律免責</a>
-        <span class="ag-footer__separator">•</span>
-        <a href="/terms.html" class="ag-footer__link">使用條款</a>
-        <span class="ag-footer__separator">•</span>
-        <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+      <!-- 按鈕：App 核心入口 -->
+      <nav class="ag-cta" aria-label="主要功能入口">
+        <a href="/menu.html" class="ag-btn ag-btn--primary">我需要重新開機</a>
+        <a href="/support-main.html" class="ag-btn ag-btn--secondary">我需要緊急協助</a>
       </nav>
-      <p class="ag-footer__copyright">© 2026 Afterglow. All rights reserved.</p>
+
     </div>
-  </footer>
+  </div>
+
+  <!-- 首屏以下：Footer 次要資訊 -->
+  <div class="ag-below">
+    <footer class="ag-footer-standard">
+      <div class="ag-footer__inner">
+        <nav class="ag-footer__links" aria-label="Legal and info links">
+          <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/legal.html" class="ag-footer__link">法律免責</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/terms.html" class="ag-footer__link">使用條款</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+        </nav>
+        <p class="ag-footer__copyright">© 2026 Afterglow. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
 
   <script>
     (function () {
-      var logo = document.querySelector('.ag-logo');
+      var logo = document.getElementById('ag-logo-el');
       if (!logo) return;
 
-      /* 點擊重播：移除 class → 強制 reflow → 重新加回 */
-      function reIgnite(e) {
-        /* 阻止預設行為（img 無預設，但保持乾淨） */
+      /* 點擊 Logo 重播通電動畫 */
+      function reIgnite() {
         logo.classList.remove('ag-logo--igniting');
-        /* 強制瀏覽器重新計算，確保 animation 重播 */
-        void logo.offsetWidth;
+        void logo.offsetWidth;   /* 強制 reflow */
         logo.classList.add('ag-logo--igniting');
       }
 
       logo.addEventListener('click', reIgnite);
       logo.addEventListener('keydown', function (e) {
-        if (e.key === 'Enter' || e.key === ' ') reIgnite(e);
+        if (e.key === 'Enter' || e.key === ' ') reIgnite();
       });
     })();
   </script>
