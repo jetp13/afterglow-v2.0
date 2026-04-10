@@ -171,16 +171,27 @@
     }
 
     /*
-     * agContextCrystallize — 模糊凝結（方案 Z）
-     * 模擬記憶從霧中被拉回來的感覺：模糊 → 清晰，同時極緩慢上浮
-     * 節奏：Logo 通電結束 → 停頓 → 第一行從霧中凝結 → 第二行接續
-     * 時長：2.0s，極慢，有重量感
+     * agContextStutter — 破碎成形（方案 Y）
+     * 模擬訊號不穩定的螢幕：先閃現一瞬、消失、再閃、最後穩定
+     * 節奏：三次放電嘗試，每次持續略長再消，最後穩定點亮
+     * 時長：1.8s，搭配輕微位移強化不穩定感
      */
-    @keyframes agContextCrystallize {
-      0%   { opacity: 0;    filter: blur(8px);   transform: translateY(10px); }
-      30%  { opacity: 0.25; filter: blur(5px);   transform: translateY(7px);  }
-      65%  { opacity: 0.70; filter: blur(1.5px); transform: translateY(2px);  }
-      100% { opacity: 1;    filter: blur(0px);   transform: translateY(0);    }
+    @keyframes agContextStutter {
+      /* 起始：完全隱藏 */
+      0%   { opacity: 0;    transform: translateY(8px);  }
+      /* 第一次閃現：輕微出現，稍長 */
+      8%   { opacity: 0.55; transform: translateY(5px);  }
+      16%  { opacity: 0.55; transform: translateY(5px);  }
+      /* 第一次消失 */
+      20%  { opacity: 0;    transform: translateY(6px);  }
+      /* 第二次閃現：稍強，稍長 */
+      32%  { opacity: 0.75; transform: translateY(3px);  }
+      42%  { opacity: 0.75; transform: translateY(3px);  }
+      /* 第二次消失 */
+      46%  { opacity: 0.05; transform: translateY(4px);  }
+      /* 第三次：穩定點亮，緩慢收斂 */
+      58%  { opacity: 1;    transform: translateY(0);    }
+      100% { opacity: 1;    transform: translateY(0);    }
     }
 
     .ag-context__title {
@@ -191,7 +202,7 @@
       line-height: 1.5;
       /* 初始隱藏，動畫結束後維持終態 */
       opacity: 0;
-      animation: agContextCrystallize 2.0s ease-out 2.0s 1 forwards;
+      animation: agContextStutter 1.8s linear 2.0s 1 forwards;
     }
 
     .ag-context__hint {
@@ -200,9 +211,9 @@
       letter-spacing: 0.10em;
       color: rgba(255, 255, 255, 0.42);
       line-height: 1.5;
-      /* 第二行比第一行晚 0.8s */
+      /* 第二行比第一行晚 0.9s */
       opacity: 0;
-      animation: agContextCrystallize 2.0s ease-out 2.8s 1 forwards;
+      animation: agContextStutter 1.8s linear 2.9s 1 forwards;
     }
 
     /* 偏好減少動態：直接顯示，不動畫 */
