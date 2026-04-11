@@ -270,6 +270,7 @@
 
     .ag-btn--primary:hover,
     .ag-btn--primary:active {
+      opacity: 1; /* 防止 animation:none 後回到初始 opacity:0 */
       box-shadow:
         0 0 24px rgba(0,160,255,.72),
         inset 0 0 20px rgba(0,160,255,.32);
