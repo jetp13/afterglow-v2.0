@@ -13,10 +13,11 @@
     }
   </script>
   <style>
-    /* ── accent 色：急救指引 — 低飽和琥珀冷白 ── */
+    /* ── accent 色：急救指引 — 低飽和暗紅 / 冷白 ── */
     :root {
-      --em-accent:      rgba(220, 245, 255, 0.80);
-      --em-accent-glow: rgba(220, 245, 255, 0.25);
+      --em-accent:      rgba(255, 210, 200, 0.82); /* 低飽和暗紅冷白 */
+      --em-accent-glow: rgba(255, 120, 100, 0.18);
+      --em-accent-border: rgba(255, 160, 140, 0.30);
     }
     /* ── Inner Header Shell（共用規則由 shared-emergency.css 提供）── */
     .ag-inner-header {
@@ -38,12 +39,13 @@
     }
 
     .ag-aid-title {
-      font-size: 24px; /* 手機版字體微調 */
-      color: #00e5ff;
-      font-weight: bold;
-      text-shadow: 0 0 20px rgba(0, 229, 255, 0.6);
+      font-size: 24px;
+      color: var(--em-accent);
+      font-weight: 500;
+      text-shadow: 0 0 18px var(--em-accent-glow);
       margin-bottom: 10px;
       line-height: 1.4;
+      letter-spacing: 0.02em;
     }
 
     .ag-aid-subtitle {
@@ -102,12 +104,14 @@
 
     /* Section Headers */
     .ag-section-title {
-      color: #00e5ff;
-      font-size: 18px;
-      font-weight: bold;
-      margin: 40px 0 15px 0;
-      padding-bottom: 10px;
-      border-bottom: 1px solid rgba(0, 229, 255, 0.3);
+      color: var(--em-accent);
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      margin: 36px 0 12px 0;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--em-accent-border);
       display: flex;
       align-items: center;
       gap: 8px;
@@ -123,8 +127,9 @@
       gap: 15px;
     }
     .ag-step-num {
-      background: #00e5ff;
-      color: black;
+      background: transparent;
+      border: 1px solid var(--em-accent-border);
+      color: var(--em-accent);
       width: 24px;
       height: 24px;
       border-radius: 50%;

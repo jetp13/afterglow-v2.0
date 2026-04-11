@@ -14,8 +14,9 @@
   <style>
     /* ── accent 色：求助支援 — 冷青灰 ── */
     :root {
-      --em-accent:      rgba(160, 220, 210, 0.72);
-      --em-accent-glow: rgba(160, 220, 210, 0.18);
+      --em-accent:        rgba(155, 215, 205, 0.76); /* 冷青灰 */
+      --em-accent-glow:   rgba(110, 190, 180, 0.15);
+      --em-accent-border: rgba(135, 200, 190, 0.26);
     }
     .ag-inner-header {
       flex-shrink: 0;
@@ -43,13 +44,15 @@
 
     /* 區塊標題 */
     .ag-section-title {
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.5);
-      letter-spacing: 0.1em;
-      margin-bottom: 16px;
+      font-size: 12px;
+      color: var(--em-accent);
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
       margin-top: 32px;
       padding-bottom: 8px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid var(--em-accent-border);
     }
     .ag-section-title:first-child {
       margin-top: 0;
@@ -102,10 +105,10 @@
 
     /* 資源卡片 */
     .ag-resource-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 14px;
-      padding: 20px;
+      background: rgba(135, 200, 190, 0.04);
+      border: 1px solid var(--em-accent-border);
+      border-radius: 12px;
+      padding: 18px 20px;
       display: flex;
       flex-direction: column;
       gap: 12px;

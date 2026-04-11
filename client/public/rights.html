@@ -15,8 +15,9 @@
   <style>
     /* ── accent 色：權利支援 — 冷藍灰 ── */
     :root {
-      --em-accent:      rgba(180, 210, 240, 0.75);
-      --em-accent-glow: rgba(180, 210, 240, 0.18);
+      --em-accent:        rgba(175, 205, 235, 0.78); /* 冷藍灰 */
+      --em-accent-glow:   rgba(130, 175, 220, 0.15);
+      --em-accent-border: rgba(155, 190, 225, 0.28);
     }
     body { background: #000; }
     .ag-inner-header {
@@ -40,11 +41,12 @@
     }
 
     .ag-rights-title {
-      font-size: 24px; /* 手機版字體微調 */
-      color: #bd00ff;
+      font-size: 22px;
+      color: var(--em-accent);
       margin-bottom: 12px;
-      text-shadow: 0 0 15px rgba(189, 0, 255, 0.4);
-      letter-spacing: 2px;
+      text-shadow: 0 0 14px var(--em-accent-glow);
+      letter-spacing: 0.08em;
+      font-weight: 400;
     }
 
     .ag-rights-subtitle {
@@ -61,12 +63,14 @@
     }
 
     .ag-section-title {
-      font-size: 18px;
-      color: #fff;
-      margin-bottom: 24px;
-      padding-left: 12px;
-      border-left: 3px solid #bd00ff;
-      letter-spacing: 1px;
+      font-size: 12px;
+      color: var(--em-accent);
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      padding-left: 10px;
+      border-left: 2px solid var(--em-accent-border);
     }
 
     /* Core Principles (Top Section) */
@@ -77,10 +81,10 @@
     }
 
     .ag-principle-card {
-      background: rgba(189, 0, 255, 0.05);
-      border: 1px solid rgba(189, 0, 255, 0.3);
-      border-radius: 12px;
-      padding: 20px; /* 手機版減少 padding */
+      background: rgba(155, 190, 225, 0.04);
+      border: 1px solid var(--em-accent-border);
+      border-radius: 10px;
+      padding: 18px 20px;
       position: relative;
     }
 
@@ -91,8 +95,9 @@
     }
 
     .ag-principle-number {
-      background: #bd00ff;
-      color: #000;
+      background: transparent;
+      border: 1px solid var(--em-accent-border);
+      color: var(--em-accent);
       width: 24px;
       height: 24px;
       border-radius: 50%;

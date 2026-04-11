@@ -15,8 +15,9 @@
   <style>
     /* ── accent 色：風險混合器 — 冷紫灰 ── */
     :root {
-      --em-accent:      rgba(200, 180, 255, 0.75);
-      --em-accent-glow: rgba(200, 180, 255, 0.20);
+      --em-accent:        rgba(195, 175, 240, 0.78); /* 冷紫灰 */
+      --em-accent-glow:   rgba(160, 130, 220, 0.16);
+      --em-accent-border: rgba(180, 155, 230, 0.28);
     }
     .ag-inner-header {
       flex-shrink: 0;
@@ -38,47 +39,50 @@
     }
 
     .ag-risk-title {
-      font-size: 32px;
-      color: #ff6bd9;
-      font-weight: bold;
-      text-shadow: 0 0 20px rgba(255, 107, 217, 0.6);
-      margin-bottom: 20px;
+      font-size: 22px;
+      color: var(--em-accent);
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-shadow: 0 0 16px var(--em-accent-glow);
+      margin-bottom: 16px;
     }
 
     .ag-harm-reduction-box {
-      border: 1px solid #ff6bd9;
-      background: rgba(255, 107, 217, 0.1);
-      border-radius: 16px;
-      padding: 20px 24px;
-      margin-bottom: 30px;
+      border: 1px solid var(--em-accent-border);
+      background: rgba(180, 155, 230, 0.06);
+      border-radius: 12px;
+      padding: 18px 20px;
+      margin-bottom: 28px;
       display: flex;
-      gap: 12px;
-      align-items: center;
-      justify-content: center;
+      gap: 10px;
+      align-items: flex-start;
+      justify-content: flex-start;
       flex-direction: column;
-      text-align: center;
-      box-shadow: 0 0 15px rgba(255, 107, 217, 0.1);
+      text-align: left;
+      box-shadow: none;
       min-height: 0;
     }
 
     .ag-info-icon {
-      color: #ff6bd9;
-      font-size: 24px;
+      color: var(--em-accent);
+      font-size: 18px;
       flex-shrink: 0;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
+      opacity: 0.75;
     }
 
     .ag-harm-text {
-      color: #ffcae9;
-      font-size: 14px;
-      line-height: 1.6;
+      color: rgba(255,255,255,0.55);
+      font-size: 13px;
+      line-height: 1.65;
     }
 
     .ag-harm-title {
-      font-weight: bold;
-      color: #ff6bd9;
+      font-weight: 500;
+      color: var(--em-accent);
       margin-bottom: 4px;
       display: block;
+      letter-spacing: 0.04em;
     }
 
     .ag-section-label {
