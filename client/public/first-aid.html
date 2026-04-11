@@ -67,10 +67,40 @@
       line-height: 1.6;
     }
 
-    /* ── 頁面特定：緊急按鈕基底（119 / 110 由 shared 提供，這裡只補 icon）── */
-    .ag-btn-icon {
-      font-size: 22px;
+    /* ── 頁面特定：119/110 按鈕霓虹燈管邊框 ── */
+    .ag-btn-119 {
+      border-color: rgba(255, 180, 160, 0.45);
+      box-shadow: 0 0 0 1px rgba(255, 180, 160, 0.12),
+                  inset 0 0 16px rgba(255, 180, 160, 0.04);
+    }
+    .ag-btn-119:hover, .ag-btn-119:active {
+      border-color: rgba(255, 180, 160, 0.72);
+      box-shadow: 0 0 0 1px rgba(255, 180, 160, 0.22),
+                  0 0 12px rgba(255, 180, 160, 0.14),
+                  inset 0 0 20px rgba(255, 180, 160, 0.06);
+    }
+    .ag-btn-110 {
+      border-color: rgba(200, 210, 230, 0.32);
+      box-shadow: 0 0 0 1px rgba(200, 210, 230, 0.08),
+                  inset 0 0 16px rgba(200, 210, 230, 0.03);
+    }
+    .ag-btn-110:hover, .ag-btn-110:active {
+      border-color: rgba(200, 210, 230, 0.55);
+      box-shadow: 0 0 0 1px rgba(200, 210, 230, 0.15),
+                  0 0 10px rgba(200, 210, 230, 0.10),
+                  inset 0 0 18px rgba(200, 210, 230, 0.04);
+    }
+    .ag-btn-label {
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: rgba(255, 255, 255, 0.92);
       margin-bottom: 4px;
+    }
+    .ag-btn-desc {
+      font-size: 11px;
+      color: rgba(255, 255, 255, 0.42);
+      letter-spacing: 0.04em;
     }
 
     /* ── 頁面特定：物質卡片（accordion 內，無背景）── */
@@ -135,19 +165,17 @@
       <!-- Emergency Buttons -->
       <div class="ag-emergency-grid">
         <a href="tel:119" class="ag-emergency-btn ag-btn-119">
-          <div class="ag-btn-icon"><span class="ag-neon-icon ag-icon-medical"></span></div>
           <div class="ag-btn-label">撥打 119</div>
           <div class="ag-btn-desc">消防與救護</div>
         </a>
         <a href="tel:110" class="ag-emergency-btn ag-btn-110">
-          <div class="ag-btn-icon"><span class="ag-neon-icon ag-icon-law"></span></div>
           <div class="ag-btn-label">撥打 110</div>
           <div class="ag-btn-desc">刑案或人身安全</div>
         </a>
       </div>
 
       <!-- 119 Process (Always Visible) -->
-      <div class="ag-section-title"><span class="ag-neon-icon ag-icon-alert"></span> 撥打 119：標準流程</div>
+      <div class="ag-section-title">撥打 119：標準流程</div>
       <div class="ag-process-step">
         <div class="ag-step-num">1</div>
         <div class="ag-step-content">
@@ -170,13 +198,13 @@
         </div>
       </div>
 
-      <div class="ag-section-title"><span class="ag-neon-icon ag-icon-shield"></span> 急救與減害指引</div>
+      <div class="ag-section-title">急救與減害指引</div>
 
       <!-- Recovery Position Accordion -->
       <div class="ag-accordion-item">
         <div class="ag-accordion-header" onclick="toggleAccordion(this)">
           <div class="ag-accordion-title">
-            <span class="ag-neon-icon ag-icon-hospital"></span> 復甦姿勢 (Recovery Position)
+            復甲姿勢 (Recovery Position)
           </div>
           <div class="ag-accordion-icon">▼</div>
         </div>

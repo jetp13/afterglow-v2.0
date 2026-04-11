@@ -71,10 +71,10 @@
 
   /* ── 間距 ── */
   --em-space-xs:   6px;
-  --em-space-sm:   12px;
-  --em-space-md:   20px;
-  --em-space-lg:   32px;
-  --em-space-xl:   48px;
+  --em-space-sm:   16px;
+  --em-space-md:   28px;
+  --em-space-lg:   44px;
+  --em-space-xl:   64px;
 
   /* ── 字級 ── */
   --em-font-label:  12px;   /* 頁面標籤、版本號 */
@@ -687,13 +687,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid var(--em-accent-border);
-  color: var(--em-accent);
   flex-shrink: 0;
-  box-shadow: var(--em-glow-xs) var(--em-accent-glow);
+  color: var(--em-accent);
+  /* 不設圓形容器，只是 SVG 的 wrapper */
 }
 .ag-neon-icon svg {
   width: 18px;
@@ -701,6 +697,7 @@
   stroke: currentColor;
   fill: none;
   stroke-width: 1.5;
+  opacity: 0.80;
 }
 
 /* ── Accordion（覆蓋各頁重複定義）── */
