@@ -15,9 +15,49 @@
   <style>
     /* ── accent 色：急救指引 — 低飽和暗紅冷白 ── */
     :root {
-      --em-accent:        rgba(255, 210, 200, 0.82);
-      --em-accent-glow:   rgba(255, 120, 100, 0.18);
-      --em-accent-border: rgba(255, 160, 140, 0.30);
+      --em-accent:        rgba(255, 205, 195, 0.88);
+      --em-accent-glow:   rgba(220, 100, 80, 0.20);
+      --em-accent-border: rgba(255, 150, 130, 0.35);
+      /* 急救專用：煙灰琥珀警示語意 */
+      --aid-warn:         rgba(240, 190, 120, 0.72);
+      --aid-warn-border:  rgba(220, 165, 90, 0.30);
+    }
+
+    /* ── 首屏功能定位區塊 ── */
+    .ag-aid-context {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      border-left: 2px solid var(--em-accent-border);
+      background: rgba(255, 150, 130, 0.06);
+      border-radius: 0 var(--em-radius-sm) var(--em-radius-sm) 0;
+    }
+    .ag-aid-context-icon {
+      flex-shrink: 0;
+      width: 28px;
+      height: 28px;
+      opacity: 0.80;
+    }
+    .ag-aid-context-text {
+      font-size: 12px;
+      color: var(--em-text-secondary);
+      line-height: 1.5;
+    }
+    .ag-aid-context-text strong {
+      color: var(--em-accent);
+      font-weight: 500;
+      display: block;
+      margin-bottom: 2px;
+      font-size: 13px;
+    }
+
+    /* ── 警示標籤（琥珀）── */
+    .ag-tag--warn {
+      background: rgba(240, 190, 120, 0.12);
+      color: var(--aid-warn);
+      border: 1px solid var(--aid-warn-border);
     }
 
     /* ── 頁面特定：副標 ── */
@@ -74,12 +114,22 @@
   </header>
   <div class="ag-page-title-block">
     <p class="ag-page-title">急救指引 · Emergency Guide v1.2</p>
+    <p class="ag-page-subtitle">現場急救 · 減害應對 · 撥打流程</p>
   </div>
 
   <div class="ag-main-scroll">
     <div class="ag-container ag-container-sm">
-      <div class="ag-aid-header">
-        <h1 class="ag-aid-title ag-visually-hidden">緊急醫療與<br>減害支援模組</h1>
+      <!-- 首屏功能定位 -->
+      <div class="ag-aid-context">
+        <svg class="ag-aid-context-icon" viewBox="0 0 24 24" fill="none" stroke="rgba(255,205,195,0.75)" stroke-width="1.5" stroke-linecap="round">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+        </svg>
+        <div class="ag-aid-context-text">
+          <strong>現在有人需要協助？</strong>
+          先撥 119，再往下找對應的減害指引
+        </div>
       </div>
 
       <!-- Emergency Buttons -->

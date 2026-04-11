@@ -573,6 +573,14 @@
   margin: 0;
   font-weight: 400;
 }
+.ag-page-subtitle {
+  font-size: 10px;
+  color: var(--em-text-dim);
+  letter-spacing: 0.06em;
+  margin: 3px 0 0;
+  font-weight: 300;
+  opacity: 0.70;
+}
 
 /* ── 主捲動區（覆蓋各頁重複定義）── */
 .ag-main-scroll {

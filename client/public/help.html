@@ -14,9 +14,39 @@
   <style>
     /* ── accent 色：求助支援 — 冷青灰 ── */
     :root {
-      --em-accent:        rgba(155, 215, 205, 0.76);
-      --em-accent-glow:   rgba(110, 190, 180, 0.15);
-      --em-accent-border: rgba(135, 200, 190, 0.26);
+      --em-accent:        rgba(155, 215, 205, 0.88);
+      --em-accent-glow:   rgba(110, 190, 180, 0.18);
+      --em-accent-border: rgba(135, 200, 190, 0.32);
+    }
+
+    /* ── 首屏功能定位區塊 ── */
+    .ag-help-context {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      border-left: 2px solid rgba(135, 200, 190, 0.32);
+      background: rgba(135, 200, 190, 0.05);
+      border-radius: 0 var(--em-radius-sm) var(--em-radius-sm) 0;
+    }
+    .ag-help-context-icon {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      opacity: 0.75;
+    }
+    .ag-help-context-text {
+      font-size: 12px;
+      color: var(--em-text-secondary);
+      line-height: 1.5;
+    }
+    .ag-help-context-text strong {
+      color: var(--em-accent);
+      font-weight: 500;
+      display: block;
+      margin-bottom: 2px;
+      font-size: 13px;
     }
 
     /* ── 頁面特定：內容容器 ── */
@@ -54,11 +84,25 @@
 
   <div class="ag-page-title-block">
     <p class="ag-page-title">求助資源 · Help Resources</p>
+    <p class="ag-page-subtitle">緊急求助 · 專業資源 · 心理支援</p>
   </div>
 
   <main class="ag-main-scroll">
     <div class="ag-help-container">
       
+      <!-- 首屏功能定位 -->
+      <div class="ag-help-context">
+        <div class="ag-help-context-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="rgba(155,215,205,0.70)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+        </div>
+        <div class="ag-help-context-text">
+          <strong>這一頁能幫你找到人</strong>
+          專業減害資源、心理支援、以及緊急求助入口
+        </div>
+      </div>
+
       <!-- 1. 現場緊急 -->
       <div class="ag-emergency-box">
         <div class="ag-emergency-title">現場緊急狀況</div>
