@@ -19,72 +19,7 @@
       --em-accent-glow:   rgba(160, 130, 220, 0.16);
       --em-accent-border: rgba(180, 155, 230, 0.28);
     }
-    .ag-inner-header {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: calc(14px + env(safe-area-inset-top)) 20px 10px;
-      box-sizing: border-box;
-      min-height: 64px;
-    }
-    .ag-page-title-block { padding: 0 20px 8px; flex-shrink: 0; }
-    .ag-page-title { font-size: 12px; color: rgba(255,255,255,0.35); letter-spacing: 0.10em; text-transform: uppercase; margin: 0; }
-
-    /* Specific Styles for Risk Calculator */
-
-    .ag-risk-header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .ag-risk-title {
-      font-size: 22px;
-      color: var(--em-accent);
-      font-weight: 500;
-      letter-spacing: 0.06em;
-      text-shadow: 0 0 16px var(--em-accent-glow);
-      margin-bottom: 16px;
-    }
-
-    .ag-harm-reduction-box {
-      border: 1px solid var(--em-accent-border);
-      background: rgba(180, 155, 230, 0.06);
-      border-radius: 12px;
-      padding: 18px 20px;
-      margin-bottom: 28px;
-      display: flex;
-      gap: 10px;
-      align-items: flex-start;
-      justify-content: flex-start;
-      flex-direction: column;
-      text-align: left;
-      box-shadow: none;
-      min-height: 0;
-    }
-
-    .ag-info-icon {
-      color: var(--em-accent);
-      font-size: 18px;
-      flex-shrink: 0;
-      margin-bottom: 6px;
-      opacity: 0.75;
-    }
-
-    .ag-harm-text {
-      color: rgba(255,255,255,0.55);
-      font-size: 13px;
-      line-height: 1.65;
-    }
-
-    .ag-harm-title {
-      font-weight: 500;
-      color: var(--em-accent);
-      margin-bottom: 4px;
-      display: block;
-      letter-spacing: 0.04em;
-    }
-
+    /* ── 頁面特定：區塊標籤 ── */
     .ag-section-label {
       color: #ddd;
       margin-bottom: 8px;
@@ -378,7 +313,7 @@
     }
 
     .ag-link-item {
-      color: #ff6bd9;
+      color: var(--em-accent);
       text-decoration: none;
       font-size: 14px;
       display: flex;
@@ -397,7 +332,7 @@
     }
 
     .ag-help-title {
-      color: #bd00ff;
+      color: var(--em-accent);
       font-weight: bold;
       margin-bottom: 10px;
     }

@@ -13,299 +13,55 @@
     }
   </script>
   <style>
-    /* ── accent 色：急救指引 — 低飽和暗紅 / 冷白 ── */
+    /* ── accent 色：急救指引 — 低飽和暗紅冷白 ── */
     :root {
-      --em-accent:      rgba(255, 210, 200, 0.82); /* 低飽和暗紅冷白 */
-      --em-accent-glow: rgba(255, 120, 100, 0.18);
+      --em-accent:        rgba(255, 210, 200, 0.82);
+      --em-accent-glow:   rgba(255, 120, 100, 0.18);
       --em-accent-border: rgba(255, 160, 140, 0.30);
     }
-    /* ── Inner Header Shell（共用規則由 shared-emergency.css 提供）── */
-    .ag-inner-header {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: calc(14px + env(safe-area-inset-top)) 20px 10px;
-      box-sizing: border-box;
-      min-height: 64px;
-    }
-    .ag-page-title-block { padding: 0 20px 8px; flex-shrink: 0; }
-    .ag-page-title { font-size: 12px; color: rgba(255,255,255,0.35); letter-spacing: 0.10em; text-transform: uppercase; margin: 0; }
 
-    /* Specific Styles for First Aid v1.2 */
-    .ag-aid-header {
-      text-align: center;
-      margin-bottom: 30px;
-    }
-
-    .ag-aid-title {
-      font-size: 24px;
-      color: var(--em-accent);
-      font-weight: 500;
-      text-shadow: 0 0 18px var(--em-accent-glow);
-      margin-bottom: 10px;
-      line-height: 1.4;
-      letter-spacing: 0.02em;
-    }
-
+    /* ── 頁面特定：副標 ── */
     .ag-aid-subtitle {
-      color: #aaa;
-      font-size: 14px;
+      color: var(--em-text-secondary);
+      font-size: var(--em-font-body);
+      line-height: 1.6;
     }
 
-    /* Emergency Call Buttons */
-    .ag-emergency-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 12px; /* 手機版間距微調 */
-      margin-bottom: 24px;
-    }
-
-    .ag-emergency-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 15px;
-      border-radius: 12px;
-      font-weight: bold;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      text-align: center;
-    }
-
-    .ag-btn-119 {
-      background: rgba(255, 68, 68, 0.15);
-      border: 2px solid #ff4444;
-      color: #ff4444;
-      box-shadow: 0 0 20px rgba(255, 68, 68, 0.2);
-    }
-    .ag-btn-119:hover {
-      background: rgba(255, 68, 68, 0.25);
-      box-shadow: 0 0 30px rgba(255, 68, 68, 0.4);
-      transform: scale(1.02);
-    }
-
-    .ag-btn-110 {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid #ddd;
-      color: #ddd;
-    }
-    .ag-btn-110:hover {
-      background: rgba(255, 255, 255, 0.15);
-    }
-
+    /* ── 頁面特定：緊急按鈕基底（119 / 110 由 shared 提供，這裡只補 icon）── */
     .ag-btn-icon {
-      font-size: 24px;
-      margin-bottom: 5px;
-    }
-    .ag-btn-label { font-size: 18px; }
-    .ag-btn-desc { font-size: 12px; opacity: 0.8; font-weight: normal; margin-top: 4px; }
-
-    /* Section Headers */
-    .ag-section-title {
-      color: var(--em-accent);
-      font-size: 13px;
-      font-weight: 500;
-      letter-spacing: 0.10em;
-      text-transform: uppercase;
-      margin: 36px 0 12px 0;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--em-accent-border);
-      display: flex;
-      align-items: center;
-      gap: 8px;
+      font-size: 22px;
+      margin-bottom: 4px;
     }
 
-    /* Process Steps */
-    .ag-process-step {
-      background: rgba(255, 255, 255, 0.03);
-      border-radius: 12px;
-      padding: 15px;
-      margin-bottom: 10px;
-      display: flex;
-      gap: 15px;
-    }
-    .ag-step-num {
-      background: transparent;
-      border: 1px solid var(--em-accent-border);
-      color: var(--em-accent);
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 14px;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-    .ag-step-content h4 {
-      color: #e0ffff;
-      margin: 0 0 5px 0;
-      font-size: 16px;
-    }
-    .ag-step-content p {
-      color: #bbb;
-      margin: 0;
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    /* Accordion Styles */
-    .ag-accordion-item {
-      margin-bottom: 15px;
-      border-radius: 12px;
-      overflow: hidden;
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .ag-accordion-header {
-      padding: 16px 16px; /* 增加點擊區域 */
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.05);
-      transition: background 0.3s ease;
-      min-height: 56px; /* 確保最小點擊高度 */
-    }
-    
-    .ag-accordion-header:hover {
-      background: rgba(255, 255, 255, 0.1);
-    }
-    
-    .ag-accordion-title {
-      font-size: 16px;
-      font-weight: bold;
-      color: #e0ffff;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    
-    .ag-accordion-icon {
-      transition: transform 0.3s ease;
-      color: #00e5ff;
-    }
-    
-    .ag-accordion-content {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.3s ease-out;
-      padding: 0 20px;
-    }
-    
-    .ag-accordion-item.active .ag-accordion-icon {
-      transform: rotate(180deg);
-    }
-    
-    .ag-accordion-item.active .ag-accordion-content {
-      max-height: 1000px; /* Large enough to fit content */
-      padding: 20px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-    }
-
-    /* Substance Cards (Modified for Accordion) */
+    /* ── 頁面特定：物質卡片（accordion 內，無背景）── */
     .ag-substance-card {
-      /* Removed background/border as it's now handled by accordion item */
       background: transparent;
       border: none;
       padding: 0;
       margin-bottom: 0;
     }
-    .ag-sub-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 15px;
-    }
-    .ag-sub-title {
-      color: #ff6bd9;
-      font-size: 18px;
-      font-weight: bold;
-    }
-    .ag-sub-tag {
-      background: rgba(255, 107, 217, 0.1);
-      color: #ff6bd9;
-      padding: 4px 8px;
-      border-radius: 4px;
-      font-size: 12px;
-    }
-    .ag-sub-section {
-      margin-bottom: 15px;
-    }
-    .ag-sub-label {
-      color: #ddd;
-      font-weight: bold;
-      font-size: 14px;
-      margin-bottom: 5px;
-      display: block;
-    }
-    .ag-sub-text {
-      color: #aaa;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-    .ag-sub-text li { margin-bottom: 4px; }
 
-    /* Legal Box (Modified for Accordion) */
+    /* ── 頁面特定：法律框（accordion 內，無背景）── */
     .ag-legal-box {
-      /* Removed background/border as it's now handled by accordion item */
       border: none;
       background: transparent;
       padding: 0;
       margin-bottom: 0;
     }
-    .ag-legal-title {
-      color: #bd00ff;
-      font-weight: bold;
-      margin-bottom: 10px;
-      font-size: 16px;
-    }
-    .ag-legal-text {
-      color: #e0d0ff;
-      font-size: 14px;
-      line-height: 1.6;
-    }
 
-    /* Recovery Position SVG Grid */
+    /* ── 頁面特定：復甦姿勢圖格 ── */
     .ag-recovery-grid {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 15px;
-      margin-top: 15px;
+      gap: var(--em-space-sm);
+      margin-top: var(--em-space-sm);
     }
     .ag-illustration {
-      background: rgba(0, 0, 0, 0.3);
-      border-radius: 12px;
-      padding: 15px;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: var(--em-radius-md);
+      padding: var(--em-space-sm);
       display: flex;
       justify-content: center;
-    }
-
-    /* Footer Seal */
-    .ag-seal-section {
-      margin-top: 50px;
-      padding-top: 20px;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      text-align: center;
-    }
-    .ag-seal-badge {
-      display: inline-block;
-      border: 1px solid #00e5ff;
-      color: #00e5ff;
-      padding: 5px 10px;
-      border-radius: 4px;
-      font-size: 12px;
-      margin-bottom: 10px;
-    }
-    .ag-version-info {
-      color: #666;
-      font-size: 12px;
-      line-height: 1.5;
     }
   </style>
 </head>
@@ -314,9 +70,7 @@
   <!-- Inner Header: Back + Logo -->
   <header class="ag-inner-header">
     <a href="/support-main.html" class="ag-back-button" aria-label="返回上一頁"></a>
-    <a href="/home.html" aria-label="返回首頁">
-    <a href="/home.html" class="ag-site-logo" aria-label="回到首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
-    </a>
+    <a href="/home.html" class="ag-site-logo" aria-label="返回首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
   </header>
   <div class="ag-page-title-block">
     <p class="ag-page-title">急救指引 · Emergency Guide v1.2</p>
@@ -392,7 +146,7 @@
             <div class="ag-recovery-grid">
               <div class="ag-illustration">
                 <!-- SVG: Recovery Position Step 1 -->
-                <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
+                <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="rgba(200,230,240,0.70)" stroke-width="2">
                   <path d="M60 80 L140 80" stroke="#333" />
                   <circle cx="80" cy="70" r="10" />
                   <path d="M80 80 L130 80" />                <path d="M80 80 L70 60" /> <!-- Arm Up -->
@@ -402,7 +156,7 @@
             </div>
             <div class="ag-illustration">
               <!-- SVG: Recovery Position Step 2 -->
-              <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
+              <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="rgba(200,230,240,0.70)" stroke-width="2">
                 <path d="M60 80 L140 80" stroke="#333" />
                 <circle cx="90" cy="75" r="10" />
                 <path d="M90 85 L130 85" />
@@ -412,13 +166,13 @@
             </div>
             <div class="ag-illustration">
               <!-- SVG: Recovery Position Final -->
-              <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="#00e5ff" stroke-width="2">
+              <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="rgba(200,230,240,0.70)" stroke-width="2">
                 <path d="M60 80 L140 80" stroke="#333" />
                 <circle cx="100" cy="75" r="10" />
                 <path d="M100 85 L130 85" />
                 <path d="M100 85 L90 95" /> <!-- Arm Support -->
                 <path d="M130 85 L120 95" /> <!-- Leg Support -->
-                <text x="10" y="20" fill="#00e5ff" font-size="12" stroke="none" font-weight="bold">3. 側翻固定</text>
+                <text x="10" y="20" fill="rgba(200,230,240,0.70)" font-size="12" stroke="none" font-weight="bold">3. 側翻固定</text>
               </svg>
             </div>
           </div>

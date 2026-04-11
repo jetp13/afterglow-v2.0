@@ -15,315 +15,99 @@
   <style>
     /* ── accent 色：權利支援 — 冷藍灰 ── */
     :root {
-      --em-accent:        rgba(175, 205, 235, 0.78); /* 冷藍灰 */
+      --em-accent:        rgba(175, 205, 235, 0.78);
       --em-accent-glow:   rgba(130, 175, 220, 0.15);
       --em-accent-border: rgba(155, 190, 225, 0.28);
     }
-    body { background: #000; }
-    .ag-inner-header {
-      flex-shrink: 0;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: calc(14px + env(safe-area-inset-top)) 20px 10px;
-      box-sizing: border-box;
-      min-height: 64px;
-    }
-    .ag-page-title-block { padding: 0 20px 8px; flex-shrink: 0; }
-    .ag-page-title { font-size: 12px; color: rgba(255,255,255,0.35); letter-spacing: 0.10em; text-transform: uppercase; margin: 0; }
-    .ag-main-scroll { padding: 0 20px 32px; }
+    /* ── 頁面特定：區塊間距 ── */
+    .ag-section { margin-bottom: var(--em-space-xl); }
 
-    /* Container moved to layout.css ag-container-sm */
-
-    .ag-rights-header {
-      text-align: center;
-      margin-bottom: 60px;
-    }
-
-    .ag-rights-title {
-      font-size: 22px;
-      color: var(--em-accent);
-      margin-bottom: 12px;
-      text-shadow: 0 0 14px var(--em-accent-glow);
-      letter-spacing: 0.08em;
-      font-weight: 400;
-    }
-
-    .ag-rights-subtitle {
-      font-size: 14px;
-      color: #aaa;
-      line-height: 1.8;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    /* Section Styles */
-    .ag-section {
-      margin-bottom: 60px;
-    }
-
-    .ag-section-title {
-      font-size: 12px;
-      color: var(--em-accent);
-      font-weight: 500;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      margin-bottom: 20px;
-      padding-left: 10px;
-      border-left: 2px solid var(--em-accent-border);
-    }
-
-    /* Core Principles (Top Section) */
-    .ag-principles-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
-    }
-
-    .ag-principle-card {
-      background: rgba(155, 190, 225, 0.04);
-      border: 1px solid var(--em-accent-border);
-      border-radius: 10px;
-      padding: 18px 20px;
-      position: relative;
-    }
-
-    .ag-principle-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 12px;
-    }
-
-    .ag-principle-number {
-      background: transparent;
-      border: 1px solid var(--em-accent-border);
-      color: var(--em-accent);
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: bold;
-      font-size: 14px;
-      margin-right: 10px;
-    }
-
-    .ag-principle-title {
-      font-size: 18px;
-      color: #fff;
-      font-weight: 500;
-    }
-
-    .ag-principle-text {
-      color: #ccc;
-      font-size: 14px;
-      line-height: 1.6;
-      margin-bottom: 16px;
-    }
-
-    .ag-quote-box {
-      background: rgba(0, 0, 0, 0.3);
-      border-left: 2px solid #bd00ff;
-      padding: 12px 16px;
-      font-size: 14px;
-      color: #e0e0e0;
-      font-style: italic;
-      line-height: 1.5;
-    }
-
-    /* Rights Overview Grid */
-    .ag-rights-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 12px; /* 手機版間距微調 */
-    }
-
-    .ag-rights-card {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 8px;
-      padding: 20px;
-      transition: all 0.3s ease;
-    }
-
-    .ag-rights-card:hover {
-      background: rgba(255, 255, 255, 0.05);
-      border-color: rgba(189, 0, 255, 0.3);
-    }
-
-    .ag-card-title {
-      font-size: 16px;
-      color: #bd00ff;
-      margin-bottom: 8px;
-      font-weight: 500;
-    }
-
-    .ag-card-summary {
-      font-size: 13px;
-      color: #bbb;
-      line-height: 1.6;
-    }
-
-    /* Scenarios */
-    .ag-scenario-list {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    .ag-scenario-item {
-      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      padding-bottom: 20px;
-    }
-
-    .ag-scenario-item:last-child {
-      border-bottom: none;
-    }
-
-    .ag-scenario-title {
-      font-size: 16px;
-      color: #fff;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-    }
-
-    .ag-scenario-title::before {
-      content: '•';
-      color: #bd00ff;
-      margin-right: 8px;
-      font-size: 20px;
-    }
-
-    .ag-scenario-content {
-      padding-left: 20px;
-    }
-
-    .ag-scenario-text {
-      font-size: 14px;
-      color: #ccc;
-      margin-bottom: 12px;
-      line-height: 1.6;
-    }
-
-    /* Do / Don't List */
+    /* ── 頁面特定： Do / Don't 清單 ── */
     .ag-dodont-container {
       display: grid;
       grid-template-columns: 1fr;
-      gap: 24px;
+      gap: var(--em-space-lg);
     }
-
     .ag-list-box {
-      background: rgba(255, 255, 255, 0.02);
-      border-radius: 12px;
-      padding: 24px;
+      background: var(--em-surface-0);
+      border-radius: var(--em-radius-md);
+      padding: var(--em-space-lg);
     }
-
     .ag-list-title {
-      font-size: 18px;
-      margin-bottom: 16px;
+      font-size: var(--em-font-h2);
+      margin-bottom: var(--em-space-md);
       text-align: center;
-      font-weight: bold;
+      font-weight: 500;
     }
-
-    .ag-do-title { color: #4caf50; }
-    .ag-dont-title { color: #f44336; }
-
+    .ag-do-title   { color: rgba(160, 240, 180, 0.85); }
+    .ag-dont-title { color: rgba(255, 160, 160, 0.85); }
     .ag-check-list {
       list-style: none;
       padding: 0;
       margin: 0;
     }
-
     .ag-check-list li {
       position: relative;
       padding-left: 24px;
-      margin-bottom: 12px;
-      font-size: 14px;
-      color: #ccc;
-      line-height: 1.5;
+      margin-bottom: var(--em-space-sm);
+      font-size: var(--em-font-body);
+      color: var(--em-text-secondary);
+      line-height: 1.55;
     }
-
     .ag-check-list.do li::before {
       content: '';
       position: absolute;
-      left: 0;
-      top: 4px;
-      width: 12px;
-      height: 6px;
-      border-left: 2px solid #00ff9d;
-      border-bottom: 2px solid #00ff9d;
+      left: 0; top: 4px;
+      width: 12px; height: 6px;
+      border-left: 1.5px solid rgba(160, 240, 180, 0.75);
+      border-bottom: 1.5px solid rgba(160, 240, 180, 0.75);
       transform: rotate(-45deg);
-      box-shadow: -1px 1px 5px rgba(0, 255, 157, 0.6);
     }
-
     .ag-check-list.dont li::before {
       content: '';
       position: absolute;
-      left: 0;
-      top: 8px;
-      width: 12px;
-      height: 12px;
-      background: transparent;
+      left: 0; top: 10px;
+      width: 14px; height: 1.5px;
+      background: rgba(255, 160, 160, 0.70);
+      transform: rotate(45deg);
     }
     .ag-check-list.dont li::after {
       content: '';
       position: absolute;
-      left: 0;
-      top: 8px;
-      width: 12px;
-      height: 12px;
-      background: transparent;
-    }
-    /* Create X shape with pseudo elements on the li itself for better control */
-    .ag-check-list.dont li::before {
-      width: 14px; height: 2px; background: #ff4444; transform: rotate(45deg); top: 10px; left: 0;
-      box-shadow: 0 0 5px rgba(255, 68, 68, 0.6);
-    }
-    .ag-check-list.dont li::after {
-      width: 14px; height: 2px; background: #ff4444; transform: rotate(-45deg); top: 10px; left: 0;
-      box-shadow: 0 0 5px rgba(255, 68, 68, 0.6);
+      left: 0; top: 10px;
+      width: 14px; height: 1.5px;
+      background: rgba(255, 160, 160, 0.70);
+      transform: rotate(-45deg);
     }
 
-    /* Resources */
+    /* ── 頁面特定：資源電話色 ── */
+    .ag-resource-item {
+      background: var(--em-surface-1);
+      padding: var(--em-space-md);
+      border-radius: var(--em-radius-sm);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: var(--em-font-body);
+      color: var(--em-text-secondary);
+    }
+    .ag-resource-phone {
+      color: var(--em-accent);
+      font-weight: 500;
+    }
     .ag-resources-list {
       list-style: none;
       padding: 0;
       display: grid;
       grid-template-columns: 1fr;
-      gap: 12px;
-    }
-
-    .ag-resource-item {
-      background: rgba(255, 255, 255, 0.05);
-      padding: 16px;
-      border-radius: 8px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 14px;
-      color: #ddd;
-    }
-
-    .ag-resource-phone {
-      color: #bd00ff;
-      font-weight: 500;
+      gap: var(--em-space-sm);
     }
 
     @media (min-width: 768px) {
-      .ag-principles-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-      .ag-rights-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      .ag-dodont-container {
-        grid-template-columns: 1fr 1fr;
-      }
-      .ag-resources-list {
-        grid-template-columns: 1fr 1fr;
-      }
+      .ag-principles-grid  { grid-template-columns: repeat(3, 1fr); }
+      .ag-rights-grid      { grid-template-columns: repeat(2, 1fr); }
+      .ag-dodont-container { grid-template-columns: 1fr 1fr; }
+      .ag-resources-list   { grid-template-columns: 1fr 1fr; }
     }
   </style>
 </head>
