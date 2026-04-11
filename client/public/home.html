@@ -270,12 +270,13 @@
 
     .ag-btn--primary:hover,
     .ag-btn--primary:active {
-      opacity: 1; /* 防止 animation:none 後回到初始 opacity:0 */
+      opacity: 1;
+      /* 改用 paused 而非 none，保留 fill-mode forwards 的終態，防止回到 opacity:0 */
+      animation-play-state: paused;
       box-shadow:
         0 0 24px rgba(0,160,255,.72),
         inset 0 0 20px rgba(0,160,255,.32);
       transform: scale(1.03);
-      animation: none;
     }
 
     /* 次 CTA：偏右，紅色 Glow，藍色後 0.5s 出現 */
