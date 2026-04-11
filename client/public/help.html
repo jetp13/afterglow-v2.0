@@ -5,40 +5,29 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>求助資源｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
+  <link rel="stylesheet" href="/assets/shared-emergency.css">
   <script>
     if (localStorage.getItem('ag_consent') !== 'true') {
       window.location.href = '/index.html';
     }
   </script>
   <style>
-    /* 頁面特定樣式 */
-    .ag-page-logo {
-      position: fixed;
-      top: calc(16px + env(safe-area-inset-top, 0px));
-      right: 20px;
-      z-index: 100;
-      display: block;
-      text-decoration: none;
+    /* ── accent 色：求助支援 — 冷青灰 ── */
+    :root {
+      --em-accent:      rgba(160, 220, 210, 0.72);
+      --em-accent-glow: rgba(160, 220, 210, 0.18);
     }
-    .ag-page-logo img {
-      display: block;
-      width: 110px;
-      opacity: 0.85;
-    }
-
-    .ag-page-title-block {
-      padding: calc(88px + env(safe-area-inset-top, 0px)) 20px 4px;
+    .ag-inner-header {
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: calc(14px + env(safe-area-inset-top, 0px)) 20px 10px;
       box-sizing: border-box;
+      min-height: 64px;
     }
-    .ag-page-title {
-      font-size: 12px;
-      color: rgba(255,255,255,0.3);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin: 0;
-    }
-
+    .ag-page-title-block { padding: 0 20px 8px; flex-shrink: 0; }
+    .ag-page-title { font-size: 12px; color: rgba(255,255,255,0.35); letter-spacing: 0.10em; text-transform: uppercase; margin: 0; }
     .ag-main-scroll {
       flex: 1;
       overflow-y: auto;
@@ -218,9 +207,7 @@
 </head>
 <body class="ag-page">
   <a href="/support-main.html" class="ag-back-button" aria-label="返回上一頁"></a>
-  <a href="/home.html" class="ag-page-logo" aria-label="返回首頁">
-    <img src="/assets/logo-handwritten-nobg.png" alt="Afterglow">
-  </a>
+  <a href="/home.html" class="ag-site-logo" aria-label="返回首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
 
   <div class="ag-page-title-block">
     <p class="ag-page-title">求助資源 · Help Resources</p>

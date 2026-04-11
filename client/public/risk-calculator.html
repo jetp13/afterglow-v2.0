@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>風險計算機｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
+  <link rel="stylesheet" href="/assets/shared-emergency.css">
   <script>
     // Check for consent immediately
     if (localStorage.getItem('ag_consent') !== 'true') {
@@ -12,7 +13,11 @@
     }
   </script>
   <style>
-    /* ── Inner Header Shell ── */
+    /* ── accent 色：風險混合器 — 冷紫灰 ── */
+    :root {
+      --em-accent:      rgba(200, 180, 255, 0.75);
+      --em-accent-glow: rgba(200, 180, 255, 0.20);
+    }
     .ag-inner-header {
       flex-shrink: 0;
       display: flex;
@@ -22,18 +27,8 @@
       box-sizing: border-box;
       min-height: 64px;
     }
-    /* 使用 layout.css 全域 .ag-back-button 樣式，不覆寫 */
-    .ag-page-title-block {
-      padding: 0 20px 8px;
-      flex-shrink: 0;
-    }
-    .ag-page-title {
-      font-size: 13px;
-      color: rgba(255,255,255,0.35);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin: 0;
-    }
+    .ag-page-title-block { padding: 0 20px 8px; flex-shrink: 0; }
+    .ag-page-title { font-size: 12px; color: rgba(255,255,255,0.35); letter-spacing: 0.10em; text-transform: uppercase; margin: 0; }
 
     /* Specific Styles for Risk Calculator */
 

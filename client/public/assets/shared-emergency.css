@@ -1,0 +1,544 @@
+/*
+ * shared-emergency.css
+ * Afterglow 緊急支援模組 — 共用母系統
+ *
+ * 適用頁面：
+ *   - first-aid.html      急救指引
+ *   - risk-calculator.html 風險混合器
+ *   - rights.html          權利支援
+ *   - support-main.html    求助支援
+ *
+ * 架構：
+ *   A. CSS Design Tokens
+ *   B. Header / Logo / Back Button
+ *   C. Page Title Block
+ *   D. Main Scroll Container
+ *   E. 卡片系統（Card）
+ *   F. 按鈕系統（Button）
+ *   G. 字級階層（Typography）
+ *   H. 間距系統（Spacing）
+ *   I. 分隔線與描邊
+ *   J. 霓虹燈語言系統（Neon Language）
+ *   K. 動畫規則（Animation）
+ *   L. Footer
+ *   M. Reduced Motion
+ *
+ * 霓虹燈比例原則：
+ *   80% 穩定深色介面
+ *   15% 微弱霓虹結構光
+ *    5% 重點亮點（hover / active 狀態）
+ */
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   A. CSS Design Tokens
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+:root {
+  /* ── 背景層 ── */
+  --em-bg:              #000000;
+  --em-surface-1:       rgba(255, 255, 255, 0.03);  /* 卡片底層 */
+  --em-surface-2:       rgba(255, 255, 255, 0.06);  /* hover 狀態 */
+  --em-surface-3:       rgba(255, 255, 255, 0.10);  /* active / pressed */
+
+  /* ── 文字層 ── */
+  --em-text-primary:    rgba(255, 255, 255, 0.92);  /* 主標題 */
+  --em-text-secondary:  rgba(255, 255, 255, 0.65);  /* 副標、說明 */
+  --em-text-muted:      rgba(255, 255, 255, 0.35);  /* 頁面標籤、版本號 */
+  --em-text-dim:        rgba(255, 255, 255, 0.22);  /* 最淡、輔助資訊 */
+
+  /* ── 描邊層 ── */
+  --em-border-subtle:   rgba(255, 255, 255, 0.08);  /* 卡片描邊 */
+  --em-border-default:  rgba(255, 255, 255, 0.14);  /* 分隔線 */
+  --em-border-strong:   rgba(255, 255, 255, 0.24);  /* 強調描邊 */
+
+  /* ── 霓虹燈光色（低飽和冷光）── */
+  --em-neon-white:      rgba(255, 255, 255, 0.90);  /* 燈管冷白 */
+  --em-neon-ice:        rgba(220, 245, 255, 0.88);  /* 冰藍 */
+  --em-neon-cyan:       rgba(0,   229, 255, 0.85);  /* 青 */
+  --em-neon-lavender:   rgba(200, 180, 255, 0.80);  /* 極淡紫灰 */
+  --em-neon-gray:       rgba(180, 200, 220, 0.75);  /* 青灰 */
+
+  /* ── 霓虹 Glow 強度（邊緣光，不是大面積糊光）── */
+  --em-glow-xs:   0 0  4px;   /* 極輕邊緣光 */
+  --em-glow-sm:   0 0  8px;   /* 輕微結構光 */
+  --em-glow-md:   0 0 14px;   /* 標準 hover 亮起 */
+  --em-glow-lg:   0 0 22px;   /* 重點亮點（5% 使用） */
+
+  /* ── 圓角 ── */
+  --em-radius-sm:   8px;
+  --em-radius-md:   12px;
+  --em-radius-lg:   16px;
+  --em-radius-pill: 999px;
+
+  /* ── 間距 ── */
+  --em-space-xs:   6px;
+  --em-space-sm:   12px;
+  --em-space-md:   20px;
+  --em-space-lg:   32px;
+  --em-space-xl:   48px;
+
+  /* ── 字級 ── */
+  --em-font-label:  12px;   /* 頁面標籤、版本號 */
+  --em-font-body:   14px;   /* 正文 */
+  --em-font-ui:     15px;   /* 按鈕、UI 文字 */
+  --em-font-sub:    16px;   /* 卡片標題 */
+  --em-font-h2:     18px;   /* 區塊標題 */
+  --em-font-h1:     clamp(20px, 5vw, 26px);  /* 頁面主標 */
+
+  /* ── 動畫時長 ── */
+  --em-dur-fast:    200ms;
+  --em-dur-base:    350ms;
+  --em-dur-slow:    600ms;
+  --em-dur-reveal:  900ms;
+
+  /* ── Easing ── */
+  --em-ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --em-ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   B. Header / Logo / Back Button
+   規則：Logo 固定右上角，返回按鈕固定左上角，高度 64px
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.em-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: calc(14px + env(safe-area-inset-top, 0px)) var(--em-space-md) 10px;
+  box-sizing: border-box;
+  min-height: 64px;
+  /* Logo 已由 layout.css .ag-site-logo 固定右上角，header 不需重複定位 */
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   C. Page Title Block
+   規則：header 下方，頁面識別標籤，全大寫，極淡
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.em-page-title-block {
+  padding: 0 var(--em-space-md) var(--em-space-xs);
+  flex-shrink: 0;
+}
+
+.em-page-title {
+  font-size: var(--em-font-label);
+  color: var(--em-text-muted);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  margin: 0;
+  font-weight: 400;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   D. Main Scroll Container
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.em-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--em-space-md) var(--em-space-md) calc(var(--em-space-xl) + env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
+}
+
+.em-content {
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   E. 卡片系統（Card）
+   材質：極薄磨砂，低對比描邊，無大面積發光
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.em-card {
+  background: var(--em-surface-1);
+  border: 1px solid var(--em-border-subtle);
+  border-radius: var(--em-radius-md);
+  padding: var(--em-space-md);
+  margin-bottom: var(--em-space-sm);
+  transition: background var(--em-dur-base) var(--em-ease-out),
+              border-color var(--em-dur-base) var(--em-ease-out);
+}
+
+.em-card:hover,
+.em-card:focus-within {
+  background: var(--em-surface-2);
+  border-color: var(--em-border-default);
+}
+
+/* 卡片標題 */
+.em-card__title {
+  font-size: var(--em-font-sub);
+  font-weight: 500;
+  color: var(--em-text-primary);
+  margin: 0 0 var(--em-space-xs) 0;
+  line-height: 1.4;
+}
+
+/* 卡片說明文字 */
+.em-card__body {
+  font-size: var(--em-font-body);
+  color: var(--em-text-secondary);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   F. 按鈕系統（Button）
+   霓虹燈語言：靜止時只有輕微邊緣光，hover 才亮起
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* 主按鈕基底 */
+.em-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--em-space-xs);
+  height: 48px;
+  padding: 0 var(--em-space-lg);
+  border-radius: var(--em-radius-pill);
+  font-size: var(--em-font-ui);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--em-text-primary);
+  text-decoration: none;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  background: transparent;
+  transition:
+    box-shadow  var(--em-dur-base) var(--em-ease-out),
+    transform   var(--em-dur-base) var(--em-ease-out),
+    border-color var(--em-dur-base) var(--em-ease-out),
+    background  var(--em-dur-base) var(--em-ease-out);
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* 主按鈕：冷白燈管輪廓，靜止極輕 glow */
+.em-btn--primary {
+  border-color: rgba(220, 245, 255, 0.55);
+  background: rgba(220, 245, 255, 0.04);
+  box-shadow:
+    var(--em-glow-xs) rgba(220, 245, 255, 0.30),
+    inset 0 0 10px rgba(220, 245, 255, 0.06);
+}
+
+.em-btn--primary:hover,
+.em-btn--primary:active {
+  border-color: rgba(220, 245, 255, 0.85);
+  background: rgba(220, 245, 255, 0.08);
+  box-shadow:
+    var(--em-glow-md) rgba(220, 245, 255, 0.55),
+    inset 0 0 16px rgba(220, 245, 255, 0.14);
+  transform: scale(1.02);
+}
+
+/* 次按鈕：更低調，無 glow */
+.em-btn--secondary {
+  border-color: var(--em-border-default);
+  background: var(--em-surface-1);
+  color: var(--em-text-secondary);
+}
+
+.em-btn--secondary:hover,
+.em-btn--secondary:active {
+  background: var(--em-surface-2);
+  border-color: var(--em-border-strong);
+  color: var(--em-text-primary);
+}
+
+/* 危險按鈕（緊急撥打）：暗紅，靜止低調，hover 才亮 */
+.em-btn--danger {
+  border-color: rgba(255, 80, 80, 0.55);
+  background: rgba(255, 80, 80, 0.06);
+  color: rgba(255, 160, 160, 0.90);
+  box-shadow: var(--em-glow-xs) rgba(255, 80, 80, 0.20);
+}
+
+.em-btn--danger:hover,
+.em-btn--danger:active {
+  border-color: rgba(255, 80, 80, 0.85);
+  background: rgba(255, 80, 80, 0.12);
+  color: rgba(255, 200, 200, 1.0);
+  box-shadow: var(--em-glow-md) rgba(255, 80, 80, 0.45);
+  transform: scale(1.02);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   G. 字級階層（Typography）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* 頁面主標 */
+.em-h1 {
+  font-size: var(--em-font-h1);
+  font-weight: 400;
+  color: var(--em-text-primary);
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+  margin: 0 0 var(--em-space-xs) 0;
+}
+
+/* 區塊標題（含霓虹邊緣光描邊線） */
+.em-h2 {
+  font-size: var(--em-font-h2);
+  font-weight: 500;
+  color: var(--em-text-primary);
+  line-height: 1.4;
+  letter-spacing: 0.04em;
+  margin: var(--em-space-lg) 0 var(--em-space-sm) 0;
+  padding-bottom: var(--em-space-xs);
+  border-bottom: 1px solid var(--em-border-subtle);
+  display: flex;
+  align-items: center;
+  gap: var(--em-space-xs);
+}
+
+/* 區塊標題的霓虹底線（僅一條，不大面積發光） */
+.em-h2::after {
+  content: '';
+  display: block;
+  height: 1px;
+  flex: 1;
+  /* 由各頁 accent 色覆寫 */
+  background: linear-gradient(to right, var(--em-accent, rgba(220,245,255,0.30)), transparent);
+  margin-left: var(--em-space-xs);
+}
+
+/* 副標 / 說明文字 */
+.em-subtitle {
+  font-size: var(--em-font-body);
+  color: var(--em-text-secondary);
+  line-height: 1.6;
+  margin: 0 0 var(--em-space-md) 0;
+}
+
+/* 標籤 / 版本號 */
+.em-label {
+  font-size: var(--em-font-label);
+  color: var(--em-text-muted);
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   H. 間距系統（Spacing）
+   使用 CSS token，不用 magic number
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.em-mt-sm  { margin-top:    var(--em-space-sm); }
+.em-mt-md  { margin-top:    var(--em-space-md); }
+.em-mt-lg  { margin-top:    var(--em-space-lg); }
+.em-mb-sm  { margin-bottom: var(--em-space-sm); }
+.em-mb-md  { margin-bottom: var(--em-space-md); }
+.em-mb-lg  { margin-bottom: var(--em-space-lg); }
+.em-gap-sm { gap: var(--em-space-sm); }
+.em-gap-md { gap: var(--em-space-md); }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   I. 分隔線與描邊
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.em-divider {
+  border: none;
+  border-top: 1px solid var(--em-border-subtle);
+  margin: var(--em-space-lg) 0;
+}
+
+/* 帶霓虹光的分隔線（每頁最多一條，用於主視覺區塊下方） */
+.em-divider--neon {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    var(--em-accent, rgba(220,245,255,0.25)) 30%,
+    var(--em-accent, rgba(220,245,255,0.25)) 70%,
+    transparent
+  );
+  margin: var(--em-space-lg) 0;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   J. 霓虹燈語言系統（Neon Language）
+   規則：
+   - 燈管輪廓感：border + 極輕 box-shadow
+   - 不大面積糊光，不夜店感
+   - 允許出現位置：Logo、主視覺符號、CTA hover、卡片描邊
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* 霓虹文字（主視覺標題，每頁只用一次） */
+.em-neon-text {
+  color: var(--em-accent, var(--em-neon-ice));
+  text-shadow:
+    0 0  4px var(--em-accent-glow, rgba(220,245,255,0.40)),
+    0 0 10px var(--em-accent-glow, rgba(220,245,255,0.15));
+  /* 字比光強：text-shadow 強度刻意低於字色 */
+}
+
+/* 霓虹描邊框（卡片或區塊的輕微邊緣光） */
+.em-neon-border {
+  border: 1px solid var(--em-accent, rgba(220,245,255,0.30));
+  box-shadow:
+    var(--em-glow-xs) var(--em-accent-glow, rgba(220,245,255,0.12)),
+    inset 0 0 8px var(--em-accent-glow, rgba(220,245,255,0.04));
+}
+
+/* 通電亮起感（一次性，頁面載入時播放） */
+.em-neon-ignite {
+  animation: emNeonIgnite var(--em-dur-reveal) var(--em-ease-out) 1 forwards;
+}
+
+/* 主視覺符號容器（每頁一個，居中，帶極輕光暈） */
+.em-hero-symbol {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: var(--em-space-md) auto var(--em-space-sm);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: 1px solid var(--em-accent, rgba(220,245,255,0.25));
+  box-shadow:
+    var(--em-glow-xs) var(--em-accent-glow, rgba(220,245,255,0.15)),
+    inset 0 0 12px var(--em-accent-glow, rgba(220,245,255,0.06));
+  color: var(--em-accent, var(--em-neon-ice));
+  font-size: 22px;
+  opacity: 0;
+  animation: emFadeUp var(--em-dur-reveal) var(--em-ease-out) 0.3s 1 forwards;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   K. 動畫規則（Animation）
+   只保留：淡入、輕微上移、微光掃過、極輕通電亮起
+   不要：彈跳、強烈閃爍、多重脈衝、過度呼吸
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+
+/* 淡入上浮（卡片、文字進場） */
+@keyframes emFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 純淡入（不位移，適合頁面標題） */
+@keyframes emFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* 通電亮起感（一次性，Logo 或主視覺符號） */
+@keyframes emNeonIgnite {
+  0%   { opacity: 0;    filter: blur(3px); }
+  40%  { opacity: 0.55; filter: blur(1px); }
+  60%  { opacity: 0.35; filter: blur(2px); }
+  80%  { opacity: 0.80; filter: blur(0.5px); }
+  100% { opacity: 1;    filter: blur(0); }
+}
+
+/* 微光掃過（水平線條，一次性） */
+@keyframes emNeonSweep {
+  from { opacity: 0; transform: scaleX(0); transform-origin: left; }
+  to   { opacity: 1; transform: scaleX(1); transform-origin: left; }
+}
+
+/* 極輕呼吸（只允許用在主 CTA，不用在卡片或背景） */
+@keyframes emBreatheSlow {
+  0%, 100% { box-shadow: var(--em-glow-xs) var(--em-accent-glow, rgba(220,245,255,0.20)); }
+  50%       { box-shadow: var(--em-glow-sm) var(--em-accent-glow, rgba(220,245,255,0.35)); }
+}
+
+/* 進場動畫 helper classes */
+.em-anim-fade-up   { opacity: 0; animation: emFadeUp  var(--em-dur-reveal) var(--em-ease-out) 1 forwards; }
+.em-anim-fade-in   { opacity: 0; animation: emFadeIn  var(--em-dur-slow)   var(--em-ease-out) 1 forwards; }
+.em-anim-ignite    { opacity: 0; animation: emNeonIgnite var(--em-dur-reveal) var(--em-ease-out) 1 forwards; }
+
+/* 進場 delay helpers */
+.em-delay-1 { animation-delay: 100ms; }
+.em-delay-2 { animation-delay: 200ms; }
+.em-delay-3 { animation-delay: 350ms; }
+.em-delay-4 { animation-delay: 500ms; }
+.em-delay-5 { animation-delay: 700ms; }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   L. Accordion（共用折疊元件）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+.em-accordion {
+  margin-bottom: var(--em-space-sm);
+  border-radius: var(--em-radius-md);
+  overflow: hidden;
+  background: var(--em-surface-1);
+  border: 1px solid var(--em-border-subtle);
+}
+
+.em-accordion__header {
+  padding: 16px var(--em-space-md);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: var(--em-surface-1);
+  transition: background var(--em-dur-base) var(--em-ease-out);
+  min-height: 52px;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.em-accordion__header:hover {
+  background: var(--em-surface-2);
+}
+
+.em-accordion__title {
+  font-size: var(--em-font-sub);
+  font-weight: 500;
+  color: var(--em-text-primary);
+  display: flex;
+  align-items: center;
+  gap: var(--em-space-xs);
+}
+
+.em-accordion__chevron {
+  color: var(--em-text-muted);
+  transition: transform var(--em-dur-base) var(--em-ease-out);
+  flex-shrink: 0;
+}
+
+.em-accordion.is-open .em-accordion__chevron {
+  transform: rotate(180deg);
+}
+
+.em-accordion__body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s var(--em-ease-in-out);
+  padding: 0 var(--em-space-md);
+}
+
+.em-accordion.is-open .em-accordion__body {
+  max-height: 2000px;
+  padding: var(--em-space-md);
+  border-top: 1px solid var(--em-border-subtle);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   M. Reduced Motion
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (prefers-reduced-motion: reduce) {
+  .em-anim-fade-up,
+  .em-anim-fade-in,
+  .em-anim-ignite,
+  .em-neon-ignite,
+  .em-hero-symbol {
+    animation: none;
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+
+  .em-btn,
+  .em-card,
+  .em-accordion__header,
+  .em-accordion__chevron,
+  .em-accordion__body {
+    transition: none;
+  }
+}

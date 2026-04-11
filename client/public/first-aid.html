@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>緊急醫療與減害支援｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
+  <link rel="stylesheet" href="/assets/shared-emergency.css">
   <script>
     // Check for consent immediately
     if (localStorage.getItem('ag_consent') !== 'true') {
@@ -12,9 +13,12 @@
     }
   </script>
   <style>
-    /* ── Inner Header Shell ── */
-    /* NOTE: body height/overflow and .ag-page layout are defined in layout.css.
-       Do NOT override them here — overriding breaks the sticky footer. */
+    /* ── accent 色：急救指引 — 低飽和琥珀冷白 ── */
+    :root {
+      --em-accent:      rgba(220, 245, 255, 0.80);
+      --em-accent-glow: rgba(220, 245, 255, 0.25);
+    }
+    /* ── Inner Header Shell（共用規則由 shared-emergency.css 提供）── */
     .ag-inner-header {
       flex-shrink: 0;
       display: flex;
@@ -24,18 +28,8 @@
       box-sizing: border-box;
       min-height: 64px;
     }
-    /* 使用 layout.css 全域 .ag-back-button 樣式，不覆寫 */
-    .ag-page-title-block {
-      padding: 0 20px 8px;
-      flex-shrink: 0;
-    }
-    .ag-page-title {
-      font-size: 13px;
-      color: rgba(255,255,255,0.35);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin: 0;
-    }
+    .ag-page-title-block { padding: 0 20px 8px; flex-shrink: 0; }
+    .ag-page-title { font-size: 12px; color: rgba(255,255,255,0.35); letter-spacing: 0.10em; text-transform: uppercase; margin: 0; }
 
     /* Specific Styles for First Aid v1.2 */
     .ag-aid-header {
