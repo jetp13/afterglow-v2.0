@@ -46,7 +46,10 @@
       top: calc(16px + env(safe-area-inset-top, 0px));
       right: 20px;
       z-index: 100;
-      pointer-events: none;
+      pointer-events: auto;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
     }
     .ag-menu-logo img {
       width: 110px;
@@ -192,10 +195,10 @@
     <!-- Icon restored via CSS ::before -->
   </a>
 
-  <!-- Logo: fixed top-right -->
-  <div class="ag-menu-logo">
+  <!-- Logo: fixed top-right, 點擊回首頁 -->
+  <a href="/home.html" class="ag-menu-logo" aria-label="回到首頁">
     <img src="/assets/logo-handwritten-nobg.png" alt="Afterglow">
-  </div>
+  </a>
 
   <div class="ag-canvas-wrapper">
     <div class="ag-menu-container">
