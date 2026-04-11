@@ -141,20 +141,13 @@
       }
     }
 
-    /* 副標群組：靠右，在 Logo 下方緊接，跟著 Logo 淡入 */
-    @keyframes agFadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-
+    /* 副標群組：靠右，在 Logo 下方緊接 */
     .ag-text {
       padding: 12px 20px 0;
       text-align: right;
       display: flex;
       flex-direction: column;
       gap: 6px;
-      opacity: 0;
-      animation: agFadeIn 1.2s ease-out 1.0s 1 forwards;
     }
 
     .ag-subtitle {
@@ -186,35 +179,56 @@
     }
 
     /*
-     * agContextGlow — 極慢純淡入，無位移無模糊
-     * 像光慢慢夠了，文字一直都在那裡
-     * 第一行 delay 2.4s（Logo 長短短結束後），第二行 delay 3.6s
+     * agContextIn — 模糊淡入 + 輕微上浮
+     * 像在黑暗中慢慢對焦，不是霹虹閃瀨
+     * 一次性，首次載入播放，不循環
      */
-    @keyframes agContextGlow {
-      from { opacity: 0; }
-      to   { opacity: 1; }
+    @keyframes agContextIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+        filter: blur(6px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
     }
 
+    @keyframes agContextInHint {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+        filter: blur(8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    /* 第一行：情緒定調 */
     .ag-context__title {
       font-size: clamp(15px, 3.8vw, 18px);
       font-weight: 300;
       letter-spacing: 0.06em;
-      color: rgba(255, 255, 255, 0.88);
+      color: rgba(255, 255, 255, 0.82);
       line-height: 1.5;
-      text-shadow: 0 0 20px rgba(255,255,255,0.08);
       opacity: 0;
-      animation: agContextGlow 1.8s ease-out 2.4s 1 forwards;
+      animation: agContextIn 900ms ease-out 2.2s 1 forwards;
     }
 
+    /* 第二行：操作引導，第一行後 350ms */
     .ag-context__hint {
       font-size: clamp(11px, 2.8vw, 13px);
       font-weight: 300;
       letter-spacing: 0.10em;
-      color: rgba(255, 255, 255, 0.42);
+      color: rgba(255, 255, 255, 0.52);
       line-height: 1.5;
-      text-shadow: 0 0 20px rgba(255,255,255,0.06);
       opacity: 0;
-      animation: agContextGlow 3.5s ease-in 3.6s 1 forwards;
+      animation: agContextInHint 1000ms ease-out 2.55s 1 forwards;
     }
 
     /* 偏好減少動態：直接顯示，不動畫 */
@@ -223,6 +237,18 @@
       .ag-context__hint {
         animation: none;
         opacity: 1;
+        transform: none;
+        filter: none;
+      }
+      .ag-btn--primary {
+        animation: none;
+        opacity: 1;
+        transform: rotate(-1.2deg);
+      }
+      .ag-btn--secondary {
+        animation: none;
+        opacity: 1;
+        transform: rotate(1.5deg);
       }
     }
 
@@ -252,7 +278,17 @@
       transition: box-shadow 0.35s ease, transform 0.30s ease;
     }
 
-    /* 主 CTA：偏左，藍色 Glow，最先出現 */
+    /* CTA 共用淡入動畫：純淡入 + 極輕上浮 */
+    @keyframes agCtaInPrimary {
+      from { opacity: 0; transform: translateY(6px) rotate(-1.2deg); }
+      to   { opacity: 1; transform: translateY(0)  rotate(-1.2deg); }
+    }
+    @keyframes agCtaInSecondary {
+      from { opacity: 0; transform: translateY(6px) rotate(1.5deg); }
+      to   { opacity: 1; transform: translateY(0)  rotate(1.5deg); }
+    }
+
+    /* 主 CTA：藍色，第二行文案結束後 200ms */
     .ag-btn--primary {
       width: clamp(180px, 54vw, 220px);
       align-self: flex-start;
@@ -263,9 +299,8 @@
         0 0 14px rgba(0,160,255,.54),
         0 0 28px rgba(0,160,255,.18),
         inset 0 0 16px rgba(0,160,255,.24);
-      transform: rotate(-1.2deg);
       opacity: 0;
-      animation: agFadeIn 0.6s ease-out 0.8s 1 forwards, ag-breathe-blue 4s ease-in-out 1.5s infinite;
+      animation: agCtaInPrimary 700ms ease-out 3.8s 1 forwards, ag-breathe-blue 4s ease-in-out 4.5s infinite;
     }
 
     .ag-btn--primary:hover,
@@ -294,7 +329,7 @@
       font-weight: 400;
       transform: rotate(1.5deg);
       opacity: 0;
-      animation: agFadeIn 0.6s ease-out 0.3s 1 forwards;
+      animation: agCtaInSecondary 700ms ease-out 4.05s 1 forwards;
     }
 
     .ag-btn--secondary:hover,
