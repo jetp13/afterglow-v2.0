@@ -46,9 +46,9 @@
   --em-text-dim:        rgba(255, 255, 255, 0.22);  /* 最淡、輔助資訊 */
 
   /* ── 描邊層 ── */
-  --em-border-subtle:   rgba(255, 255, 255, 0.08);  /* 卡片描邊 */
-  --em-border-default:  rgba(255, 255, 255, 0.14);  /* 分隔線 */
-  --em-border-strong:   rgba(255, 255, 255, 0.24);  /* 強調描邊 */
+  --em-border-subtle:   rgba(255, 255, 255, 0.13);  /* 卡片描邊 */
+  --em-border-default:  rgba(255, 255, 255, 0.22);  /* 分隔線 */
+  --em-border-strong:   rgba(255, 255, 255, 0.36);  /* 強調描邊 */
 
   /* ── 霓虹燈光色（低飽和冷光）── */
   --em-neon-white:      rgba(255, 255, 255, 0.90);  /* 燈管冷白 */
@@ -58,10 +58,10 @@
   --em-neon-gray:       rgba(180, 200, 220, 0.75);  /* 青灰 */
 
   /* ── 霓虹 Glow 強度（邊緣光，不是大面積糊光）── */
-  --em-glow-xs:   0 0  4px;   /* 極輕邊緣光 */
-  --em-glow-sm:   0 0  8px;   /* 輕微結構光 */
-  --em-glow-md:   0 0 14px;   /* 標準 hover 亮起 */
-  --em-glow-lg:   0 0 22px;   /* 重點亮點（5% 使用） */
+  --em-glow-xs:   0 0  6px;   /* 極輕邊緣光 */
+  --em-glow-sm:   0 0 10px;   /* 輕微結構光 */
+  --em-glow-md:   0 0 18px;   /* 標準 hover 亮起 */
+  --em-glow-lg:   0 0 28px;   /* 重點亮點（5% 使用） */
 
   /* ── 圓角 ── */
   --em-radius-sm:   8px;
@@ -606,6 +606,9 @@
   display: flex;
   align-items: center;
   gap: var(--em-space-xs);
+  text-shadow:
+    0 0 6px var(--em-accent-glow, rgba(220,245,255,0.35)),
+    0 0 14px var(--em-accent-glow, rgba(220,245,255,0.12));
 }
 .ag-section-title:first-child {
   margin-top: 0;
@@ -618,6 +621,9 @@
   margin-bottom: var(--em-space-xs);
   font-weight: 500;
   line-height: 1.4;
+  text-shadow:
+    0 0 5px var(--em-accent-glow, rgba(220,245,255,0.28)),
+    0 0 12px var(--em-accent-glow, rgba(220,245,255,0.10));
 }
 .ag-card-summary {
   font-size: var(--em-font-body);
@@ -634,13 +640,15 @@
   padding: var(--em-space-md);
   margin-bottom: var(--em-space-sm);
   transition:
-    background var(--em-dur-base) var(--em-ease-out),
-    border-color var(--em-dur-base) var(--em-ease-out);
+    background    var(--em-dur-base) var(--em-ease-out),
+    border-color  var(--em-dur-base) var(--em-ease-out),
+    box-shadow    var(--em-dur-base) var(--em-ease-out);
 }
 .ag-rights-card:hover,
 .ag-resource-card:hover {
   background: var(--em-surface-2);
   border-color: var(--em-accent-border);
+  box-shadow: 0 0 10px var(--em-accent-glow, rgba(220,245,255,0.10));
 }
 
 /* ── 引用框（修正 rights.html 的 #bd00ff border-left）── */
@@ -771,6 +779,8 @@
   font-size: var(--em-font-body);
   flex-shrink: 0;
   margin-top: 2px;
+  box-shadow: 0 0 6px var(--em-accent-glow, rgba(220,245,255,0.20));
+  text-shadow: 0 0 4px var(--em-accent-glow, rgba(220,245,255,0.30));
 }
 
 /* ── 原則數字圓圈（rights.html ag-principle-number）── */
@@ -788,6 +798,8 @@
   font-size: var(--em-font-body);
   margin-right: var(--em-space-sm);
   flex-shrink: 0;
+  box-shadow: 0 0 6px var(--em-accent-glow, rgba(220,245,255,0.20));
+  text-shadow: 0 0 4px var(--em-accent-glow, rgba(220,245,255,0.30));
 }
 
 /* ── 輔助文字（四頁共用）── */
@@ -933,13 +945,14 @@
 .ag-action-btn:active { opacity: 0.75; }
 
 .ag-action-btn--phone {
-  border-color: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.28);
   background: rgba(255, 255, 255, 0.04);
   color: var(--em-text-primary);
+  box-shadow: 0 0 6px rgba(255,255,255,0.08);
 }
 .ag-action-btn--phone:hover {
-  border-color: rgba(255, 255, 255, 0.35);
-  box-shadow: var(--em-glow-xs) rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.50);
+  box-shadow: var(--em-glow-sm) rgba(255, 255, 255, 0.18);
 }
 .ag-action-btn--line {
   border-color: rgba(0, 195, 80, 0.35);
