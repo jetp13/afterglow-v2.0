@@ -595,10 +595,10 @@
 
 /* ── 區塊標題（覆蓋各頁重複定義，修正 rights.html 的 border-left 差異）── */
 .ag-section-title {
-  font-size: var(--em-font-label);
+  font-size: 14px;                /* 升至 14px，明顯高於頁面標籤 12px */
   color: var(--em-accent);
-  font-weight: 500;
-  letter-spacing: 0.12em;
+  font-weight: 600;               /* 加重，讓它真的像標題 */
+  letter-spacing: 0.08em;         /* 字大了不需要那麼寬 */
   text-transform: uppercase;
   margin: var(--em-space-lg) 0 var(--em-space-sm) 0;
   padding-bottom: var(--em-space-xs);
@@ -613,13 +613,24 @@
 .ag-section-title:first-child {
   margin-top: 0;
 }
+/* 區塊標題前置標記：3px accent 色短線，作為視覺錨點 */
+.ag-section-title::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 12px;
+  background: var(--em-accent-border);
+  border-radius: 2px;
+  flex-shrink: 0;
+  box-shadow: 0 0 6px var(--em-accent-glow, rgba(220,245,255,0.30));
+}
 
 /* ── 卡片標題（修正 rights.html 的 #bd00ff 飽和紫，改用 accent 變數）── */
 .ag-card-title {
   font-size: var(--em-font-sub);
   color: var(--em-accent);
   margin-bottom: var(--em-space-xs);
-  font-weight: 500;
+  font-weight: 600;               /* 加重，與正文形成對比 */
   line-height: 1.4;
   text-shadow:
     0 0 5px var(--em-accent-glow, rgba(220,245,255,0.28)),
@@ -737,8 +748,8 @@
 }
 .ag-accordion-title {
   font-size: var(--em-font-sub);
-  font-weight: 500;
-  color: var(--em-text-primary);
+  font-weight: 600;               /* 加重，與正文形成對比 */
+  color: var(--em-text-primary);  /* 保持白色，區分於 accent 色標題 */
   display: flex;
   align-items: center;
   gap: var(--em-space-xs);
@@ -1183,7 +1194,7 @@
 .ag-step-content h4 {
   color: var(--em-text-primary);
   margin: 0 0 4px 0;
-  font-size: var(--em-font-sub);
+  font-size: 15px;                /* 稍收歂，讓紧急按鈕的 20px 更突出 */
   font-weight: 500;
 }
 .ag-step-content p {
