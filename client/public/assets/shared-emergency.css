@@ -211,13 +211,13 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-/* 主按鈕：冷白燈管輪廓，靜止極輕 glow */
+/* 主按鈕：冷白燈管輪廓，靜止有存在感的 glow */
 .em-btn--primary {
-  border-color: rgba(220, 245, 255, 0.55);
-  background: rgba(220, 245, 255, 0.04);
+  border-color: rgba(220, 245, 255, 0.65);
+  background: rgba(220, 245, 255, 0.05);
   box-shadow:
-    var(--em-glow-xs) rgba(220, 245, 255, 0.30),
-    inset 0 0 10px rgba(220, 245, 255, 0.06);
+    var(--em-glow-xs) rgba(220, 245, 255, 0.50),
+    inset 0 0 12px rgba(220, 245, 255, 0.10);
 }
 
 .em-btn--primary:hover,
@@ -244,12 +244,12 @@
   color: var(--em-text-primary);
 }
 
-/* 危險按鈕（緊急撥打）：暗紅，靜止低調，hover 才亮 */
+/* 危險按鈕（緊急撥打）：暗紅，靜止有底光 */
 .em-btn--danger {
-  border-color: rgba(255, 80, 80, 0.55);
-  background: rgba(255, 80, 80, 0.06);
-  color: rgba(255, 160, 160, 0.90);
-  box-shadow: var(--em-glow-xs) rgba(255, 80, 80, 0.20);
+  border-color: rgba(255, 80, 80, 0.65);
+  background: rgba(255, 80, 80, 0.07);
+  color: rgba(255, 160, 160, 0.95);
+  box-shadow: var(--em-glow-xs) rgba(255, 80, 80, 0.38);
 }
 
 .em-btn--danger:hover,
@@ -607,8 +607,8 @@
   align-items: center;
   gap: var(--em-space-xs);
   text-shadow:
-    0 0 6px var(--em-accent-glow, rgba(220,245,255,0.35)),
-    0 0 14px var(--em-accent-glow, rgba(220,245,255,0.12));
+    0 0 6px var(--em-accent-glow, rgba(220,245,255,0.60)),
+    0 0 18px var(--em-accent-glow, rgba(220,245,255,0.28));
 }
 .ag-section-title:first-child {
   margin-top: 0;
@@ -622,7 +622,7 @@
   background: var(--em-accent-border);
   border-radius: 2px;
   flex-shrink: 0;
-  box-shadow: 0 0 6px var(--em-accent-glow, rgba(220,245,255,0.30));
+  box-shadow: 0 0 8px var(--em-accent-glow, rgba(220,245,255,0.55));
 }
 
 /* ── 卡片標題（修正 rights.html 的 #bd00ff 飽和紫，改用 accent 變數）── */
@@ -633,8 +633,8 @@
   font-weight: 600;               /* 加重，與正文形成對比 */
   line-height: 1.4;
   text-shadow:
-    0 0 5px var(--em-accent-glow, rgba(220,245,255,0.28)),
-    0 0 12px var(--em-accent-glow, rgba(220,245,255,0.10));
+    0 0 6px var(--em-accent-glow, rgba(220,245,255,0.50)),
+    0 0 14px var(--em-accent-glow, rgba(220,245,255,0.22));
 }
 .ag-card-summary {
   font-size: var(--em-font-body);
@@ -659,7 +659,7 @@
 .ag-resource-card:hover {
   background: var(--em-surface-2);
   border-color: var(--em-accent-border);
-  box-shadow: 0 0 10px var(--em-accent-glow, rgba(220,245,255,0.10));
+  box-shadow: 0 0 12px var(--em-accent-glow, rgba(220,245,255,0.22));
 }
 
 /* ── 引用框（修正 rights.html 的 #bd00ff border-left）── */
@@ -716,7 +716,7 @@
   stroke: currentColor;
   fill: none;
   stroke-width: 1.5;
-  opacity: 0.80;
+  opacity: 1.0;  /* icon 應清楚可見，不壓暗 */
 }
 
 /* ── Accordion（覆蓋各頁重複定義）── */
@@ -755,13 +755,15 @@
   gap: var(--em-space-xs);
 }
 .ag-accordion-icon {
-  color: var(--em-text-muted);
-  transition: transform var(--em-dur-base) var(--em-ease-out);
+  color: var(--em-accent);  /* 有色彩感，與 accordion-title 呼應 */
+  opacity: 0.60;
+  transition: transform var(--em-dur-base) var(--em-ease-out), opacity var(--em-dur-base) var(--em-ease-out);
   flex-shrink: 0;
 }
 .ag-accordion-item.active .ag-accordion-icon {
   transform: rotate(180deg);
   color: var(--em-accent);
+  opacity: 1.0;
 }
 .ag-accordion-content {
   max-height: 0;
@@ -790,8 +792,8 @@
   font-size: var(--em-font-body);
   flex-shrink: 0;
   margin-top: 2px;
-  box-shadow: 0 0 6px var(--em-accent-glow, rgba(220,245,255,0.20));
-  text-shadow: 0 0 4px var(--em-accent-glow, rgba(220,245,255,0.30));
+  box-shadow: 0 0 8px var(--em-accent-glow, rgba(220,245,255,0.40));
+  text-shadow: 0 0 6px var(--em-accent-glow, rgba(220,245,255,0.55));
 }
 
 /* ── 原則數字圓圈（rights.html ag-principle-number）── */
@@ -809,8 +811,8 @@
   font-size: var(--em-font-body);
   margin-right: var(--em-space-sm);
   flex-shrink: 0;
-  box-shadow: 0 0 6px var(--em-accent-glow, rgba(220,245,255,0.20));
-  text-shadow: 0 0 4px var(--em-accent-glow, rgba(220,245,255,0.30));
+  box-shadow: 0 0 8px var(--em-accent-glow, rgba(220,245,255,0.40));
+  text-shadow: 0 0 6px var(--em-accent-glow, rgba(220,245,255,0.55));
 }
 
 /* ── 輔助文字（四頁共用）── */
@@ -956,14 +958,14 @@
 .ag-action-btn:active { opacity: 0.75; }
 
 .ag-action-btn--phone {
-  border-color: rgba(255, 255, 255, 0.28);
-  background: rgba(255, 255, 255, 0.04);
+  border-color: rgba(255, 255, 255, 0.42);  /* 靜止態輪廓更清晰 */
+  background: rgba(255, 255, 255, 0.05);
   color: var(--em-text-primary);
-  box-shadow: 0 0 6px rgba(255,255,255,0.08);
+  box-shadow: 0 0 10px rgba(255,255,255,0.14);  /* 靜止態有底光 */
 }
 .ag-action-btn--phone:hover {
-  border-color: rgba(255, 255, 255, 0.50);
-  box-shadow: var(--em-glow-sm) rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.68);
+  box-shadow: var(--em-glow-md) rgba(255, 255, 255, 0.28);
 }
 .ag-action-btn--line {
   border-color: rgba(0, 195, 80, 0.35);
@@ -1068,7 +1070,7 @@
   font-size: 18px;
   flex-shrink: 0;
   margin-bottom: 4px;
-  opacity: 0.75;
+  opacity: 1.0;  /* info icon 應清楚可見 */
 }
 .ag-harm-text {
   color: var(--em-text-secondary);
