@@ -593,34 +593,36 @@
   box-sizing: border-box;
 }
 
-/* ── 首屏緊急提示框（四頁共用）── */
+/* ── 首屏進場說明卡（四頁共用）── */
 .ag-aid-context {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 12px 16px;
-  margin-bottom: 20px;
-  border-left: 2px solid var(--em-accent-border);
-  background: rgba(255, 150, 130, 0.06);  /* 預設暖色，各頁可用 inline style 覆蓋 */
-  border-radius: 0 var(--em-radius-sm) var(--em-radius-sm) 0;
+  gap: 14px;
+  padding: 16px 18px;
+  margin-bottom: 24px;
+  border: 1px solid var(--em-accent-border);  /* 四邊描邊，完整容器感 */
+  background: var(--em-surface-1);            /* 与卡片系統一致，不用顏色強調 */
+  border-radius: var(--em-radius-md);
+  transition: border-color var(--em-dur-base) var(--em-ease-out);
 }
 .ag-aid-context-icon {
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
-  opacity: 0.80;
+  width: 22px;
+  height: 22px;
+  opacity: 0.70;  /* 圖示低調，不會比文字更強 */
 }
 .ag-aid-context-text {
   font-size: 12px;
   color: var(--em-text-secondary);
-  line-height: 1.5;
+  line-height: 1.6;
 }
 .ag-aid-context-text strong {
-  color: var(--em-accent);
+  color: var(--em-text-primary);  /* 白色而非 accent，讓標題穩重而不張揚 */
   font-weight: 500;
   display: block;
-  margin-bottom: 2px;
+  margin-bottom: 3px;
   font-size: 13px;
+  letter-spacing: 0.02em;
 }
 
 /* ── 區塊標題（覆蓋各頁重複定義，修正 rights.html 的 border-left 差異）── */
