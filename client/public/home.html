@@ -209,7 +209,7 @@
       }
     }
 
-    /* 第一行：情緒定調 */
+    /* 第一行：情緒定調 — 膠囊出現後才淡入 */
     .ag-context__title {
       font-size: clamp(15px, 3.8vw, 18px);
       font-weight: 300;
@@ -217,7 +217,7 @@
       color: rgba(255, 255, 255, 0.82);
       line-height: 1.5;
       opacity: 0;
-      animation: agContextIn 900ms ease-out 2.2s 1 forwards;
+      animation: agContextIn 900ms ease-out 1.6s 1 forwards;
     }
 
     /* 第二行：操作引導，第一行後 350ms */
@@ -228,7 +228,7 @@
       color: rgba(255, 255, 255, 0.52);
       line-height: 1.5;
       opacity: 0;
-      animation: agContextInHint 1000ms ease-out 2.55s 1 forwards;
+      animation: agContextInHint 1000ms ease-out 1.95s 1 forwards;
     }
 
     /* 偏好減少動態：直接顯示，不動畫 */
@@ -278,29 +278,29 @@
       transition: box-shadow 0.35s ease, transform 0.30s ease;
     }
 
-    /* CTA 共用淡入動畫：純淡入 + 極輕上浮 */
+    /* CTA 進場動畫：從下方浮上 + 輕微模糊對焦，靠近緊急支援頁藥丸語言 */
     @keyframes agCtaInPrimary {
-      from { opacity: 0; transform: translateY(6px) rotate(-1.2deg); }
-      to   { opacity: 1; transform: translateY(0)  rotate(-1.2deg); }
+      from { opacity: 0; transform: translateY(14px) rotate(-1.2deg); filter: blur(4px); }
+      to   { opacity: 1; transform: translateY(0)   rotate(-1.2deg); filter: blur(0);   }
     }
     @keyframes agCtaInSecondary {
-      from { opacity: 0; transform: translateY(6px) rotate(1.5deg); }
-      to   { opacity: 1; transform: translateY(0)  rotate(1.5deg); }
+      from { opacity: 0; transform: translateY(14px) rotate(1.5deg);  filter: blur(4px); }
+      to   { opacity: 1; transform: translateY(0)    rotate(1.5deg);  filter: blur(0);   }
     }
 
-    /* 主 CTA：藍色，第二行文案結束後 200ms */
+    /* 主 CTA：藍色，最先出現（0.4s），讓使用者一進頁面就看到兩顆藥丸 */
     .ag-btn--primary {
       width: clamp(180px, 54vw, 220px);
       align-self: flex-start;
       margin-left: 4vw;
-      border: 1.5px solid #00aaff;
+      border: 2px solid #00aaff;
       background: radial-gradient(ellipse at center, rgba(0,160,255,.22) 0%, transparent 70%);
       box-shadow:
         0 0 14px rgba(0,160,255,.54),
         0 0 28px rgba(0,160,255,.18),
         inset 0 0 16px rgba(0,160,255,.24);
       opacity: 0;
-      animation: agCtaInPrimary 700ms ease-out 3.8s 1 forwards, ag-breathe-blue 4s ease-in-out 4.5s infinite;
+      animation: agCtaInPrimary 800ms cubic-bezier(0.16,1,0.30,1) 0.4s 1 forwards, ag-breathe-blue 4s ease-in-out 1.2s infinite;
     }
 
     .ag-btn--primary:hover,
@@ -309,35 +309,38 @@
       /* 改用 paused 而非 none，保留 fill-mode forwards 的終態，防止回到 opacity:0 */
       animation-play-state: paused;
       box-shadow:
-        0 0 24px rgba(0,160,255,.72),
+        0 0 24px rgba(0,160,255,.80),
+        0 0 52px rgba(0,160,255,.36),
         inset 0 0 20px rgba(0,160,255,.32);
-      transform: scale(1.03);
+      transform: rotate(-1.2deg) translateY(-4px) scale(1.06);
     }
 
-    /* 次 CTA：偏右，紅色 Glow，藍色後 0.5s 出現 */
+    /* 次 CTA：偏右，紅色 Glow，藍色後 0.35s 出現，加入呼吸動畫 */
     .ag-btn--secondary {
       width: clamp(160px, 50vw, 200px);
       align-self: flex-end;
       margin-right: 6vw;
-      border: 1.5px solid rgba(255, 30, 60, 0.75);
-      background: radial-gradient(ellipse at center, rgba(255,0,51,.13) 0%, transparent 70%);
+      border: 2px solid rgba(255, 61, 46, 0.80);
+      background: radial-gradient(ellipse at center, rgba(255,61,46,.12) 0%, transparent 70%);
       box-shadow:
-        0 0 10px rgba(255,0,51,.30),
-        0 0 22px rgba(255,0,51,.10),
-        inset 0 0 12px rgba(255,0,51,.15);
-      color: rgba(255,255,255,0.82);
+        0 0 14px rgba(255,61,46,.54),
+        0 0 30px rgba(255,61,46,.18),
+        inset 0 0 14px rgba(255,61,46,.16);
+      color: rgba(255,255,255,0.90);
       font-weight: 400;
       transform: rotate(1.5deg);
       opacity: 0;
-      animation: agCtaInSecondary 700ms ease-out 4.05s 1 forwards;
+      animation: agCtaInSecondary 800ms cubic-bezier(0.16,1,0.30,1) 0.75s 1 forwards, ag-breathe-red 4.5s ease-in-out 1.6s infinite;
     }
 
     .ag-btn--secondary:hover,
     .ag-btn--secondary:active {
       box-shadow:
-        0 0 18px rgba(255,0,51,.52),
-        inset 0 0 16px rgba(255,0,51,.22);
-      transform: scale(1.03);
+        0 0 28px rgba(255,61,46,.88),
+        0 0 58px rgba(255,61,46,.40),
+        inset 0 0 18px rgba(255,61,46,.24);
+      transform: rotate(1.5deg) translateY(-4px) scale(1.06);
+      animation-play-state: paused;
       color: #fff;
     }
 
@@ -346,7 +349,15 @@
         box-shadow: 0 0 14px rgba(0,160,255,.54), 0 0 28px rgba(0,160,255,.18), inset 0 0 16px rgba(0,160,255,.24);
       }
       50% {
-        box-shadow: 0 0 22px rgba(0,160,255,.70), 0 0 36px rgba(0,160,255,.24), inset 0 0 20px rgba(0,160,255,.32);
+        box-shadow: 0 0 22px rgba(0,160,255,.72), 0 0 40px rgba(0,160,255,.26), inset 0 0 20px rgba(0,160,255,.32);
+      }
+    }
+    @keyframes ag-breathe-red {
+      0%, 100% {
+        box-shadow: 0 0 14px rgba(255,61,46,.54), 0 0 30px rgba(255,61,46,.18), inset 0 0 14px rgba(255,61,46,.16);
+      }
+      50% {
+        box-shadow: 0 0 22px rgba(255,61,46,.80), 0 0 46px rgba(255,61,46,.32), inset 0 0 18px rgba(255,61,46,.22);
       }
     }
 
