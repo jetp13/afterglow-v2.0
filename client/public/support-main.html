@@ -48,6 +48,9 @@
       gap: 0;
       width: 100%;
       padding: 0 4px;
+      /* 景深空間：讓 translateZ 有透視效果 */
+      perspective: 700px;
+      perspective-origin: 50% 50%;
     }
 
     /* 共用膠囊基底：對齊首頁藥丸視覺語言 */
@@ -63,7 +66,12 @@
       text-decoration: none;
       white-space: nowrap;
       position: relative;
-      transition: box-shadow 0.35s ease, transform 0.30s ease;
+      /* 優雅浮現：慢起步、輕落地 */
+      transition:
+        transform 0.65s cubic-bezier(0.16, 1, 0.30, 1),
+        box-shadow 0.65s cubic-bezier(0.16, 1, 0.30, 1),
+        filter 0.55s ease,
+        opacity 0.70s ease;
     }
 
     /* 急救指引 — 最細最短，靠右，微小轉角 */
@@ -104,93 +112,152 @@
     }
 
     /* ──────────────────────────────────────────
-       急救指引 — 煙粉暗紅
-       對應 first-aid.html: rgba(255, 205, 195)
+       景深互動：選到哪顆，哪顆浮上前景
+       其他藥丸退後模糊，製造鏡頭對焦感
+       技術：CSS :has() + translateZ
+       相容：iOS Safari 15.4+, Chrome 105+
+    ────────────────────────────────────────── */
+
+    /* 有任何藥丸被 hover/focus 時，其他藥丸優雅退後 */
+    .ag-capsule-list:has(.ag-menu-button:hover) .ag-menu-button,
+    .ag-capsule-list:has(.ag-menu-button:focus) .ag-menu-button {
+      filter: blur(1.8px) brightness(0.38);
+      opacity: 0.42;
+    }
+    /* 被選中的那顆輕輕飄上前景 */
+    .ag-capsule-list:has(.ag-menu-button:hover) .ag-menu-button:hover,
+    .ag-capsule-list:has(.ag-menu-button:focus) .ag-menu-button:focus {
+      filter: blur(0px) brightness(1.20);
+      opacity: 1;
+      z-index: 10;
+    }
+    /* Touch 裝置補強：JS 切換 .is-active */
+    .ag-capsule-list:has(.ag-menu-button.is-active) .ag-menu-button {
+      filter: blur(1.8px) brightness(0.38);
+      opacity: 0.42;
+    }
+    .ag-capsule-list:has(.ag-menu-button.is-active) .ag-menu-button.is-active {
+      filter: blur(0px) brightness(1.20);
+      opacity: 1;
+      z-index: 10;
+    }
+
+    /* ──────────────────────────────────────────
+       急救指引 — 語意暖紅（緊急 · 警報）
     ────────────────────────────────────────── */
     .ag-menu-button--first-aid {
-      border: 1.5px solid rgba(255, 160, 140, 0.75);
-      background: radial-gradient(ellipse at center, rgba(255,160,140,0.12) 0%, transparent 70%);
-      box-shadow: 0 0 10px rgba(220,100,80,0.35), inset 0 0 14px rgba(255,160,140,0.14);
-      color: rgba(255, 220, 210, 0.95);
+      border: 2px solid rgba(255, 61, 46, 0.80);
+      background: radial-gradient(ellipse at center, rgba(255,61,46,0.10) 0%, transparent 70%);
+      box-shadow:
+        0 0 14px rgba(255,61,46,0.60),
+        0 0 36px rgba(255,61,46,0.24),
+        inset 0 0 12px rgba(255,61,46,0.12);
+      color: rgba(255, 215, 210, 0.95);
       animation: ag-breathe-red 4.5s ease-in-out infinite;
     }
     .ag-menu-button--first-aid:hover,
-    .ag-menu-button--first-aid:active {
-      box-shadow: 0 0 22px rgba(220,100,80,0.55), inset 0 0 20px rgba(255,160,140,0.24);
-      transform: rotate(-1.8deg) scale(1.03);
+    .ag-menu-button--first-aid:active,
+    .ag-menu-button--first-aid.is-active {
+      box-shadow:
+        0 0 28px rgba(255,61,46,0.88),
+        0 0 60px rgba(255,61,46,0.44),
+        0 0 110px rgba(255,61,46,0.18),
+        inset 0 0 18px rgba(255,61,46,0.24);
+      transform: rotate(-1.8deg) translateY(-4px) scale(1.06);
       animation: none;
     }
 
     /* ──────────────────────────────────────────
-       風險計算機 — 冷紫灰
-       對應 risk-calculator.html: rgba(195, 175, 240)
+       風險計算機 — 語意亮洋紅（迷幻 · 工具感）
     ────────────────────────────────────────── */
     .ag-menu-button--risk {
-      border: 1.5px solid rgba(180, 155, 230, 0.72);
-      background: radial-gradient(ellipse at center, rgba(180,155,230,0.12) 0%, transparent 70%);
-      box-shadow: 0 0 10px rgba(160,130,220,0.32), inset 0 0 14px rgba(180,155,230,0.14);
-      color: rgba(215, 205, 250, 0.95);
-      animation: ag-breathe-violet 4s ease-in-out infinite;
+      border: 2px solid rgba(224, 64, 251, 0.78);
+      background: radial-gradient(ellipse at center, rgba(224,64,251,0.10) 0%, transparent 70%);
+      box-shadow:
+        0 0 14px rgba(224,64,251,0.58),
+        0 0 34px rgba(224,64,251,0.22),
+        inset 0 0 12px rgba(224,64,251,0.10);
+      color: rgba(248, 215, 255, 0.95);
+      animation: ag-breathe-magenta 3.8s ease-in-out infinite;
     }
     .ag-menu-button--risk:hover,
-    .ag-menu-button--risk:active {
-      box-shadow: 0 0 22px rgba(160,130,220,0.52), inset 0 0 20px rgba(180,155,230,0.24);
-      transform: rotate(1.4deg) scale(1.03);
+    .ag-menu-button--risk:active,
+    .ag-menu-button--risk.is-active {
+      box-shadow:
+        0 0 28px rgba(224,64,251,0.86),
+        0 0 58px rgba(224,64,251,0.42),
+        0 0 105px rgba(224,64,251,0.18),
+        inset 0 0 18px rgba(224,64,251,0.22);
+      transform: rotate(1.4deg) translateY(-4px) scale(1.06);
       animation: none;
     }
 
     /* ──────────────────────────────────────────
-       權利知識 — 冷藍灰
-       對應 rights.html: rgba(175, 205, 235)
+       權利知識 — 語意電藍（制度 · 秩序）
     ────────────────────────────────────────── */
     .ag-menu-button--rights {
-      border: 1.5px solid rgba(155, 190, 225, 0.72);
-      background: radial-gradient(ellipse at center, rgba(155,190,225,0.12) 0%, transparent 70%);
-      box-shadow: 0 0 10px rgba(130,175,220,0.32), inset 0 0 14px rgba(155,190,225,0.14);
-      color: rgba(200, 220, 245, 0.95);
+      border: 2px solid rgba(41, 121, 255, 0.78);
+      background: radial-gradient(ellipse at center, rgba(41,121,255,0.10) 0%, transparent 70%);
+      box-shadow:
+        0 0 14px rgba(41,121,255,0.58),
+        0 0 34px rgba(41,121,255,0.22),
+        inset 0 0 12px rgba(41,121,255,0.10);
+      color: rgba(205, 222, 255, 0.95);
       animation: ag-breathe-blue 5s ease-in-out infinite;
     }
     .ag-menu-button--rights:hover,
-    .ag-menu-button--rights:active {
-      box-shadow: 0 0 22px rgba(130,175,220,0.52), inset 0 0 20px rgba(155,190,225,0.24);
-      transform: rotate(-1.0deg) scale(1.03);
+    .ag-menu-button--rights:active,
+    .ag-menu-button--rights.is-active {
+      box-shadow:
+        0 0 26px rgba(41,121,255,0.84),
+        0 0 55px rgba(41,121,255,0.40),
+        0 0 100px rgba(41,121,255,0.18),
+        inset 0 0 16px rgba(41,121,255,0.22);
+      transform: rotate(-1.0deg) translateY(-3px) scale(1.06);
       animation: none;
     }
 
     /* ──────────────────────────────────────────
-       求助資源 — 冷青灰
-       對應 help.html: rgba(155, 215, 205)
+       求助資源 — 語意翠綠（出口 · 接住）
     ────────────────────────────────────────── */
     .ag-menu-button--help {
-      border: 1.5px solid rgba(135, 200, 190, 0.72);
-      background: radial-gradient(ellipse at center, rgba(135,200,190,0.12) 0%, transparent 70%);
-      box-shadow: 0 0 10px rgba(110,190,180,0.32), inset 0 0 14px rgba(135,200,190,0.14);
-      color: rgba(195, 235, 230, 0.95);
-      animation: ag-breathe-teal 4.8s ease-in-out infinite;
+      border: 2px solid rgba(0, 230, 118, 0.78);
+      background: radial-gradient(ellipse at center, rgba(0,230,118,0.10) 0%, transparent 70%);
+      box-shadow:
+        0 0 14px rgba(0,230,118,0.60),
+        0 0 36px rgba(0,230,118,0.24),
+        inset 0 0 12px rgba(0,230,118,0.12);
+      color: rgba(195, 255, 228, 0.95);
+      animation: ag-breathe-green 4.8s ease-in-out infinite;
     }
     .ag-menu-button--help:hover,
-    .ag-menu-button--help:active {
-      box-shadow: 0 0 22px rgba(110,190,180,0.52), inset 0 0 20px rgba(135,200,190,0.24);
-      transform: rotate(1.8deg) scale(1.03);
+    .ag-menu-button--help:active,
+    .ag-menu-button--help.is-active {
+      box-shadow:
+        0 0 28px rgba(0,230,118,0.88),
+        0 0 60px rgba(0,230,118,0.44),
+        0 0 110px rgba(0,230,118,0.20),
+        inset 0 0 18px rgba(0,230,118,0.24);
+      transform: rotate(1.8deg) translateY(-4px) scale(1.06);
       animation: none;
     }
 
     /* ── 呼吸動畫 — 各色自己的節奏略有差異 ── */
     @keyframes ag-breathe-red {
-      0%, 100% { box-shadow: 0 0 10px rgba(220,100,80,0.35), inset 0 0 14px rgba(255,160,140,0.14); }
-      50%       { box-shadow: 0 0 16px rgba(220,100,80,0.52), inset 0 0 18px rgba(255,160,140,0.22); }
+      0%, 100% { box-shadow: 0 0 14px rgba(255,61,46,0.60), 0 0 36px rgba(255,61,46,0.24), inset 0 0 12px rgba(255,61,46,0.12); }
+      50%       { box-shadow: 0 0 22px rgba(255,61,46,0.82), 0 0 52px rgba(255,61,46,0.38), inset 0 0 18px rgba(255,61,46,0.20); }
     }
-    @keyframes ag-breathe-violet {
-      0%, 100% { box-shadow: 0 0 10px rgba(160,130,220,0.32), inset 0 0 14px rgba(180,155,230,0.14); }
-      50%       { box-shadow: 0 0 16px rgba(160,130,220,0.48), inset 0 0 18px rgba(180,155,230,0.22); }
+    @keyframes ag-breathe-magenta {
+      0%, 100% { box-shadow: 0 0 14px rgba(224,64,251,0.58), 0 0 34px rgba(224,64,251,0.22), inset 0 0 12px rgba(224,64,251,0.10); }
+      50%       { box-shadow: 0 0 22px rgba(224,64,251,0.80), 0 0 50px rgba(224,64,251,0.36), inset 0 0 16px rgba(224,64,251,0.18); }
     }
     @keyframes ag-breathe-blue {
-      0%, 100% { box-shadow: 0 0 10px rgba(130,175,220,0.32), inset 0 0 14px rgba(155,190,225,0.14); }
-      50%       { box-shadow: 0 0 16px rgba(130,175,220,0.48), inset 0 0 18px rgba(155,190,225,0.22); }
+      0%, 100% { box-shadow: 0 0 14px rgba(41,121,255,0.58), 0 0 34px rgba(41,121,255,0.22), inset 0 0 12px rgba(41,121,255,0.10); }
+      50%       { box-shadow: 0 0 22px rgba(41,121,255,0.80), 0 0 50px rgba(41,121,255,0.36), inset 0 0 16px rgba(41,121,255,0.18); }
     }
-    @keyframes ag-breathe-teal {
-      0%, 100% { box-shadow: 0 0 10px rgba(110,190,180,0.32), inset 0 0 14px rgba(135,200,190,0.14); }
-      50%       { box-shadow: 0 0 16px rgba(110,190,180,0.48), inset 0 0 18px rgba(135,200,190,0.22); }
+    @keyframes ag-breathe-green {
+      0%, 100% { box-shadow: 0 0 14px rgba(0,230,118,0.60), 0 0 36px rgba(0,230,118,0.24), inset 0 0 12px rgba(0,230,118,0.12); }
+      50%       { box-shadow: 0 0 22px rgba(0,230,118,0.82), 0 0 52px rgba(0,230,118,0.38), inset 0 0 18px rgba(0,230,118,0.20); }
     }
   </style>
 </head>
@@ -229,6 +296,28 @@
       <p class="ag-footer__copyright">© 2026 Afterglow. All rights reserved.</p>
     </div>
   </footer>
+
+  <script>
+    /* Touch 裝置景深補強：touchstart 切換 .is-active，touchend 後導向 */
+    (function () {
+      var pills = document.querySelectorAll('.ag-menu-button');
+      var activeTimer = null;
+      pills.forEach(function (pill) {
+        pill.addEventListener('touchstart', function () {
+          clearTimeout(activeTimer);
+          pills.forEach(function (p) { p.classList.remove('is-active'); });
+          pill.classList.add('is-active');
+        }, { passive: true });
+        pill.addEventListener('touchend', function () {
+          var href = pill.getAttribute('href');
+          activeTimer = setTimeout(function () {
+            pill.classList.remove('is-active');
+            if (href && href !== '#') window.location.href = href;
+          }, 300);
+        });
+      });
+    })();
+  </script>
 
 </body>
 </html>
