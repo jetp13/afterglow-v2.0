@@ -190,20 +190,36 @@ var AgPlayer = (function () {
     /* ── SVG 環形頻譜初始化（只執行一次）── */
     (function buildSpectrumSvg() {
       if (!spectrumSvg) return;
-      var BARS   = 120;   /* 線條數量：更密，形成連續軌道感 */
-      var CX     = 150;
-      var CY     = 150;
-      var ORB_R  = 82;    /* orb-ring 外緣半徑 + 小間距 */
-      var LEN    = 28;    /* 線條長度（統一）：較短、較密，軌道感 */
-      var LINE_W = 1.2;
-      var NS     = 'http://www.w3.org/2000/svg';
+      /* 參數設計：對標圖二的比例與參差感 */
+      var BARS    = 80;    /* 線條數量：與圖二相近的密度 */
+      var CX      = 200;   /* SVG 中心（配合 400x400 viewBox）*/
+      var CY      = 200;
+      var ORB_R   = 105;   /* orb-ring 外緣半徑（對標 150px 光環在 400px SVG 中）*/
+      var MIN_LEN = 18;    /* 最短線條 */
+      var MAX_LEN = 72;    /* 最長線條：與圖二相近的幅度 */
+      var LINE_W  = 1.4;
+      var NS      = 'http://www.w3.org/2000/svg';
+
+      /* 用固定种子的偽隨機數列，保證每次頁面載入都是同一組參差 */
+      var seeds = [0.82,0.31,0.95,0.47,0.68,0.12,0.76,0.55,0.39,0.88,
+                   0.23,0.61,0.44,0.97,0.15,0.73,0.52,0.86,0.28,0.64,
+                   0.91,0.37,0.79,0.18,0.56,0.43,0.99,0.25,0.67,0.84,
+                   0.11,0.72,0.48,0.93,0.35,0.59,0.81,0.22,0.66,0.45,
+                   0.78,0.14,0.96,0.33,0.57,0.89,0.41,0.70,0.26,0.53,
+                   0.87,0.19,0.62,0.38,0.75,0.50,0.94,0.29,0.71,0.16,
+                   0.83,0.42,0.98,0.24,0.60,0.36,0.77,0.13,0.65,0.90,
+                   0.32,0.54,0.85,0.20,0.69,0.46,0.92,0.17,0.58,0.80];
 
       for (var i = 0; i < BARS; i++) {
         var angle = (i / BARS) * Math.PI * 2 - Math.PI / 2;
+        /* 參差長度：用种子數列決定，保證每次相同 */
+        var t   = seeds[i % seeds.length];
+        var len = MIN_LEN + t * (MAX_LEN - MIN_LEN);
+
         var x1 = CX + Math.cos(angle) * ORB_R;
         var y1 = CY + Math.sin(angle) * ORB_R;
-        var x2 = CX + Math.cos(angle) * (ORB_R + LEN);
-        var y2 = CY + Math.sin(angle) * (ORB_R + LEN);
+        var x2 = CX + Math.cos(angle) * (ORB_R + len);
+        var y2 = CY + Math.sin(angle) * (ORB_R + len);
 
         var line = document.createElementNS(NS, 'line');
         line.setAttribute('x1', x1.toFixed(2));
@@ -216,14 +232,17 @@ var AgPlayer = (function () {
         line.setAttribute('class', 'ag-spec-line');
         spectrumSvg.appendChild(line);
       }
+
+      /* 更新 SVG viewBox 配合新的中心座標 */
+      spectrumSvg.setAttribute('viewBox', '0 0 400 400');
     })();
 
     /* ── 整體呼吸：用 smoothVol 控制 SVG 整體 scale ── */
     function applySpectrumScale(v) {
       if (!spectrumSvg) return;
       /* v: 0–1，靜止時 v=0，大聲時 v=1
-       * scale 範圍：0.88（靜止）→ 1.18（最大聲）*/
-      var sc = (0.88 + v * 0.30).toFixed(4);
+       * scale 範圍：0.86（靜止）→ 1.22（最大聲）——幅度加大讓呼吸更明顯 */
+      var sc = (0.86 + v * 0.36).toFixed(4);
       spectrumSvg.style.transform = 'translate(-50%, -50%) scale(' + sc + ')';
     }
 
@@ -237,7 +256,8 @@ var AgPlayer = (function () {
         for (var i = 4; i < 28; i++) { sum += freqBuf[i]; count++; }
         rawVol = sum / count / 255;
       }
-      var lerpRate = rawVol > smoothVol ? 0.35 : 0.07;
+      /* 上升快、下降稍慢：讓呼吸節奏跟說話速度吸合 */
+      var lerpRate = rawVol > smoothVol ? 0.55 : 0.10;
       smoothVol += (rawVol - smoothVol) * lerpRate;
       applyGlow(boost(smoothVol));
       if (isPlaying) applySpectrumScale(boost(smoothVol));
