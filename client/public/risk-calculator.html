@@ -470,6 +470,13 @@
         <div class="ag-result-desc" id="result-desc">至少需要兩種物質才能評估交互作用風險</div>
       </div>
 
+      <!-- TripSit 來源標註（授權要求） -->
+      <div style="text-align:center; margin: 16px 0 8px; padding: 0 8px;">
+        <p style="font-size:11px; color:#555; line-height:1.6; margin:0;">
+          風險分類資料部分參考 <a href="https://wiki.tripsit.me/wiki/Drug_combinations" target="_blank" rel="noopener noreferrer" style="color:#888; text-decoration:underline;">TripSit Drug Combinations</a>（非商業用途引用）。本工具僅供快速參考，使用前請自行深入研究。
+        </p>
+      </div>
+
       <div class="ag-warning-box">
         <div class="ag-warning-title">重要免責聲明</div>
         <ul class="ag-warning-list">
@@ -585,7 +592,38 @@
       'ketamine+etomidate': { level: 'deadly', desc: '極度危險！深層麻醉風險，可能導致呼吸道阻塞與窒息。' },
       'cocaine+etomidate': { level: 'unsafe', desc: '危險！興奮劑會掩蓋麻醉效果，導致用量過度，且增加心血管崩潰風險。' },
       'meth+etomidate': { level: 'unsafe', desc: '危險！興奮劑會掩蓋麻醉效果，導致用量過度，且增加心血管崩潰風險。' },
-      'mdma+etomidate': { level: 'unsafe', desc: '危險！增加心臟負擔，且可能導致不可預期的意識喪失。' }
+      'mdma+etomidate': { level: 'unsafe', desc: '危險！增加心臟負擔，且可能導致不可預期的意識喪失。' },
+
+      // ── 以下組合資料參考 TripSit Drug Combinations（https://wiki.tripsit.me/wiki/Drug_combinations）──
+      // Low Risk & Synergy
+      'lsd+mdma':          { level: 'low',     desc: 'Candy Flipping。LSD 與 MDMA 有強烈協同效應，建議兩者均減量使用，注意補水與體溫調節。（來源：TripSit）' },
+      'mushrooms+mdma':    { level: 'low',     desc: 'Hippie Flipping。迷幻蘑菇與 MDMA 有強烈協同效應，建議兩者均減量使用。（來源：TripSit）' },
+      'lsd+mushrooms':     { level: 'low',     desc: '兩種迷幻劑協同效應強烈，建議大幅減少兩者劑量，效果可能遠超預期。（來源：TripSit）' },
+      'cannabis+lsd':      { level: 'caution', desc: '大麻與 LSD 有出乎意料的強烈且難以預測的協同效應，容易引發焦慮、恐慌或 Bad Trip。（來源：TripSit）' },
+      'cannabis+mushrooms':{ level: 'caution', desc: '大麻可能極大增強迷幻蘑菇的效果，容易引發焦慮或思緒混亂，需謹慎。（來源：TripSit）' },
+      'cannabis+mdma':     { level: 'caution', desc: '大麻可能增強或改變 MDMA 的效果，部分人會感到焦慮加劇，需謹慎。（來源：TripSit）' },
+      'cannabis+cocaine':  { level: 'caution', desc: '大麻可能增加古柯鹼引起的焦慮與心跳加速，需謹慎。（來源：TripSit）' },
+      'cannabis+meth':     { level: 'caution', desc: '大麻可能增加安非他命引起的焦慮與心跳加速，需謹慎。（來源：TripSit）' },
+      'cannabis+ketamine': { level: 'caution', desc: '大麻可能增強 K 他命的解離效果，使體驗更難以預測，需謹慎。（來源：TripSit）' },
+      'lsd+meth':          { level: 'caution', desc: '興奮劑會增加焦慮程度與思緒迴圈的風險，容易引發負面體驗。（來源：TripSit）' },
+      'lsd+cocaine':       { level: 'caution', desc: '興奮劑會增加焦慮程度與思緒迴圈的風險，容易引發負面體驗。（來源：TripSit）' },
+      'mushrooms+meth':    { level: 'caution', desc: '興奮劑會增加焦慮程度與思緒迴圈的風險，容易引發負面體驗。（來源：TripSit）' },
+      'mushrooms+cocaine': { level: 'caution', desc: '興奮劑會增加焦慮程度與思緒迴圈的風險，容易引發負面體驗。（來源：TripSit）' },
+      'mushrooms+caffeine':{ level: 'caution', desc: '咖啡因可能增加焦慮與心跳加速，影響迷幻體驗的穩定性。（來源：TripSit）' },
+      'lsd+caffeine':      { level: 'caution', desc: '咖啡因可能增加焦慮與心跳加速，影響迷幻體驗的穩定性。（來源：TripSit）' },
+      'mdma+caffeine':     { level: 'caution', desc: '咖啡因增加心臟負擔，與 MDMA 混用可能加劇心跳加速與脫水。（來源：TripSit）' },
+      'cocaine+caffeine':  { level: 'caution', desc: '雙重興奮劑，增加心臟負擔與焦慮，需謹慎。（來源：TripSit）' },
+      'meth+caffeine':     { level: 'caution', desc: '雙重興奮劑，增加心臟負擔與焦慮，需謹慎。（來源：TripSit）' },
+      // Unsafe
+      'lsd+tramadol':      { level: 'unsafe',  desc: 'Tramadol 已知會降低癲癇發作閾值，迷幻劑也偶爾引發癲癇，混用風險顯著升高。（來源：TripSit）' },
+      'mushrooms+tramadol':{ level: 'unsafe',  desc: 'Tramadol 已知會降低癲癇發作閾值，迷幻劑也偶爾引發癲癇，混用風險顯著升高。（來源：TripSit）' },
+      'ghb+meth':          { level: 'unsafe',  desc: '興奮劑可能掩蓋 GHB 的抑制效果，導致不知不覺過量，且增加心血管負擔。（來源：TripSit）' },
+      'ghb+cocaine':       { level: 'unsafe',  desc: '興奮劑可能掩蓋 GHB 的抑制效果，導致不知不覺過量，且增加心血管負擔。（來源：TripSit）' },
+      'ghb+mdma':          { level: 'unsafe',  desc: 'GHB 與 MDMA 混用會增加嘔吐與失去意識的風險，且兩者都影響體溫調節。（來源：TripSit）' },
+      'opioids+meth':      { level: 'unsafe',  desc: '興奮劑可能掩蓋鴉片類的抑制效果，導致過量風險。（來源：TripSit）' },
+      'opioids+cannabis':  { level: 'caution', desc: '大麻可能增強鴉片類的鎮靜效果，需謹慎控制劑量。（來源：TripSit）' },
+      'benzos+meth':       { level: 'unsafe',  desc: '興奮劑可能掩蓋鎮靜劑的效果，導致用量過度，增加呼吸抑制風險。（來源：TripSit）' },
+      'benzos+cocaine':    { level: 'unsafe',  desc: '興奮劑可能掩蓋鎮靜劑的效果，導致用量過度，增加呼吸抑制風險。（來源：TripSit）' }
     };
 
     let capsuleGrid, resultCircle, resultContainer, resultTitle, resultDesc;
