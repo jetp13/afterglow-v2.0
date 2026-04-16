@@ -58,9 +58,9 @@ var AgPlayer = (function () {
     var forwardBtn    = cfg.forwardBtnId    ? document.getElementById(cfg.forwardBtnId)    : null;
     var volumeSlider  = cfg.volumeSliderId  ? document.getElementById(cfg.volumeSliderId)  : null;
     var visualEl      = cfg.visualId        ? document.getElementById(cfg.visualId)        : null;
-    var orbRing       = cfg.orbRingId       ? document.getElementById(cfg.orbRingId)       : null;
-    var specCanvas    = cfg.canvasId        ? document.getElementById(cfg.canvasId)        : null;
-    var specCtx       = specCanvas ? specCanvas.getContext('2d') : null;
+    var orbRing       = cfg.orbRingId         ? document.getElementById(cfg.orbRingId)         : null;
+    var spectrumSvg   = cfg.spectrumSvgId    ? document.getElementById(cfg.spectrumSvgId)    : null;
+    var visualVoiceEl = orbRing ? orbRing.closest('.ag-player-visual--voice') : null;
     var statusText    = cfg.statusTextId    ? document.getElementById(cfg.statusTextId)    : null;
     var iconPlay      = cfg.iconPlayId      ? document.getElementById(cfg.iconPlayId)      : null;
     var iconPause     = cfg.iconPauseId     ? document.getElementById(cfg.iconPauseId)     : null;
@@ -103,7 +103,6 @@ var AgPlayer = (function () {
      * ══════════════════════════════════════════════════════════════════ */
 
     var audioCtx = null, analyser = null, freqBuf = null;
-    var specBuf  = null; /* 頻譜 canvas 用，獨立 buffer */
     var smoothVol = 0, rafId = null;
     var pageVisible = !document.hidden;
 
@@ -157,7 +156,6 @@ var AgPlayer = (function () {
         analyser.fftSize = 256;
         analyser.smoothingTimeConstant = 0.75;
         freqBuf  = new Uint8Array(analyser.frequencyBinCount);
-        specBuf  = new Uint8Array(analyser.frequencyBinCount);
         /* 分析路由：streamSrc → analyser（不接 destination，純分析）
          * 原生輸出路由完全不受影響 */
         streamSrc.connect(analyser);
@@ -189,61 +187,48 @@ var AgPlayer = (function () {
       orbRing.style.transform = 'scale(' + sc + ')';
     }
 
-    /* ── 環形頻譜繪製 ── */
-    function drawSpectrum(isPlaying) {
-      if (!specCtx || !specCanvas) return;
-      var W = specCanvas.width;
-      var H = specCanvas.height;
-      var cx = W / 2, cy = H / 2;
-      var orbR = 75;          /* orb-ring 半徑（150px / 2）*/
-      var minLen = 4;         /* 靜止時最小線條長度 */
-      var maxLen = 44;        /* 最大線條長度 */
-      var bars = 80;          /* 放射線條數量 */
-      var lineW = 1.2;        /* 線條寬度 */
-      var gap = 3;            /* 線條與圓圈的間距 */
+    /* ── SVG 環形頻譜初始化（只執行一次）── */
+    (function buildSpectrumSvg() {
+      if (!spectrumSvg) return;
+      var BARS    = 60;    /* 線條數量 */
+      var CX      = 150;   /* SVG 中心 X */
+      var CY      = 150;   /* SVG 中心 Y */
+      var ORB_R   = 80;    /* orb-ring 外緣半徑（含 gap）*/
+      var MAX_LEN = 52;    /* 最大線條長度 */
+      var LINE_W  = 1.5;   /* 線條寬度 */
+      var NS      = 'http://www.w3.org/2000/svg';
 
-      specCtx.clearRect(0, 0, W, H);
+      /* 將線條分組：每組用不同的動畫時長和延遲 */
+      var durGroups  = [2.1, 2.7, 3.3, 1.8, 2.5, 3.0, 2.3, 1.6, 2.9, 3.5];
+      var durPGroups = [0.9, 1.1, 1.4, 0.8, 1.2, 1.0, 1.3, 0.7, 1.5, 1.1];
 
-      /* 取頻率資料（播放中）或使用靜止最小值 */
-      var freqData = null;
-      if (analyser && isPlaying && specBuf) {
-        analyser.getByteFrequencyData(specBuf);
-        freqData = specBuf;
+      for (var i = 0; i < BARS; i++) {
+        var angle = (i / BARS) * Math.PI * 2 - Math.PI / 2;
+        var x1 = CX + Math.cos(angle) * ORB_R;
+        var y1 = CY + Math.sin(angle) * ORB_R;
+        var x2 = CX + Math.cos(angle) * (ORB_R + MAX_LEN);
+        var y2 = CY + Math.sin(angle) * (ORB_R + MAX_LEN);
+
+        var line = document.createElementNS(NS, 'line');
+        line.setAttribute('x1', x1.toFixed(2));
+        line.setAttribute('y1', y1.toFixed(2));
+        line.setAttribute('x2', x2.toFixed(2));
+        line.setAttribute('y2', y2.toFixed(2));
+        line.setAttribute('stroke', 'rgba(189,0,255,1)');
+        line.setAttribute('stroke-width', LINE_W);
+        line.setAttribute('stroke-linecap', 'round');
+        line.setAttribute('class', 'ag-spec-line');
+
+        /* 每條線獨立的動畫時長與延遲 */
+        var gi = i % durGroups.length;
+        var delayVal = ((i / BARS) * 2.0 - 1.0).toFixed(3);
+        line.style.setProperty('--dur',      durGroups[gi] + 's');
+        line.style.setProperty('--dur-play', durPGroups[gi] + 's');
+        line.style.setProperty('--delay',    delayVal + 's');
+
+        spectrumSvg.appendChild(line);
       }
-
-      for (var i = 0; i < bars; i++) {
-        var angle = (i / bars) * Math.PI * 2 - Math.PI / 2;
-
-        /* 取對應頻率值 */
-        var freqVal = 0;
-        if (freqData) {
-          var idx = Math.floor((i / bars) * (freqData.length * 0.6));
-          freqVal = freqData[idx] / 255;
-        }
-
-        /* 線條長度：靜止時 minLen，播放時隨頻率 */
-        var len = minLen + freqVal * (maxLen - minLen);
-
-        /* 起點在圓圈外緣 + gap */
-        var r0 = orbR + gap;
-        var r1 = r0 + len;
-
-        var x0 = cx + Math.cos(angle) * r0;
-        var y0 = cy + Math.sin(angle) * r0;
-        var x1 = cx + Math.cos(angle) * r1;
-        var y1 = cy + Math.sin(angle) * r1;
-
-        /* 顏色：以 bd00ff 為基底，亮度隨頻率變化 */
-        var alpha = isPlaying ? (0.35 + freqVal * 0.55) : 0.22;
-        specCtx.beginPath();
-        specCtx.moveTo(x0, y0);
-        specCtx.lineTo(x1, y1);
-        specCtx.strokeStyle = 'rgba(189,0,255,' + alpha.toFixed(3) + ')';
-        specCtx.lineWidth = lineW;
-        specCtx.lineCap = 'round';
-        specCtx.stroke();
-      }
-    }
+    })();
 
     function glowLoop() {
       rafId = requestAnimationFrame(glowLoop);
@@ -258,7 +243,6 @@ var AgPlayer = (function () {
       var lerpRate = rawVol > smoothVol ? 0.35 : 0.07;
       smoothVol += (rawVol - smoothVol) * lerpRate;
       applyGlow(boost(smoothVol));
-      drawSpectrum(isPlaying);
     }
 
     if (orbRing) glowLoop();
@@ -363,6 +347,7 @@ var AgPlayer = (function () {
       playBtn.classList.add('active');
       playBtn.setAttribute('aria-label', '暫停');
       if (visualEl) visualEl.classList.add('playing');
+      if (visualVoiceEl) visualVoiceEl.classList.add('playing');
       if (statusText) statusText.textContent = cfg.statusPlaying || '播放中';
       updateMediaSession();
     });
@@ -372,6 +357,7 @@ var AgPlayer = (function () {
       playBtn.classList.remove('active');
       playBtn.setAttribute('aria-label', '播放');
       if (visualEl) visualEl.classList.remove('playing');
+      if (visualVoiceEl) visualVoiceEl.classList.remove('playing');
       stopOrbBreathing();
       if (statusText) {
         statusText.textContent = audio.currentTime > 0
@@ -385,6 +371,7 @@ var AgPlayer = (function () {
       playBtn.classList.remove('active');
       playBtn.setAttribute('aria-label', '重新播放');
       if (visualEl) visualEl.classList.remove('playing');
+      if (visualVoiceEl) visualVoiceEl.classList.remove('playing');
       stopOrbBreathing();
       if (statusText) statusText.textContent = cfg.statusEnded || '播放結束';
       if (progressBar) {

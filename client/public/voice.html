@@ -31,7 +31,7 @@
 
       <!-- 視覺：霓虹光環 + 環形頻譜 -->
       <div class="ag-player-visual ag-player-visual--voice" aria-hidden="true">
-        <canvas class="ag-spectrum-canvas" id="agSpectrumCanvas" width="300" height="300"></canvas>
+        <svg class="ag-spectrum-svg" id="agSpectrumSvg" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg"></svg>
         <div class="ag-orb-ring" id="agOrbRing"></div>
       </div>
 
@@ -130,7 +130,7 @@
       rewindBtnId:   'agRewindBtn',
       forwardBtnId:  'agForwardBtn',
       orbRingId:     'agOrbRing',
-      canvasId:      'agSpectrumCanvas',
+      spectrumSvgId: 'agSpectrumSvg',
       statusTextId:  'agStatusText',
       iconPlayId:    'iconPlay',
       iconPauseId:   'iconPause',

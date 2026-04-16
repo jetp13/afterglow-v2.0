@@ -115,8 +115,8 @@
 }
 .ag-visual-icon svg { width: 100%; height: 100%; display: block; }
 
-/* ── 語音引導：環形頻譜 canvas ── */
-.ag-player-visual--voice .ag-spectrum-canvas {
+/* ── 語音引導：環形頻譜 SVG ── */
+.ag-player-visual--voice .ag-spectrum-svg {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
@@ -124,6 +124,35 @@
   height: 300px;
   pointer-events: none;
   z-index: 1;
+  overflow: visible;
+}
+
+/* 靜止時：線條微小呼吸動畫 */
+.ag-spectrum-svg .ag-spec-line {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  animation: agSpecIdle var(--dur, 3s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  opacity: 0.30;
+}
+
+/* 播放時：幅度加大、加快、變亮 */
+.ag-player-visual--voice.playing .ag-spec-line {
+  animation: agSpecPlay var(--dur-play, 1.2s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  opacity: 0.85;
+}
+
+@keyframes agSpecIdle {
+  0%, 100% { transform: scaleY(0.3); }
+  50%       { transform: scaleY(1.0); }
+}
+
+@keyframes agSpecPlay {
+  0%, 100% { transform: scaleY(0.25); }
+  30%      { transform: scaleY(1.0);  }
+  60%      { transform: scaleY(0.55); }
+  80%      { transform: scaleY(0.9);  }
 }
 
 /* ── 語音引導：霓虹光環 ── */
