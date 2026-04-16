@@ -190,24 +190,20 @@ var AgPlayer = (function () {
     /* ── SVG 環形頻譜初始化（只執行一次）── */
     (function buildSpectrumSvg() {
       if (!spectrumSvg) return;
-      var BARS    = 60;    /* 線條數量 */
-      var CX      = 150;   /* SVG 中心 X */
-      var CY      = 150;   /* SVG 中心 Y */
-      var ORB_R   = 80;    /* orb-ring 外緣半徑（含 gap）*/
-      var MAX_LEN = 52;    /* 最大線條長度 */
-      var LINE_W  = 1.5;   /* 線條寬度 */
-      var NS      = 'http://www.w3.org/2000/svg';
-
-      /* 將線條分組：每組用不同的動畫時長和延遲 */
-      var durGroups  = [2.1, 2.7, 3.3, 1.8, 2.5, 3.0, 2.3, 1.6, 2.9, 3.5];
-      var durPGroups = [0.9, 1.1, 1.4, 0.8, 1.2, 1.0, 1.3, 0.7, 1.5, 1.1];
+      var BARS   = 120;   /* 線條數量：更密，形成連續軌道感 */
+      var CX     = 150;
+      var CY     = 150;
+      var ORB_R  = 82;    /* orb-ring 外緣半徑 + 小間距 */
+      var LEN    = 28;    /* 線條長度（統一）：較短、較密，軌道感 */
+      var LINE_W = 1.2;
+      var NS     = 'http://www.w3.org/2000/svg';
 
       for (var i = 0; i < BARS; i++) {
         var angle = (i / BARS) * Math.PI * 2 - Math.PI / 2;
         var x1 = CX + Math.cos(angle) * ORB_R;
         var y1 = CY + Math.sin(angle) * ORB_R;
-        var x2 = CX + Math.cos(angle) * (ORB_R + MAX_LEN);
-        var y2 = CY + Math.sin(angle) * (ORB_R + MAX_LEN);
+        var x2 = CX + Math.cos(angle) * (ORB_R + LEN);
+        var y2 = CY + Math.sin(angle) * (ORB_R + LEN);
 
         var line = document.createElementNS(NS, 'line');
         line.setAttribute('x1', x1.toFixed(2));
@@ -218,17 +214,18 @@ var AgPlayer = (function () {
         line.setAttribute('stroke-width', LINE_W);
         line.setAttribute('stroke-linecap', 'round');
         line.setAttribute('class', 'ag-spec-line');
-
-        /* 每條線獨立的動畫時長與延遲 */
-        var gi = i % durGroups.length;
-        var delayVal = ((i / BARS) * 2.0 - 1.0).toFixed(3);
-        line.style.setProperty('--dur',      durGroups[gi] + 's');
-        line.style.setProperty('--dur-play', durPGroups[gi] + 's');
-        line.style.setProperty('--delay',    delayVal + 's');
-
         spectrumSvg.appendChild(line);
       }
     })();
+
+    /* ── 整體呼吸：用 smoothVol 控制 SVG 整體 scale ── */
+    function applySpectrumScale(v) {
+      if (!spectrumSvg) return;
+      /* v: 0–1，靜止時 v=0，大聲時 v=1
+       * scale 範圍：0.88（靜止）→ 1.18（最大聲）*/
+      var sc = (0.88 + v * 0.30).toFixed(4);
+      spectrumSvg.style.transform = 'translate(-50%, -50%) scale(' + sc + ')';
+    }
 
     function glowLoop() {
       rafId = requestAnimationFrame(glowLoop);
@@ -243,6 +240,7 @@ var AgPlayer = (function () {
       var lerpRate = rawVol > smoothVol ? 0.35 : 0.07;
       smoothVol += (rawVol - smoothVol) * lerpRate;
       applyGlow(boost(smoothVol));
+      if (isPlaying) applySpectrumScale(boost(smoothVol));
     }
 
     if (orbRing) glowLoop();
