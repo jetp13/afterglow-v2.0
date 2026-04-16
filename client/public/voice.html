@@ -29,8 +29,9 @@
   <div class="ag-main-scroll">
     <section class="ag-player ag-player--voice" aria-label="語音引導播放器">
 
-      <!-- 視覺：霓虹光環 -->
+      <!-- 視覺：霓虹光環 + 環形頻譜 -->
       <div class="ag-player-visual ag-player-visual--voice" aria-hidden="true">
+        <canvas class="ag-spectrum-canvas" id="agSpectrumCanvas" width="300" height="300"></canvas>
         <div class="ag-orb-ring" id="agOrbRing"></div>
       </div>
 
@@ -129,6 +130,7 @@
       rewindBtnId:   'agRewindBtn',
       forwardBtnId:  'agForwardBtn',
       orbRingId:     'agOrbRing',
+      canvasId:      'agSpectrumCanvas',
       statusTextId:  'agStatusText',
       iconPlayId:    'iconPlay',
       iconPauseId:   'iconPause',

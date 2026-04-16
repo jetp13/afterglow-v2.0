@@ -56,6 +56,7 @@
   position: relative;
   width: 200px;
   height: 200px;
+  overflow: visible;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -113,6 +114,17 @@
   position: relative;
 }
 .ag-visual-icon svg { width: 100%; height: 100%; display: block; }
+
+/* ── 語音引導：環形頻譜 canvas ── */
+.ag-player-visual--voice .ag-spectrum-canvas {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 300px;
+  height: 300px;
+  pointer-events: none;
+  z-index: 1;
+}
 
 /* ── 語音引導：霓虹光環 ── */
 .ag-player-visual--voice .ag-orb-ring {
