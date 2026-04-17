@@ -623,7 +623,85 @@
       'opioids+meth':      { level: 'unsafe',  desc: '興奮劑可能掩蓋鴉片類的抑制效果，導致過量風險。（來源：TripSit）' },
       'opioids+cannabis':  { level: 'caution', desc: '大麻可能增強鴉片類的鎮靜效果，需謹慎控制劑量。（來源：TripSit）' },
       'benzos+meth':       { level: 'unsafe',  desc: '興奮劑可能掩蓋鎮靜劑的效果，導致用量過度，增加呼吸抑制風險。（來源：TripSit）' },
-      'benzos+cocaine':    { level: 'unsafe',  desc: '興奮劑可能掩蓋鎮靜劑的效果，導致用量過度，增加呼吸抑制風險。（來源：TripSit）' }
+      'benzos+cocaine':    { level: 'unsafe',  desc: '興奮劑可能掩蓋鎮靜劑的效果，導致用量過度，增加呼吸抑制風險。（來源：TripSit）' },
+
+      // ── 補充組合（TripSit + 藥理學依據）──
+      // MDMA 相關
+      'mdma+opioids':    { level: 'unsafe',  desc: '危險！MDMA 的興奮效果可能掩蓋鴉片類的抑制作用，導致不知不覺過量；且兩者皆影響血清素，增加血清素症候群風險。（來源：TripSit）' },
+      'mdma+benzos':     { level: 'caution', desc: '需謹慎。鎮靜劑會減弱 MDMA 的效果，但可用於緩解焦慮；混用會使兩者效果難以預測。（來源：TripSit）' },
+      'mdma+ketamine':   { level: 'caution', desc: '需謹慎。兩者皆影響神經傳導，混用可能增加迷失方向感與心臟負擔，體驗難以預測。（來源：TripSit）' },
+      'mdma+etomidate':  { level: 'unsafe',  desc: '危險！MDMA 增加心臟負擔，依托咪酯的麻醉效果可能導致不可預期的意識喪失。' },
+      'mdma+poppers':    { level: 'unsafe',  desc: '危險！MDMA 收縮血管，RUSH 擴張血管，兩者混用造成血壓劇烈波動，大幅增加心血管風險。（來源：TripSit）' },
+
+      // 安非他命 / 古柯鹼 相關
+      'meth+cocaine':    { level: 'unsafe',  desc: '危險！雙重興奮劑，極度增加心臟負擔、血壓與體溫，心臟病發與中風風險大幅升高。（來源：TripSit）' },
+      'meth+ketamine':   { level: 'caution', desc: '需謹慎。興奮劑與解離劑混用，體驗難以預測，可能增加焦慮與心臟負擔。（來源：TripSit）' },
+      'meth+poppers':    { level: 'unsafe',  desc: '危險！安非他命增加心率與血壓，RUSH 擴張血管，兩者混用造成嚴重心血管壓力。（來源：TripSit）' },
+      'cocaine+ketamine':{ level: 'caution', desc: '需謹慎。興奮劑與解離劑混用，體驗難以預測；古柯鹼的心血管壓力加上 K 他命的解離效果，增加意外風險。（來源：TripSit）' },
+      'cocaine+poppers': { level: 'unsafe',  desc: '危險！古柯鹼增加心率，RUSH 擴張血管，兩者混用造成嚴重心血管壓力，心臟病發風險高。（來源：TripSit）' },
+
+      // 咖啡因 相關
+      'caffeine+alcohol': { level: 'caution', desc: '需謹慎。咖啡因會掩蓋酒精的醉意，導致飲酒過量；但不會降低血液酒精濃度，仍有酒精中毒風險。（來源：TripSit）' },
+      'caffeine+opioids': { level: 'caution', desc: '需謹慎。咖啡因可能輕微增加鴉片類的效果，但整體交互作用較低。（來源：TripSit）' },
+      'caffeine+ghb':     { level: 'caution', desc: '需謹慎。咖啡因可能掩蓋 GHB 的抑制效果，導致不知不覺攝入過量 GHB。（來源：TripSit）' },
+      'caffeine+benzos':  { level: 'caution', desc: '需謹慎。咖啡因與鎮靜劑效果相互拮抗，可能導致兩者用量都增加，增加依賴風險。（來源：TripSit）' },
+      'caffeine+ketamine':{ level: 'caution', desc: '需謹慎。咖啡因可能增加 K 他命引起的焦慮與心跳加速，影響體驗穩定性。（來源：TripSit）' },
+      'caffeine+etomidate':{ level: 'caution', desc: '需謹慎。咖啡因可能部分拮抗依托咪酯的鎮靜效果，導致用量判斷困難。' },
+      'caffeine+cannabis':{ level: 'low',     desc: '低風險。咖啡因與大麻混用通常無嚴重交互作用，但可能增加心跳加速感。（來源：TripSit）' },
+      'caffeine+poppers': { level: 'caution', desc: '需謹慎。咖啡因增加心率，RUSH 降低血壓，兩者混用可能造成心血管不適。' },
+      'caffeine+viagra':  { level: 'caution', desc: '需謹慎。咖啡因增加心率，威而鋼降低血壓，兩者混用可能造成心臟不適。' },
+
+      // 酒精 相關
+      'alcohol+mushrooms':{ level: 'caution', desc: '需謹慎。酒精可能增強或改變迷幻蘑菇的效果，且兩者皆影響協調能力，增加意外風險。（來源：TripSit）' },
+      'alcohol+cannabis': { level: 'caution', desc: '需謹慎。兩者混用（Crossfading）可能導致強烈噁心、嘔吐與暈眩（Greening Out），需控制劑量。（來源：TripSit）' },
+      'alcohol+lsd':      { level: 'caution', desc: '需謹慎。酒精可能減弱 LSD 效果，但也可能增加焦慮與噁心；兩者皆影響協調能力。（來源：TripSit）' },
+
+      // 鴉片類 相關
+      'opioids+etomidate':{ level: 'deadly',  desc: '極度危險！雙重強烈呼吸抑制，致死風險極高，絕對避免混用。' },
+      'opioids+mushrooms':{ level: 'caution', desc: '需謹慎。鴉片類可能減弱迷幻效果，但兩者混用的整體風險資料有限，需格外謹慎。（來源：TripSit）' },
+      'opioids+lsd':      { level: 'caution', desc: '需謹慎。鴉片類可能減弱 LSD 效果，但兩者混用的整體風險資料有限，需格外謹慎。（來源：TripSit）' },
+      'opioids+poppers':  { level: 'unsafe',  desc: '危險！鴉片類抑制呼吸，RUSH 降低血壓，兩者混用大幅增加昏厥與窒息風險。（來源：TripSit）' },
+      'opioids+viagra':   { level: 'caution', desc: '需謹慎。鴉片類可能影響性功能，與威而鋼混用的交互作用資料有限，但需注意血壓變化。' },
+
+      // GHB 相關
+      'ghb+etomidate':    { level: 'deadly',  desc: '極度危險！兩者皆為強烈中樞神經抑制劑，混用極易導致失去意識、嘔吐窒息與死亡。' },
+      'ghb+mushrooms':    { level: 'caution', desc: '需謹慎。GHB 的抑制效果可能與迷幻蘑菇的體驗產生難以預測的交互作用。（來源：TripSit）' },
+      'ghb+cannabis':     { level: 'caution', desc: '需謹慎。大麻可能增強 GHB 的抑制效果，增加失去意識的風險，需嚴格控制 GHB 劑量。（來源：TripSit）' },
+      'ghb+lsd':          { level: 'caution', desc: '需謹慎。GHB 的抑制效果與 LSD 的迷幻效果混用，體驗難以預測，且增加失去意識風險。（來源：TripSit）' },
+      'ghb+poppers':      { level: 'deadly',  desc: '極度危險！兩者皆強烈降低血壓，混用可能導致血壓驟降、昏厥與死亡。（來源：TripSit）' },
+      'ghb+viagra':       { level: 'unsafe',  desc: '危險！GHB 與威而鋼皆影響血壓，混用可能導致嚴重低血壓與心血管危象。（來源：TripSit）' },
+
+      // 鎮靜劑 相關
+      'benzos+mushrooms': { level: 'caution', desc: '需謹慎。鎮靜劑可用於緩解迷幻蘑菇引起的焦慮，但也可能完全壓制體驗；混用需謹慎控制劑量。（來源：TripSit）' },
+      'benzos+cannabis':  { level: 'caution', desc: '需謹慎。兩者皆有鎮靜效果，混用可能導致過度鎮靜與協調能力下降。（來源：TripSit）' },
+      'benzos+lsd':       { level: 'caution', desc: '需謹慎。鎮靜劑可用於緩解 LSD 引起的焦慮，但也可能完全壓制體驗；混用需謹慎控制劑量。（來源：TripSit）' },
+      'benzos+poppers':   { level: 'unsafe',  desc: '危險！鎮靜劑加上 RUSH 的血壓下降效果，可能導致嚴重低血壓與昏厥。（來源：TripSit）' },
+      'benzos+viagra':    { level: 'caution', desc: '需謹慎。鎮靜劑可能增強威而鋼的血壓降低效果，需注意低血壓風險。' },
+
+      // K 他命 相關
+      'ketamine+mushrooms':{ level: 'caution', desc: '需謹慎。兩種解離/迷幻物質混用，體驗可能極度強烈且難以預測，不建議初次嘗試者混用。（來源：TripSit）' },
+      'ketamine+lsd':     { level: 'caution', desc: '需謹慎。解離劑與迷幻劑混用，體驗可能極度強烈且難以預測，需大幅減少兩者劑量。（來源：TripSit）' },
+      'ketamine+poppers': { level: 'unsafe',  desc: '危險！K 他命影響協調能力與意識，RUSH 降低血壓，混用大幅增加昏厥與意外風險。（來源：TripSit）' },
+      'ketamine+viagra':  { level: 'caution', desc: '需謹慎。K 他命影響協調能力，與威而鋼混用的心血管交互作用需注意。' },
+
+      // 依托咪酯 相關
+      'etomidate+mushrooms':{ level: 'unsafe', desc: '危險！依托咪酯的麻醉效果與迷幻蘑菇混用，可能導致不可預期的深度意識喪失。' },
+      'etomidate+cannabis': { level: 'unsafe', desc: '危險！依托咪酯的麻醉效果可能被大麻增強，導致過度鎮靜與呼吸道風險。' },
+      'etomidate+lsd':      { level: 'unsafe', desc: '危險！麻醉劑與迷幻劑混用，體驗完全不可預測，且有深度意識喪失風險。' },
+      'etomidate+poppers':  { level: 'deadly', desc: '極度危險！依托咪酯抑制呼吸，RUSH 降低血壓，兩者混用可能導致心血管崩潰與死亡。' },
+      'etomidate+viagra':   { level: 'unsafe', desc: '危險！依托咪酯的麻醉效果加上威而鋼的血壓降低，可能導致嚴重低血壓與意識喪失。' },
+
+      // 迷幻蘑菇 相關
+      'mushrooms+poppers':  { level: 'caution', desc: '需謹慎。RUSH 的短暫頭暈效果在迷幻狀態下可能被放大，增加焦慮與暈眩感。（來源：TripSit）' },
+      'mushrooms+viagra':   { level: 'low',     desc: '低風險。兩者無已知嚴重交互作用，但迷幻狀態下服用任何藥物都需格外謹慎。（來源：TripSit）' },
+
+      // 大麻 相關
+      'cannabis+poppers':   { level: 'caution', desc: '需謹慎。大麻可能增強 RUSH 的頭暈效果，且兩者皆降低血壓，需注意昏厥風險。（來源：TripSit）' },
+      'cannabis+viagra':    { level: 'low',     desc: '低風險。兩者無已知嚴重交互作用，但大麻可能影響心率，需注意心血管狀況。（來源：TripSit）' },
+
+      // LSD 相關
+      'lsd+poppers':        { level: 'caution', desc: '需謹慎。RUSH 的短暫頭暈效果在 LSD 迷幻狀態下可能被放大，增加焦慮與暈眩感。（來源：TripSit）' },
+      'lsd+viagra':         { level: 'low',     desc: '低風險。兩者無已知嚴重交互作用，但迷幻狀態下服用任何藥物都需格外謹慎。（來源：TripSit）' }
     };
 
     let capsuleGrid, resultCircle, resultContainer, resultTitle, resultDesc;
