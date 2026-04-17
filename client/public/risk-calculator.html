@@ -301,6 +301,15 @@
       font-size: 14px;
       color: #999;
       line-height: 1.7;
+      width: 100%;
+      text-align: left;
+    }
+
+    /* 多組結果時，每對之間用分隔線 */
+    .ag-result-pair-divider {
+      border: none;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      margin: 10px 0;
     }
 
     .ag-warning-box {
@@ -454,7 +463,7 @@
       </div>
 
       <div class="ag-section-label">選擇您正在使用或考慮併用的物質</div>
-      <div class="ag-section-helper" id="selection-counter">已選 0 / 2</div>
+      <div class="ag-section-helper" id="selection-counter">已選 0 種（最少 2 種，最多 4 種）</div>
 
       <div class="ag-capsule-grid" id="capsule-grid">
         <!-- Buttons will be populated by JS -->
@@ -803,6 +812,7 @@
     }
 
     function toggleSubstance(sub, btn) {
+      const MAX_SELECT = 4;
       const index = selectedSubstances.findIndex(s => s.id === sub.id);
 
       if (index > -1) {
@@ -812,11 +822,13 @@
         // 恢復原始旋轉角度
         const rot = parseFloat(btn.dataset.rot || 0);
         btn.style.transform = `rotate(${rot}deg)`;
-        // 恢復所有禁用狀態
-        document.querySelectorAll('.ag-capsule-btn.disabled').forEach(b => b.classList.remove('disabled'));
+        // 如果未選滿，恢復所有禁用狀態
+        if (selectedSubstances.length < MAX_SELECT) {
+          document.querySelectorAll('.ag-capsule-btn.disabled').forEach(b => b.classList.remove('disabled'));
+        }
       } else {
-        if (selectedSubstances.length >= 2) {
-          // 已選滿 2 個：静默忽略，不彈警告
+        if (selectedSubstances.length >= MAX_SELECT) {
+          // 已選滿 4 個：静默忽略
           return;
         }
         selectedSubstances.push(sub);
@@ -824,8 +836,8 @@
         // active 時保留原始旋轉角度，只加強發光
         const rot = parseFloat(btn.dataset.rot || 0);
         btn.style.transform = `rotate(${rot}deg) scale(1.03)`;
-        // 如果已選滿 2 個，禁用其餘未選的
-        if (selectedSubstances.length >= 2) {
+        // 如果已選滿 MAX_SELECT 個，禁用其餘未選的
+        if (selectedSubstances.length >= MAX_SELECT) {
           document.querySelectorAll('.ag-capsule-btn:not(.active)').forEach(b => b.classList.add('disabled'));
         }
       }
@@ -836,48 +848,79 @@
     function calculateRisk() {
       resultContainer.className = 'ag-result-container';
 
+      // 更新 counter
+      const counter = document.getElementById('selection-counter');
+      if (counter) {
+        const n = selectedSubstances.length;
+        if (n === 0) {
+          counter.textContent = '已選 0 種（最少 2 種，最多 4 種）';
+        } else if (n === 1) {
+          counter.textContent = `已選 1 種，請再選 1–3 種`;
+        } else {
+          counter.textContent = `已選 ${n} 種${n < 4 ? '，可再加選最多 ' + (4 - n) + ' 種' : '（已選滿）'}`;
+        }
+      }
+
       if (selectedSubstances.length < 2) {
         resultCircle.textContent = '?';
         resultTitle.textContent = selectedSubstances.length === 0 ? '請選擇物質' : '請再選擇一種物質';
         resultTitle.style.color = '#666';
         resultDesc.textContent = '至少需要兩種物質才能評估交互作用風險';
-        
-        const counter = document.getElementById('selection-counter');
-        if (counter) {
-          counter.textContent = `已選 ${selectedSubstances.length} / 2`;
-        }
         return;
       }
 
+      // 計算所有兩兩對（C(n,2)）
       let highestRisk = 'low';
-      let riskMessages = [];
+      let riskPairs = []; // { level, label, desc }
+      let noPairFound = [];
 
       for (let i = 0; i < selectedSubstances.length; i++) {
         for (let j = i + 1; j < selectedSubstances.length; j++) {
           const s1 = selectedSubstances[i].id;
           const s2 = selectedSubstances[j].id;
+          const label = `${selectedSubstances[i].name} + ${selectedSubstances[j].name}`;
 
           const key1 = `${s1}+${s2}`;
           const key2 = `${s2}+${s1}`;
-
           const interaction = interactions[key1] || interactions[key2];
 
           if (interaction) {
-            riskMessages.push(`${selectedSubstances[i].name} + ${selectedSubstances[j].name}：${interaction.desc}`);
-
+            riskPairs.push({ level: interaction.level, label, desc: interaction.desc });
             if (riskLevelValue(interaction.level) > riskLevelValue(highestRisk)) {
               highestRisk = interaction.level;
             }
+          } else {
+            noPairFound.push(label);
           }
         }
       }
 
-      updateResultUI(highestRisk, riskMessages);
-      
-      const counter = document.getElementById('selection-counter');
-      if (counter) {
-        counter.textContent = `已選 ${selectedSubstances.length} / 2`;
+      // 依風險等級由高到低排序
+      riskPairs.sort((a, b) => riskLevelValue(b.level) - riskLevelValue(a.level));
+
+      // 組合訊息：有資料的對 + 無資料的對
+      let riskMessages = riskPairs.map(p => {
+        const badge = riskLevelBadge(p.level);
+        return `<span style="color:${riskLevelColor(p.level)};font-weight:500;">${badge} ${p.label}</span><br><span style="color:#aaa;font-size:13px;line-height:1.6;display:block;margin-top:4px;">${p.desc}</span>`;
+      });
+
+      if (noPairFound.length > 0) {
+        riskMessages.push(
+          `<span style="color:#555;font-size:12px;">— ${noPairFound.join('、')}：筆者資料庫尚無此組合資料，建議自行查詢 <a href="https://combo.tripsit.me/" target="_blank" rel="noopener" style="color:#666;text-decoration:underline;">TripSit</a></span>`
+        );
       }
+
+      updateResultUI(highestRisk, riskMessages);
+    }
+
+    function riskLevelBadge(level) {
+      const badges = { low: '[低風險]', caution: '[需謹慎]', unsafe: '[不安全]', deadly: '[致命危險]' };
+      return badges[level] || '';
+    }
+
+    function riskLevelColor(level) {
+      const colors = { low: '#00ff88', caution: '#ffc800', unsafe: '#ff6b00', deadly: '#ff003c' };
+      return colors[level] || '#aaa';
     }
 
     function riskLevelValue(level) {
@@ -924,9 +967,9 @@
       resultTitle.style.color = color;
 
       if (messages.length > 0) {
-        resultDesc.innerHTML = messages.join('<br><br>');
+        resultDesc.innerHTML = messages.join('<hr class="ag-result-pair-divider">');
       } else {
-        resultDesc.textContent = '目前資料庫中無此組合的特定高風險警示，但仍請保持謹慎，少量測試。';
+        resultDesc.innerHTML = '<span style="color:#555;font-size:13px;">目前資料庫中無此組合的特定高風險警示，但仍請保持謹慎，少量測試。</span>';
       }
     }
 
