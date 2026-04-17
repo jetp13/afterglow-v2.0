@@ -115,42 +115,29 @@
 }
 .ag-visual-icon svg { width: 100%; height: 100%; display: block; }
 
-/* ── 語音引導：環形頻譜 SVG ── */
+/* ── 語音引導：圓環頻譜 SVG ── */
 .ag-player-visual--voice .ag-spectrum-svg {
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 400px;
-  height: 400px;
+  width: 300px;
+  height: 300px;
   pointer-events: none;
   z-index: 1;
   overflow: visible;
-}
-
-/* 線條本身不動，由整個 SVG 層級統一呼吸 */
-.ag-spectrum-svg .ag-spec-line {
-  opacity: 0.55;
+  /* 靜止時稍暗，播放時全亮，由 CSS transition 滑動 */
+  opacity: 0.40;
   transition: opacity 0.6s ease;
 }
 
-/* 靜止時：整體 SVG 慢速微呼吸 */
-.ag-player-visual--voice .ag-spectrum-svg {
-  transform-origin: center center;
-  animation: agSpecRingIdle 4s ease-in-out infinite;
-  opacity: 0.45;
-  transition: opacity 0.6s ease;
-}
-
-/* 播放時：整體 SVG 變亮，由 JS 控制 scale */
+/* 播放時：圓環變亮 */
 .ag-player-visual--voice.playing .ag-spectrum-svg {
-  opacity: 0.90;
-  animation: none;
+  opacity: 0.92;
 }
 
-@keyframes agSpecRingIdle {
-  /* 靜止時慢速微呼吸，節奏與冒泡感吸合 */
-  0%, 100% { transform: translate(-50%, -50%) scale(0.90); }
-  50%       { transform: translate(-50%, -50%) scale(1.00); }
+/* 圓環弧線本身不動，半徑與線寬由 JS rAF 驅動 */
+.ag-spectrum-svg .ag-ring-arc {
+  /* 不設定 transition：由 rAF 每幀直接寫入，避免 CSS transition 延遲導致跟語音跨幀失步 */
 }
 
 /* ── 語音引導：霓虹光環 ── */

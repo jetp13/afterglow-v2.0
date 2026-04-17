@@ -187,66 +187,114 @@ var AgPlayer = (function () {
       orbRing.style.transform = 'scale(' + sc + ')';
     }
 
-    /* ── SVG 環形頻譜初始化（只執行一次）── */
-    (function buildSpectrumSvg() {
+    /* ── SVG 圓環頻譜初始化（單條細線圓環 + conic 漸層）── */
+    var ringCircle = null;   /* SVG <circle> 元素 */
+    var hueOffset  = 0;      /* 色相旋轉累積角度（度）*/
+    var lastHueTs  = 0;      /* 上次更新時間戳 */
+
+    (function buildRingSpectrum() {
       if (!spectrumSvg) return;
-      /* 參數設計：對標圖二的比例與參差感 */
-      var BARS    = 80;    /* 線條數量：與圖二相近的密度 */
-      var CX      = 200;   /* SVG 中心（配合 400x400 viewBox）*/
-      var CY      = 200;
-      var ORB_R   = 105;   /* orb-ring 外緣半徑（對標 150px 光環在 400px SVG 中）*/
-      var MIN_LEN = 18;    /* 最短線條 */
-      var MAX_LEN = 72;    /* 最長線條：與圖二相近的幅度 */
-      var LINE_W  = 1.4;
-      var NS      = 'http://www.w3.org/2000/svg';
+      var NS  = 'http://www.w3.org/2000/svg';
+      var CX  = 150;   /* 配合 300x300 viewBox */
+      var CY  = 150;
+      var R   = 110;   /* 靜止半徑 */
 
-      /* 用固定种子的偽隨機數列，保證每次頁面載入都是同一組參差 */
-      var seeds = [0.82,0.31,0.95,0.47,0.68,0.12,0.76,0.55,0.39,0.88,
-                   0.23,0.61,0.44,0.97,0.15,0.73,0.52,0.86,0.28,0.64,
-                   0.91,0.37,0.79,0.18,0.56,0.43,0.99,0.25,0.67,0.84,
-                   0.11,0.72,0.48,0.93,0.35,0.59,0.81,0.22,0.66,0.45,
-                   0.78,0.14,0.96,0.33,0.57,0.89,0.41,0.70,0.26,0.53,
-                   0.87,0.19,0.62,0.38,0.75,0.50,0.94,0.29,0.71,0.16,
-                   0.83,0.42,0.98,0.24,0.60,0.36,0.77,0.13,0.65,0.90,
-                   0.32,0.54,0.85,0.20,0.69,0.46,0.92,0.17,0.58,0.80];
+      /* ── defs：conic-gradient 無法直接用於 SVG stroke，
+       *   改用多段 linearGradient 模擬環形漸層，
+       *   實際上以 CSS filter: hue-rotate() 動畫驅動整體色相旋轉 ── */
+      var defs = document.createElementNS(NS, 'defs');
 
-      for (var i = 0; i < BARS; i++) {
-        var angle = (i / BARS) * Math.PI * 2 - Math.PI / 2;
-        /* 參差長度：用种子數列決定，保證每次相同 */
-        var t   = seeds[i % seeds.length];
-        var len = MIN_LEN + t * (MAX_LEN - MIN_LEN);
+      /* 建立四段線性漸層，拼成一個視覺上連續的環形漸層 */
+      var gradientData = [
+        /* id, x1%, y1%, x2%, y2%, stop1 color, stop2 color */
+        ['agRG0', '50%', '0%',   '100%', '100%', '#2979ff', '#7c4dff'],
+        ['agRG1', '100%','0%',   '50%',  '100%', '#7c4dff', '#e040fb'],
+        ['agRG2', '50%', '100%', '0%',   '0%',   '#e040fb', '#00b0ff'],
+        ['agRG3', '0%',  '100%', '50%',  '0%',   '#00b0ff', '#2979ff']
+      ];
+      gradientData.forEach(function(gd) {
+        var g = document.createElementNS(NS, 'linearGradient');
+        g.setAttribute('id', gd[0]);
+        g.setAttribute('x1', gd[1]); g.setAttribute('y1', gd[2]);
+        g.setAttribute('x2', gd[3]); g.setAttribute('y2', gd[4]);
+        g.setAttribute('gradientUnits', 'objectBoundingBox');
+        var s1 = document.createElementNS(NS, 'stop');
+        s1.setAttribute('offset', '0%');   s1.setAttribute('stop-color', gd[5]);
+        var s2 = document.createElementNS(NS, 'stop');
+        s2.setAttribute('offset', '100%'); s2.setAttribute('stop-color', gd[6]);
+        g.appendChild(s1); g.appendChild(s2);
+        defs.appendChild(g);
+      });
+      spectrumSvg.appendChild(defs);
 
-        var x1 = CX + Math.cos(angle) * ORB_R;
-        var y1 = CY + Math.sin(angle) * ORB_R;
-        var x2 = CX + Math.cos(angle) * (ORB_R + len);
-        var y2 = CY + Math.sin(angle) * (ORB_R + len);
+      /* 四段弧線組成完整圓環，各自使用對應漸層 */
+      var arcDefs = [
+        { grad: 'agRG0', d: 'M 150,40 A 110,110 0 0 1 260,150' },
+        { grad: 'agRG1', d: 'M 260,150 A 110,110 0 0 1 150,260' },
+        { grad: 'agRG2', d: 'M 150,260 A 110,110 0 0 1 40,150'  },
+        { grad: 'agRG3', d: 'M 40,150  A 110,110 0 0 1 150,40'  }
+      ];
+      var arcEls = [];
+      arcDefs.forEach(function(ad) {
+        var path = document.createElementNS(NS, 'path');
+        path.setAttribute('d', ad.d);
+        path.setAttribute('fill', 'none');
+        path.setAttribute('stroke', 'url(#' + ad.grad + ')');
+        path.setAttribute('stroke-width', '2');
+        path.setAttribute('stroke-linecap', 'round');
+        path.setAttribute('class', 'ag-ring-arc');
+        spectrumSvg.appendChild(path);
+        arcEls.push(path);
+      });
 
-        var line = document.createElementNS(NS, 'line');
-        line.setAttribute('x1', x1.toFixed(2));
-        line.setAttribute('y1', y1.toFixed(2));
-        line.setAttribute('x2', x2.toFixed(2));
-        line.setAttribute('y2', y2.toFixed(2));
-        line.setAttribute('stroke', 'rgba(189,0,255,1)');
-        line.setAttribute('stroke-width', LINE_W);
-        line.setAttribute('stroke-linecap', 'round');
-        line.setAttribute('class', 'ag-spec-line');
-        spectrumSvg.appendChild(line);
-      }
+      /* 儲存 arc 元素供 applyRingSpectrum 使用 */
+      spectrumSvg._arcEls = arcEls;
+      spectrumSvg._arcR   = R;
+      spectrumSvg._arcCX  = CX;
+      spectrumSvg._arcCY  = CY;
 
-      /* 更新 SVG viewBox 配合新的中心座標 */
-      spectrumSvg.setAttribute('viewBox', '0 0 400 400');
+      spectrumSvg.setAttribute('viewBox', '0 0 300 300');
     })();
 
-    /* ── 整體呼吸：用 smoothVol 控制 SVG 整體 scale ── */
-    function applySpectrumScale(v) {
-      if (!spectrumSvg) return;
-      /* v: 0–1，靜止時 v=0，大聲時 v=1
-       * scale 範圍：0.86（靜止）→ 1.22（最大聲）——幅度加大讓呼吸更明顯 */
-      var sc = (0.86 + v * 0.36).toFixed(4);
-      spectrumSvg.style.transform = 'translate(-50%, -50%) scale(' + sc + ')';
+    /* ── 圓環呼吸：用 smoothVol 控制半徑與線寬（反向），色相持續旋轉 ── */
+    function applyRingSpectrum(v, ts) {
+      if (!spectrumSvg || !spectrumSvg._arcEls) return;
+
+      var CX  = spectrumSvg._arcCX;
+      var CY  = spectrumSvg._arcCY;
+      /* 半徑：靜止 100 → 最大聲 118（擴張感）*/
+      var R   = (100 + v * 18).toFixed(2);
+      /* 線寬：靜止 2.5 → 最大聲 1.2（拉伸時變細，反向關係）*/
+      var SW  = (2.5 - v * 1.3).toFixed(2);
+
+      /* 重新計算四段弧的路徑（依新半徑）*/
+      var r   = parseFloat(R);
+      var paths = [
+        'M ' + CX + ',' + (CY - r) + ' A ' + r + ',' + r + ' 0 0 1 ' + (CX + r) + ',' + CY,
+        'M ' + (CX + r) + ',' + CY  + ' A ' + r + ',' + r + ' 0 0 1 ' + CX + ',' + (CY + r),
+        'M ' + CX + ',' + (CY + r) + ' A ' + r + ',' + r + ' 0 0 1 ' + (CX - r) + ',' + CY,
+        'M ' + (CX - r) + ',' + CY  + ' A ' + r + ',' + r + ' 0 0 1 ' + CX + ',' + (CY - r)
+      ];
+      spectrumSvg._arcEls.forEach(function(el, i) {
+        el.setAttribute('d', paths[i]);
+        el.setAttribute('stroke-width', SW);
+      });
+
+      /* 色相旋轉：每秒旋轉 18°（約 20 秒一圈），與音量無關
+       * ts=0 是初始幀（rAF 尚未傳入 timestamp），跳過差値累積避免大跳 */
+      if (lastHueTs > 0 && ts > 0) {
+        var dt = ts - lastHueTs;
+        /* 防御頁面回到前景時 dt 過大（> 500ms）造成色相大跳 */
+        if (dt > 0 && dt < 500) {
+          hueOffset += dt / 1000 * 18;
+          if (hueOffset >= 360) hueOffset -= 360;
+        }
+      }
+      if (ts > 0) lastHueTs = ts;
+      spectrumSvg.style.filter = 'hue-rotate(' + hueOffset.toFixed(1) + 'deg)';
     }
 
-    function glowLoop() {
+    function glowLoop(ts) {
       rafId = requestAnimationFrame(glowLoop);
       var isPlaying = !audio.paused && pageVisible;
       var rawVol = 0;
@@ -260,7 +308,8 @@ var AgPlayer = (function () {
       var lerpRate = rawVol > smoothVol ? 0.55 : 0.10;
       smoothVol += (rawVol - smoothVol) * lerpRate;
       applyGlow(boost(smoothVol));
-      if (isPlaying) applySpectrumScale(boost(smoothVol));
+      /* 圓環頻譜：播放時由音量驅動呼吸，靜止時傳入 0（維持基礎呼吸動畫）*/
+      applyRingSpectrum(isPlaying ? boost(smoothVol) : 0, ts || 0);
     }
 
     if (orbRing) glowLoop();
