@@ -120,8 +120,8 @@
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 300px;
-  height: 300px;
+  width: 340px;
+  height: 340px;
   pointer-events: none;
   z-index: 1;
   overflow: visible;
@@ -140,20 +140,18 @@
   /* 不設定 transition：由 rAF 每幀直接寫入，避免 CSS transition 延遲導致跟語音跨幀失步 */
 }
 
-/* ── 語音引導：霓虹光環 ── */
+/* ── 語音引導：霓虹光環（已由 SVG 圓環取代，隱藏本元素）── */
 .ag-player-visual--voice .ag-orb-ring {
   width: 150px;
   height: 150px;
   border-radius: 50%;
-  border: 1.5px solid #bd00ff;
-  box-shadow:
-    0 0 10px  rgba(189,0,255,0.55),
-    0 0 28px  rgba(189,0,255,0.22),
-    0 0 60px  rgba(189,0,255,0.08),
-    inset 0 0 10px rgba(189,0,255,0.06);
+  border: none;
+  box-shadow: none;
+  background: transparent;
   transform: scale(1);
-  transition: transform 0.12s ease-out;
-  will-change: box-shadow, transform;
+  transition: none;
+  will-change: auto;
+  pointer-events: none;
 }
 
 /* ── 曲目資訊 ── */
