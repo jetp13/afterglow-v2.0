@@ -277,7 +277,13 @@ var AgPlayer = (function () {
         }
       }
       if (ts > 0) lastHueTs = ts;
-      spectrumSvg.style.filter = 'hue-rotate(' + hueOffset.toFixed(1) + 'deg)';
+      /* drop-shadow 微光暈：靜止 2px，說話時隨音量擴散至 5px
+       * 色彩固定為冷青 #00e5ff，透明度靜止 0.5、最大聲 0.85 */
+      var glowR  = (2 + v * 3).toFixed(1);
+      var glowA  = (0.50 + v * 0.35).toFixed(2);
+      spectrumSvg.style.filter =
+        'hue-rotate(' + hueOffset.toFixed(1) + 'deg) ' +
+        'drop-shadow(0 0 ' + glowR + 'px rgba(0,229,255,' + glowA + '))';
     }
 
     function glowLoop(ts) {
