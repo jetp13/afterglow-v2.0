@@ -241,8 +241,13 @@ var AgPlayer = (function () {
       spectrumSvg.setAttribute('viewBox', '0 0 240 240');
     })();
 
-    /* ── 圓環呼吸：用 smoothVol 控制半徑與線寬（反向），色相持續旋轉 ── */
-    function applyRingSpectrum(v, ts) {
+    /* ── 圓環呼吸：
+     *   v    = smoothVol 經過 boost（控制半徑 / 線寬）
+     *   ts   = rAF timestamp
+     *   vRaw = rawVol 經過 boost（控制色相旋轉，即時語音節奏）
+     * ── */
+    function applyRingSpectrum(v, ts, vRaw) {
+      if (vRaw === undefined) vRaw = v;  /* 相容舊呼叫 */
       if (!spectrumSvg || !spectrumSvg._layers) return;
 
       var CX = spectrumSvg._CX;
@@ -266,12 +271,16 @@ var AgPlayer = (function () {
         });
       });
 
-      /* 色相旋轉：靜止 8°/s（緩慢漂移），說話時最高 90°/s（音量越大轉越快）
-       * ts=0 是初始幀（rAF 尚未傳入 timestamp），跳過差値累積避免大跳 */
+      /* 色相旋轉：用 vRaw（即時音量）驅動，強化講話/停頓對比
+       *   停頓（vRaw≈0）→  2°/s（幾乎靜止）
+       *   輕聲（vRaw=0.3）→ ~110°/s
+       *   正常說話（vRaw=0.6）→ ~218°/s
+       *   最大聲（vRaw=1.0）→  360°/s（一秒一圈）
+       * ts=0 是初始幀，跳過差値累積避免大跳 */
       if (lastHueTs > 0 && ts > 0) {
         var dt = ts - lastHueTs;
         if (dt > 0 && dt < 500) {
-          var hueSpeed = 30 + v * 170;  /* 30°/s（靜止）→ 200°/s（最大聲）*/
+          var hueSpeed = 2 + vRaw * 358;  /* 2°/s（停頓）→ 360°/s（最大聲）*/
           hueOffset += dt / 1000 * hueSpeed;
           if (hueOffset >= 360) hueOffset -= 360;
         }
@@ -296,12 +305,19 @@ var AgPlayer = (function () {
         for (var i = 4; i < 28; i++) { sum += freqBuf[i]; count++; }
         rawVol = sum / count / 255;
       }
-      /* 上升快、下降稍慢：讓呼吸節奏跟說話速度吸合 */
-      var lerpRate = rawVol > smoothVol ? 0.55 : 0.10;
+      /* 上升快、下降快：讓停頓時圓環迅速靜下來，強化講話/停頓對比
+       * 上升 0.70（幾乎即時）、下降 0.25（約 4 幀歸零）*/
+      var lerpRate = rawVol > smoothVol ? 0.70 : 0.25;
       smoothVol += (rawVol - smoothVol) * lerpRate;
       applyGlow(boost(smoothVol));
-      /* 圓環頻譜：播放時由音量驅動呼吸，靜止時傳入 0（維持基礎呼吸動畫）*/
-      applyRingSpectrum(isPlaying ? boost(smoothVol) : 0, ts || 0);
+      /* 圓環頻譜：
+       *   smoothVol → 控制半徑 / 線寬（有平滑感的呼吸）
+       *   rawVol    → 控制色相旋轉速度（即時反映語音節奏）*/
+      applyRingSpectrum(
+        isPlaying ? boost(smoothVol) : 0,
+        ts || 0,
+        isPlaying ? boost(rawVol)    : 0
+      );
     }
 
     if (orbRing) glowLoop();
