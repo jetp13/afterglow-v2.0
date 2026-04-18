@@ -180,9 +180,9 @@ var AgPlayer = (function () {
     (function buildRingSpectrum() {
       if (!spectrumSvg) return;
       var NS = 'http://www.w3.org/2000/svg';
-      var CX = 170;   /* 配合 340x340 viewBox */
-      var CY = 170;
-      var R  = 130;   /* 靜止半徑：與圖二比例相近 */
+      var CX = 120;   /* 配合 240x240 viewBox */
+      var CY = 120;
+      var R  = 88;    /* 靜止半徑：縮小至 240px 容器的適當比例 */
 
       /* ── defs：四段線性漸層，拼成環形漸層
        *   色彩對齊參考 GIF：青 #00e5ff → 藍 #2979ff → 紫 #7c4dff → 洋紅 #e040fb ── */
@@ -238,7 +238,7 @@ var AgPlayer = (function () {
       spectrumSvg._CY     = CY;
       spectrumSvg._R0     = R;
 
-      spectrumSvg.setAttribute('viewBox', '0 0 340 340');
+      spectrumSvg.setAttribute('viewBox', '0 0 240 240');
     })();
 
     /* ── 圓環呼吸：用 smoothVol 控制半徑與線寬（反向），色相持續旋轉 ── */
@@ -250,10 +250,10 @@ var AgPlayer = (function () {
       var R0 = spectrumSvg._R0;
 
       spectrumSvg._layers.forEach(function(layer) {
-        /* 半徑：靜止 R0 → 最大聲 R0+16（擴張感），重影層小 4px */
-        var r  = R0 + layer.rDelta + v * 16;
-        /* 線寬：靜止 swBase → 最大聲 swBase*0.55（拉伸時變細，反向）*/
-        var sw = (layer.swBase * (1 - v * 0.45)).toFixed(2);
+        /* 半徑：靜止 R0 → 最大聲 R0+22（擴張感更明顯），重影層小 4px */
+        var r  = R0 + layer.rDelta + v * 22;
+        /* 線寬：靜止 swBase → 最大聲 swBase*0.40（拉伸時變細幅度更大，反向）*/
+        var sw = (layer.swBase * (1 - v * 0.60)).toFixed(2);
         var paths = [
           'M ' + CX + ',' + (CY - r).toFixed(2) + ' A ' + r.toFixed(2) + ',' + r.toFixed(2) + ' 0 0 1 ' + (CX + r).toFixed(2) + ',' + CY,
           'M ' + (CX + r).toFixed(2) + ',' + CY  + ' A ' + r.toFixed(2) + ',' + r.toFixed(2) + ' 0 0 1 ' + CX + ',' + (CY + r).toFixed(2),
@@ -266,12 +266,13 @@ var AgPlayer = (function () {
         });
       });
 
-      /* 色相旋轉：每秒 18°（約 20 秒一圈），與音量無關
+      /* 色相旋轉：靜止 8°/s（緩慢漂移），說話時最高 90°/s（音量越大轉越快）
        * ts=0 是初始幀（rAF 尚未傳入 timestamp），跳過差値累積避免大跳 */
       if (lastHueTs > 0 && ts > 0) {
         var dt = ts - lastHueTs;
         if (dt > 0 && dt < 500) {
-          hueOffset += dt / 1000 * 18;
+          var hueSpeed = 8 + v * 82;   /* 8°/s（靜止）→ 90°/s（最大聲）*/
+          hueOffset += dt / 1000 * hueSpeed;
           if (hueOffset >= 360) hueOffset -= 360;
         }
       }
