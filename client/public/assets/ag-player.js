@@ -271,7 +271,7 @@ var AgPlayer = (function () {
       if (lastHueTs > 0 && ts > 0) {
         var dt = ts - lastHueTs;
         if (dt > 0 && dt < 500) {
-          var hueSpeed = 8 + v * 82;   /* 8°/s（靜止）→ 90°/s（最大聲）*/
+          var hueSpeed = 30 + v * 170;  /* 30°/s（靜止）→ 200°/s（最大聲）*/
           hueOffset += dt / 1000 * hueSpeed;
           if (hueOffset >= 360) hueOffset -= 360;
         }
