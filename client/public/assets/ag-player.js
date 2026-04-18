@@ -280,7 +280,7 @@ var AgPlayer = (function () {
       if (lastHueTs > 0 && ts > 0) {
         var dt = ts - lastHueTs;
         if (dt > 0 && dt < 500) {
-          var hueSpeed = 2 + vRaw * 358;  /* 2°/s（停頓）→ 360°/s（最大聲）*/
+          var hueSpeed = 20 + vRaw * 340;  /* 20°/s（停頓）→ 360°/s（最大聲）*/
           hueOffset += dt / 1000 * hueSpeed;
           if (hueOffset >= 360) hueOffset -= 360;
         }
@@ -348,10 +348,12 @@ var AgPlayer = (function () {
           showIcon(audio.ended ? 'replay' : 'play');
           playBtn.classList.remove('active');
           if (visualEl) visualEl.classList.remove('playing');
+          if (visualVoiceEl) visualVoiceEl.classList.remove('playing');
         } else {
           showIcon('pause');
           playBtn.classList.add('active');
           if (visualEl) visualEl.classList.add('playing');
+          if (visualVoiceEl) visualVoiceEl.classList.add('playing');
         }
       }
     });

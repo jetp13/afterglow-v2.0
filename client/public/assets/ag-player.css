@@ -126,7 +126,7 @@
   z-index: 1;
   overflow: visible;
   /* 靜止時稍暗，播放時全亮，由 CSS transition 滑動 */
-  opacity: 0.40;
+  opacity: 0.75;
   transition: opacity 0.6s ease;
 }
 
