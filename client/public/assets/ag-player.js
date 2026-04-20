@@ -173,126 +173,108 @@ var AgPlayer = (function () {
       /* ag-orb-ring 已在 voice 頁面被隱藏（由 SVG 圓環取代），此函式保留但不操作 DOM */
     }
 
-    /* ── SVG 圓環頻譜初始化（雙層超細線條 + 微重影 + 冷色漸層）── */
-    var hueOffset  = 0;   /* 色相旋轉累積角度（度）*/
-    var lastHueTs  = 0;   /* 上次更新時間戳 */
+    /* ── SVG 圓環頻譜初始化
+     *   架構：3 條圓心公轉交織圓環，色彩為粉紅/紫/藍低飽和系
+     *   圓心偏移：每條圓的圓心以不同速度、不同相位繞著圖片中心公轉
+     *   交織感來源：各圓心偏移導致圓環在不同方向微小錢移，形成交織感
+     * ── */
+    var ringTs      = 0;   /* 圓心公轉累積時間（ms）*/
+    var lastRingTs  = 0;   /* 上次更新時間戳 */
 
     (function buildRingSpectrum() {
       if (!spectrumSvg) return;
       var NS = 'http://www.w3.org/2000/svg';
-      var CX = 120;   /* 配合 240x240 viewBox */
+      var CX = 120;   /* viewBox 240x240 中心 */
       var CY = 120;
-      var R  = 88;    /* 靜止半徑：縮小至 240px 容器的適當比例 */
+      var R  = 85;    /* 基礎半徑 */
 
-      /* ── defs：四段線性漸層，拼成環形漸層
-       *   色彩對齊參考 GIF：青 #00e5ff → 藍 #2979ff → 紫 #7c4dff → 洋紅 #e040fb ── */
-      var defs = document.createElementNS(NS, 'defs');
-      var gradientData = [
-        ['agRG0', '50%','0%',   '100%','100%', '#00e5ff', '#2979ff'],
-        ['agRG1', '100%','0%',  '50%', '100%', '#2979ff', '#7c4dff'],
-        ['agRG2', '50%','100%', '0%',  '0%',   '#7c4dff', '#e040fb'],
-        ['agRG3', '0%', '100%', '50%', '0%',   '#e040fb', '#00e5ff']
+      /* ── 3 條圓環的屬性設定
+       *   色彩：粉紅/紫/藍 低飽和系，不使用 hue-rotate
+       *   orbitR：圓心公轉半徑（px）
+       *   orbitSpeed：圓心公轉速度（度/秒）
+       *   orbitPhase：初始相位（度）
+       *   sw：線條粗細（px）
+       *   opacity：透明度 */
+      var ringDefs = [
+        { color: '#c084fc', sw: 1.0, opacity: 0.90, orbitR: 10, orbitSpeed:  18, orbitPhase:   0 },  /* 紫粉 */
+        { color: '#818cf8', sw: 0.8, opacity: 0.75, orbitR:  8, orbitSpeed: -13, orbitPhase: 120 },  /* 藍紫 */
+        { color: '#f0abfc', sw: 0.6, opacity: 0.55, orbitR: 13, orbitSpeed:  22, orbitPhase: 240 }   /* 淡粉紫 */
       ];
-      gradientData.forEach(function(gd) {
-        var g = document.createElementNS(NS, 'linearGradient');
-        g.setAttribute('id', gd[0]);
-        g.setAttribute('x1', gd[1]); g.setAttribute('y1', gd[2]);
-        g.setAttribute('x2', gd[3]); g.setAttribute('y2', gd[4]);
-        g.setAttribute('gradientUnits', 'objectBoundingBox');
-        ['0%','100%'].forEach(function(off, idx) {
-          var s = document.createElementNS(NS, 'stop');
-          s.setAttribute('offset', off);
-          s.setAttribute('stop-color', gd[5 + idx]);
-          g.appendChild(s);
-        });
-        defs.appendChild(g);
-      });
-      spectrumSvg.appendChild(defs);
 
-      /* ── 建立圓環：主線層（不透明）+ 重影層（小徑差 4px，半透明）── */
-      var layers = [
-        { suffix: 'ghost', rDelta: 4,  swBase: 0.6, opacity: '0.45' },  /* 重影層 */
-        { suffix: 'main',  rDelta: 0,  swBase: 1.0, opacity: '1.00' }   /* 主線層 */
-      ];
-      var allArcEls = [];
-      layers.forEach(function(layer) {
-        var group = document.createElementNS(NS, 'g');
-        group.setAttribute('opacity', layer.opacity);
-        var arcEls = [];
-        for (var i = 0; i < 4; i++) {
-          var path = document.createElementNS(NS, 'path');
-          path.setAttribute('fill', 'none');
-          path.setAttribute('stroke', 'url(#agRG' + i + ')');
-          path.setAttribute('stroke-width', layer.swBase.toFixed(1));
-          path.setAttribute('stroke-linecap', 'round');
-          path.setAttribute('class', 'ag-ring-arc');
-          group.appendChild(path);
-          arcEls.push(path);
-        }
-        spectrumSvg.appendChild(group);
-        allArcEls.push({ els: arcEls, rDelta: layer.rDelta, swBase: layer.swBase });
+      /* 建立圓環元素：每條圓環用一個 <circle> */
+      var ringEls = [];
+      ringDefs.forEach(function(def) {
+        var circle = document.createElementNS(NS, 'circle');
+        circle.setAttribute('fill', 'none');
+        circle.setAttribute('stroke', def.color);
+        circle.setAttribute('stroke-width', def.sw.toFixed(1));
+        circle.setAttribute('opacity', def.opacity.toFixed(2));
+        circle.setAttribute('class', 'ag-ring-arc');
+        spectrumSvg.appendChild(circle);
+        ringEls.push(circle);
       });
 
-      spectrumSvg._layers = allArcEls;
-      spectrumSvg._CX     = CX;
-      spectrumSvg._CY     = CY;
-      spectrumSvg._R0     = R;
+      spectrumSvg._ringEls   = ringEls;
+      spectrumSvg._ringDefs  = ringDefs;
+      spectrumSvg._CX        = CX;
+      spectrumSvg._CY        = CY;
+      spectrumSvg._R0        = R;
 
       spectrumSvg.setAttribute('viewBox', '0 0 240 240');
     })();
 
-    /* ── 圓環呼吸：
-     *   v    = smoothVol 經過 boost（控制半徑 / 線寬）
+    /* ── 圓環呼吸：多圓心公轉交織架構
+     *   v    = smoothVol boost（控制半徑 / 線寬）
      *   ts   = rAF timestamp
-     *   vRaw = rawVol 經過 boost（控制色相旋轉，即時語音節奏）
+     *   vRaw = rawVol boost（控制公轉加速，即時語音節奏）
      * ── */
     function applyRingSpectrum(v, ts, vRaw) {
-      if (vRaw === undefined) vRaw = v;  /* 相容舊呼叫 */
-      if (!spectrumSvg || !spectrumSvg._layers) return;
+      if (vRaw === undefined) vRaw = v;
+      if (!spectrumSvg || !spectrumSvg._ringEls) return;
 
-      var CX = spectrumSvg._CX;
-      var CY = spectrumSvg._CY;
-      var R0 = spectrumSvg._R0;
+      var CX       = spectrumSvg._CX;
+      var CY       = spectrumSvg._CY;
+      var R0       = spectrumSvg._R0;
+      var ringEls  = spectrumSvg._ringEls;
+      var ringDefs = spectrumSvg._ringDefs;
 
-      spectrumSvg._layers.forEach(function(layer) {
-        /* 半徑：靜止 R0 → 最大聲 R0+22（擴張感更明顯），重影層小 4px */
-        var r  = R0 + layer.rDelta + v * 22;
-        /* 線寬：靜止 swBase → 最大聲 swBase*0.40（拉伸時變細幅度更大，反向）*/
-        var sw = (layer.swBase * (1 - v * 0.60)).toFixed(2);
-        var paths = [
-          'M ' + CX + ',' + (CY - r).toFixed(2) + ' A ' + r.toFixed(2) + ',' + r.toFixed(2) + ' 0 0 1 ' + (CX + r).toFixed(2) + ',' + CY,
-          'M ' + (CX + r).toFixed(2) + ',' + CY  + ' A ' + r.toFixed(2) + ',' + r.toFixed(2) + ' 0 0 1 ' + CX + ',' + (CY + r).toFixed(2),
-          'M ' + CX + ',' + (CY + r).toFixed(2) + ' A ' + r.toFixed(2) + ',' + r.toFixed(2) + ' 0 0 1 ' + (CX - r).toFixed(2) + ',' + CY,
-          'M ' + (CX - r).toFixed(2) + ',' + CY  + ' A ' + r.toFixed(2) + ',' + r.toFixed(2) + ' 0 0 1 ' + CX + ',' + (CY - r).toFixed(2)
-        ];
-        layer.els.forEach(function(el, i) {
-          el.setAttribute('d', paths[i]);
-          el.setAttribute('stroke-width', sw);
-        });
-      });
-
-      /* 色相旋轉：用 vRaw（即時音量）驅動，強化講話/停頓對比
-       *   停頓（vRaw≈0）→  2°/s（幾乎靜止）
-       *   輕聲（vRaw=0.3）→ ~110°/s
-       *   正常說話（vRaw=0.6）→ ~218°/s
-       *   最大聲（vRaw=1.0）→  360°/s（一秒一圈）
-       * ts=0 是初始幀，跳過差値累積避免大跳 */
-      if (lastHueTs > 0 && ts > 0) {
-        var dt = ts - lastHueTs;
+      /* 更新圓心公轉累積時間
+       *   靜止時：公轉慢速（1x），說話時：加速至最大 6x，強化語音節奏對比 */
+      if (lastRingTs > 0 && ts > 0) {
+        var dt = ts - lastRingTs;
         if (dt > 0 && dt < 500) {
-          var hueSpeed = 20 + vRaw * 340;  /* 20°/s（停頓）→ 360°/s（最大聲）*/
-          hueOffset += dt / 1000 * hueSpeed;
-          if (hueOffset >= 360) hueOffset -= 360;
+          var speedMult = 1 + vRaw * 5;   /* 1x（停頓）→ 6x（最大聲）*/
+          ringTs += dt * speedMult;
         }
       }
-      if (ts > 0) lastHueTs = ts;
-      /* drop-shadow 微光暈：靜止 2px，說話時隨音量擴散至 5px
-       * 色彩固定為冷青 #00e5ff，透明度靜止 0.5、最大聲 0.85 */
-      var glowR  = (2 + v * 3).toFixed(1);
-      var glowA  = (0.50 + v * 0.35).toFixed(2);
+      if (ts > 0) lastRingTs = ts;
+
+      /* 更新每條圓環：圓心公轉 + 半徑呼吸 + 線寬反向 */
+      ringDefs.forEach(function(def, i) {
+        var el = ringEls[i];
+        /* 圓心公轉角度（度）*/
+        var angle = (def.orbitPhase + def.orbitSpeed * ringTs / 1000) % 360;
+        var rad   = angle * Math.PI / 180;
+        /* 圓心偏移：在 orbitR 半徑的圓上公轉 */
+        var cx = CX + def.orbitR * Math.cos(rad);
+        var cy = CY + def.orbitR * Math.sin(rad);
+        /* 半徑：基礎 R0 + 音量擴張 + 圓心偏移补償（圓心偏外時半徑微小縮）*/
+        var r  = R0 + v * 20;
+        /* 線寬：說話時變細（拉伸感）*/
+        var sw = (def.sw * (1 - v * 0.50)).toFixed(2);
+
+        el.setAttribute('cx', cx.toFixed(2));
+        el.setAttribute('cy', cy.toFixed(2));
+        el.setAttribute('r',  r.toFixed(2));
+        el.setAttribute('stroke-width', sw);
+      });
+
+      /* drop-shadow 微光暈：色彩對齊粉累累紫色調
+       *   靜止時 2px，說話時隨音量擴散至 5px */
+      var glowR = (2 + v * 3).toFixed(1);
+      var glowA = (0.40 + v * 0.40).toFixed(2);
       spectrumSvg.style.filter =
-        'hue-rotate(' + hueOffset.toFixed(1) + 'deg) ' +
-        'drop-shadow(0 0 ' + glowR + 'px rgba(0,229,255,' + glowA + '))';
+        'drop-shadow(0 0 ' + glowR + 'px rgba(192,132,252,' + glowA + '))';
     }
 
     function glowLoop(ts) {
