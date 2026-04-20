@@ -279,8 +279,9 @@ var AgPlayer = (function () {
       if (lastRingTs > 0 && ts > 0) {
         var dt = ts - lastRingTs;
         if (dt > 0 && dt < 500) {
-          /* 旋轉速度：靜止 20°/s，說話時 20 + vRaw*340，最高 360°/s */
-          var degPerSec = 20 + vRaw * 340;
+          /* 旋轉速度：靜止 5°/s，說話時 5 + vRaw*355，最高 360°/s
+           * 快慢對比 72 倍：長句時快速旋轉，短停時幾乎靜止 */
+          var degPerSec = 5 + vRaw * 355;
           ringAngle += degPerSec * dt / 1000;
           if (ringAngle >= 360) ringAngle -= 360;
         }
@@ -325,13 +326,15 @@ var AgPlayer = (function () {
       var rawVol = 0;
       if (analyser && isPlaying) {
         analyser.getByteFrequencyData(freqBuf);
+        /* 縮小取樣範圍至 bin 6–20（約 250–850Hz），聚焦語音基頻區段
+         * 對音節邊界與句子節奏更敏感，顆粒度停在句子/短語層級 */
         var sum = 0, count = 0;
-        for (var i = 4; i < 28; i++) { sum += freqBuf[i]; count++; }
+        for (var i = 6; i < 20; i++) { sum += freqBuf[i]; count++; }
         rawVol = sum / count / 255;
       }
-      /* 上升快、下降快：讓停頓時圓環迅速靜下來，強化講話/停頓對比
-       * 上升 0.70（幾乎即時）、下降 0.25（約 4 幀歸零）*/
-      var lerpRate = rawVol > smoothVol ? 0.70 : 0.25;
+      /* 上升快（幾乎即時）、下降更快：停頓時圓環迅速靜下來
+       * 上升 0.75、下降 0.35（約 2–3 幀歸零），讓長句/短停的對比更清晰 */
+      var lerpRate = rawVol > smoothVol ? 0.75 : 0.35;
       smoothVol += (rawVol - smoothVol) * lerpRate;
       applyGlow(boost(smoothVol));
       /* 圓環頻譜：
