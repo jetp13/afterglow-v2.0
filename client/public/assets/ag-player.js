@@ -174,11 +174,11 @@ var AgPlayer = (function () {
     }
 
     /* ── SVG 圓環頻譜初始化
-     *   架構：3 條圓心公轉交織圓環，色彩為粉紅/紫/藍低飽和系
-     *   圓心偏移：每條圓的圓心以不同速度、不同相位繞著圖片中心公轉
-     *   交織感來源：各圓心偏移導致圓環在不同方向微小錢移，形成交織感
+     *   架構：3 條圓環，圓心微小偏移（1.5–2.5px）形成交織感
+     *   色彩：以 #bd00ff 震光紫為核心，對齊播放介面進度條、按鈕色調
+     *   旋轉：漸層色彩沿圓環旋轉，速度與 rawVol 直接同步
      * ── */
-    var ringTs      = 0;   /* 圓心公轉累積時間（ms）*/
+    var ringAngle   = 0;   /* 圓環旋轉累積角度（度）*/
     var lastRingTs  = 0;   /* 上次更新時間戳 */
 
     (function buildRingSpectrum() {
@@ -188,32 +188,65 @@ var AgPlayer = (function () {
       var CY = 120;
       var R  = 85;    /* 基礎半徑 */
 
-      /* ── 3 條圓環的屬性設定
-       *   色彩：粉紅/紫/藍 低飽和系，不使用 hue-rotate
-       *   orbitR：圓心公轉半徑（px）
-       *   orbitSpeed：圓心公轉速度（度/秒）
-       *   orbitPhase：初始相位（度）
-       *   sw：線條粗細（px）
-       *   opacity：透明度 */
+      /* ── defs：圓弧漸層
+       *   色彩系列：深紫 #7c00cc → 震光紫 #bd00ff → 淡紫白 #e580ff → 回深紫
+       *   這樣旋轉時會看到「亮點在圓環上流動」的震光燈管感 */
+      var defs = document.createElementNS(NS, 'defs');
+
+      /* 主圓環漸層：紫色深淡交替 */
+      var grad = document.createElementNS(NS, 'linearGradient');
+      grad.setAttribute('id', 'agVoiceGrad');
+      grad.setAttribute('x1', '0%'); grad.setAttribute('y1', '0%');
+      grad.setAttribute('x2', '100%'); grad.setAttribute('y2', '0%');
+      grad.setAttribute('gradientUnits', 'userSpaceOnUse');
+      grad.setAttribute('x1', '0'); grad.setAttribute('y1', '120');
+      grad.setAttribute('x2', '240'); grad.setAttribute('y2', '120');
+      var stops = [
+        ['0%',   '#7c00cc', '0.6'],
+        ['30%',  '#bd00ff', '1.0'],
+        ['60%',  '#e580ff', '0.8'],
+        ['85%',  '#bd00ff', '1.0'],
+        ['100%', '#7c00cc', '0.6']
+      ];
+      stops.forEach(function(s) {
+        var stop = document.createElementNS(NS, 'stop');
+        stop.setAttribute('offset', s[0]);
+        stop.setAttribute('stop-color', s[1]);
+        stop.setAttribute('stop-opacity', s[2]);
+        grad.appendChild(stop);
+      });
+      defs.appendChild(grad);
+      spectrumSvg.appendChild(defs);
+
+      /* ── 3 條圓環設定
+       *   圓心偏移非常小（1.5–2.5px），讓圓環幾乎重疊但微微交織
+       *   各圓的圓心偏移方向不同，旋轉時交織感自然出現 */
       var ringDefs = [
-        { color: '#c084fc', sw: 1.0, opacity: 0.90, orbitR: 10, orbitSpeed:  18, orbitPhase:   0 },  /* 紫粉 */
-        { color: '#818cf8', sw: 0.8, opacity: 0.75, orbitR:  8, orbitSpeed: -13, orbitPhase: 120 },  /* 藍紫 */
-        { color: '#f0abfc', sw: 0.6, opacity: 0.55, orbitR: 13, orbitSpeed:  22, orbitPhase: 240 }   /* 淡粉紫 */
+        { sw: 1.2, opacity: 0.95, orbitR: 0,   orbitPhase:   0 },  /* 主圓：圓心在中心 */
+        { sw: 0.8, opacity: 0.70, orbitR: 2.0, orbitPhase:  90 },  /* 小偏移：上方 */
+        { sw: 0.6, opacity: 0.50, orbitR: 2.5, orbitPhase: 270 }   /* 小偏移：下方 */
       ];
 
-      /* 建立圓環元素：每條圓環用一個 <circle> */
+      /* 建立旋轉容器與圓環元素 */
       var ringEls = [];
+      var rotGroup = document.createElementNS(NS, 'g');
+      rotGroup.setAttribute('id', 'agRingRotGroup');
       ringDefs.forEach(function(def) {
         var circle = document.createElementNS(NS, 'circle');
         circle.setAttribute('fill', 'none');
-        circle.setAttribute('stroke', def.color);
+        circle.setAttribute('stroke', 'url(#agVoiceGrad)');
         circle.setAttribute('stroke-width', def.sw.toFixed(1));
         circle.setAttribute('opacity', def.opacity.toFixed(2));
+        circle.setAttribute('cx', CX.toFixed(1));
+        circle.setAttribute('cy', CY.toFixed(1));
+        circle.setAttribute('r',  R.toFixed(1));
         circle.setAttribute('class', 'ag-ring-arc');
-        spectrumSvg.appendChild(circle);
+        rotGroup.appendChild(circle);
         ringEls.push(circle);
       });
+      spectrumSvg.appendChild(rotGroup);
 
+      spectrumSvg._rotGroup  = rotGroup;
       spectrumSvg._ringEls   = ringEls;
       spectrumSvg._ringDefs  = ringDefs;
       spectrumSvg._CX        = CX;
@@ -223,45 +256,54 @@ var AgPlayer = (function () {
       spectrumSvg.setAttribute('viewBox', '0 0 240 240');
     })();
 
-    /* ── 圓環呼吸：多圓心公轉交織架構
+    /* ── 圓環旋轉漸層架構
+     *   旋轉漸層色彩沿圓環流動，速度與 rawVol 直接同步
      *   v    = smoothVol boost（控制半徑 / 線寬）
      *   ts   = rAF timestamp
-     *   vRaw = rawVol boost（控制公轉加速，即時語音節奏）
+     *   vRaw = rawVol boost（控制旋轉速度，即時語音節奏）
      * ── */
     function applyRingSpectrum(v, ts, vRaw) {
       if (vRaw === undefined) vRaw = v;
       if (!spectrumSvg || !spectrumSvg._ringEls) return;
 
-      var CX       = spectrumSvg._CX;
-      var CY       = spectrumSvg._CY;
-      var R0       = spectrumSvg._R0;
-      var ringEls  = spectrumSvg._ringEls;
-      var ringDefs = spectrumSvg._ringDefs;
+      var CX        = spectrumSvg._CX;
+      var CY        = spectrumSvg._CY;
+      var R0        = spectrumSvg._R0;
+      var ringEls   = spectrumSvg._ringEls;
+      var ringDefs  = spectrumSvg._ringDefs;
+      var rotGroup  = spectrumSvg._rotGroup;
 
-      /* 更新圓心公轉累積時間
-       *   靜止時：公轉慢速（1x），說話時：加速至最大 6x，強化語音節奏對比 */
+      /* ── 更新旋轉角度
+       *   靜止時 20°/s（緩慢流動），說話時最高 360°/s（一秒一圈）
+       *   停頓時幾乎静止（vRaw 接近 0），說話時快速旋轉 */
       if (lastRingTs > 0 && ts > 0) {
         var dt = ts - lastRingTs;
         if (dt > 0 && dt < 500) {
-          var speedMult = 1 + vRaw * 5;   /* 1x（停頓）→ 6x（最大聲）*/
-          ringTs += dt * speedMult;
+          /* 旋轉速度：靜止 20°/s，說話時 20 + vRaw*340，最高 360°/s */
+          var degPerSec = 20 + vRaw * 340;
+          ringAngle += degPerSec * dt / 1000;
+          if (ringAngle >= 360) ringAngle -= 360;
         }
       }
       if (ts > 0) lastRingTs = ts;
 
-      /* 更新每條圓環：圓心公轉 + 半徑呼吸 + 線寬反向 */
+      /* ── 旋轉整個 <g> 容器，讓漸層色彩沿圓環流動 */
+      if (rotGroup) {
+        rotGroup.setAttribute('transform',
+          'rotate(' + ringAngle.toFixed(2) + ' ' + CX + ' ' + CY + ')');
+      }
+
+      /* ── 更新每條圓環：圓心微小偏移 + 半徑呼吸 + 線寬反向 */
       ringDefs.forEach(function(def, i) {
-        var el = ringEls[i];
-        /* 圓心公轉角度（度）*/
-        var angle = (def.orbitPhase + def.orbitSpeed * ringTs / 1000) % 360;
-        var rad   = angle * Math.PI / 180;
-        /* 圓心偏移：在 orbitR 半徑的圓上公轉 */
-        var cx = CX + def.orbitR * Math.cos(rad);
-        var cy = CY + def.orbitR * Math.sin(rad);
-        /* 半徑：基礎 R0 + 音量擴張 + 圓心偏移补償（圓心偏外時半徑微小縮）*/
-        var r  = R0 + v * 20;
+        var el  = ringEls[i];
+        /* 圓心偏移：固定方向（不再公轉），非常小的偏差 */
+        var rad = def.orbitPhase * Math.PI / 180;
+        var cx  = CX + def.orbitR * Math.cos(rad);
+        var cy  = CY + def.orbitR * Math.sin(rad);
+        /* 半徑：基礎 R0 + 音量擴張 */
+        var r   = R0 + v * 18;
         /* 線寬：說話時變細（拉伸感）*/
-        var sw = (def.sw * (1 - v * 0.50)).toFixed(2);
+        var sw  = (def.sw * (1 - v * 0.45)).toFixed(2);
 
         el.setAttribute('cx', cx.toFixed(2));
         el.setAttribute('cy', cy.toFixed(2));
@@ -269,12 +311,12 @@ var AgPlayer = (function () {
         el.setAttribute('stroke-width', sw);
       });
 
-      /* drop-shadow 微光暈：色彩對齊粉累累紫色調
-       *   靜止時 2px，說話時隨音量擴散至 5px */
-      var glowR = (2 + v * 3).toFixed(1);
-      var glowA = (0.40 + v * 0.40).toFixed(2);
+      /* ── drop-shadow 微光暈：色彩對齊 #bd00ff 震光紫，與按鈕、進度條統一
+       *   靜止時 2px，說話時隨音量擴散至 6px */
+      var glowR = (2 + v * 4).toFixed(1);
+      var glowA = (0.35 + v * 0.50).toFixed(2);
       spectrumSvg.style.filter =
-        'drop-shadow(0 0 ' + glowR + 'px rgba(192,132,252,' + glowA + '))';
+        'drop-shadow(0 0 ' + glowR + 'px rgba(189,0,255,' + glowA + '))';
     }
 
     function glowLoop(ts) {
