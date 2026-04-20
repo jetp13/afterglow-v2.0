@@ -170,163 +170,20 @@ var AgPlayer = (function () {
     }
 
     function applyGlow(v) {
-      /* ag-orb-ring 已在 voice 頁面被隱藏（由 SVG 圓環取代），此函式保留但不操作 DOM */
-    }
-
-    /* ── SVG 圓環頻譜初始化
-     *   架構：3 條圓環，圓心微小偏移（1.5–2.5px）形成交織感
-     *   色彩：以 #bd00ff 震光紫為核心，對齊播放介面進度條、按鈕色調
-     *   旋轉：漸層色彩沿圓環旋轉，速度與 rawVol 直接同步
-     * ── */
-    var ringAngle   = 0;   /* 圓環旋轉累積角度（度）*/
-    var lastRingTs  = 0;   /* 上次更新時間戳 */
-
-    (function buildRingSpectrum() {
-      if (!spectrumSvg) return;
-      var NS = 'http://www.w3.org/2000/svg';
-      var CX = 120;   /* viewBox 240x240 中心 */
-      var CY = 120;
-      var R  = 85;    /* 基礎半徑 */
-
-      /* ── defs：圓弧漸層
-       *   色彩系列：深紫 #7c00cc → 震光紫 #bd00ff → 淡紫白 #e580ff → 回深紫
-       *   這樣旋轉時會看到「亮點在圓環上流動」的震光燈管感 */
-      var defs = document.createElementNS(NS, 'defs');
-
-      /* 主圓環漸層：紫色深淡交替 */
-      var grad = document.createElementNS(NS, 'linearGradient');
-      grad.setAttribute('id', 'agVoiceGrad');
-      grad.setAttribute('x1', '0%'); grad.setAttribute('y1', '0%');
-      grad.setAttribute('x2', '100%'); grad.setAttribute('y2', '0%');
-      grad.setAttribute('gradientUnits', 'userSpaceOnUse');
-      grad.setAttribute('x1', '0'); grad.setAttribute('y1', '120');
-      grad.setAttribute('x2', '240'); grad.setAttribute('y2', '120');
-      var stops = [
-        ['0%',   '#7c00cc', '0.6'],
-        ['30%',  '#bd00ff', '1.0'],
-        ['60%',  '#e580ff', '0.8'],
-        ['85%',  '#bd00ff', '1.0'],
-        ['100%', '#7c00cc', '0.6']
-      ];
-      stops.forEach(function(s) {
-        var stop = document.createElementNS(NS, 'stop');
-        stop.setAttribute('offset', s[0]);
-        stop.setAttribute('stop-color', s[1]);
-        stop.setAttribute('stop-opacity', s[2]);
-        grad.appendChild(stop);
-      });
-      defs.appendChild(grad);
-      spectrumSvg.appendChild(defs);
-
-      /* ── 3 條圓環設定
-       *   主圓：亮白/淡紫白，線條最粗，旋轉速度直接跟語音節奏（1x）
-       *   副圓 A：紫色漸層，稍細，旋轉速度 1.6x（較快，製造超前残影）
-       *   副圓 B：紫色漸層，最細，旋轉速度 0.6x（較慢，製造拖尾殘影）
-       *   圓心偏移非常小（1.5–2.5px），圓環幾乎重疊但微微交織 */
-      var ringDefs = [
-        /* 主圓：亮白/淡紫白，線條最粗，旋轉倍率 1x（直接跟語音）*/
-        { sw: 2.0, opacity: 1.00, orbitR: 0,   orbitPhase:   0, speedMult: 1.0, color: '#f0e6ff' },
-        /* 副圓 A：震光紫，稍細，旋轉倍率 1.6x（較快，超前残影）*/
-        { sw: 1.0, opacity: 0.75, orbitR: 2.0, orbitPhase:  90, speedMult: 1.6, color: '#bd00ff' },
-        /* 副圓 B：深紫，最細，旋轉倍率 0.6x（較慢，拖尾殘影）*/
-        { sw: 0.7, opacity: 0.55, orbitR: 2.5, orbitPhase: 270, speedMult: 0.6, color: '#7c00cc' }
-      ];
-
-      /* 建立「各自獨立」的旋轉容器與圓環元素
-       * 每條圓環有自己的 <g>，旋轉角度各自累積，才能實現不同速率的交織感 */
-      var ringEls  = [];
-      var rotGroups = [];
-      ringDefs.forEach(function(def, i) {
-        var grp = document.createElementNS(NS, 'g');
-        grp.setAttribute('id', 'agRingGrp' + i);
-        var circle = document.createElementNS(NS, 'circle');
-        circle.setAttribute('fill', 'none');
-        circle.setAttribute('stroke', def.color);
-        circle.setAttribute('stroke-width', def.sw.toFixed(1));
-        circle.setAttribute('opacity', def.opacity.toFixed(2));
-        circle.setAttribute('cx', CX.toFixed(1));
-        circle.setAttribute('cy', CY.toFixed(1));
-        circle.setAttribute('r',  R.toFixed(1));
-        circle.setAttribute('class', 'ag-ring-arc');
-        grp.appendChild(circle);
-        spectrumSvg.appendChild(grp);
-        ringEls.push(circle);
-        rotGroups.push(grp);
-      });
-
-      spectrumSvg._rotGroups = rotGroups;
-      spectrumSvg._ringEls   = ringEls;
-      spectrumSvg._ringDefs  = ringDefs;
-      spectrumSvg._CX        = CX;
-      spectrumSvg._CY        = CY;
-      spectrumSvg._R0        = R;
-      /* 每條圓環各自的旋轉角度累積 */
-      spectrumSvg._ringAngles = [0, 0, 0];
-
-      spectrumSvg.setAttribute('viewBox', '0 0 240 240');
-    })();
-
-    /* ── 圓環旋轉漸層架構
-     *   旋轉漸層色彩沿圓環流動，速度與 rawVol 直接同步
-     *   v    = smoothVol boost（控制半徑 / 線寬）
-     *   ts   = rAF timestamp
-     *   vRaw = rawVol boost（控制旋轉速度，即時語音節奏）
-     * ── */
-    function applyRingSpectrum(v, ts, vRaw) {
-      if (vRaw === undefined) vRaw = v;
-      if (!spectrumSvg || !spectrumSvg._ringEls) return;
-
-      var CX         = spectrumSvg._CX;
-      var CY         = spectrumSvg._CY;
-      var R0         = spectrumSvg._R0;
-      var ringEls    = spectrumSvg._ringEls;
-      var ringDefs   = spectrumSvg._ringDefs;
-      var rotGroups  = spectrumSvg._rotGroups;
-      var ringAngles = spectrumSvg._ringAngles;
-
-      /* ── 計算本幀基礎角度增量（主圓 1x 速率）
-       *   靜止 5°/s，說話時最高 360°/s，快慢對比 72 倍 */
-      var dAngle = 0;
-      if (lastRingTs > 0 && ts > 0) {
-        var dt = ts - lastRingTs;
-        if (dt > 0 && dt < 500) {
-          var degPerSec = 5 + vRaw * 355;
-          dAngle = degPerSec * dt / 1000;
-        }
-      }
-      if (ts > 0) lastRingTs = ts;
-
-      /* ── 每條圓環各自累積旋轉角度，並更新自己的 <g> 容器 */
-      ringDefs.forEach(function(def, i) {
-        /* 角度累積：主圓 1x，副圓 A 1.6x（超前），副圓 B 0.6x（拖尾）*/
-        ringAngles[i] = (ringAngles[i] + dAngle * def.speedMult) % 360;
-        if (rotGroups[i]) {
-          rotGroups[i].setAttribute('transform',
-            'rotate(' + ringAngles[i].toFixed(2) + ' ' + CX + ' ' + CY + ')');
-        }
-
-        var el  = ringEls[i];
-        /* 圓心偏移：固定方向，非常小的偏差 */
-        var rad = def.orbitPhase * Math.PI / 180;
-        var cx  = CX + def.orbitR * Math.cos(rad);
-        var cy  = CY + def.orbitR * Math.sin(rad);
-        /* 半徑：基礎 R0 + 音量擴張 */
-        var r   = R0 + v * 18;
-        /* 線寬：說話時變細（拉伸感）*/
-        var sw  = (def.sw * (1 - v * 0.40)).toFixed(2);
-
-        el.setAttribute('cx', cx.toFixed(2));
-        el.setAttribute('cy', cy.toFixed(2));
-        el.setAttribute('r',  r.toFixed(2));
-        el.setAttribute('stroke-width', sw);
-      });
-
-      /* ── drop-shadow 光暈：靜止時 3px 讓主圓有存在感，說話時擴散至 8px
-       *   色彩對齊 #bd00ff，與按鈕、進度條統一 */
-      var glowR = (3 + v * 5).toFixed(1);
-      var glowA = (0.50 + v * 0.45).toFixed(2);
-      spectrumSvg.style.filter =
-        'drop-shadow(0 0 ' + glowR + 'px rgba(189,0,255,' + glowA + '))';
+      if (!orbRing) return;
+      /* 霓虹光環：靜止時輕光，播放時隨音量加強 */
+      var g1 = (10 + v * 8).toFixed(0);
+      var g2 = (28 + v * 20).toFixed(0);
+      var g3 = (60 + v * 30).toFixed(0);
+      var a1 = (0.55 + v * 0.25).toFixed(2);
+      var a2 = (0.22 + v * 0.18).toFixed(2);
+      var a3 = (0.08 + v * 0.08).toFixed(2);
+      var ai = (0.06 + v * 0.08).toFixed(2);
+      orbRing.style.boxShadow =
+        '0 0 ' + g1 + 'px rgba(189,0,255,' + a1 + '),' +
+        '0 0 ' + g2 + 'px rgba(189,0,255,' + a2 + '),' +
+        '0 0 ' + g3 + 'px rgba(189,0,255,' + a3 + '),' +
+        'inset 0 0 ' + g1 + 'px rgba(189,0,255,' + ai + ')';
     }
 
     function glowLoop(ts) {
@@ -346,14 +203,6 @@ var AgPlayer = (function () {
       var lerpRate = rawVol > smoothVol ? 0.75 : 0.35;
       smoothVol += (rawVol - smoothVol) * lerpRate;
       applyGlow(boost(smoothVol));
-      /* 圓環頻譜：
-       *   smoothVol → 控制半徑 / 線寬（有平滑感的呼吸）
-       *   rawVol    → 控制色相旋轉速度（即時反映語音節奏）*/
-      applyRingSpectrum(
-        isPlaying ? boost(smoothVol) : 0,
-        ts || 0,
-        isPlaying ? boost(rawVol)    : 0
-      );
     }
 
     if (orbRing) glowLoop();

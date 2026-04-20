@@ -115,43 +115,29 @@
 }
 .ag-visual-icon svg { width: 100%; height: 100%; display: block; }
 
-/* ── 語音引導：圓環頻譜 SVG ── */
-.ag-player-visual--voice .ag-spectrum-svg {
+/* ── 語音引導：霓虹光環 ── */
+.ag-player-visual--voice .ag-orb-ring {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 1.5px solid #bd00ff;
+  box-shadow:
+    0 0 12px rgba(189,0,255,0.6),
+    0 0 28px rgba(189,0,255,0.3),
+    inset 0 0 12px rgba(189,0,255,0.15);
+  background: transparent;
   position: absolute;
   top: 50%; left: 50%;
   transform: translate(-50%, -50%);
-  width: 240px;
-  height: 240px;
+  transition: box-shadow 0.6s ease;
+  will-change: box-shadow;
   pointer-events: none;
-  z-index: 1;
-  overflow: visible;
-  /* 靜止時稍暗，播放時全亮，由 CSS transition 滑動 */
-  opacity: 0.75;
-  transition: opacity 0.6s ease;
 }
-
-/* 播放時：圓環變亮 */
-.ag-player-visual--voice.playing .ag-spectrum-svg {
-  opacity: 0.92;
-}
-
-/* 圓環弧線本身不動，半徑與線寬由 JS rAF 驅動 */
-.ag-spectrum-svg .ag-ring-arc {
-  /* 不設定 transition：由 rAF 每幀直接寫入，避免 CSS transition 延遲導致跟語音跨幀失步 */
-}
-
-/* ── 語音引導：霓虹光環（已由 SVG 圓環取代，隱藏本元素）── */
-.ag-player-visual--voice .ag-orb-ring {
-  width: 150px;
-  height: 150px;
-  border-radius: 50%;
-  border: none;
-  box-shadow: none;
-  background: transparent;
-  transform: scale(1);
-  transition: none;
-  will-change: auto;
-  pointer-events: none;
+.ag-player-visual--voice.playing .ag-orb-ring {
+  box-shadow:
+    0 0 18px rgba(189,0,255,0.8),
+    0 0 40px rgba(189,0,255,0.4),
+    inset 0 0 18px rgba(189,0,255,0.2);
 }
 
 /* ── 曲目資訊 ── */
