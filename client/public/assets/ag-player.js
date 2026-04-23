@@ -106,6 +106,13 @@ var AgPlayer = (function () {
     var smoothVol = 0, rafId = null;
     var pageVisible = !document.hidden;
 
+    /* ── 第一階段：聲音活動映射參數 ── */
+    var smoothEnergy = 0;
+    var smoothPresence = 0;
+    var speechContinuity = 0;
+    var silenceFloor = 0.035;
+    var lastSpeechTs = 0;
+
     /* CSS 呼吸動畫（熄屏備援）*/
     function startOrbBreathing() {
       if (!orbRing) return;
@@ -169,21 +176,139 @@ var AgPlayer = (function () {
       return Math.pow(gained, 0.55);
     }
 
+    function clamp01(x) {
+      return Math.max(0, Math.min(1, x));
+    }
+
     function applyGlow(v) {
-      if (!orbRing) return;
-      /* 霓虹光環：靜止時輕光，播放時隨音量加強 */
-      var g1 = (10 + v * 8).toFixed(0);
-      var g2 = (28 + v * 20).toFixed(0);
-      var g3 = (60 + v * 30).toFixed(0);
-      var a1 = (0.55 + v * 0.25).toFixed(2);
-      var a2 = (0.22 + v * 0.18).toFixed(2);
-      var a3 = (0.08 + v * 0.08).toFixed(2);
-      var ai = (0.06 + v * 0.08).toFixed(2);
-      orbRing.style.boxShadow =
-        '0 0 ' + g1 + 'px rgba(189,0,255,' + a1 + '),' +
-        '0 0 ' + g2 + 'px rgba(189,0,255,' + a2 + '),' +
-        '0 0 ' + g3 + 'px rgba(189,0,255,' + a3 + '),' +
-        'inset 0 0 ' + g1 + 'px rgba(189,0,255,' + ai + ')';
+      /* ag-orb-ring 已在 voice 頁面被隱藏（由 SVG 圓環取代），此函式保留但不操作 DOM */
+    }
+
+    /* ── SVG 圓環頻譜初始化（雙層超細線條 + 微重影 + 冷色漸層）── */
+    var hueOffset  = 0;   /* 色相旋轉累積角度（度）*/
+    var lastHueTs  = 0;   /* 上次更新時間戳 */
+
+    (function buildRingSpectrum() {
+      if (!spectrumSvg) return;
+      var NS = 'http://www.w3.org/2000/svg';
+      var CX = 120;   /* 配合 240x240 viewBox */
+      var CY = 120;
+      var R  = 88;    /* 靜止半徑：縮小至 240px 容器的適當比例 */
+
+      /* ── defs：四段線性漸層，拼成環形漸層
+       *   色彩對齊參考 GIF：青 #00e5ff → 藍 #2979ff → 紫 #7c4dff → 洋紅 #e040fb ── */
+      var defs = document.createElementNS(NS, 'defs');
+      var gradientData = [
+        ['agRG0', '50%','0%',   '100%','100%', '#00e5ff', '#2979ff'],
+        ['agRG1', '100%','0%',  '50%', '100%', '#2979ff', '#7c4dff'],
+        ['agRG2', '50%','100%', '0%',  '0%',   '#7c4dff', '#e040fb'],
+        ['agRG3', '0%', '100%', '50%', '0%',   '#e040fb', '#00e5ff']
+      ];
+      gradientData.forEach(function(gd) {
+        var g = document.createElementNS(NS, 'linearGradient');
+        g.setAttribute('id', gd[0]);
+        g.setAttribute('x1', gd[1]); g.setAttribute('y1', gd[2]);
+        g.setAttribute('x2', gd[3]); g.setAttribute('y2', gd[4]);
+        g.setAttribute('gradientUnits', 'objectBoundingBox');
+        ['0%','100%'].forEach(function(off, idx) {
+          var s = document.createElementNS(NS, 'stop');
+          s.setAttribute('offset', off);
+          s.setAttribute('stop-color', gd[5 + idx]);
+          g.appendChild(s);
+        });
+        defs.appendChild(g);
+      });
+      spectrumSvg.appendChild(defs);
+
+      /* ── 建立圓環：主線層（不透明）+ 重影層（小徑差 4px，半透明）── */
+      var layers = [
+        { suffix: 'ghost', rDelta: 4,  swBase: 0.6, opacity: '0.45' },  /* 重影層 */
+        { suffix: 'main',  rDelta: 0,  swBase: 1.0, opacity: '1.00' }   /* 主線層 */
+      ];
+      var allArcEls = [];
+      layers.forEach(function(layer) {
+        var group = document.createElementNS(NS, 'g');
+        group.setAttribute('opacity', layer.opacity);
+        var arcEls = [];
+        for (var i = 0; i < 4; i++) {
+          var path = document.createElementNS(NS, 'path');
+          path.setAttribute('fill', 'none');
+          path.setAttribute('stroke', 'url(#agRG' + i + ')');
+          path.setAttribute('stroke-width', layer.swBase.toFixed(1));
+          path.setAttribute('stroke-linecap', 'round');
+          path.setAttribute('class', 'ag-ring-arc');
+          group.appendChild(path);
+          arcEls.push(path);
+        }
+        spectrumSvg.appendChild(group);
+        allArcEls.push({ els: arcEls, rDelta: layer.rDelta, swBase: layer.swBase });
+      });
+
+      spectrumSvg._layers = allArcEls;
+      spectrumSvg._CX     = CX;
+      spectrumSvg._CY     = CY;
+      spectrumSvg._R0     = R;
+
+      spectrumSvg.setAttribute('viewBox', '0 0 240 240');
+    })();
+
+    /* ── 圓環呼吸：
+     *   motionLevel = 由 smoothPresence 與 speechContinuity 控制旋轉延續感
+     *   energyLevel = 由 smoothEnergy 控制色彩與微幅擴張
+     * ── */
+    function applyRingSpectrum(motionLevel, energyLevel, ts) {
+      if (!spectrumSvg || !spectrumSvg._layers) return;
+
+      var CX = spectrumSvg._CX;
+      var CY = spectrumSvg._CY;
+      var R0 = spectrumSvg._R0;
+      var calm = clamp01(1 - energyLevel);
+
+      spectrumSvg._layers.forEach(function(layer, layerIndex) {
+        /* 半徑只做細微呼吸，避免過度誇張 */
+        var drift = layerIndex === 0 ? 1.4 : 0.8;
+        var r  = R0 + layer.rDelta + energyLevel * 8 + motionLevel * drift;
+        /* 線寬變化也縮小，只保留活性 */
+        var sw = (layer.swBase * (0.96 - energyLevel * 0.18)).toFixed(2);
+        var paths = [
+          'M ' + CX + ',' + (CY - r).toFixed(2) + ' A ' + r.toFixed(2) + ',' + r.toFixed(2) + ' 0 0 1 ' + (CX + r).toFixed(2) + ',' + CY,
+          'M ' + (CX + r).toFixed(2) + ',' + CY  + ' A ' + r.toFixed(2) + ',' + r.toFixed(2) + ' 0 0 1 ' + CX + ',' + (CY + r).toFixed(2),
+          'M ' + CX + ',' + (CY + r).toFixed(2) + ' A ' + r.toFixed(2) + ',' + r.toFixed(2) + ' 0 0 1 ' + (CX - r).toFixed(2) + ',' + CY,
+          'M ' + (CX - r).toFixed(2) + ',' + CY  + ' A ' + r.toFixed(2) + ',' + r.toFixed(2) + ' 0 0 1 ' + CX + ',' + (CY - r).toFixed(2)
+        ];
+        layer.els.forEach(function(el, i) {
+          el.setAttribute('d', paths[i]);
+          el.setAttribute('stroke-width', sw);
+          el.style.opacity = layerIndex === 0
+            ? (0.24 + energyLevel * 0.40 + motionLevel * 0.12).toFixed(2)
+            : (0.72 + energyLevel * 0.24 + motionLevel * 0.04).toFixed(2);
+        });
+      });
+
+      /* 旋轉速度由「是否持續發聲」主導：
+       *   靜止時幾乎不轉，連續講話時才有穩定流動感 */
+      if (lastHueTs > 0 && ts > 0) {
+        var dt = ts - lastHueTs;
+        if (dt > 0 && dt < 500) {
+          var hueSpeed = 3 + motionLevel * 60 + speechContinuity * 110;
+          hueOffset += dt / 1000 * hueSpeed;
+          if (hueOffset >= 360) hueOffset -= 360;
+        }
+      }
+      if (ts > 0) lastHueTs = ts;
+
+      /* 顏色能量由振幅控制：
+       *   小聲時偏冷、低亮；有聲時 glow / saturation 才提高 */
+      var saturate = (0.92 + energyLevel * 0.48).toFixed(2);
+      var brightness = (0.78 + energyLevel * 0.34).toFixed(2);
+      var glowR  = (1.5 + energyLevel * 3.8).toFixed(1);
+      var glowA  = (0.22 + energyLevel * 0.42 + motionLevel * 0.08).toFixed(2);
+      spectrumSvg.style.filter =
+        'hue-rotate(' + hueOffset.toFixed(1) + 'deg) ' +
+        'saturate(' + saturate + ') ' +
+        'brightness(' + brightness + ') ' +
+        'drop-shadow(0 0 ' + glowR + 'px rgba(0,229,255,' + glowA + '))';
+      spectrumSvg.style.opacity = (0.62 + energyLevel * 0.22 + (1 - calm) * 0.06).toFixed(2);
     }
 
     function glowLoop(ts) {
@@ -192,17 +317,39 @@ var AgPlayer = (function () {
       var rawVol = 0;
       if (analyser && isPlaying) {
         analyser.getByteFrequencyData(freqBuf);
-        /* 縮小取樣範圍至 bin 6–20（約 250–850Hz），聚焦語音基頻區段
-         * 對音節邊界與句子節奏更敏感，顆粒度停在句子/短語層級 */
         var sum = 0, count = 0;
-        for (var i = 6; i < 20; i++) { sum += freqBuf[i]; count++; }
+        for (var i = 4; i < 28; i++) { sum += freqBuf[i]; count++; }
         rawVol = sum / count / 255;
       }
-      /* 上升快（幾乎即時）、下降更快：停頓時圓環迅速靜下來
-       * 上升 0.75、下降 0.35（約 2–3 幀歸零），讓長句/短停的對比更清晰 */
-      var lerpRate = rawVol > smoothVol ? 0.75 : 0.35;
-      smoothVol += (rawVol - smoothVol) * lerpRate;
+
+      /* 能量：控制色彩與微幅呼吸 */
+      var boostedVol = boost(rawVol);
+      var energyTarget = clamp01((boostedVol - silenceFloor) / (1 - silenceFloor));
+      var energyLerp = energyTarget > smoothEnergy ? 0.28 : 0.12;
+      smoothEnergy += (energyTarget - smoothEnergy) * energyLerp;
+
+      /* presence：控制有沒有在說話，停頓時要比較快靜下來 */
+      var presenceTarget = energyTarget > 0.04 ? 1 : 0;
+      var presenceLerp = presenceTarget > smoothPresence ? 0.20 : 0.10;
+      smoothPresence += (presenceTarget - smoothPresence) * presenceLerp;
+
+      /* continuity：講話延續時保留流動；停頓時逐步鬆掉 */
+      if (presenceTarget > 0) {
+        lastSpeechTs = ts || 0;
+      }
+      var sinceSpeech = lastSpeechTs ? Math.max(0, (ts || 0) - lastSpeechTs) : 9999;
+      var continuityTarget = sinceSpeech < 220 ? 1 : (sinceSpeech < 700 ? 0.45 : 0);
+      var continuityLerp = continuityTarget > speechContinuity ? 0.12 : 0.04;
+      speechContinuity += (continuityTarget - speechContinuity) * continuityLerp;
+
+      smoothVol += (rawVol - smoothVol) * (rawVol > smoothVol ? 0.50 : 0.18);
       applyGlow(boost(smoothVol));
+
+      applyRingSpectrum(
+        isPlaying ? clamp01(smoothPresence * 0.55 + speechContinuity * 0.45) : 0,
+        isPlaying ? smoothEnergy : 0,
+        ts || 0
+      );
     }
 
     if (orbRing) glowLoop();
