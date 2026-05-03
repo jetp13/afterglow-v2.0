@@ -21,6 +21,10 @@
       /* 急救專用：煙灰琥珀警示語意 */
       --aid-warn:         rgba(240, 190, 120, 0.72);
       --aid-warn-border:  rgba(220, 165, 90, 0.30);
+      /* 權利知識入口：沿用 rights.html 的語意電藍 */
+      --rights-accent:        rgba(41, 121, 255, 0.90);
+      --rights-accent-glow:   rgba(41, 121, 255, 0.38);
+      --rights-accent-border: rgba(41, 121, 255, 0.35);
     }
 
     /* ── 警示標籤（琅珀）── */
@@ -91,14 +95,17 @@
     }
 
     /* ── 頁面特定：權利知識跳轉 CTA ── */
+    .ag-rights-accent {
+      color: var(--rights-accent);
+    }
     .ag-rights-cta {
       margin-top: var(--em-space-md);
       padding: 16px;
       border-radius: var(--em-radius-md);
-      border: 1px solid rgba(188, 93, 255, 0.32);
+      border: 1px solid rgba(41, 121, 255, 0.32);
       background: rgba(12, 12, 18, 0.68);
-      box-shadow: 0 0 0 1px rgba(188, 93, 255, 0.08),
-                  inset 0 0 18px rgba(188, 93, 255, 0.045);
+      box-shadow: 0 0 0 1px rgba(41, 121, 255, 0.08),
+                  inset 0 0 18px rgba(41, 121, 255, 0.045);
     }
     .ag-rights-cta-text {
       margin: 0 0 12px;
@@ -113,7 +120,7 @@
       box-sizing: border-box;
       padding: 13px 16px;
       border-radius: 16px;
-      border: 1px solid rgba(188, 93, 255, 0.48);
+      border: 1px solid rgba(41, 121, 255, 0.48);
       background: rgba(0, 0, 0, 0.28);
       color: rgba(255, 255, 255, 0.90);
       font-size: 15px;
@@ -121,16 +128,16 @@
       letter-spacing: 0.08em;
       text-align: center;
       text-decoration: none;
-      box-shadow: 0 0 12px rgba(188, 93, 255, 0.10),
-                  inset 0 0 14px rgba(188, 93, 255, 0.055);
+      box-shadow: 0 0 12px rgba(41, 121, 255, 0.10),
+                  inset 0 0 14px rgba(41, 121, 255, 0.055);
       transition: border-color 160ms ease, box-shadow 160ms ease, color 160ms ease, transform 160ms ease;
     }
     .ag-rights-cta-button:hover,
     .ag-rights-cta-button:active {
-      border-color: rgba(188, 93, 255, 0.72);
+      border-color: rgba(41, 121, 255, 0.72);
       color: rgba(255, 255, 255, 0.98);
-      box-shadow: 0 0 18px rgba(188, 93, 255, 0.18),
-                  inset 0 0 16px rgba(188, 93, 255, 0.08);
+      box-shadow: 0 0 18px rgba(41, 121, 255, 0.18),
+                  inset 0 0 16px rgba(41, 121, 255, 0.08);
       transform: translateY(-1px);
     }
 
@@ -358,7 +365,7 @@
     <div class="ag-accordion-item">
       <div class="ag-accordion-header" onclick="toggleAccordion(this)">
         <div class="ag-accordion-title">
-          <span class="ag-text-purple"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span> 法律與權益 (TW)
+          <span class="ag-rights-accent"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span> 法律與權益 (TW)
         </div>
         <div class="ag-accordion-icon">▼</div>
       </div>
