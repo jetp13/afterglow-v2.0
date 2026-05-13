@@ -13,6 +13,172 @@
       window.location.href = '/index.html';
     }
   </script>
+  <style>
+    /*
+     * white-noise.html only
+     * Visual direction: white neon tube ring + white ash / dust particles.
+     * Fire is expressed through motion, not color.
+     */
+    .ag-player-visual--fire-dust {
+      width: min(68vw, 236px);
+      height: min(68vw, 236px);
+      isolation: isolate;
+      margin-bottom: 34px;
+    }
+
+    .ag-player-visual--fire-dust .ag-ember-canvas {
+      position: absolute;
+      inset: -18px;
+      width: calc(100% + 36px);
+      height: calc(100% + 36px);
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.62;
+      mix-blend-mode: screen;
+      filter: drop-shadow(0 0 3px rgba(240, 242, 238, 0.14));
+      transition: opacity 600ms ease, filter 600ms ease;
+    }
+
+    .ag-player-visual--fire-dust.playing .ag-ember-canvas {
+      opacity: 0.86;
+      filter: drop-shadow(0 0 5px rgba(240, 242, 238, 0.20));
+    }
+
+    .ag-player-visual--fire-dust .ag-visual-ring {
+      position: absolute;
+      z-index: 2;
+      width: 176px;
+      height: 176px;
+      border-radius: 50%;
+      border: 1.4px solid rgba(240, 242, 238, 0.88);
+      background:
+        radial-gradient(circle at 50% 50%,
+          rgba(240, 242, 238, 0.055) 0%,
+          rgba(240, 242, 238, 0.025) 37%,
+          rgba(0, 0, 0, 0) 68%);
+      box-shadow:
+        0 0 0 0.5px rgba(255, 255, 255, 0.30),
+        0 0 10px rgba(240, 242, 238, 0.18),
+        0 0 28px rgba(240, 242, 238, 0.065),
+        inset 0 0 10px rgba(240, 242, 238, 0.075);
+      transform: scale(1);
+      transition: opacity 500ms ease, box-shadow 500ms ease, filter 500ms ease;
+      will-change: transform, opacity, box-shadow;
+    }
+
+    .ag-player-visual--fire-dust .ag-visual-ring::before,
+    .ag-player-visual--fire-dust .ag-visual-ring::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .ag-player-visual--fire-dust .ag-visual-ring::before {
+      width: 100%;
+      height: 100%;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.045);
+      opacity: 0.72;
+      animation: none;
+    }
+
+    .ag-player-visual--fire-dust .ag-visual-ring::after {
+      width: calc(100% + 10px);
+      height: calc(100% + 10px);
+      border: 1px solid rgba(230, 232, 228, 0.08);
+      opacity: 0.48;
+      animation: agWhiteRingCurrent 5.4s ease-in-out infinite;
+    }
+
+    .ag-player-visual--fire-dust.playing .ag-visual-ring {
+      box-shadow:
+        0 0 0 0.5px rgba(255, 255, 255, 0.38),
+        0 0 13px rgba(240, 242, 238, 0.23),
+        0 0 34px rgba(240, 242, 238, 0.09),
+        inset 0 0 12px rgba(240, 242, 238, 0.10);
+      animation: agWhiteRingGlow 4.8s ease-in-out infinite;
+    }
+
+    .ag-white-ring-core {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      z-index: 3;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(240, 242, 238, 0.56);
+      box-shadow:
+        0 0 5px rgba(240, 242, 238, 0.35),
+        0 0 16px rgba(240, 242, 238, 0.10);
+      transform: translate(-50%, -50%);
+      opacity: 0.38;
+      pointer-events: none;
+      transition: opacity 500ms ease;
+    }
+
+    .ag-player-visual--fire-dust.playing .ag-white-ring-core {
+      opacity: 0.55;
+    }
+
+    .ag-track-title,
+    .ag-ctrl-btn,
+    .ag-ctrl-btn.ag-play-btn {
+      color: rgba(228, 226, 221, 0.88);
+    }
+
+    .ag-track-hint,
+    .ag-status-text,
+    .ag-progress-times {
+      color: rgba(165, 167, 163, 0.42);
+    }
+
+    @keyframes agWhiteRingGlow {
+      0%, 100% {
+        opacity: 0.88;
+        filter: brightness(1);
+        transform: scale(1);
+      }
+      42% {
+        opacity: 0.95;
+        filter: brightness(1.05);
+        transform: scale(1.006);
+      }
+      67% {
+        opacity: 0.82;
+        filter: brightness(0.96);
+        transform: scale(0.996);
+      }
+    }
+
+    @keyframes agWhiteRingCurrent {
+      0%, 100% { opacity: 0.22; transform: translate(-50%, -50%) scale(0.992); }
+      45%      { opacity: 0.42; transform: translate(-50%, -50%) scale(1.010); }
+      70%      { opacity: 0.28; transform: translate(-50%, -50%) scale(1.002); }
+    }
+
+    @media (max-width: 480px) {
+      .ag-player-visual--fire-dust .ag-visual-ring {
+        width: 164px;
+        height: 164px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ag-player-visual--fire-dust .ag-visual-ring,
+      .ag-player-visual--fire-dust .ag-visual-ring::after {
+        animation: none !important;
+      }
+      .ag-player-visual--fire-dust .ag-ember-canvas {
+        opacity: 0.22;
+        filter: none;
+      }
+    }
+  </style>
 </head>
 <body class="ag-page">
 
@@ -29,22 +195,17 @@
   <div class="ag-main-scroll">
     <section class="ag-player" aria-label="白噪音播放器">
 
-      <!-- 視覺：脈衝環 -->
-      <div class="ag-player-visual ag-player-visual--noise" id="agVisual">
+      <!-- 視覺：白色螢光燈管圓環 + 白色灰燼微塵 -->
+      <div class="ag-player-visual ag-player-visual--noise ag-player-visual--fire-dust" id="agVisual">
+        <canvas class="ag-ember-canvas" id="agEmberCanvas" aria-hidden="true"></canvas>
         <div class="ag-visual-ring" id="agVisualRing"></div>
-        <div class="ag-visual-icon" aria-hidden="true">
-          <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 18C16 16.2 20 16.2 24 18C28 19.8 32 19.8 36 18" stroke="rgba(255,255,255,0.78)" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M12 24C16 22.2 20 22.2 24 24C28 25.8 32 25.8 36 24" stroke="rgba(255,255,255,0.92)" stroke-width="1.8" stroke-linecap="round"/>
-            <path d="M12 30C16 28.2 20 28.2 24 30C28 31.8 32 31.8 36 30" stroke="rgba(255,255,255,0.78)" stroke-width="1.8" stroke-linecap="round"/>
-          </svg>
-        </div>
+        <div class="ag-white-ring-core" aria-hidden="true"></div>
       </div>
 
       <!-- 曲目資訊 -->
       <div class="ag-track-info">
-        <p class="ag-track-title">專注與放鬆</p>
-        <p class="ag-track-hint">讓背景音幫你沉澱下來</p>
+        <p class="ag-track-title">柴火燃燒</p>
+        <p class="ag-track-hint">讓白色微塵把火收回身體裡</p>
       </div>
 
       <!-- 進度條（白噪音為循環音，顯示已播放時間）-->
@@ -120,15 +281,245 @@
       iconPlayId:     'iconPlay',
       iconPauseId:    'iconPause',
       isLoop:         true,
-      mediaTitle:     '白噪音 · 專注與放鬆',
+      mediaTitle:     '白噪音 · 柴火燃燒',
       mediaArtist:    'Afterglow',
       artworkSrc:     '/assets/icons/icon-192x192.png',
       artworkSrc512:  '/assets/icons/icon-512x512.png',
-      statusPlaying:  '播放中 · 讓聲音帶你沉澱',
+      statusPlaying:  '播放中 · 讓白色微塵跟著火聲跳動',
       statusPaused:   '已暫停',
       statusIdle:     '點擊播放',
       statusEnded:    '播放結束'
     });
+
+    (function initWhiteNoiseEmbers() {
+      var canvas = document.getElementById('agEmberCanvas');
+      var visual = document.getElementById('agVisual');
+      var ring = document.getElementById('agVisualRing');
+      var audio = document.getElementById('agAudio');
+      if (!canvas || !visual || !ring || !audio) return;
+
+      var ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var dpr = Math.min(window.devicePixelRatio || 1, 2);
+      var width = 0;
+      var height = 0;
+      var cx = 0;
+      var cy = 0;
+      var radius = 0;
+      var particles = [];
+      var rafId = null;
+      var analyserReady = false;
+      var audioCtx = null;
+      var analyser = null;
+      var freqBuf = null;
+      var smoothEnergy = 0;
+      var lastTs = 0;
+
+      function rand(min, max) {
+        return min + Math.random() * (max - min);
+      }
+
+      function resize() {
+        var rect = canvas.getBoundingClientRect();
+        width = Math.max(1, rect.width);
+        height = Math.max(1, rect.height);
+        canvas.width = Math.round(width * dpr);
+        canvas.height = Math.round(height * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        cx = width / 2;
+        cy = height / 2;
+        radius = Math.min(width, height) * 0.31;
+      }
+
+      function makeParticle(seedQuiet) {
+        var angle = rand(0, Math.PI * 2);
+        var band = rand(-10, 32);
+        var r = radius + band;
+        var size = rand(0.45, 1.45);
+        var far = Math.random() < 0.34;
+        if (far) {
+          r = radius + rand(34, 64);
+          size = rand(0.35, 0.9);
+        }
+        return {
+          angle: angle,
+          r: r,
+          baseR: r,
+          x: cx + Math.cos(angle) * r,
+          y: cy + Math.sin(angle) * r,
+          size: size,
+          alpha: seedQuiet ? rand(0.06, 0.22) : rand(0.10, 0.50),
+          baseAlpha: seedQuiet ? rand(0.06, 0.20) : rand(0.10, 0.38),
+          drift: rand(0.002, 0.010) * (Math.random() < 0.5 ? -1 : 1),
+          rise: rand(0.012, 0.060),
+          jitter: rand(0.10, 0.62),
+          twinkle: rand(0.006, 0.026),
+          life: rand(0, 1),
+          ttl: rand(0.72, 1.8),
+          burst: 0
+        };
+      }
+
+      function seedParticles() {
+        var count = reduceMotion ? 28 : 74;
+        particles = [];
+        for (var i = 0; i < count; i++) {
+          particles.push(makeParticle(true));
+        }
+      }
+
+      function initAnalyser() {
+        if (analyserReady || reduceMotion) return;
+        var capture = audio.captureStream || audio.mozCaptureStream;
+        if (typeof capture !== 'function') return;
+        try {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          var stream = capture.call(audio);
+          var source = audioCtx.createMediaStreamSource(stream);
+          analyser = audioCtx.createAnalyser();
+          analyser.fftSize = 128;
+          analyser.smoothingTimeConstant = 0.72;
+          freqBuf = new Uint8Array(analyser.frequencyBinCount);
+          source.connect(analyser);
+          analyserReady = true;
+        } catch (err) {
+          analyserReady = false;
+          audioCtx = null;
+          analyser = null;
+          freqBuf = null;
+        }
+      }
+
+      function getEnergy(isPlaying, ts) {
+        if (!isPlaying || reduceMotion) return 0;
+
+        var raw = 0;
+        if (analyser && freqBuf) {
+          analyser.getByteFrequencyData(freqBuf);
+          var sum = 0;
+          var count = 0;
+          for (var i = 2; i < Math.min(28, freqBuf.length); i++) {
+            sum += freqBuf[i];
+            count++;
+          }
+          raw = count ? sum / count / 255 : 0;
+          raw = Math.pow(Math.min(raw * 2.8, 1), 0.72);
+        } else {
+          var t = ts * 0.001;
+          raw = 0.24 + Math.sin(t * 1.7) * 0.05 + Math.sin(t * 4.6) * 0.035 + Math.random() * 0.035;
+        }
+
+        var target = Math.max(0, Math.min(1, raw));
+        var lerp = target > smoothEnergy ? 0.22 : 0.08;
+        smoothEnergy += (target - smoothEnergy) * lerp;
+        return smoothEnergy;
+      }
+
+      function draw(ts) {
+        rafId = requestAnimationFrame(draw);
+
+        if (!lastTs) lastTs = ts;
+        var dt = Math.min(34, Math.max(8, ts - lastTs));
+        lastTs = ts;
+
+        var isPlaying = !audio.paused && visual.classList.contains('playing');
+        var energy = getEnergy(isPlaying, ts);
+        var quiet = isPlaying ? 0.34 : 0.08;
+        var intensity = reduceMotion ? 0.02 : Math.max(quiet, energy);
+
+        ctx.clearRect(0, 0, width, height);
+
+        var ringScale = 1 + (isPlaying ? energy * 0.010 : 0);
+        var ringOpacity = 0.86 + (isPlaying ? energy * 0.10 : 0);
+        ring.style.transform = 'scale(' + ringScale.toFixed(4) + ')';
+        ring.style.opacity = ringOpacity.toFixed(3);
+
+        particles.forEach(function (p) {
+          if (!reduceMotion) {
+            p.life += (dt / 1000) * (0.34 + intensity * 0.62);
+            p.angle += p.drift * (0.7 + intensity * 2.8) * (dt / 16.7);
+            p.r += Math.sin((ts * p.twinkle) + p.baseR) * 0.018 * intensity;
+            p.y -= p.rise * (0.5 + intensity * 3.4) * (dt / 16.7);
+            p.burst *= 0.92;
+
+            if (isPlaying && Math.random() < 0.004 + energy * 0.018) {
+              p.burst = rand(0.12, 0.55) * intensity;
+              p.r += rand(0.5, 2.4);
+            }
+          }
+
+          var jitterX = (Math.random() - 0.5) * p.jitter * intensity;
+          var jitterY = (Math.random() - 0.5) * p.jitter * intensity;
+          var orbitalX = cx + Math.cos(p.angle) * p.r;
+          var orbitalY = cy + Math.sin(p.angle) * p.r;
+
+          p.x += (orbitalX - p.x) * 0.015;
+          p.y += ((orbitalY - p.y) * 0.012) - (isPlaying ? p.rise * intensity * 0.30 : 0);
+
+          var tw = 0.55 + Math.sin(ts * p.twinkle + p.angle * 3.0) * 0.30 + p.burst;
+          var alpha = Math.min(0.92, p.baseAlpha * (0.72 + intensity * 1.4) * tw);
+          var s = p.size * (0.72 + intensity * 0.62 + p.burst * 0.8);
+
+          ctx.beginPath();
+          ctx.fillStyle = 'rgba(240, 242, 238, ' + alpha.toFixed(3) + ')';
+          ctx.arc(p.x + jitterX, p.y + jitterY, s, 0, Math.PI * 2);
+          ctx.fill();
+
+          if (p.burst > 0.08) {
+            ctx.beginPath();
+            ctx.fillStyle = 'rgba(255, 255, 255, ' + Math.min(0.44, p.burst).toFixed(3) + ')';
+            ctx.arc(p.x + jitterX, p.y + jitterY, s * 2.2, 0, Math.PI * 2);
+            ctx.fill();
+          }
+
+          var outOfBounds = p.y < -20 || p.x < -20 || p.x > width + 20 || p.life > p.ttl;
+          if (outOfBounds) {
+            Object.assign(p, makeParticle(!isPlaying));
+            p.y += rand(8, 28);
+          }
+        });
+      }
+
+      function start() {
+        initAnalyser();
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume().catch(function () {});
+        }
+        if (!rafId) {
+          lastTs = 0;
+          rafId = requestAnimationFrame(draw);
+        }
+      }
+
+      function stop() {
+        if (reduceMotion) return;
+        // Keep a very low idle drift instead of abruptly clearing the atmosphere.
+      }
+
+      resize();
+      seedParticles();
+      requestAnimationFrame(draw);
+
+      window.addEventListener('resize', function () {
+        resize();
+        seedParticles();
+      });
+
+      audio.addEventListener('play', start);
+      audio.addEventListener('pause', stop);
+
+      document.addEventListener('visibilitychange', function () {
+        if (document.hidden) {
+          if (audioCtx && audioCtx.state === 'running') {
+            audioCtx.suspend().catch(function () {});
+          }
+        } else if (!audio.paused) {
+          start();
+        }
+      });
+    })();
 
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function () {
