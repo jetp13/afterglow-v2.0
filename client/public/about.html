@@ -127,6 +127,30 @@
         drop-shadow(0 0 5px rgba(255,255,255,0.28));
     }
 
+    .ag-memoir-entry {
+      margin-top: 64px;
+      text-align: left;
+    }
+    .ag-memoir-entry a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.48);
+      text-decoration: none;
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      transition: color 0.2s ease, opacity 0.2s ease;
+    }
+    .ag-memoir-entry a:hover,
+    .ag-memoir-entry a:focus-visible {
+      color: rgba(255,255,255,0.82);
+      outline: none;
+    }
+    .ag-memoir-entry__arrow {
+      font-size: 10px;
+      line-height: 1;
+    }
+
     /* ── 手機 ── */
     @media (max-width: 480px) {
       .ag-doc-container {
@@ -215,6 +239,13 @@
       <!-- 簽名 -->
       <div class="ag-doc-signature">
         <img src="/assets/signature.png" alt="正仁">
+      </div>
+
+      <div class="ag-memoir-entry">
+        <a href="/memoir.html" aria-label="閱讀 Afterglow Memoir">
+          <span>閱讀 Memoir</span>
+          <span class="ag-memoir-entry__arrow" aria-hidden="true">→</span>
+        </a>
       </div>
 
     </div>

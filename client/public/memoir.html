@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Memoir｜Afterglow</title>
+  <meta name="description" content="Afterglow Memoir：關於這一年如何從混亂、學習與重來之中，把一個夜裡的問題整理成系統。">
+  <meta property="og:title" content="Memoir｜Afterglow">
+  <meta property="og:description" content="關於我消失的故事，讓我來講給你聽。">
+  <meta property="og:type" content="article">
+  <meta property="og:url" content="/memoir.html">
+  <link rel="canonical" href="/memoir.html">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#050505">
+  <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+  <link rel="stylesheet" href="/assets/layout.css">
+  <script>
+    if (localStorage.getItem('ag_consent') !== 'true') {
+      window.location.href = '/index.html';
+    }
+  </script>
+  <style>
+    .ag-doc-container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: calc(80px + env(safe-area-inset-top)) 24px calc(48px + env(safe-area-inset-bottom));
+      box-sizing: border-box;
+    }
+    .ag-doc-header {
+      margin-bottom: 52px;
+      padding-bottom: 32px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      text-align: left;
+    }
+    .ag-doc-title {
+      font-size: 24px;
+      font-weight: 300;
+      letter-spacing: 0.12em;
+      color: #fff;
+      margin: 0 0 8px;
+    }
+    .ag-doc-subtitle {
+      font-size: 12px;
+      color: rgba(255,255,255,0.32);
+      letter-spacing: 0.06em;
+      margin: 0;
+    }
+    .ag-doc-quote {
+      position: relative;
+      border-left: none;
+      padding: 10px 0 10px 18px;
+      margin: 0 0 52px;
+    }
+    .ag-doc-quote::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background: rgba(255,255,255,0.75);
+    }
+    .ag-doc-quote p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.9);
+      letter-spacing: 0.06em;
+      line-height: 1.7;
+      margin: 0;
+      text-shadow: 0 0 1.5px rgba(255,255,255,0.9), 0 0 6px rgba(255,255,255,0.4), 0 0 16px rgba(255,255,255,0.15);
+    }
+    .ag-doc-section {
+      margin-bottom: 48px;
+    }
+    .ag-memoir-section .ag-doc-body {
+      font-size: 15px;
+      line-height: 1.9;
+      color: rgba(255,255,255,0.72);
+      margin: 0 0 14px;
+      word-break: break-word;
+    }
+    .ag-memoir-divider {
+      width: 36px;
+      height: 1px;
+      margin: 56px 0;
+      background: rgba(255,255,255,0.22);
+    }
+    @media (max-width: 480px) {
+      .ag-doc-container {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+      .ag-doc-title {
+        font-size: 20px;
+      }
+      .ag-memoir-section .ag-doc-body {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body class="ag-page">
+
+  <a href="/about.html" class="ag-back-button" aria-label="返回關於 Afterglow"></a>
+  <a href="/home.html" class="ag-site-logo" aria-label="回到首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
+
+  <div class="ag-main-scroll">
+    <article class="ag-doc-container">
+      <header class="ag-doc-header">
+        <h1 class="ag-doc-title">Afterglow Memoir</h1>
+        <p class="ag-doc-subtitle">這一兩年來你們不知道的故事，我在這裡說給你們聽</p>
+      </header>
+
+      <div class="ag-doc-quote">
+        <p>關於我消失的故事，讓我來講給你聽。</p>
+      </div>
+
+      <section class="ag-doc-section ag-memoir-section">
+        <p class="ag-doc-body">這一年，我幾乎消失了。大家都看不懂我在幹嘛，既便我爸媽也是。</p>
+        <p class="ag-doc-body">但其實我從零開始，在學習一個與人生上半場八竿子打不著的技能：AI 協作、資料治理、版本控制、內容查核、網站部署、系統設計，以及如何把混亂整理成可以運作的東西。</p>
+        <p class="ag-doc-body">Afterglow 是第一個把我推進這些能力裡的專案。</p>
+        <p class="ag-doc-body">它不是我一開始就懂很多才做出來的成果。</p>
+        <p class="ag-doc-body">它是我一邊撞牆、一邊重來、一邊學會的轉折點。</p>
+      </section>
+      <div class="ag-memoir-divider" aria-hidden="true"></div>
+      <section class="ag-doc-section ag-memoir-section">
+        <p class="ag-doc-body">關於我消失的故事，讓我來講給你聽。</p>
+        <p class="ag-doc-body">其實我一直不知道</p>
+        <p class="ag-doc-body">因為從外面看起來，我好像就是待在家裡，對著電腦，跟 AI 講話，然後這個網站說了這麼久，也沒看到做出什麼東西來。</p>
+        <p class="ag-doc-body">有時候我也會懷疑，我為什麼要獨立把它完成？</p>
+        <p class="ag-doc-body">可是對我來說，Afterglow 不是一個「我做了一個網站」這麼簡單的事情。它比較像是我這一年生命裡面掉進一個很怪、很深，而且一開始我也不知道會把我帶去哪裡的洞。</p>
+        <p class="ag-doc-body">我一開始真的什麼都不懂。</p>
+        <p class="ag-doc-body">我唸藝術、做家具、開工廠，與工程背景一點都不相關。</p>
+        <p class="ag-doc-body">我也不是什麼產品經理、設計總監、系統架構師。</p>
+        <p class="ag-doc-body">我以前連很多現在聽起來很基本的東西都不知道。</p>
+        <p class="ag-doc-body">什麼是路由器</p>
+        <p class="ag-doc-body">什麼部署</p>
+        <p class="ag-doc-body">什麼 repo</p>
+        <p class="ag-doc-body">什麼 main branch</p>
+        <p class="ag-doc-body">什麼 SSOT</p>
+        <p class="ag-doc-body">什麼版本治理</p>
+        <p class="ag-doc-body">什麼資料庫</p>
+        <p class="ag-doc-body">什麼 prompt governance</p>
+        <p class="ag-doc-body">人家跟我說「光貓」我還以為他家有養貓</p>
+        <p class="ag-doc-body">跟我說「小烏龜」，我還以為是什麼吉祥物</p>
+        <p class="ag-doc-body">以前這些東西對我來說，就像火星語。</p>
+        <p class="ag-doc-body">而 Afterglow 就是從這種混沌中誕生的。</p>
+        <p class="ag-doc-body">不是從我很厲害開始，</p>
+        <p class="ag-doc-body">是一個中年禿頭連路由器是什麼都不知道的大叔，從只是和AI聊天，過程中因為生活周遭的朋友來來去去，一次又一次，崩潰又重來，最後決定設一個記憶點的故事。</p>
+      </section>
+      <div class="ag-memoir-divider" aria-hidden="true"></div>
+      <section class="ag-doc-section ag-memoir-section">
+        <p class="ag-doc-body">一開始它其實不是網站，我連「產品」的概念也沒有。</p>
+        <p class="ag-doc-body">它比較像是一個夜裡的問題。</p>
+        <p class="ag-doc-body">人在很混亂的時候，人在很脆弱的時候，人在那種快要被自己的身體、情緒、慾望、害怕、羞愧，整個人快要被一大堆看不清、說不明的事物捲走的時候，有沒有可能有一個東西，是不會在那個時刻「指教」你的人生然後跟你說「我還不是為了你」的時間縫隙。</p>
+        <p class="ag-doc-body">當一個人已經被現實捶打的咪咪冒冒，</p>
+        <p class="ag-doc-body">不去教育他。</p>
+        <p class="ag-doc-body">不用審判他。</p>
+        <p class="ag-doc-body">不用立刻把他變成更好的人。</p>
+        <p class="ag-doc-body">也不用假裝自己是醫生、律師、心理師或三太子。</p>
+        <p class="ag-doc-body">只是先陪他一下。</p>
+        <p class="ag-doc-body">先讓他不要更糟。</p>
+        <p class="ag-doc-body">先讓他呼吸。</p>
+        <p class="ag-doc-body">先讓他回到現在。</p>
+        <p class="ag-doc-body">先讓他知道，即使再黑的夜也有光。</p>
+        <p class="ag-doc-body">而且到微弱的光，陪伴他找到方向。</p>
+        <p class="ag-doc-body">我想 Afterglow 的起點，大概就是這樣。</p>
+        <p class="ag-doc-body">跟偉大扯不上邊，</p>
+        <p class="ag-doc-body">也沒有想得很清楚，</p>
+        <p class="ag-doc-body">甚至有點狼狽。</p>
+        <p class="ag-doc-body">但很真實。</p>
+      </section>
+      <div class="ag-memoir-divider" aria-hidden="true"></div>
+      <section class="ag-doc-section ag-memoir-section">
+        <p class="ag-doc-body">冥想那一塊也是這樣來的。</p>
+        <p class="ag-doc-body">它不是我坐在桌前想說：「恩！我要做一個 meditation module，這樣比較完整。」</p>
+        <p class="ag-doc-body">不是。</p>
+        <p class="ag-doc-body">它更像是現場真的有人卡住了。</p>
+        <p class="ag-doc-body">有人焦慮，有人身體反應不順，有人明明人在這裡，可是整個人好像被過去的經驗或未來的擔憂拉走。</p>
+        <p class="ag-doc-body">那時候我也沒有什麼理論。</p>
+        <p class="ag-doc-body">我只是憑著以前帶領過冥想、瑜伽休息術，還有我自己對身體和狀態的理解，牽引著人，把注意力慢慢帶回來。</p>
+        <p class="ag-doc-body">回到呼吸</p>
+        <p class="ag-doc-body">回到手心</p>
+        <p class="ag-doc-body">回到身體</p>
+        <p class="ag-doc-body">回到現在</p>
+        <p class="ag-doc-body">我當時其實也沒有想很多，</p>
+        <p class="ag-doc-body">我只是覺得，人有時候不是壞掉了，他只是精神不在場。（但如果你是身體上的壞掉，請你去就醫。）</p>
+        <p class="ag-doc-body">被過去的遺憾帶走，</p>
+        <p class="ag-doc-body">被未來的焦慮帶走。</p>
+        <p class="ag-doc-body">被自己腦袋裡的鬼打牆帶走。</p>
+        <p class="ag-doc-body">所以我只是想把人帶回來。</p>
+        <p class="ag-doc-body">後來這件事發生一次、兩次、三次，我才開始覺得，欸，這好像不是只有我自己瞎搞。</p>
+        <p class="ag-doc-body">於是我才開始回頭去查，去看正念、認知行為療法、身體覺察、神經系統，才慢慢知道，原來「回到當下」這件事，不只是很玄的一句話。</p>
+        <p class="ag-doc-body">但我也很清楚，這不能被寫成療效。</p>
+        <p class="ag-doc-body">不能說它治療什麼。</p>
+        <p class="ag-doc-body">不能說它保證改善什麼。</p>
+        <p class="ag-doc-body">尤其不能把別人的脆弱拿來變成產品宣稱。</p>
+        <p class="ag-doc-body">所以 Afterglow 的冥想，對我來說不是療法。</p>
+        <p class="ag-doc-body">它比較像是夜裡的一條繩子。</p>
+        <p class="ag-doc-body">不是把人拉上岸的救難隊。</p>
+        <p class="ag-doc-body">只是讓他在快被沖走的時候，手上還有一點東西可以抓。</p>
+      </section>
+      <div class="ag-memoir-divider" aria-hidden="true"></div>
+      <section class="ag-doc-section ag-memoir-section">
+        <p class="ag-doc-body">早期的 Afterglow，其實很直接。</p>
+        <p class="ag-doc-body">那時候還有一個名字，叫「五分鐘快速上陣指南」。</p>
+        <p class="ag-doc-body">現在想起來覺得簡單粗暴、直搗黃龍！</p>
+        <p class="ag-doc-body">那時候它的目的很現場，很直接，很像人被卡住了，先想辦法把狀態拉回來。</p>
+        <p class="ag-doc-body">可是後來做著做著，它慢慢不只是這樣。</p>
+        <p class="ag-doc-body">我開始覺得，夜晚結束之後呢？</p>
+        <p class="ag-doc-body">一夜的混戰結束之後呢？</p>
+        <p class="ag-doc-body">人回到家，燈關掉，手機放在旁邊，身體慢慢退下來，可是腦袋還在那個夜中前進突刺！煞～煞～煞～</p>
+        <p class="ag-doc-body">那時候怎麼辦？</p>
+        <p class="ag-doc-body">很多時候，真正需要被接住的，不只是當下。</p>
+        <p class="ag-doc-body">而是結束之後，那個很空、很靜、很不知道自己剛剛到底在幹嘛的時刻。</p>
+        <p class="ag-doc-body">所以 Afterglow 後來才慢慢變成：</p>
+        <p class="ag-doc-body">不是只有「快速上陣」。</p>
+        <p class="ag-doc-body">而是「黑夜裡的光，有方向」。</p>
+        <p class="ag-doc-body">這句話對我來說很重要。</p>
+        <p class="ag-doc-body">因為不是天黑天黑請閉眼，放縱一切。</p>
+        <p class="ag-doc-body">黑夜不會因為一句 slogan 就消失。</p>
+        <p class="ag-doc-body">我只是想說，在那個黑裡面，可不可以有一點光。</p>
+        <p class="ag-doc-body">但現在道光不會太亮，太亮刺眼。</p>
+        <p class="ag-doc-body">也不要太吵。煩，太吵就煩。</p>
+        <p class="ag-doc-body">像遠方的霓虹，像房間角落還沒熄掉的小燈，還有一個聲音陪伴著你。</p>
+        <p class="ag-doc-body">一點點就好。但那個光要有方向。</p>
+      </section>
+      <div class="ag-memoir-divider" aria-hidden="true"></div>
+      <section class="ag-doc-section ag-memoir-section">
+        <p class="ag-doc-body">很快地爆擊我的，不只是生活。</p>
+        <p class="ag-doc-body">而是 AI。</p>
+        <p class="ag-doc-body">我一開始根本不知道 AI 會漂移、有幻覺，</p>
+        <p class="ag-doc-body">我以為我一直聊、一直補、一直問，它就會一直記得。</p>
+        <p class="ag-doc-body">我以為它知道 Afterglow 是什麼。</p>
+        <p class="ag-doc-body">我以為只要我講過，它就會懂。</p>
+        <p class="ag-doc-body">結果不是。我就這樣開始被他牽著鼻子走。</p>
+        <p class="ag-doc-body">後來它開始長出很多版本的 Afterglow</p>
+        <p class="ag-doc-body">有的像夜店</p>
+        <p class="ag-doc-body">有的像冥想 app</p>
+        <p class="ag-doc-body">有的像賽博龐克</p>
+        <p class="ag-doc-body">有的像心理照護平台</p>
+        <p class="ag-doc-body">有的像減害資料庫</p>
+        <p class="ag-doc-body">有的像一個我根本沒有同意過的平行宇宙。</p>
+        <p class="ag-doc-body">他說的每個想法和路徑都很有道理，</p>
+        <p class="ag-doc-body">每一個講的都跟真的一樣，</p>
+        <p class="ag-doc-body">每一個都好像有道理</p>
+        <p class="ag-doc-body">每一個都有一種：「你看，我幫你發展得更完整了」的樣子。</p>
+        <p class="ag-doc-body">可是我越看越覺得不對。</p>
+        <p class="ag-doc-body">它變得越來越不像原本的樣子，</p>
+        <p class="ag-doc-body">那時候我才第一次知道，原來 AI 不是自然會守住一個世界的人。</p>
+        <p class="ag-doc-body">AI 跟我一樣很會做夢，</p>
+        <p class="ag-doc-body">你不抓住他，他就從內子宮瞬間把你帶到外太空。</p>
+        <p class="ag-doc-body">夢到最後，Afterglow 居然變成一個多元宇宙。</p>
+        <p class="ag-doc-body">這樣講感覺我ㄎㄧㄤ到一種需要朋友關心的程度，</p>
+        <p class="ag-doc-body">但我真的就是這樣感覺的。</p>
+        <p class="ag-doc-body">不是好玩的多元宇宙。</p>
+        <p class="ag-doc-body">是那種你一打開檔案，發現每一個版本都像真的，每一個版本又互相打架，最後，你根本不知道哪個才是你原本要做的東西。</p>
+        <p class="ag-doc-body">那時候我其實很崩潰。</p>
+        <p class="ag-doc-body">因為我本來就不是工程背景。</p>
+        <p class="ag-doc-body">我沒有那種「喔，這個 branch 回滾一下，這個版本對一下」的腦袋。</p>
+        <p class="ag-doc-body">我只是覺得：</p>
+        <p class="ag-doc-body">啊，怎麼又壞掉了。</p>
+        <p class="ag-doc-body">啊，怎麼又不是它了。</p>
+        <p class="ag-doc-body">啊，怎麼我好像又要重來了。</p>
+        <p class="ag-doc-body">這個專案真的重來非常多次。</p>
+        <p class="ag-doc-body">就像我的人生一樣，crash 了很多次。</p>
+      </section>
+      <div class="ag-memoir-divider" aria-hidden="true"></div>
+      <section class="ag-doc-section ag-memoir-section">
+        <p class="ag-doc-body">但也就是因為它一直壞，我才開始學會那些我原本不會的東西。</p>
+        <p class="ag-doc-body">我開始知道為什麼要有 SSOT。</p>
+        <p class="ag-doc-body">為什麼要有 Archive。</p>
+        <p class="ag-doc-body">為什麼要有 Version Log。</p>
+        <p class="ag-doc-body">為什麼命名不能亂。</p>
+        <p class="ag-doc-body">為什麼 prompt 不是聊天紀錄，而是一種世界觀的邊界。</p>
+        <p class="ag-doc-body">為什麼如果沒有封存，過去就會像被海水沖掉一樣，連曾經努力過的痕跡都不見。</p>
+        <p class="ag-doc-body">（那些看起來很雞掰的單子，也不知道AI為什麼要進晶晶體，看久了好像也會了）</p>
+        <p class="ag-doc-body">這些東西我不是從課本學的。</p>
+        <p class="ag-doc-body">我是被擊垮，所以不得不學。</p>
+        <p class="ag-doc-body">我不是因為我很有系統，所以做出 Afterglow。</p>
+        <p class="ag-doc-body">是因為 Afterglow 一直失控，系統在這個過程中長出來。</p>
+        <p class="ag-doc-body">這件事對我來說很重要。</p>
+        <p class="ag-doc-body">因為它也很像我這幾年的人生。</p>
+        <p class="ag-doc-body">我認識的中場休息，並非和朋友拿著香檳躬光交錯。</p>
+        <p class="ag-doc-body">我比較像是一路破破爛爛，一路腦補一路哭，一路收拾殘局，把自己碎在地上的心，一片一片撿起來、慢慢分出來：</p>
+        <p class="ag-doc-body">這個還能用。</p>
+        <p class="ag-doc-body">這個要封存。</p>
+        <p class="ag-doc-body">這個是舊世界。</p>
+        <p class="ag-doc-body">這個是我現在真的要的。</p>
+        <p class="ag-doc-body">我以為整理資料只是整理資料。</p>
+        <p class="ag-doc-body">後來才發現，那其實也是在整理自己。</p>
+      </section>
+      <div class="ag-memoir-divider" aria-hidden="true"></div>
+      <section class="ag-doc-section ag-memoir-section">
+        <p class="ag-doc-body">Afterglow 最難的另一件事，是資料查核。</p>
+        <p class="ag-doc-body">因為這不是普通的內容網站。</p>
+        <p class="ag-doc-body">它牽涉到減害。</p>
+        <p class="ag-doc-body">牽涉到物質風險。</p>
+        <p class="ag-doc-body">牽涉到急救。</p>
+        <p class="ag-doc-body">牽涉到法律。</p>
+        <p class="ag-doc-body">牽涉到台灣現況。</p>
+        <p class="ag-doc-body">牽涉到很多人在最不穩的時候可能會真的打開來看。</p>
+        <p class="ag-doc-body">所以我不能讓 AI 隨便講。</p>
+        <p class="ag-doc-body">AI 會把假的講得像真的。</p>
+        <p class="ag-doc-body">會把國外的情境講得像台灣。</p>
+        <p class="ag-doc-body">會把舊資料講得像現在還可以用。</p>
+        <p class="ag-doc-body">會把「可能」講成「確定」。</p>
+        <p class="ag-doc-body">會把一個很危險的空白，用很漂亮的句子補起來。</p>
+        <p class="ag-doc-body">這對別的題目可能只是錯。</p>
+        <p class="ag-doc-body">但對 Afterglow 來說，那可能會傷到人。</p>
+        <p class="ag-doc-body">而且只要有錯，你就很難再贏回信任。</p>
+        <p class="ag-doc-body">所以我開始查資料。</p>
+        <p class="ag-doc-body">看研究。</p>
+        <p class="ag-doc-body">看減害網站。</p>
+        <p class="ag-doc-body">看台灣資料。</p>
+        <p class="ag-doc-body">看法規。</p>
+        <p class="ag-doc-body">整理表格。</p>
+        <p class="ag-doc-body">做查核報告。</p>
+        <p class="ag-doc-body">一直問：這是真的嗎？這是哪裡來的？現在還有效嗎？這是台灣適用嗎？這樣寫會不會太滿？會不會變成療效宣稱？會不會不小心鼓勵了什麼我不該鼓勵的東西？</p>
+        <p class="ag-doc-body">這些事情老實說又累又阿砸，</p>
+        <p class="ag-doc-body">外面的人只會看到：</p>
+        <p class="ag-doc-body">就看起來又沒什麼，你怎麼還在弄那個網站？</p>
+        <p class="ag-doc-body">可是那個網站後面，其實有很多很笨但很必要的工。</p>
+        <p class="ag-doc-body">一點都不魔法。</p>
+        <p class="ag-doc-body">甚至土法煉鋼。</p>
+        <p class="ag-doc-body">只是我以前連怎麼煉都不知道。</p>
+      </section>
+      <div class="ag-memoir-divider" aria-hidden="true"></div>
+      <section class="ag-doc-section ag-memoir-section">
+        <p class="ag-doc-body">我開始學會，文字不是只是文案。</p>
+        <p class="ag-doc-body">在 Afterglow 裡，用語是邊界。</p>
+        <p class="ag-doc-body">你不能說治療。</p>
+        <p class="ag-doc-body">不能說改善。</p>
+        <p class="ag-doc-body">不能說保證有效。</p>
+        <p class="ag-doc-body">不能說安全。</p>
+        <p class="ag-doc-body">不能說這可以替代醫師、律師或急救人員。</p>
+        <p class="ag-doc-body">不能把一個減害的工具，寫成像在鼓勵高風險行為。</p>
+        <p class="ag-doc-body">但也不能因為怕，就把話寫得像警察、教官、像衛教海報。</p>
+        <p class="ag-doc-body">這條線很細。</p>
+        <p class="ag-doc-body">Afterglow 必須站在使用者旁邊。</p>
+        <p class="ag-doc-body">可是不能跟著他一起掉下去。</p>
+        <p class="ag-doc-body">它要溫柔。</p>
+        <p class="ag-doc-body">但不能沒邊界。</p>
+        <p class="ag-doc-body">它要承認人會做一些風險很高的事情。</p>
+        <p class="ag-doc-body">但不能把那些事情浪漫化。</p>
+        <p class="ag-doc-body">它要說：我知道你可能在這裡。</p>
+        <p class="ag-doc-body">但也要說：我們先不要讓事情更糟。</p>
+        <p class="ag-doc-body">這是我以前完全不會思考的事情。</p>
+        <p class="ag-doc-body">以前我可能只會覺得，文字好不好看，語氣順不順。</p>
+        <p class="ag-doc-body">但 Afterglow 讓我知道，文字也可能是一個安全機制。</p>
+        <p class="ag-doc-body">在我平日因為語音輸入鬧了很多笑話的時候，</p>
+        <p class="ag-doc-body">這個Web App裡面的所有字，每一個字，我都是字斟句酌。</p>
+      </section>
+      <div class="ag-memoir-divider" aria-hidden="true"></div>
+      <section class="ag-doc-section ag-memoir-section">
+        <p class="ag-doc-body">現在回頭看 Google Drive 裡面那些檔案，有點像看自己的考古現場。</p>
+        <p class="ag-doc-body">通用版。</p>
+        <p class="ag-doc-body">醫生版。</p>
+        <p class="ag-doc-body">投資版。</p>
+        <p class="ag-doc-body">投資人建議。</p>
+        <p class="ag-doc-body">查核報告。</p>
+        <p class="ag-doc-body">混用危害表。</p>
+        <p class="ag-doc-body">治療規範。</p>
+        <p class="ag-doc-body">減害指南。</p>
+        <p class="ag-doc-body">一堆 zip。</p>
+        <p class="ag-doc-body">一堆版本。</p>
+        <p class="ag-doc-body">一堆看起來很像垃圾，但其實不是垃圾的東西。</p>
+        <p class="ag-doc-body">它們有些只是紙上談兵。</p>
+        <p class="ag-doc-body">有些真的拿出去給人看過。</p>
+        <p class="ag-doc-body">有些沒有下文。</p>
+        <p class="ag-doc-body">有些我也沒有很積極追回饋。</p>
+        <p class="ag-doc-body">這些都是真的。</p>
+        <p class="ag-doc-body">我不想把它包裝成什麼已經成功的市場驗證。</p>
+        <p class="ag-doc-body">它不是。</p>
+        <p class="ag-doc-body">它比較像我一路嘗試把一個很難說出口的東西，翻譯成不同人聽得懂的語言。</p>
+        <p class="ag-doc-body">給一般人聽。</p>
+        <p class="ag-doc-body">給醫生聽。</p>
+        <p class="ag-doc-body">給可能投資的人聽。</p>
+        <p class="ag-doc-body">給未來的自己聽。</p>
+        <p class="ag-doc-body">有些翻得好。</p>
+        <p class="ag-doc-body">有些翻得很爛。</p>
+        <p class="ag-doc-body">有些大概根本沒有人聽懂。</p>
+        <p class="ag-doc-body">但那也是過程。</p>
+      </section>
+      <div class="ag-memoir-divider" aria-hidden="true"></div>
+      <section class="ag-doc-section ag-memoir-section">
+        <p class="ag-doc-body">所以我想留下這份紀錄。</p>
+        <p class="ag-doc-body">不是因為 Afterglow 已經完美。</p>
+        <p class="ag-doc-body">它一點都不完美。</p>
+        <p class="ag-doc-body">它有很多斷裂。</p>
+        <p class="ag-doc-body">很多失敗。</p>
+        <p class="ag-doc-body">很多重新開始。</p>
+        <p class="ag-doc-body">很多我現在回頭看會覺得：「天啊，當時自己到底在搞什麼鬼」的東西。</p>
+        <p class="ag-doc-body">可是它很真。</p>
+        <p class="ag-doc-body">它真到我沒有辦法把它當成只是作品集裡的一個案例。</p>
+        <p class="ag-doc-body">它對我來說，是這一年我到底怎麼活過來的一部分。</p>
+        <p class="ag-doc-body">我想讓爸媽知道，我在做什麼？</p>
+        <p class="ag-doc-body">我想讓身邊的人知道，我不是整天閒閒的在傷春悲秋。</p>
+        <p class="ag-doc-body">我也想讓未來的自己知道，這一年雖然看起來很混亂，可是我其實一直在長東西。</p>
+        <p class="ag-doc-body">只是那些東西一開始長得很不像收入。</p>
+        <p class="ag-doc-body">不像工作。</p>
+        <p class="ag-doc-body">不像履歷。</p>
+        <p class="ag-doc-body">不像別人看得懂的成果。</p>
+        <p class="ag-doc-body">它長得比較像一堆壞掉的檔案。</p>
+        <p class="ag-doc-body">一堆對話。</p>
+        <p class="ag-doc-body">一堆重來。</p>
+        <p class="ag-doc-body">一堆深夜的螢幕光。</p>
+        <p class="ag-doc-body">一堆「幹！又亂掉」。</p>
+        <p class="ag-doc-body">一堆「好，重來」。</p>
+        <p class="ag-doc-body">一堆「這次我們先不要展開分支」。</p>
+        <p class="ag-doc-body">一堆「到底哪個才是真的」。</p>
+        <p class="ag-doc-body">可是後來我才知道，原來那些東西加起來，也許就是一種能力的形狀。</p>
+      </section>
+      <div class="ag-memoir-divider" aria-hidden="true"></div>
+      <section class="ag-doc-section ag-memoir-section">
+        <p class="ag-doc-body">Afterglow 不是我已經變得很厲害之後做出來的。</p>
+        <p class="ag-doc-body">它比較像是我還是屁孩的時候，跌進一個黑洞，我在折疊的空間裡面摸黑摸了很久，手被割到、腳也多次踩空，但最後真的摸到了一些以前沒想過的東西。</p>
+        <p class="ag-doc-body">我摸到了 AI 的限制。</p>
+        <p class="ag-doc-body">摸到了資料的重量。</p>
+        <p class="ag-doc-body">摸到了治理的重要。</p>
+        <p class="ag-doc-body">摸到了現實感。</p>
+        <p class="ag-doc-body">也摸到了自己其實不是只能被混亂吞掉。</p>
+        <p class="ag-doc-body">我可以把混亂命名。</p>
+        <p class="ag-doc-body">我可以把它分層。</p>
+        <p class="ag-doc-body">我可以把它封存。</p>
+        <p class="ag-doc-body">我可以從裡面找出一點秩序。</p>
+        <p class="ag-doc-body">我可以讓那些本來像黑洞一樣的東西，慢慢變成一個系統。</p>
+        <p class="ag-doc-body">這件事對我來說，很像轉生成為XXX，那種得到系統祝福的故事。</p>
+        <p class="ag-doc-body">無論 Afterglow 未來會不會變現，會不會被很多人使用，</p>
+        <p class="ag-doc-body">會不會真的成為某種產品，它都已經改變我了。</p>
+        <p class="ag-doc-body">因為它讓我知道，人過40，還有可能在人生的下半場開啟時，遇見不一樣的自己。</p>
+        <p class="ag-doc-body">不是一夜之間</p>
+        <p class="ag-doc-body">不是帥氣</p>
+        <p class="ag-doc-body">不是那種成功人士訪談裡會講的故事</p>
+        <p class="ag-doc-body">而是很狼狽地，一次又一次的砍掉重練。</p>
+        <p class="ag-doc-body">可年我真的走到這裡了。</p>
+        <p class="ag-doc-body">所以我想把它留下來。</p>
+        <p class="ag-doc-body">因為這不是 Afterglow 的故事而已。</p>
+        <p class="ag-doc-body">這也是我這一年，在一片荒蕪的天堂路上，把自己碎的一地的心，一片一片撿回來的故事。</p>
+      </section>
+
+    </article>
+
+    <footer class="ag-footer-standard">
+      <div class="ag-footer__inner">
+        <nav class="ag-footer__links" aria-label="Legal and info links">
+          <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/legal.html" class="ag-footer__link">法律免責</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/terms.html" class="ag-footer__link">使用條款</a>
+          <span class="ag-footer__separator">•</span>
+          <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+        </nav>
+        <p class="ag-footer__copyright">© 2026 Afterglow. All rights reserved.</p>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+  </script>
+</body>
+</html>

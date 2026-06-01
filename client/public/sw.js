@@ -1,4 +1,4 @@
-const CACHE_NAME = 'afterglow-v2';
+const CACHE_NAME = 'afterglow-v3-memoir';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -14,6 +14,7 @@ const ASSETS_TO_CACHE = [
   '/terms.html',
   '/legal.html',
   '/about.html',
+  '/memoir.html',
   '/assets/layout.css',
   '/assets/logo-new.png',
   '/assets/icons/icon-192x192.png',
