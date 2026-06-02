@@ -38,7 +38,7 @@
       height: min(51vw, 212px);
       border-radius: 50%;
       z-index: 1;
-      opacity: var(--ag-ring-opacity, 0.94);
+      opacity: var(--ag-ring-opacity, 0.82);
       transform: scale(var(--ag-ring-scale, 1));
       transition: opacity 360ms ease-out, transform 320ms ease-out, filter 360ms ease-out;
       will-change: opacity, transform, filter;
@@ -54,26 +54,26 @@
 
     .ag-white-ring::before {
       inset: 0;
-      border: 2px solid rgba(244, 246, 242, 0.92);
-      background: radial-gradient(circle, rgba(244, 246, 242, 0.028) 58%, rgba(244, 246, 242, 0) 73%);
+      border: 1.35px solid rgba(244, 246, 242, 0.72);
+      background: transparent;
       box-shadow:
-        0 0 1px rgba(255, 255, 255, 0.92),
-        0 0 7px rgba(240, 242, 238, 0.30),
-        0 0 18px rgba(240, 242, 238, 0.13),
-        0 0 42px rgba(240, 242, 238, 0.055),
-        inset 0 0 1px rgba(255, 255, 255, 0.82),
-        inset 0 0 8px rgba(240, 242, 238, 0.10);
+        0 0 1px rgba(255, 255, 255, 0.62),
+        0 0 5px rgba(240, 242, 238, 0.18),
+        0 0 14px rgba(240, 242, 238, 0.07),
+        0 0 30px rgba(240, 242, 238, 0.028),
+        inset 0 0 1px rgba(255, 255, 255, 0.46),
+        inset 0 0 5px rgba(240, 242, 238, 0.045);
     }
 
     .ag-white-ring::after {
       inset: -4px;
-      border: 1px solid rgba(232, 235, 231, 0.22);
-      box-shadow: 0 0 14px rgba(240, 242, 238, 0.075);
-      opacity: 0.78;
+      border: 1px solid rgba(232, 235, 231, 0.12);
+      box-shadow: 0 0 10px rgba(240, 242, 238, 0.040);
+      opacity: 0.46;
     }
 
     .ag-player-visual--noise.playing .ag-white-ring {
-      filter: brightness(1.035);
+      filter: brightness(1.012);
     }
 
     @media (max-width: 480px) {
@@ -96,9 +96,9 @@
       }
       .ag-white-ring::before {
         box-shadow:
-          0 0 1px rgba(255, 255, 255, 0.72),
-          0 0 8px rgba(240, 242, 238, 0.12),
-          inset 0 0 1px rgba(255, 255, 255, 0.62);
+          0 0 1px rgba(255, 255, 255, 0.52),
+          0 0 6px rgba(240, 242, 238, 0.075),
+          inset 0 0 1px rgba(255, 255, 255, 0.42);
       }
     }
   </style>
@@ -255,7 +255,7 @@
         const height = canvas.height || 1;
         const nearRing = Math.random() > 0.28;
         const angle = Math.random() * Math.PI * 2;
-        const ringRadius = Math.min(width, height) * (0.22 + Math.random() * 0.22);
+        const ringRadius = Math.min(width, height) * (0.27 + Math.random() * 0.20);
         return {
           x: nearRing ? width / 2 + Math.cos(angle) * ringRadius : Math.random() * width,
           y: initial ? (nearRing ? height / 2 + Math.sin(angle) * ringRadius : Math.random() * height) : height + Math.random() * height * 0.08,
@@ -314,6 +314,27 @@
         highEnergy = highEnergy * 0.88 + (active ? 0.030 + Math.random() * 0.075 : 0.010) * 0.12;
       }
 
+      function drawCenterMask(width, height) {
+        const ringRect = ring.getBoundingClientRect();
+        const canvasRect = canvas.getBoundingClientRect();
+        const centerX = (ringRect.left + ringRect.width / 2 - canvasRect.left) * dpr;
+        const centerY = (ringRect.top + ringRect.height / 2 - canvasRect.top) * dpr;
+        const innerRadius = Math.max(0, Math.min(ringRect.width, ringRect.height) * 0.48 * dpr);
+        ctx.save();
+        ctx.globalCompositeOperation = 'destination-out';
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, innerRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        ctx.save();
+        ctx.fillStyle = 'rgba(0, 0, 0, 1)';
+        ctx.beginPath();
+        ctx.arc(centerX, centerY, innerRadius - 1.5 * dpr, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+      }
+
       function drawParticles() {
         const width = canvas.width;
         const height = canvas.height;
@@ -362,12 +383,14 @@
           ctx.arc(particle.x, particle.y, radius, 0, Math.PI * 2);
           ctx.fill();
         }
+
+        drawCenterMask(width, height);
       }
 
       function updateRing() {
         const active = !audio.paused;
-        const scale = 1 + (reduceMotion ? 0 : Math.min(0.010, lowEnergy * 0.011 + highEnergy * 0.003));
-        const opacity = 0.92 + (active ? Math.min(0.075, lowEnergy * 0.075 + midEnergy * 0.026) : 0);
+        const scale = 1 + (reduceMotion ? 0 : Math.min(0.007, lowEnergy * 0.008 + highEnergy * 0.002));
+        const opacity = 0.78 + (active ? Math.min(0.045, lowEnergy * 0.045 + midEnergy * 0.018) : 0);
         ring.style.setProperty('--ag-ring-scale', scale.toFixed(4));
         ring.style.setProperty('--ag-ring-opacity', opacity.toFixed(3));
       }
