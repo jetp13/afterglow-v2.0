@@ -34,33 +34,47 @@
       width: min(52vw, 214px);
       height: min(52vw, 214px);
       border-radius: 50%;
-      border: 1.7px solid rgba(240, 242, 238, 0.92);
-      box-shadow:
-        0 0 14px rgba(240, 242, 238, 0.20),
-        0 0 32px rgba(240, 242, 238, 0.08),
-        inset 0 0 8px rgba(240, 242, 238, 0.10);
-      background: radial-gradient(circle, rgba(240, 242, 238, 0.03) 24%, rgba(240, 242, 238, 0.00) 72%);
       z-index: 1;
       transform: scale(var(--ag-ring-scale, 1));
-      opacity: var(--ag-ring-opacity, 0.94);
-      transition: transform 320ms ease-out, opacity 380ms ease-out, box-shadow 380ms ease-out;
-      will-change: transform, opacity;
+      opacity: var(--ag-ring-opacity, 0.95);
+      transition: transform 280ms ease-out, opacity 300ms ease-out, filter 300ms ease-out;
+      will-change: transform, opacity, filter;
+    }
+    .ag-white-ring::before,
+    .ag-white-ring::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    .ag-white-ring::before {
+      border: 2px solid rgba(244, 246, 242, 0.92);
+      box-shadow:
+        0 0 1px rgba(255, 255, 255, 0.92),
+        0 0 7px rgba(240, 242, 238, 0.30),
+        0 0 18px rgba(240, 242, 238, 0.13),
+        0 0 42px rgba(240, 242, 238, 0.055),
+        inset 0 0 1px rgba(255, 255, 255, 0.82),
+        inset 0 0 8px rgba(240, 242, 238, 0.10);
+      background: radial-gradient(circle, rgba(244, 246, 242, 0.035) 58%, rgba(244, 246, 242, 0) 74%);
+    }
+    .ag-white-ring::after {
+      inset: -4px;
+      border: 1.2px solid rgba(236, 239, 236, 0.24);
+      box-shadow: 0 0 16px rgba(240, 242, 238, 0.08);
+      opacity: 0.88;
     }
     .ag-player-visual--noise.playing .ag-white-ring {
-      box-shadow:
-        0 0 18px rgba(240, 242, 238, 0.20),
-        0 0 36px rgba(240, 242, 238, 0.08),
-        inset 0 0 10px rgba(240, 242, 238, 0.12);
+      filter: brightness(1.03);
     }
     @media (max-width: 480px) {
       .ag-main-scroll { overflow-x: hidden; }
       .ag-player { padding-left: 20px; padding-right: 20px; }
     }
     @media (prefers-reduced-motion: reduce) {
-      .ag-white-ring {
-        transition-duration: 900ms;
-        box-shadow: 0 0 10px rgba(240, 242, 238, 0.10);
-      }
+      .ag-white-ring { transition-duration: 900ms; }
+      .ag-white-ring::before { box-shadow: 0 0 1px rgba(255,255,255,0.6); }
     }
   </style>
 
@@ -179,10 +193,9 @@
 
     (function initWhiteNoiseVisual() {
       const audio = document.getElementById('agAudio');
-      const visual = document.getElementById('agVisual');
       const ring = document.getElementById('agVisualRing');
       const canvas = document.getElementById('agEmberCanvas');
-      if (!audio || !visual || !ring || !canvas) return;
+      if (!audio || !ring || !canvas) return;
 
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const ctx = canvas.getContext('2d', { alpha: true });
@@ -194,12 +207,14 @@
       let freqData = null;
       let audioCtx = null;
       let source = null;
-      let energy = 0.04;
-      const particleCount = reduceMotion ? 28 : (window.innerWidth < 540 ? 54 : 72);
+      let low = 0.05;
+      let mid = 0.05;
+      let high = 0.04;
+      let prevHigh = 0.04;
+      const particleCount = reduceMotion ? 24 : (window.innerWidth < 540 ? 52 : 68);
 
       function resize() {
         const r = canvas.getBoundingClientRect();
-        dpr = Math.min(window.devicePixelRatio || 1, 1.8);
         canvas.width = Math.max(1, Math.floor(r.width * dpr));
         canvas.height = Math.max(1, Math.floor(r.height * dpr));
         particles = Array.from({ length: particleCount }, () => spawn(true));
@@ -210,48 +225,58 @@
         const h = canvas.height;
         return {
           x: Math.random() * w,
-          y: initial ? Math.random() * h : h + Math.random() * (h * 0.12),
-          size: (Math.random() * 1.7 + 0.5) * dpr,
-          baseRise: (Math.random() * 0.22 + 0.08) * dpr,
-          sway: Math.random() * 0.7 + 0.22,
-          drift: (Math.random() - 0.5) * 0.25,
-          alpha: Math.random() * 0.55 + 0.12,
+          y: initial ? Math.random() * h : h + Math.random() * (h * 0.1),
+          size: (Math.random() * 1.55 + 0.45) * dpr,
+          rise: (Math.random() * 0.18 + 0.07) * dpr,
+          sway: Math.random() * 0.55 + 0.18,
+          drift: (Math.random() - 0.5) * 0.22,
+          alpha: Math.random() * 0.52 + 0.1,
           twinkle: Math.random() * Math.PI * 2,
           tone: Math.random(),
+          burst: 0,
         };
       }
 
       function tryInitAnalyser() {
-        if (analyser || reduceMotion) return;
+        if (analyser) return;
         const Ctx = window.AudioContext || window.webkitAudioContext;
         if (!Ctx) return;
         try {
           audioCtx = new Ctx();
           source = audioCtx.createMediaElementSource(audio);
           analyser = audioCtx.createAnalyser();
-          analyser.fftSize = 256;
-          analyser.smoothingTimeConstant = 0.88;
+          analyser.fftSize = 512;
+          analyser.smoothingTimeConstant = 0.84;
           source.connect(analyser);
           analyser.connect(audioCtx.destination);
           freqData = new Uint8Array(analyser.frequencyBinCount);
-        } catch (err) {
+        } catch (_) {
           analyser = null;
           freqData = null;
         }
       }
 
-      function readEnergy() {
+      function bandAvg(from, to) {
+        let sum = 0;
+        for (let i = from; i <= to; i += 1) sum += freqData[i] || 0;
+        return (sum / (to - from + 1)) / 255;
+      }
+
+      function readBands() {
         if (analyser && freqData) {
           analyser.getByteFrequencyData(freqData);
-          let sum = 0;
-          const sample = 40;
-          for (let i = 2; i < sample; i += 1) sum += freqData[i];
-          const mapped = Math.min(1, (sum / ((sample - 2) * 255)) * 1.7);
-          energy = energy * 0.85 + mapped * 0.15;
+          const nextLow = bandAvg(2, 18);
+          const nextMid = bandAvg(19, 62);
+          const nextHigh = bandAvg(63, 130);
+          low = low * 0.86 + nextLow * 0.14;
+          mid = mid * 0.84 + nextMid * 0.16;
+          high = high * 0.8 + nextHigh * 0.2;
           return;
         }
-        const target = audio.paused ? 0.03 : 0.08 + Math.random() * 0.08;
-        energy = energy * 0.94 + target * 0.06;
+        const paused = audio.paused;
+        low = low * 0.92 + (paused ? 0.03 : 0.08 + Math.random() * 0.04) * 0.08;
+        mid = mid * 0.9 + (paused ? 0.02 : 0.06 + Math.random() * 0.06) * 0.1;
+        high = high * 0.88 + (paused ? 0.01 : 0.04 + Math.random() * 0.08) * 0.12;
       }
 
       function animate() {
@@ -259,36 +284,47 @@
         const h = canvas.height;
         if (!w || !h) return requestAnimationFrame(animate);
 
-        readEnergy();
+        prevHigh = high;
+        readBands();
         const active = !audio.paused;
-        const motion = reduceMotion ? 0.15 : (active ? 1 : 0.24);
+        const motion = reduceMotion ? 0.12 : (active ? 1 : 0.22);
+        const highDelta = Math.max(0, high - prevHigh);
+        const transient = active && highDelta > 0.038;
+
         ctx.clearRect(0, 0, w, h);
 
         for (let i = 0; i < particles.length; i += 1) {
           const p = particles[i];
-          const lift = (p.baseRise + energy * 1.3 * dpr) * motion;
-          p.y -= lift;
-          p.x += (Math.sin((Date.now() * 0.0007) + p.twinkle) * p.sway + p.drift) * motion;
-          p.twinkle += 0.013 + energy * 0.03;
+          const rise = (p.rise + low * 0.46 * dpr + mid * 0.34 * dpr) * motion;
+          const jitter = (Math.sin(p.twinkle) * (0.18 + mid * 0.9) + p.drift) * motion;
+          p.y -= rise;
+          p.x += jitter;
+          p.twinkle += 0.011 + mid * 0.03;
 
-          if (!reduceMotion && active && Math.random() < 0.003 + energy * 0.02) {
-            p.x += (Math.random() - 0.5) * 11 * dpr;
-            p.y -= Math.random() * 8 * dpr;
+          if (!reduceMotion && transient && Math.random() < 0.12 && p.tone > 0.66) p.burst = Math.min(1, p.burst + 0.95);
+          if (p.burst > 0.02) {
+            p.x += (Math.random() - 0.5) * (2.2 + high * 12) * dpr;
+            p.y -= (0.8 + high * 6.5) * dpr;
+            p.burst *= 0.84;
           }
-          if (p.y < -8 || p.x < -24 || p.x > w + 24) particles[i] = spawn();
 
-          const far = p.tone < 0.35;
-          const twinkle = 0.6 + Math.sin(p.twinkle) * 0.4;
-          const a = Math.max(0.03, Math.min(0.9, p.alpha * twinkle * (0.55 + energy * 0.7)));
-          ctx.fillStyle = far ? `rgba(220,223,220,${a * 0.36})` : (p.tone > 0.74 ? `rgba(255,255,255,${a * 0.92})` : `rgba(230,232,228,${a * 0.58})`);
+          if (p.y < -10 || p.x < -26 || p.x > w + 26) particles[i] = spawn();
+
+          const twinkle = 0.58 + Math.sin(p.twinkle) * 0.42;
+          const burstGlow = 1 + p.burst * 0.65;
+          const alpha = Math.max(0.02, Math.min(0.92, p.alpha * twinkle * (0.4 + low * 0.3 + mid * 0.4 + high * 0.45)));
+          ctx.fillStyle = p.tone > 0.75
+            ? `rgba(255,255,255,${alpha * 0.9 * burstGlow})`
+            : (p.tone < 0.34 ? `rgba(220,223,220,${alpha * 0.34})` : `rgba(230,232,228,${alpha * 0.56})`);
           ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * (0.85 + energy * 0.5), 0, Math.PI * 2);
+          ctx.arc(p.x, p.y, p.size * (0.88 + mid * 0.35 + p.burst * 0.25), 0, Math.PI * 2);
           ctx.fill();
         }
 
-        const ringScale = 1 + (reduceMotion ? 0 : energy * 0.012) + (active ? 0.002 : -0.001);
+        const ringScale = 1 + (reduceMotion ? 0 : Math.min(0.01, low * 0.012 + high * 0.004));
+        const ringOpacity = 0.92 + (active ? Math.min(0.08, low * 0.08 + mid * 0.03) : 0.0);
         ring.style.setProperty('--ag-ring-scale', ringScale.toFixed(4));
-        ring.style.setProperty('--ag-ring-opacity', (0.9 + (active ? energy * 0.09 : 0)).toFixed(3));
+        ring.style.setProperty('--ag-ring-opacity', ringOpacity.toFixed(3));
 
         requestAnimationFrame(animate);
       }
