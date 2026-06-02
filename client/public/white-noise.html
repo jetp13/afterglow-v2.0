@@ -16,40 +16,46 @@
 
   <style>
     .ag-white-noise-visual {
-      width: min(56vw, 244px);
-      height: min(56vw, 244px);
+      width: min(58vw, 246px);
+      height: min(58vw, 246px);
       margin-bottom: 34px;
       isolation: isolate;
+      overflow: visible;
     }
+
     .ag-ember-canvas {
       position: absolute;
-      inset: -24%;
-      width: 148%;
-      height: 148%;
-      pointer-events: none;
+      inset: -26%;
+      width: 152%;
+      height: 152%;
       z-index: 0;
+      pointer-events: none;
     }
+
     .ag-white-ring {
       position: absolute;
-      width: min(52vw, 214px);
-      height: min(52vw, 214px);
+      width: min(51vw, 212px);
+      height: min(51vw, 212px);
       border-radius: 50%;
       z-index: 1;
+      opacity: var(--ag-ring-opacity, 0.94);
       transform: scale(var(--ag-ring-scale, 1));
-      opacity: var(--ag-ring-opacity, 0.95);
-      transition: transform 280ms ease-out, opacity 300ms ease-out, filter 300ms ease-out;
-      will-change: transform, opacity, filter;
+      transition: opacity 360ms ease-out, transform 320ms ease-out, filter 360ms ease-out;
+      will-change: opacity, transform, filter;
     }
+
     .ag-white-ring::before,
     .ag-white-ring::after {
       content: '';
       position: absolute;
-      inset: 0;
       border-radius: 50%;
       pointer-events: none;
     }
+
     .ag-white-ring::before {
+      inset: 0;
       border: 2px solid rgba(244, 246, 242, 0.92);
+      background: radial-gradient(circle, rgba(244, 246, 242, 0.028) 58%, rgba(244, 246, 242, 0) 73%);
       box-shadow:
         0 0 1px rgba(255, 255, 255, 0.92),
         0 0 7px rgba(240, 242, 238, 0.30),
@@ -57,24 +63,43 @@
         0 0 42px rgba(240, 242, 238, 0.055),
         inset 0 0 1px rgba(255, 255, 255, 0.82),
         inset 0 0 8px rgba(240, 242, 238, 0.10);
-      background: radial-gradient(circle, rgba(244, 246, 242, 0.035) 58%, rgba(244, 246, 242, 0) 74%);
     }
+
     .ag-white-ring::after {
       inset: -4px;
-      border: 1.2px solid rgba(236, 239, 236, 0.24);
-      box-shadow: 0 0 16px rgba(240, 242, 238, 0.08);
-      opacity: 0.88;
+      border: 1px solid rgba(232, 235, 231, 0.22);
+      box-shadow: 0 0 14px rgba(240, 242, 238, 0.075);
+      opacity: 0.78;
     }
+
     .ag-player-visual--noise.playing .ag-white-ring {
-      filter: brightness(1.03);
+      filter: brightness(1.035);
     }
+
     @media (max-width: 480px) {
       .ag-main-scroll { overflow-x: hidden; }
-      .ag-player { padding-left: 20px; padding-right: 20px; }
+      .ag-white-noise-visual {
+        width: min(62vw, 224px);
+        height: min(62vw, 224px);
+        margin-bottom: 30px;
+      }
+      .ag-white-ring {
+        width: min(54vw, 192px);
+        height: min(54vw, 192px);
+      }
     }
+
     @media (prefers-reduced-motion: reduce) {
-      .ag-white-ring { transition-duration: 900ms; }
-      .ag-white-ring::before { box-shadow: 0 0 1px rgba(255,255,255,0.6); }
+      .ag-white-ring {
+        transition-duration: 900ms;
+        filter: none;
+      }
+      .ag-white-ring::before {
+        box-shadow:
+          0 0 1px rgba(255, 255, 255, 0.72),
+          0 0 8px rgba(240, 242, 238, 0.12),
+          inset 0 0 1px rgba(255, 255, 255, 0.62);
+      }
     }
   </style>
 
@@ -94,7 +119,7 @@
   <div class="ag-main-scroll">
     <section class="ag-player" aria-label="白噪音播放器">
 
-      <!-- 視覺：白色螢光圓環＋灰燼微塵 -->
+      <!-- 視覺：白色霓虹燈管環＋白色火塵粒子 -->
       <div class="ag-player-visual ag-player-visual--noise ag-white-noise-visual" id="agVisual">
         <canvas class="ag-ember-canvas" id="agEmberCanvas" aria-hidden="true"></canvas>
         <div class="ag-white-ring" id="agVisualRing" aria-hidden="true"></div>
@@ -190,150 +215,181 @@
     });
 
 
-
-    (function initWhiteNoiseVisual() {
+    (function initWhiteNoiseV2Visual() {
       const audio = document.getElementById('agAudio');
-      const ring = document.getElementById('agVisualRing');
       const canvas = document.getElementById('agEmberCanvas');
-      if (!audio || !ring || !canvas) return;
+      const ring = document.getElementById('agVisualRing');
+      if (!audio || !canvas || !ring) return;
 
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
       const ctx = canvas.getContext('2d', { alpha: true });
       if (!ctx) return;
 
-      let dpr = Math.min(window.devicePixelRatio || 1, 1.8);
+      let reduceMotion = reduceMotionQuery.matches;
+      let dpr = Math.min(window.devicePixelRatio || 1, 1.75);
       let particles = [];
-      let analyser = null;
-      let freqData = null;
       let audioCtx = null;
+      let analyser = null;
       let source = null;
-      let low = 0.05;
-      let mid = 0.05;
-      let high = 0.04;
-      let prevHigh = 0.04;
-      const particleCount = reduceMotion ? 24 : (window.innerWidth < 540 ? 52 : 68);
+      let frequencyData = null;
+      let lowEnergy = 0.035;
+      let midEnergy = 0.025;
+      let highEnergy = 0.018;
+      let previousHighEnergy = 0.018;
 
-      function resize() {
-        const r = canvas.getBoundingClientRect();
-        canvas.width = Math.max(1, Math.floor(r.width * dpr));
-        canvas.height = Math.max(1, Math.floor(r.height * dpr));
-        particles = Array.from({ length: particleCount }, () => spawn(true));
+      function particleTotal() {
+        if (reduceMotion) return 22;
+        return window.innerWidth < 540 ? 48 : 66;
       }
 
-      function spawn(initial = false) {
-        const w = canvas.width;
-        const h = canvas.height;
+      function resizeCanvas() {
+        const bounds = canvas.getBoundingClientRect();
+        dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+        canvas.width = Math.max(1, Math.floor(bounds.width * dpr));
+        canvas.height = Math.max(1, Math.floor(bounds.height * dpr));
+        particles = Array.from({ length: particleTotal() }, () => createParticle(true));
+      }
+
+      function createParticle(initial = false) {
+        const width = canvas.width || 1;
+        const height = canvas.height || 1;
+        const nearRing = Math.random() > 0.28;
+        const angle = Math.random() * Math.PI * 2;
+        const ringRadius = Math.min(width, height) * (0.22 + Math.random() * 0.22);
         return {
-          x: Math.random() * w,
-          y: initial ? Math.random() * h : h + Math.random() * (h * 0.1),
-          size: (Math.random() * 1.55 + 0.45) * dpr,
-          rise: (Math.random() * 0.18 + 0.07) * dpr,
-          sway: Math.random() * 0.55 + 0.18,
-          drift: (Math.random() - 0.5) * 0.22,
-          alpha: Math.random() * 0.52 + 0.1,
-          twinkle: Math.random() * Math.PI * 2,
+          x: nearRing ? width / 2 + Math.cos(angle) * ringRadius : Math.random() * width,
+          y: initial ? (nearRing ? height / 2 + Math.sin(angle) * ringRadius : Math.random() * height) : height + Math.random() * height * 0.08,
+          size: (0.45 + Math.random() * 1.55) * dpr,
+          rise: (0.06 + Math.random() * 0.17) * dpr,
+          drift: (Math.random() - 0.5) * 0.22 * dpr,
+          phase: Math.random() * Math.PI * 2,
+          alpha: 0.10 + Math.random() * 0.48,
           tone: Math.random(),
           burst: 0,
         };
       }
 
-      function tryInitAnalyser() {
+      function initAnalyser() {
         if (analyser) return;
-        const Ctx = window.AudioContext || window.webkitAudioContext;
-        if (!Ctx) return;
+        const AudioCtor = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtor) return;
+
         try {
-          audioCtx = new Ctx();
+          audioCtx = new AudioCtor();
           source = audioCtx.createMediaElementSource(audio);
           analyser = audioCtx.createAnalyser();
           analyser.fftSize = 512;
           analyser.smoothingTimeConstant = 0.84;
           source.connect(analyser);
           analyser.connect(audioCtx.destination);
-          freqData = new Uint8Array(analyser.frequencyBinCount);
+          frequencyData = new Uint8Array(analyser.frequencyBinCount);
         } catch (_) {
           analyser = null;
-          freqData = null;
+          frequencyData = null;
         }
       }
 
-      function bandAvg(from, to) {
-        let sum = 0;
-        for (let i = from; i <= to; i += 1) sum += freqData[i] || 0;
-        return (sum / (to - from + 1)) / 255;
+      function averageBand(from, to) {
+        let total = 0;
+        for (let index = from; index <= to; index += 1) {
+          total += frequencyData[index] || 0;
+        }
+        return total / (to - from + 1) / 255;
       }
 
-      function readBands() {
-        if (analyser && freqData) {
-          analyser.getByteFrequencyData(freqData);
-          const nextLow = bandAvg(2, 18);
-          const nextMid = bandAvg(19, 62);
-          const nextHigh = bandAvg(63, 130);
-          low = low * 0.86 + nextLow * 0.14;
-          mid = mid * 0.84 + nextMid * 0.16;
-          high = high * 0.8 + nextHigh * 0.2;
+      function updateEnergyBands() {
+        previousHighEnergy = highEnergy;
+
+        if (analyser && frequencyData) {
+          analyser.getByteFrequencyData(frequencyData);
+          lowEnergy = lowEnergy * 0.86 + averageBand(2, 18) * 0.14;
+          midEnergy = midEnergy * 0.84 + averageBand(19, 68) * 0.16;
+          highEnergy = highEnergy * 0.78 + averageBand(69, 150) * 0.22;
           return;
         }
-        const paused = audio.paused;
-        low = low * 0.92 + (paused ? 0.03 : 0.08 + Math.random() * 0.04) * 0.08;
-        mid = mid * 0.9 + (paused ? 0.02 : 0.06 + Math.random() * 0.06) * 0.1;
-        high = high * 0.88 + (paused ? 0.01 : 0.04 + Math.random() * 0.08) * 0.12;
+
+        const active = !audio.paused;
+        lowEnergy = lowEnergy * 0.92 + (active ? 0.075 + Math.random() * 0.035 : 0.025) * 0.08;
+        midEnergy = midEnergy * 0.90 + (active ? 0.050 + Math.random() * 0.055 : 0.016) * 0.10;
+        highEnergy = highEnergy * 0.88 + (active ? 0.030 + Math.random() * 0.075 : 0.010) * 0.12;
+      }
+
+      function drawParticles() {
+        const width = canvas.width;
+        const height = canvas.height;
+        const active = !audio.paused;
+        const motion = reduceMotion ? 0.10 : (active ? 1 : 0.20);
+        const highDelta = Math.max(0, highEnergy - previousHighEnergy);
+        const transient = active && !reduceMotion && highDelta > 0.034;
+
+        ctx.clearRect(0, 0, width, height);
+
+        for (let index = 0; index < particles.length; index += 1) {
+          const particle = particles[index];
+          particle.phase += 0.010 + midEnergy * 0.030;
+          particle.y -= (particle.rise + lowEnergy * 0.42 * dpr + midEnergy * 0.26 * dpr) * motion;
+          particle.x += (particle.drift + Math.sin(particle.phase) * (0.10 + midEnergy * 0.82) * dpr) * motion;
+
+          if (transient && particle.tone > 0.72 && Math.random() < 0.11) {
+            particle.burst = Math.min(1, particle.burst + 0.85);
+          }
+
+          if (particle.burst > 0.02) {
+            particle.x += (Math.random() - 0.5) * (1.8 + highEnergy * 10) * dpr;
+            particle.y -= (0.7 + highEnergy * 5.8) * dpr;
+            particle.burst *= 0.84;
+          }
+
+          if (particle.y < -10 || particle.x < -28 || particle.x > width + 28) {
+            particles[index] = createParticle(false);
+            continue;
+          }
+
+          const flicker = 0.56 + Math.sin(particle.phase) * 0.34 + Math.random() * highEnergy * 0.18;
+          const burstGlow = 1 + particle.burst * 0.65;
+          const alpha = Math.max(0.018, Math.min(0.86, particle.alpha * flicker * (0.44 + lowEnergy * 0.24 + midEnergy * 0.36 + highEnergy * 0.48)));
+          const radius = particle.size * (0.86 + midEnergy * 0.28 + particle.burst * 0.22);
+
+          if (particle.tone > 0.78) {
+            ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(0.90, alpha * 0.92 * burstGlow)})`;
+          } else if (particle.tone < 0.30) {
+            ctx.fillStyle = `rgba(220, 223, 220, ${alpha * 0.34})`;
+          } else {
+            ctx.fillStyle = `rgba(230, 232, 228, ${alpha * 0.56})`;
+          }
+
+          ctx.beginPath();
+          ctx.arc(particle.x, particle.y, radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      function updateRing() {
+        const active = !audio.paused;
+        const scale = 1 + (reduceMotion ? 0 : Math.min(0.010, lowEnergy * 0.011 + highEnergy * 0.003));
+        const opacity = 0.92 + (active ? Math.min(0.075, lowEnergy * 0.075 + midEnergy * 0.026) : 0);
+        ring.style.setProperty('--ag-ring-scale', scale.toFixed(4));
+        ring.style.setProperty('--ag-ring-opacity', opacity.toFixed(3));
       }
 
       function animate() {
-        const w = canvas.width;
-        const h = canvas.height;
-        if (!w || !h) return requestAnimationFrame(animate);
-
-        prevHigh = high;
-        readBands();
-        const active = !audio.paused;
-        const motion = reduceMotion ? 0.12 : (active ? 1 : 0.22);
-        const highDelta = Math.max(0, high - prevHigh);
-        const transient = active && highDelta > 0.038;
-
-        ctx.clearRect(0, 0, w, h);
-
-        for (let i = 0; i < particles.length; i += 1) {
-          const p = particles[i];
-          const rise = (p.rise + low * 0.46 * dpr + mid * 0.34 * dpr) * motion;
-          const jitter = (Math.sin(p.twinkle) * (0.18 + mid * 0.9) + p.drift) * motion;
-          p.y -= rise;
-          p.x += jitter;
-          p.twinkle += 0.011 + mid * 0.03;
-
-          if (!reduceMotion && transient && Math.random() < 0.12 && p.tone > 0.66) p.burst = Math.min(1, p.burst + 0.95);
-          if (p.burst > 0.02) {
-            p.x += (Math.random() - 0.5) * (2.2 + high * 12) * dpr;
-            p.y -= (0.8 + high * 6.5) * dpr;
-            p.burst *= 0.84;
-          }
-
-          if (p.y < -10 || p.x < -26 || p.x > w + 26) particles[i] = spawn();
-
-          const twinkle = 0.58 + Math.sin(p.twinkle) * 0.42;
-          const burstGlow = 1 + p.burst * 0.65;
-          const alpha = Math.max(0.02, Math.min(0.92, p.alpha * twinkle * (0.4 + low * 0.3 + mid * 0.4 + high * 0.45)));
-          ctx.fillStyle = p.tone > 0.75
-            ? `rgba(255,255,255,${alpha * 0.9 * burstGlow})`
-            : (p.tone < 0.34 ? `rgba(220,223,220,${alpha * 0.34})` : `rgba(230,232,228,${alpha * 0.56})`);
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size * (0.88 + mid * 0.35 + p.burst * 0.25), 0, Math.PI * 2);
-          ctx.fill();
-        }
-
-        const ringScale = 1 + (reduceMotion ? 0 : Math.min(0.01, low * 0.012 + high * 0.004));
-        const ringOpacity = 0.92 + (active ? Math.min(0.08, low * 0.08 + mid * 0.03) : 0.0);
-        ring.style.setProperty('--ag-ring-scale', ringScale.toFixed(4));
-        ring.style.setProperty('--ag-ring-opacity', ringOpacity.toFixed(3));
-
+        updateEnergyBands();
+        drawParticles();
+        updateRing();
         requestAnimationFrame(animate);
       }
 
-      resize();
-      window.addEventListener('resize', resize, { passive: true });
-      audio.addEventListener('play', () => {
-        tryInitAnalyser();
-        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume().catch(() => {});
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas, { passive: true });
+      reduceMotionQuery.addEventListener('change', function (event) {
+        reduceMotion = event.matches;
+        resizeCanvas();
+      });
+      audio.addEventListener('play', function () {
+        initAnalyser();
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume().catch(function () {});
+        }
       });
       requestAnimationFrame(animate);
     })();
