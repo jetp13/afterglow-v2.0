@@ -13,172 +13,96 @@
       window.location.href = '/index.html';
     }
   </script>
+
   <style>
-    /*
-     * white-noise.html only
-     * Visual direction: white neon tube ring + white ash / dust particles.
-     * Fire is expressed through motion, not color.
-     */
-    .ag-player-visual--fire-dust {
-      width: min(68vw, 236px);
-      height: min(68vw, 236px);
-      isolation: isolate;
+    .ag-white-noise-visual {
+      width: min(58vw, 246px);
+      height: min(58vw, 246px);
       margin-bottom: 34px;
+      isolation: isolate;
+      overflow: visible;
     }
 
-    .ag-player-visual--fire-dust .ag-ember-canvas {
+    .ag-ember-canvas {
       position: absolute;
-      inset: -18px;
-      width: calc(100% + 36px);
-      height: calc(100% + 36px);
-      z-index: 1;
+      inset: -26%;
+      width: 152%;
+      height: 152%;
+      z-index: 0;
       pointer-events: none;
-      opacity: 0.62;
-      mix-blend-mode: screen;
-      filter: drop-shadow(0 0 3px rgba(240, 242, 238, 0.14));
-      transition: opacity 600ms ease, filter 600ms ease;
     }
 
-    .ag-player-visual--fire-dust.playing .ag-ember-canvas {
-      opacity: 0.86;
-      filter: drop-shadow(0 0 5px rgba(240, 242, 238, 0.20));
-    }
-
-    .ag-player-visual--fire-dust .ag-visual-ring {
+    .ag-white-ring {
       position: absolute;
-      z-index: 2;
-      width: 176px;
-      height: 176px;
+      width: min(51vw, 212px);
+      height: min(51vw, 212px);
       border-radius: 50%;
-      border: 1.4px solid rgba(240, 242, 238, 0.88);
-      background:
-        radial-gradient(circle at 50% 50%,
-          rgba(240, 242, 238, 0.055) 0%,
-          rgba(240, 242, 238, 0.025) 37%,
-          rgba(0, 0, 0, 0) 68%);
-      box-shadow:
-        0 0 0 0.5px rgba(255, 255, 255, 0.30),
-        0 0 10px rgba(240, 242, 238, 0.18),
-        0 0 28px rgba(240, 242, 238, 0.065),
-        inset 0 0 10px rgba(240, 242, 238, 0.075);
-      transform: scale(1);
-      transition: opacity 500ms ease, box-shadow 500ms ease, filter 500ms ease;
-      will-change: transform, opacity, box-shadow;
+      z-index: 1;
+      opacity: var(--ag-ring-opacity, 0.94);
+      transform: scale(var(--ag-ring-scale, 1));
+      transition: opacity 360ms ease-out, transform 320ms ease-out, filter 360ms ease-out;
+      will-change: opacity, transform, filter;
     }
 
-    .ag-player-visual--fire-dust .ag-visual-ring::before,
-    .ag-player-visual--fire-dust .ag-visual-ring::after {
+    .ag-white-ring::before,
+    .ag-white-ring::after {
       content: '';
       position: absolute;
-      top: 50%;
-      left: 50%;
       border-radius: 50%;
-      transform: translate(-50%, -50%);
       pointer-events: none;
     }
 
-    .ag-player-visual--fire-dust .ag-visual-ring::before {
-      width: 100%;
-      height: 100%;
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: inset 0 0 8px rgba(255, 255, 255, 0.045);
-      opacity: 0.72;
-      animation: none;
-    }
-
-    .ag-player-visual--fire-dust .ag-visual-ring::after {
-      width: calc(100% + 10px);
-      height: calc(100% + 10px);
-      border: 1px solid rgba(230, 232, 228, 0.08);
-      opacity: 0.48;
-      animation: agWhiteRingCurrent 5.4s ease-in-out infinite;
-    }
-
-    .ag-player-visual--fire-dust.playing .ag-visual-ring {
+    .ag-white-ring::before {
+      inset: 0;
+      border: 2px solid rgba(244, 246, 242, 0.92);
+      background: radial-gradient(circle, rgba(244, 246, 242, 0.028) 58%, rgba(244, 246, 242, 0) 73%);
       box-shadow:
-        0 0 0 0.5px rgba(255, 255, 255, 0.38),
-        0 0 13px rgba(240, 242, 238, 0.23),
-        0 0 34px rgba(240, 242, 238, 0.09),
-        inset 0 0 12px rgba(240, 242, 238, 0.10);
-      animation: agWhiteRingGlow 4.8s ease-in-out infinite;
+        0 0 1px rgba(255, 255, 255, 0.92),
+        0 0 7px rgba(240, 242, 238, 0.30),
+        0 0 18px rgba(240, 242, 238, 0.13),
+        0 0 42px rgba(240, 242, 238, 0.055),
+        inset 0 0 1px rgba(255, 255, 255, 0.82),
+        inset 0 0 8px rgba(240, 242, 238, 0.10);
     }
 
-    .ag-white-ring-core {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      z-index: 3;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: rgba(240, 242, 238, 0.56);
-      box-shadow:
-        0 0 5px rgba(240, 242, 238, 0.35),
-        0 0 16px rgba(240, 242, 238, 0.10);
-      transform: translate(-50%, -50%);
-      opacity: 0.38;
-      pointer-events: none;
-      transition: opacity 500ms ease;
+    .ag-white-ring::after {
+      inset: -4px;
+      border: 1px solid rgba(232, 235, 231, 0.22);
+      box-shadow: 0 0 14px rgba(240, 242, 238, 0.075);
+      opacity: 0.78;
     }
 
-    .ag-player-visual--fire-dust.playing .ag-white-ring-core {
-      opacity: 0.55;
-    }
-
-    .ag-track-title,
-    .ag-ctrl-btn,
-    .ag-ctrl-btn.ag-play-btn {
-      color: rgba(228, 226, 221, 0.88);
-    }
-
-    .ag-track-hint,
-    .ag-status-text,
-    .ag-progress-times {
-      color: rgba(165, 167, 163, 0.42);
-    }
-
-    @keyframes agWhiteRingGlow {
-      0%, 100% {
-        opacity: 0.88;
-        filter: brightness(1);
-        transform: scale(1);
-      }
-      42% {
-        opacity: 0.95;
-        filter: brightness(1.05);
-        transform: scale(1.006);
-      }
-      67% {
-        opacity: 0.82;
-        filter: brightness(0.96);
-        transform: scale(0.996);
-      }
-    }
-
-    @keyframes agWhiteRingCurrent {
-      0%, 100% { opacity: 0.22; transform: translate(-50%, -50%) scale(0.992); }
-      45%      { opacity: 0.42; transform: translate(-50%, -50%) scale(1.010); }
-      70%      { opacity: 0.28; transform: translate(-50%, -50%) scale(1.002); }
+    .ag-player-visual--noise.playing .ag-white-ring {
+      filter: brightness(1.035);
     }
 
     @media (max-width: 480px) {
-      .ag-player-visual--fire-dust .ag-visual-ring {
-        width: 164px;
-        height: 164px;
+      .ag-main-scroll { overflow-x: hidden; }
+      .ag-white-noise-visual {
+        width: min(62vw, 224px);
+        height: min(62vw, 224px);
+        margin-bottom: 30px;
+      }
+      .ag-white-ring {
+        width: min(54vw, 192px);
+        height: min(54vw, 192px);
       }
     }
 
     @media (prefers-reduced-motion: reduce) {
-      .ag-player-visual--fire-dust .ag-visual-ring,
-      .ag-player-visual--fire-dust .ag-visual-ring::after {
-        animation: none !important;
-      }
-      .ag-player-visual--fire-dust .ag-ember-canvas {
-        opacity: 0.22;
+      .ag-white-ring {
+        transition-duration: 900ms;
         filter: none;
+      }
+      .ag-white-ring::before {
+        box-shadow:
+          0 0 1px rgba(255, 255, 255, 0.72),
+          0 0 8px rgba(240, 242, 238, 0.12),
+          inset 0 0 1px rgba(255, 255, 255, 0.62);
       }
     }
   </style>
+
 </head>
 <body class="ag-page">
 
@@ -195,11 +119,10 @@
   <div class="ag-main-scroll">
     <section class="ag-player" aria-label="白噪音播放器">
 
-      <!-- 視覺：白色螢光燈管圓環 + 白色灰燼微塵 -->
-      <div class="ag-player-visual ag-player-visual--noise ag-player-visual--fire-dust" id="agVisual">
+      <!-- 視覺：白色霓虹燈管環＋白色火塵粒子 -->
+      <div class="ag-player-visual ag-player-visual--noise ag-white-noise-visual" id="agVisual">
         <canvas class="ag-ember-canvas" id="agEmberCanvas" aria-hidden="true"></canvas>
-        <div class="ag-visual-ring" id="agVisualRing"></div>
-        <div class="ag-white-ring-core" aria-hidden="true"></div>
+        <div class="ag-white-ring" id="agVisualRing" aria-hidden="true"></div>
       </div>
 
       <!-- 曲目資訊 -->
@@ -291,234 +214,184 @@
       statusEnded:    '播放結束'
     });
 
-    (function initWhiteNoiseEmbers() {
-      var canvas = document.getElementById('agEmberCanvas');
-      var visual = document.getElementById('agVisual');
-      var ring = document.getElementById('agVisualRing');
-      var audio = document.getElementById('agAudio');
-      if (!canvas || !visual || !ring || !audio) return;
 
-      var ctx = canvas.getContext('2d');
+    (function initWhiteNoiseV2Visual() {
+      const audio = document.getElementById('agAudio');
+      const canvas = document.getElementById('agEmberCanvas');
+      const ring = document.getElementById('agVisualRing');
+      if (!audio || !canvas || !ring) return;
+
+      const reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const ctx = canvas.getContext('2d', { alpha: true });
       if (!ctx) return;
 
-      var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var dpr = Math.min(window.devicePixelRatio || 1, 2);
-      var width = 0;
-      var height = 0;
-      var cx = 0;
-      var cy = 0;
-      var radius = 0;
-      var particles = [];
-      var rafId = null;
-      var analyserReady = false;
-      var audioCtx = null;
-      var analyser = null;
-      var freqBuf = null;
-      var smoothEnergy = 0;
-      var lastTs = 0;
+      let reduceMotion = reduceMotionQuery.matches;
+      let dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+      let particles = [];
+      let audioCtx = null;
+      let analyser = null;
+      let source = null;
+      let frequencyData = null;
+      let lowEnergy = 0.035;
+      let midEnergy = 0.025;
+      let highEnergy = 0.018;
+      let previousHighEnergy = 0.018;
 
-      function rand(min, max) {
-        return min + Math.random() * (max - min);
+      function particleTotal() {
+        if (reduceMotion) return 22;
+        return window.innerWidth < 540 ? 48 : 66;
       }
 
-      function resize() {
-        var rect = canvas.getBoundingClientRect();
-        width = Math.max(1, rect.width);
-        height = Math.max(1, rect.height);
-        canvas.width = Math.round(width * dpr);
-        canvas.height = Math.round(height * dpr);
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-        cx = width / 2;
-        cy = height / 2;
-        radius = Math.min(width, height) * 0.31;
+      function resizeCanvas() {
+        const bounds = canvas.getBoundingClientRect();
+        dpr = Math.min(window.devicePixelRatio || 1, 1.75);
+        canvas.width = Math.max(1, Math.floor(bounds.width * dpr));
+        canvas.height = Math.max(1, Math.floor(bounds.height * dpr));
+        particles = Array.from({ length: particleTotal() }, () => createParticle(true));
       }
 
-      function makeParticle(seedQuiet) {
-        var angle = rand(0, Math.PI * 2);
-        var band = rand(-10, 32);
-        var r = radius + band;
-        var size = rand(0.45, 1.45);
-        var far = Math.random() < 0.34;
-        if (far) {
-          r = radius + rand(34, 64);
-          size = rand(0.35, 0.9);
-        }
+      function createParticle(initial = false) {
+        const width = canvas.width || 1;
+        const height = canvas.height || 1;
+        const nearRing = Math.random() > 0.28;
+        const angle = Math.random() * Math.PI * 2;
+        const ringRadius = Math.min(width, height) * (0.22 + Math.random() * 0.22);
         return {
-          angle: angle,
-          r: r,
-          baseR: r,
-          x: cx + Math.cos(angle) * r,
-          y: cy + Math.sin(angle) * r,
-          size: size,
-          alpha: seedQuiet ? rand(0.06, 0.22) : rand(0.10, 0.50),
-          baseAlpha: seedQuiet ? rand(0.06, 0.20) : rand(0.10, 0.38),
-          drift: rand(0.002, 0.010) * (Math.random() < 0.5 ? -1 : 1),
-          rise: rand(0.012, 0.060),
-          jitter: rand(0.10, 0.62),
-          twinkle: rand(0.006, 0.026),
-          life: rand(0, 1),
-          ttl: rand(0.72, 1.8),
-          burst: 0
+          x: nearRing ? width / 2 + Math.cos(angle) * ringRadius : Math.random() * width,
+          y: initial ? (nearRing ? height / 2 + Math.sin(angle) * ringRadius : Math.random() * height) : height + Math.random() * height * 0.08,
+          size: (0.45 + Math.random() * 1.55) * dpr,
+          rise: (0.06 + Math.random() * 0.17) * dpr,
+          drift: (Math.random() - 0.5) * 0.22 * dpr,
+          phase: Math.random() * Math.PI * 2,
+          alpha: 0.10 + Math.random() * 0.48,
+          tone: Math.random(),
+          burst: 0,
         };
       }
 
-      function seedParticles() {
-        var count = reduceMotion ? 28 : 74;
-        particles = [];
-        for (var i = 0; i < count; i++) {
-          particles.push(makeParticle(true));
-        }
-      }
-
       function initAnalyser() {
-        if (analyserReady || reduceMotion) return;
-        var capture = audio.captureStream || audio.mozCaptureStream;
-        if (typeof capture !== 'function') return;
+        if (analyser) return;
+        const AudioCtor = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtor) return;
+
         try {
-          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-          var stream = capture.call(audio);
-          var source = audioCtx.createMediaStreamSource(stream);
+          audioCtx = new AudioCtor();
+          source = audioCtx.createMediaElementSource(audio);
           analyser = audioCtx.createAnalyser();
-          analyser.fftSize = 128;
-          analyser.smoothingTimeConstant = 0.72;
-          freqBuf = new Uint8Array(analyser.frequencyBinCount);
+          analyser.fftSize = 512;
+          analyser.smoothingTimeConstant = 0.84;
           source.connect(analyser);
-          analyserReady = true;
-        } catch (err) {
-          analyserReady = false;
-          audioCtx = null;
+          analyser.connect(audioCtx.destination);
+          frequencyData = new Uint8Array(analyser.frequencyBinCount);
+        } catch (_) {
           analyser = null;
-          freqBuf = null;
+          frequencyData = null;
         }
       }
 
-      function getEnergy(isPlaying, ts) {
-        if (!isPlaying || reduceMotion) return 0;
-
-        var raw = 0;
-        if (analyser && freqBuf) {
-          analyser.getByteFrequencyData(freqBuf);
-          var sum = 0;
-          var count = 0;
-          for (var i = 2; i < Math.min(28, freqBuf.length); i++) {
-            sum += freqBuf[i];
-            count++;
-          }
-          raw = count ? sum / count / 255 : 0;
-          raw = Math.pow(Math.min(raw * 2.8, 1), 0.72);
-        } else {
-          var t = ts * 0.001;
-          raw = 0.24 + Math.sin(t * 1.7) * 0.05 + Math.sin(t * 4.6) * 0.035 + Math.random() * 0.035;
+      function averageBand(from, to) {
+        let total = 0;
+        for (let index = from; index <= to; index += 1) {
+          total += frequencyData[index] || 0;
         }
-
-        var target = Math.max(0, Math.min(1, raw));
-        var lerp = target > smoothEnergy ? 0.22 : 0.08;
-        smoothEnergy += (target - smoothEnergy) * lerp;
-        return smoothEnergy;
+        return total / (to - from + 1) / 255;
       }
 
-      function draw(ts) {
-        rafId = requestAnimationFrame(draw);
+      function updateEnergyBands() {
+        previousHighEnergy = highEnergy;
 
-        if (!lastTs) lastTs = ts;
-        var dt = Math.min(34, Math.max(8, ts - lastTs));
-        lastTs = ts;
+        if (analyser && frequencyData) {
+          analyser.getByteFrequencyData(frequencyData);
+          lowEnergy = lowEnergy * 0.86 + averageBand(2, 18) * 0.14;
+          midEnergy = midEnergy * 0.84 + averageBand(19, 68) * 0.16;
+          highEnergy = highEnergy * 0.78 + averageBand(69, 150) * 0.22;
+          return;
+        }
 
-        var isPlaying = !audio.paused && visual.classList.contains('playing');
-        var energy = getEnergy(isPlaying, ts);
-        var quiet = isPlaying ? 0.34 : 0.08;
-        var intensity = reduceMotion ? 0.02 : Math.max(quiet, energy);
+        const active = !audio.paused;
+        lowEnergy = lowEnergy * 0.92 + (active ? 0.075 + Math.random() * 0.035 : 0.025) * 0.08;
+        midEnergy = midEnergy * 0.90 + (active ? 0.050 + Math.random() * 0.055 : 0.016) * 0.10;
+        highEnergy = highEnergy * 0.88 + (active ? 0.030 + Math.random() * 0.075 : 0.010) * 0.12;
+      }
+
+      function drawParticles() {
+        const width = canvas.width;
+        const height = canvas.height;
+        const active = !audio.paused;
+        const motion = reduceMotion ? 0.10 : (active ? 1 : 0.20);
+        const highDelta = Math.max(0, highEnergy - previousHighEnergy);
+        const transient = active && !reduceMotion && highDelta > 0.034;
 
         ctx.clearRect(0, 0, width, height);
 
-        var ringScale = 1 + (isPlaying ? energy * 0.010 : 0);
-        var ringOpacity = 0.86 + (isPlaying ? energy * 0.10 : 0);
-        ring.style.transform = 'scale(' + ringScale.toFixed(4) + ')';
-        ring.style.opacity = ringOpacity.toFixed(3);
+        for (let index = 0; index < particles.length; index += 1) {
+          const particle = particles[index];
+          particle.phase += 0.010 + midEnergy * 0.030;
+          particle.y -= (particle.rise + lowEnergy * 0.42 * dpr + midEnergy * 0.26 * dpr) * motion;
+          particle.x += (particle.drift + Math.sin(particle.phase) * (0.10 + midEnergy * 0.82) * dpr) * motion;
 
-        particles.forEach(function (p) {
-          if (!reduceMotion) {
-            p.life += (dt / 1000) * (0.34 + intensity * 0.62);
-            p.angle += p.drift * (0.7 + intensity * 2.8) * (dt / 16.7);
-            p.r += Math.sin((ts * p.twinkle) + p.baseR) * 0.018 * intensity;
-            p.y -= p.rise * (0.5 + intensity * 3.4) * (dt / 16.7);
-            p.burst *= 0.92;
-
-            if (isPlaying && Math.random() < 0.004 + energy * 0.018) {
-              p.burst = rand(0.12, 0.55) * intensity;
-              p.r += rand(0.5, 2.4);
-            }
+          if (transient && particle.tone > 0.72 && Math.random() < 0.11) {
+            particle.burst = Math.min(1, particle.burst + 0.85);
           }
 
-          var jitterX = (Math.random() - 0.5) * p.jitter * intensity;
-          var jitterY = (Math.random() - 0.5) * p.jitter * intensity;
-          var orbitalX = cx + Math.cos(p.angle) * p.r;
-          var orbitalY = cy + Math.sin(p.angle) * p.r;
+          if (particle.burst > 0.02) {
+            particle.x += (Math.random() - 0.5) * (1.8 + highEnergy * 10) * dpr;
+            particle.y -= (0.7 + highEnergy * 5.8) * dpr;
+            particle.burst *= 0.84;
+          }
 
-          p.x += (orbitalX - p.x) * 0.015;
-          p.y += ((orbitalY - p.y) * 0.012) - (isPlaying ? p.rise * intensity * 0.30 : 0);
+          if (particle.y < -10 || particle.x < -28 || particle.x > width + 28) {
+            particles[index] = createParticle(false);
+            continue;
+          }
 
-          var tw = 0.55 + Math.sin(ts * p.twinkle + p.angle * 3.0) * 0.30 + p.burst;
-          var alpha = Math.min(0.92, p.baseAlpha * (0.72 + intensity * 1.4) * tw);
-          var s = p.size * (0.72 + intensity * 0.62 + p.burst * 0.8);
+          const flicker = 0.56 + Math.sin(particle.phase) * 0.34 + Math.random() * highEnergy * 0.18;
+          const burstGlow = 1 + particle.burst * 0.65;
+          const alpha = Math.max(0.018, Math.min(0.86, particle.alpha * flicker * (0.44 + lowEnergy * 0.24 + midEnergy * 0.36 + highEnergy * 0.48)));
+          const radius = particle.size * (0.86 + midEnergy * 0.28 + particle.burst * 0.22);
+
+          if (particle.tone > 0.78) {
+            ctx.fillStyle = `rgba(255, 255, 255, ${Math.min(0.90, alpha * 0.92 * burstGlow)})`;
+          } else if (particle.tone < 0.30) {
+            ctx.fillStyle = `rgba(220, 223, 220, ${alpha * 0.34})`;
+          } else {
+            ctx.fillStyle = `rgba(230, 232, 228, ${alpha * 0.56})`;
+          }
 
           ctx.beginPath();
-          ctx.fillStyle = 'rgba(240, 242, 238, ' + alpha.toFixed(3) + ')';
-          ctx.arc(p.x + jitterX, p.y + jitterY, s, 0, Math.PI * 2);
+          ctx.arc(particle.x, particle.y, radius, 0, Math.PI * 2);
           ctx.fill();
-
-          if (p.burst > 0.08) {
-            ctx.beginPath();
-            ctx.fillStyle = 'rgba(255, 255, 255, ' + Math.min(0.44, p.burst).toFixed(3) + ')';
-            ctx.arc(p.x + jitterX, p.y + jitterY, s * 2.2, 0, Math.PI * 2);
-            ctx.fill();
-          }
-
-          var outOfBounds = p.y < -20 || p.x < -20 || p.x > width + 20 || p.life > p.ttl;
-          if (outOfBounds) {
-            Object.assign(p, makeParticle(!isPlaying));
-            p.y += rand(8, 28);
-          }
-        });
+        }
       }
 
-      function start() {
+      function updateRing() {
+        const active = !audio.paused;
+        const scale = 1 + (reduceMotion ? 0 : Math.min(0.010, lowEnergy * 0.011 + highEnergy * 0.003));
+        const opacity = 0.92 + (active ? Math.min(0.075, lowEnergy * 0.075 + midEnergy * 0.026) : 0);
+        ring.style.setProperty('--ag-ring-scale', scale.toFixed(4));
+        ring.style.setProperty('--ag-ring-opacity', opacity.toFixed(3));
+      }
+
+      function animate() {
+        updateEnergyBands();
+        drawParticles();
+        updateRing();
+        requestAnimationFrame(animate);
+      }
+
+      resizeCanvas();
+      window.addEventListener('resize', resizeCanvas, { passive: true });
+      reduceMotionQuery.addEventListener('change', function (event) {
+        reduceMotion = event.matches;
+        resizeCanvas();
+      });
+      audio.addEventListener('play', function () {
         initAnalyser();
         if (audioCtx && audioCtx.state === 'suspended') {
           audioCtx.resume().catch(function () {});
         }
-        if (!rafId) {
-          lastTs = 0;
-          rafId = requestAnimationFrame(draw);
-        }
-      }
-
-      function stop() {
-        if (reduceMotion) return;
-        // Keep a very low idle drift instead of abruptly clearing the atmosphere.
-      }
-
-      resize();
-      seedParticles();
-      requestAnimationFrame(draw);
-
-      window.addEventListener('resize', function () {
-        resize();
-        seedParticles();
       });
-
-      audio.addEventListener('play', start);
-      audio.addEventListener('pause', stop);
-
-      document.addEventListener('visibilitychange', function () {
-        if (document.hidden) {
-          if (audioCtx && audioCtx.state === 'running') {
-            audioCtx.suspend().catch(function () {});
-          }
-        } else if (!audio.paused) {
-          start();
-        }
-      });
+      requestAnimationFrame(animate);
     })();
 
     if ('serviceWorker' in navigator) {
