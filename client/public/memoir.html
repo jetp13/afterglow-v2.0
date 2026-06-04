@@ -45,6 +45,14 @@
       letter-spacing: 0.06em;
       margin: 0;
     }
+    @keyframes legalLineExpand {
+      from { height: 0; }
+      to   { height: 100%; }
+    }
+    @keyframes legalTextReveal {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
     .ag-doc-quote {
       position: relative;
       border-left: none;
@@ -57,8 +65,9 @@
       left: 0;
       top: 0;
       width: 2px;
-      height: 100%;
+      height: 0;
       background: rgba(255,255,255,0.75);
+      animation: legalLineExpand 0.6s ease-out 0.2s forwards;
     }
     .ag-doc-quote p {
       font-size: 14px;
@@ -67,6 +76,12 @@
       line-height: 1.7;
       margin: 0;
       text-shadow: 0 0 1.5px rgba(255,255,255,0.9), 0 0 6px rgba(255,255,255,0.4), 0 0 16px rgba(255,255,255,0.15);
+      opacity: 0;
+      animation: legalTextReveal 0.5s ease-out 0.7s forwards;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ag-doc-quote::before { height: 100%; animation: none; }
+      .ag-doc-quote p { opacity: 1; animation: none; }
     }
     .ag-doc-section {
       margin-bottom: 48px;
