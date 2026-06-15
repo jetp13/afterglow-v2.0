@@ -1,5 +1,5 @@
 {
-  "outputDirectory": "client/public",
+  "outputDirectory": "dist/public",
   "cleanUrls": false,
   "trailingSlash": false
 }
