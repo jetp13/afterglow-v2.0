@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="/assets/layout.css">
   <script>
     // Check for consent immediately
-    if (localStorage.getItem('ag_consent') !== 'true') {
+    if (sessionStorage.getItem('ag_consent') !== 'true') {
       window.location.href = '/index.html';
     }
   </script>

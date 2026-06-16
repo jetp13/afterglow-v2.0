@@ -9,7 +9,7 @@
   <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
   <link rel="stylesheet" href="/assets/layout.css">
   <script>
-    if (localStorage.getItem('ag_consent') !== 'true') {
+    if (sessionStorage.getItem('ag_consent') !== 'true') {
       window.location.href = '/index.html';
     }
   </script>

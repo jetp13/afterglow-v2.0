@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/assets/layout.css">
   <link rel="stylesheet" href="/assets/shared-emergency.css">
   <script>
-    if (localStorage.getItem('ag_consent') !== 'true') {
+    if (sessionStorage.getItem('ag_consent') !== 'true') {
       window.location.href = '/index.html';
     }
   </script>

@@ -255,7 +255,7 @@
     const enterBtn = document.getElementById('enter-btn');
 
     // Check if already consented
-    if (localStorage.getItem('ag_consent') === 'true') {
+    if (sessionStorage.getItem('ag_consent') === 'true') {
       window.location.href = '/home.html';
     }
 
@@ -289,7 +289,7 @@
     enterBtn.addEventListener('click', function(e) {
       e.preventDefault();
       if (enterBtn.classList.contains('active')) {
-        localStorage.setItem('ag_consent', 'true');
+        sessionStorage.setItem('ag_consent', 'true');
         // Force reload to bypass cache
         window.location.href = '/home.html?v=' + new Date().getTime();
       }
