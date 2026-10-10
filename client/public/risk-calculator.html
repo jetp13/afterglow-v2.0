@@ -594,14 +594,14 @@
       'opioids+benzos': { level: 'deadly', desc: '極度危險！常見的致死性過量組合，強烈呼吸抑制。' },
       'opioids+cocaine': { level: 'deadly', desc: 'Speedball。極度危險，容易因興奮劑消退後發生鴉片類過量。' },
 
-      'alcohol+etomidate': { level: 'deadly', desc: '極度危險！兩者皆為強烈中樞神經抑制劑，混用極易導致呼吸停止與死亡。' },
-      'benzos+etomidate': { level: 'deadly', desc: '極度危險！強烈加成抑制作用，極易導致昏迷與呼吸衰竭。' },
-      'opioids+etomidate': { level: 'deadly', desc: '極度危險！雙重呼吸抑制，致死風險極高。' },
-      'ghb+etomidate': { level: 'deadly', desc: '極度危險！極易導致失去意識、嘔吐窒息與死亡。' },
-      'ketamine+etomidate': { level: 'deadly', desc: '極度危險！深層麻醉風險，可能導致呼吸道阻塞與窒息。' },
-      'cocaine+etomidate': { level: 'unsafe', desc: '危險！興奮劑會掩蓋麻醉效果，導致用量過度，且增加心血管崩潰風險。' },
-      'meth+etomidate': { level: 'unsafe', desc: '危險！興奮劑會掩蓋麻醉效果，導致用量過度，且增加心血管崩潰風險。' },
-      'mdma+etomidate': { level: 'unsafe', desc: '危險！增加心臟負擔，且可能導致不可預期的意識喪失。' },
+      'alcohol+etomidate': { level: 'unsafe', desc: '高風險。兩者都可能加重鎮靜與意識／協調受損，增加跌倒、嘔吐與氣道風險；直接致死交互作用資料有限。依托咪酯非醫療使用的濃度與混入物可能不明。' },
+      'benzos+etomidate': { level: 'unsafe', desc: '高風險。可能增加深度鎮靜、低氧與呼吸風險；無監測環境應避免。現有人體資料不支持把此組合一概視為必然致命。依托咪酯非醫療使用的濃度與混入物可能不明。' },
+      'opioids+etomidate': { level: 'unsafe', desc: '高風險。鴉片類本身可抑制呼吸，與麻醉／鎮靜作用並存時可能增加低氧、失去意識與氣道風險；應避免無監測混用。依托咪酯非醫療使用的濃度與混入物可能不明。' },
+      'ghb+etomidate': { level: 'unsafe', desc: '高風險。可能加深鎮靜與失去意識，並增加嘔吐、誤吸與氣道風險；直接 pairwise 致死率資料有限。依托咪酯非醫療使用的濃度與混入物可能不明。' },
+      'ketamine+etomidate': { level: 'unsafe', desc: '高風險。兩者合用可造成深度鎮靜與短暫低氧；臨床上需監測氣道與呼吸。非醫療混用缺乏監測，應避免。依托咪酯非醫療使用的濃度與混入物可能不明。' },
+      'cocaine+etomidate': { level: 'caution', desc: '需謹慎。刺激作用不會可靠抵銷依托咪酯造成的意識與協調受損；整體反應與判斷可能更不可預測。直接 recreational pairwise 資料有限。依托咪酯非醫療使用的濃度與混入物可能不明。' },
+      'meth+etomidate': { level: 'caution', desc: '需謹慎。刺激作用不代表已恢復清醒；心血管負擔與依托咪酯造成的意識／協調受損可能同時存在。直接 pairwise 嚴重度資料有限。依托咪酯非醫療使用的濃度與混入物可能不明。' },
+      'mdma+etomidate': { level: 'caution', desc: '需謹慎。直接 Etomidate–MDMA 交互作用資料不足；兩者各自的心血管、體溫與意識風險可能同時存在。依托咪酯非醫療使用的濃度與混入物可能不明。' },
 
       // ── 以下組合資料參考 TripSit Drug Combinations（https://wiki.tripsit.me/wiki/Drug_combinations）──
       // Low Risk & Synergy
@@ -639,7 +639,6 @@
       'mdma+opioids':    { level: 'unsafe',  desc: '危險！MDMA 的興奮效果可能掩蓋鴉片類的抑制作用，導致不知不覺過量；且兩者皆影響血清素，增加血清素症候群風險。（來源：TripSit）' },
       'mdma+benzos':     { level: 'caution', desc: '需謹慎。鎮靜劑會減弱 MDMA 的效果，但可用於緩解焦慮；混用會使兩者效果難以預測。（來源：TripSit）' },
       'mdma+ketamine':   { level: 'caution', desc: '需謹慎。兩者皆影響神經傳導，混用可能增加迷失方向感與心臟負擔，體驗難以預測。（來源：TripSit）' },
-      'mdma+etomidate':  { level: 'unsafe',  desc: '危險！MDMA 增加心臟負擔，依托咪酯的麻醉效果可能導致不可預期的意識喪失。' },
       'mdma+poppers':    { level: 'unsafe',  desc: '危險！MDMA 收縮血管，RUSH 擴張血管，兩者混用造成血壓劇烈波動，大幅增加心血管風險。（來源：TripSit）' },
 
       // 安非他命 / 古柯鹼 相關
@@ -655,7 +654,7 @@
       'caffeine+ghb':     { level: 'caution', desc: '需謹慎。咖啡因可能掩蓋 GHB 的抑制效果，導致不知不覺攝入過量 GHB。（來源：TripSit）' },
       'caffeine+benzos':  { level: 'caution', desc: '需謹慎。咖啡因與鎮靜劑效果相互拮抗，可能導致兩者用量都增加，增加依賴風險。（來源：TripSit）' },
       'caffeine+ketamine':{ level: 'caution', desc: '需謹慎。咖啡因可能增加 K 他命引起的焦慮與心跳加速，影響體驗穩定性。（來源：TripSit）' },
-      'caffeine+etomidate':{ level: 'caution', desc: '需謹慎。咖啡因可能部分拮抗依托咪酯的鎮靜效果，導致用量判斷困難。' },
+      'caffeine+etomidate':{ level: 'caution', desc: '需謹慎。咖啡因不能可靠逆轉依托咪酯造成的意識或協調受損，不應用「喝咖啡後比較清醒」判斷自己已恢復安全。直接交互作用資料有限。依托咪酯非醫療使用的濃度與混入物可能不明。' },
       'caffeine+cannabis':{ level: 'low',     desc: '低風險。咖啡因與大麻混用通常無嚴重交互作用，但可能增加心跳加速感。（來源：TripSit）' },
       'caffeine+poppers': { level: 'caution', desc: '需謹慎。咖啡因增加心率，RUSH 降低血壓，兩者混用可能造成心血管不適。' },
       'caffeine+viagra':  { level: 'caution', desc: '需謹慎。咖啡因增加心率，威而鋼降低血壓，兩者混用可能造成心臟不適。' },
@@ -666,14 +665,12 @@
       'alcohol+lsd':      { level: 'caution', desc: '需謹慎。酒精可能減弱 LSD 效果，但也可能增加焦慮與噁心；兩者皆影響協調能力。（來源：TripSit）' },
 
       // 鴉片類 相關
-      'opioids+etomidate':{ level: 'deadly',  desc: '極度危險！雙重強烈呼吸抑制，致死風險極高，絕對避免混用。' },
       'opioids+mushrooms':{ level: 'caution', desc: '需謹慎。鴉片類可能減弱迷幻效果，但兩者混用的整體風險資料有限，需格外謹慎。（來源：TripSit）' },
       'opioids+lsd':      { level: 'caution', desc: '需謹慎。鴉片類可能減弱 LSD 效果，但兩者混用的整體風險資料有限，需格外謹慎。（來源：TripSit）' },
       'opioids+poppers':  { level: 'unsafe',  desc: '危險！鴉片類抑制呼吸，RUSH 降低血壓，兩者混用大幅增加昏厥與窒息風險。（來源：TripSit）' },
       'opioids+viagra':   { level: 'caution', desc: '需謹慎。鴉片類可能影響性功能，與威而鋼混用的交互作用資料有限，但需注意血壓變化。' },
 
       // GHB 相關
-      'ghb+etomidate':    { level: 'deadly',  desc: '極度危險！兩者皆為強烈中樞神經抑制劑，混用極易導致失去意識、嘔吐窒息與死亡。' },
       'ghb+mushrooms':    { level: 'caution', desc: '需謹慎。GHB 的抑制效果可能與迷幻蘑菇的體驗產生難以預測的交互作用。（來源：TripSit）' },
       'ghb+cannabis':     { level: 'caution', desc: '需謹慎。大麻可能增強 GHB 的抑制效果，增加失去意識的風險，需嚴格控制 GHB 劑量。（來源：TripSit）' },
       'ghb+lsd':          { level: 'caution', desc: '需謹慎。GHB 的抑制效果與 LSD 的迷幻效果混用，體驗難以預測，且增加失去意識風險。（來源：TripSit）' },
@@ -694,11 +691,11 @@
       'ketamine+viagra':  { level: 'caution', desc: '需謹慎。K 他命影響協調能力，與威而鋼混用的心血管交互作用需注意。' },
 
       // 依托咪酯 相關
-      'etomidate+mushrooms':{ level: 'unsafe', desc: '危險！依托咪酯的麻醉效果與迷幻蘑菇混用，可能導致不可預期的深度意識喪失。' },
-      'etomidate+cannabis': { level: 'unsafe', desc: '危險！依托咪酯的麻醉效果可能被大麻增強，導致過度鎮靜與呼吸道風險。' },
-      'etomidate+lsd':      { level: 'unsafe', desc: '危險！麻醉劑與迷幻劑混用，體驗完全不可預測，且有深度意識喪失風險。' },
-      'etomidate+poppers':  { level: 'deadly', desc: '極度危險！依托咪酯抑制呼吸，RUSH 降低血壓，兩者混用可能導致心血管崩潰與死亡。' },
-      'etomidate+viagra':   { level: 'unsafe', desc: '危險！依托咪酯的麻醉效果加上威而鋼的血壓降低，可能導致嚴重低血壓與意識喪失。' },
+      'etomidate+mushrooms':{ level: 'caution', desc: '需謹慎。直接 pairwise 資料不足；知覺改變與麻醉性意識／協調受損可能同時增加跌倒、迷失與無法自我照護的風險。依托咪酯非醫療使用的濃度與混入物可能不明。' },
+      'etomidate+cannabis': { level: 'caution', desc: '需謹慎。直接 pairwise 資料不足；可能增加嗜睡、方向感或協調能力下降，請避免駕駛與獨處。依托咪酯非醫療使用的濃度與混入物可能不明。' },
+      'etomidate+lsd':      { level: 'caution', desc: '需謹慎。直接 pairwise 資料不足；感知改變與意識／運動協調受損同時存在時，安全行為與環境判斷可能更不穩定。依托咪酯非醫療使用的濃度與混入物可能不明。' },
+      'etomidate+poppers':  { level: 'unsafe', desc: '高風險。Poppers 可能快速降低血壓；與依托咪酯造成的意識／協調受損並存時，可能增加暈厥、跌倒與失去意識風險。直接 pairwise 崩潰／死亡資料有限。依托咪酯非醫療使用的濃度與混入物可能不明。' },
+      'etomidate+viagra':   { level: 'caution', desc: '需謹慎。直接 pairwise 資料不足；可能出現頭暈或低血壓，與依托咪酯造成的意識／協調受損疊加時會增加跌倒風險。依托咪酯非醫療使用的濃度與混入物可能不明。' },
 
       // 迷幻蘑菇 相關
       'mushrooms+poppers':  { level: 'caution', desc: '需謹慎。RUSH 的短暫頭暈效果在迷幻狀態下可能被放大，增加焦慮與暈眩感。（來源：TripSit）' },
