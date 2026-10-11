@@ -166,6 +166,49 @@
     .ag-gate-link:hover {
       color: #fff;
     }
+
+    .ag-public-safety-box {
+      width: 100%;
+      max-width: 620px;
+      margin: 0 0 22px;
+      padding: 14px;
+      box-sizing: border-box;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.035);
+      text-align: left;
+    }
+    .ag-public-safety-title {
+      margin: 0 0 6px;
+      color: rgba(255,255,255,0.92);
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .ag-public-safety-copy {
+      margin: 0 0 10px;
+      color: rgba(255,255,255,0.58);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .ag-public-safety-links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .ag-public-safety-link {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 10px;
+      box-sizing: border-box;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 12px;
+      color: rgba(255,255,255,0.86);
+      text-decoration: none;
+      font-size: 13px;
+      text-align: center;
+    }
   </style>
 </head>
 <body class="ag-page">
@@ -178,6 +221,17 @@
     <div class="ag-warning-text">
       Afterglow 僅為教育性平台，若您尋求醫療協助，請立即聯絡醫療單位。
     </div>
+
+    <section class="ag-public-safety-box" aria-labelledby="public-safety-title">
+      <h2 class="ag-public-safety-title" id="public-safety-title">需要立即安全資訊？不用先同意入口聲明。</h2>
+      <p class="ag-public-safety-copy">公益安全核心可直接閱讀；進入其他功能時，才需要完成下方入口聲明。</p>
+      <div class="ag-public-safety-links">
+        <a class="ag-public-safety-link" href="/etomidate-safety.html">依托咪酯安全</a>
+        <a class="ag-public-safety-link" href="/first-aid.html">急救指引</a>
+        <a class="ag-public-safety-link" href="/risk-calculator.html">混用風險</a>
+        <a class="ag-public-safety-link" href="/help.html">求助資源</a>
+      </div>
+    </section>
 
     <!-- Disclaimer Box -->
     <div class="ag-disclaimer-box">
@@ -198,15 +252,15 @@
 
       <div class="ag-disclaimer-section">
         <div class="ag-disclaimer-title">三、資料與隱私聲明</div>
-        <p class="ag-disclaimer-text">平台不要求、也不主動蒐集個資；若使用者自行輸入或上傳資料，即表示同意其資料僅用於系統運作與統計分析，不作其他用途。</p>
-        <p class="ag-disclaimer-text">若使用者於互動過程中輸入敏感或違法內容，系統將自動遮蔽或刪除，創作者不對此負擔任何法律義務。</p>
-        <p class="ag-disclaimer-text">Afterglow 依據 GDPR 與台灣個資法原則設計，保障使用者資料安全。</p>
+        <p class="ag-disclaimer-text">目前公開網站不要求登入，也不使用第三方行為分析或廣告追蹤。入口同意狀態只暫存在本次瀏覽階段的瀏覽器 sessionStorage。</p>
+        <p class="ag-disclaimer-text">部分公益安全頁面可在尚未完成入口同意前直接閱讀；這不會自動啟用案件保存、外部法律查詢、付款或其他資料處理能力。</p>
+        <p class="ag-disclaimer-text">若未來新增會處理、傳送或保存資料的功能，會依該功能的實際資料流另行告知與取得必要同意。</p>
       </div>
 
       <div class="ag-disclaimer-section">
         <div class="ag-disclaimer-title">四、緊急與安全聲明</div>
         <p class="ag-disclaimer-text">若使用者或其身邊有人出現身體不適、精神錯亂、呼吸困難、失去意識等情況，請立即撥打當地緊急醫療電話（台灣：119），而非依賴本平台。</p>
-        <p class="ag-disclaimer-text">本平台不提供即時通訊、急救指導、或任何緊急醫療行為。</p>
+        <p class="ag-disclaimer-text">本平台可提供一般性的急救與減害教育資訊，但不提供即時通訊，也不能取代 119 接線員、救護人員或醫療專業判斷。</p>
         <p class="ag-disclaimer-text">若使用者有精神困擾或自殺念頭，請撥打：1925 安心專線、1995 生命線、1980 張老師。</p>
       </div>
 
