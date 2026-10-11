@@ -310,9 +310,14 @@
     const checkboxes = document.querySelectorAll('.ag-consent-checkbox');
     const enterBtn = document.getElementById('enter-btn');
 
+    const returnParam = new URLSearchParams(window.location.search).get('from');
+    const returnTarget = returnParam && returnParam.startsWith('/') && !returnParam.startsWith('//')
+      ? returnParam
+      : '/home.html';
+
     // Check if already consented
     if (sessionStorage.getItem('ag_consent') === 'true') {
-      window.location.href = '/home.html';
+      window.location.href = returnTarget;
     }
 
     // FORCE UNREGISTER ALL SERVICE WORKERS TO FIX 404
@@ -346,8 +351,7 @@
       e.preventDefault();
       if (enterBtn.classList.contains('active')) {
         sessionStorage.setItem('ag_consent', 'true');
-        // Force reload to bypass cache
-        window.location.href = '/home.html?v=' + new Date().getTime();
+        window.location.href = returnTarget;
       }
     });
   </script>
