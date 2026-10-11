@@ -197,7 +197,7 @@
             <strong>想找人協助</strong>
             <span>減害、社群與專業求助資源。</span>
           </a>
-          <a class="rapid-action" href="/rights.html">
+          <a class="rapid-action" href="/index.html?from=/rights.html">
             <strong>正在被攔查或進入毒駕程序</strong>
             <span>前往 Rights。高風險法律短句仍依 2026 現行法核證狀態呈現。</span>
           </a>
@@ -221,5 +221,10 @@
       </section>
     </div>
   </main>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
+    }
+  </script>
 </body>
 </html>
