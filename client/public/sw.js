@@ -1,11 +1,13 @@
-const CACHE_NAME = 'afterglow-v3-memoir';
+const CACHE_NAME = 'afterglow-v4-public-safety';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/home.html',
   '/first-aid.html',
+  '/etomidate-safety.html',
   '/rights.html',
   '/support-main.html',
+  '/help.html',
   '/risk-calculator.html',
   '/menu.html',
   '/breathing.html',
