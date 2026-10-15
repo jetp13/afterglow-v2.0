@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" data-age-pending>
 <head>
   <meta charset="UTF-8">
+  <style>html[data-age-pending] body > :not(noscript){display:none!important}</style><script src="/assets/adult-gate.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Afterglow｜讓夜裡的光有方向</title>
   <link rel="manifest" href="/manifest.json">
@@ -9,9 +10,6 @@
   <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
   <link rel="stylesheet" href="/assets/layout.css">
   <script>
-    if (sessionStorage.getItem('ag_consent') !== 'true') {
-      window.location.href = '/index.html';
-    }
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('/sw.js').catch(() => {});
@@ -409,8 +407,10 @@
       .ag-btn { height: 44px; font-size: 14px; }
     }
   </style>
+  <noscript><style>body > :not(noscript){display:none!important}</style></noscript>
 </head>
 <body>
+  <noscript><p>詳細工具需要 JavaScript 與 18+ 入口確認。<a href="/safety.html">返回公開安全資訊</a></p></noscript>
 
   <!-- Hero：Logo 偏左出血 -->
   <section class="ag-hero" aria-label="品牌識別">
