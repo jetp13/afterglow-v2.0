@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>免責聲明｜Afterglow</title>
+  <title>安全資訊與 18+ 入口｜Afterglow</title>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#000000">
   <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
@@ -166,6 +166,72 @@
     .ag-gate-link:hover {
       color: #fff;
     }
+
+    .ag-public-safety-box {
+      width: 100%;
+      max-width: 620px;
+      margin: 0 0 22px;
+      padding: 14px;
+      box-sizing: border-box;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 14px;
+      background: rgba(255,255,255,0.035);
+      text-align: left;
+    }
+    .ag-public-safety-title {
+      margin: 0 0 6px;
+      color: rgba(255,255,255,0.92);
+      font-size: 14px;
+      font-weight: 600;
+    }
+    .ag-public-safety-copy {
+      margin: 0 0 10px;
+      color: rgba(255,255,255,0.58);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .ag-public-safety-links {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .ag-public-safety-link {
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 10px;
+      box-sizing: border-box;
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 12px;
+      color: rgba(255,255,255,0.86);
+      text-decoration: none;
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .ag-gate-container { display:block; text-align:left; padding:32px 24px 56px; }
+    .ag-gate-container > * { max-width:560px; margin-left:auto; margin-right:auto; }
+    .ag-logo { display:block; }
+    .ag-entry-title { font-size:clamp(26px,7vw,32px); line-height:1.4; font-weight:500; letter-spacing:.04em; text-wrap:balance; margin-bottom:24px; }
+    .ag-warning-text { border:0; padding:0; background:none; color:#b8b8b8; font-size:14px; text-align:left; }
+    .ag-public-safety-box { padding:24px 0 30px; border:0; border-top:1px solid #555; border-bottom:1px solid #555; border-radius:0; background:none; margin-bottom:32px; }
+    .ag-public-safety-box h2,.ag-adult-entry h2 { font-size:20px; font-weight:500; letter-spacing:.025em; line-height:1.5; margin-bottom:8px; }
+    .ag-public-safety-box p,.ag-adult-entry p { color:#b8b8b8; line-height:1.75; margin-bottom:12px; font-size:15px; }
+    .safety-link { display:flex; align-items:center; min-height:48px; width:fit-content; color:#fff; border-bottom:1px solid #ff8bdc; text-decoration:none; letter-spacing:.035em; box-shadow:0 2px 3px -2px #ff8bdc99,0 5px 10px -7px #ff8bdc66; }
+    .ag-entry-notice { margin-top:20px; margin-bottom:20px; }
+    .ag-entry-notice summary { min-height:44px; padding:10px 0; cursor:pointer; color:#eee; }
+    .ag-disclaimer-box { margin-top:12px; border-color:#666; background:#000; border-radius:4px; box-shadow:none; max-height:none; }
+    .ag-disclaimer-title { color:#ffb5e7; }
+    .ag-enter-button { margin-top:16px; margin-left:0; border-color:#ff8bdc; border-radius:4px; box-shadow:0 0 2px #ff8bdc66,0 0 8px #ff8bdc26,inset 0 0 3px #ff8bdc20; opacity:1; font:inherit; letter-spacing:.035em; }
+    .ag-enter-button:disabled { color:#aaa; border-color:#555; box-shadow:none; cursor:not-allowed; pointer-events:auto; }
+    .ag-enter-button.active,.ag-enter-button.active:hover { background:#000; box-shadow:0 0 8px #ff8bdc33; }
+    .ag-consent-label { min-height:48px; }
+    .ag-footer__link { display:inline-flex; min-height:44px; align-items:center; color:#b8b8b8; }
+    a:focus-visible,button:focus-visible,summary:focus-visible,[tabindex]:focus-visible { outline:2px solid #fff; outline-offset:5px; }
+    input:focus-visible { outline:2px solid #fff; outline-offset:4px; }
+    #gate-error { color:#ffb5e7; margin-top:16px; }
+    @media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
   </style>
 </head>
 <body class="ag-page">
@@ -174,49 +240,64 @@
     <!-- Logo -->
     <img src="/assets/logo-new.png" class="ag-logo" alt="Afterglow Logo" style="width: 180px; margin: 0 auto 20px;">
     
+    <h1 class="ag-entry-title">先找到你需要的方向。</h1>
     <!-- Warning -->
     <div class="ag-warning-text">
       Afterglow 僅為教育性平台，若您尋求醫療協助，請立即聯絡醫療單位。
     </div>
 
+    <section class="ag-public-safety-box" aria-labelledby="public-safety-title">
+      <h2 id="public-safety-title">需要立即安全資訊？</h2>
+      <p>不用先進入 Afterglow，直接看現在能做什麼。</p>
+      <a class="safety-link" href="/safety.html">查看安全資訊 →</a>
+    </section>
+    <section class="ag-adult-entry" aria-labelledby="adult-title">
+      <h2 id="adult-title">18+ Afterglow</h2>
+      <p id="gate-destination">詳細物質資訊、混用風險與成人工具。</p>
+      <p>先閱讀入口聲明，再決定是否進入。安全資訊始終可直接閱讀。</p>
+    </section>
+    <details class="ag-entry-notice">
+      <summary>閱讀入口聲明與使用邊界</summary>
     <!-- Disclaimer Box -->
-    <div class="ag-disclaimer-box">
+    <div class="ag-disclaimer-box" tabindex="0" aria-label="入口聲明內容">
       
       <div class="ag-disclaimer-section">
         <div class="ag-disclaimer-title">一、總體定位聲明</div>
         <p class="ag-disclaimer-text">Afterglow 為健康教育與風險減害平台，其目的在於提供公共衛教與自我照護資訊，協助使用者了解身心健康與安全相關議題。</p>
         <p class="ag-disclaimer-text">平台內容僅供教育、心理健康、自我覺察用途，絕不鼓勵、推廣或美化任何形式的非法藥物使用、性行為或風險行為。</p>
-        <p class="ag-disclaimer-text">使用者進入平台即代表已年滿 18 歲，並理解 Afterglow 非醫療、非心理治療、非緊急救助系統。</p>
+        <p class="ag-disclaimer-text">18+ Afterglow 的詳細工具限年滿 18 歲者使用；公開安全資訊不以此確認為前提。Afterglow 不提供醫療、心理治療或即時緊急救援服務。</p>
       </div>
 
       <div class="ag-disclaimer-section">
         <div class="ag-disclaimer-title">二、法律與風險免責</div>
-        <p class="ag-disclaimer-text">Afterglow 團隊及創作者不對使用者因誤用資訊、誤解內容、或個人行為導致的任何法律、醫療、心理或社會後果負責。</p>
+        <p class="ag-disclaimer-text">本站資訊不能取代專業判斷；個案權利與責任依適用法令及事實判斷，不因本站聲明而當然免除。</p>
         <p class="ag-disclaimer-text">平台所提供的任何藥物、心理或身體健康資訊，均屬一般性教育資料，並非個別診斷或處方建議。若有醫療需求，請立即諮詢專業醫師或藥師。</p>
-        <p class="ag-disclaimer-text">平台不儲存、蒐集或分發任何涉及違法行為的資訊。使用者若於使用平台期間進行任何違反法令之行為，法律責任由使用者本人承擔。</p>
+        <p class="ag-disclaimer-text">本站目前沒有案件輸入、檔案上傳或帳號功能。不要透過外部連結傳送不必要的敏感資料。</p>
       </div>
 
       <div class="ag-disclaimer-section">
         <div class="ag-disclaimer-title">三、資料與隱私聲明</div>
-        <p class="ag-disclaimer-text">平台不要求、也不主動蒐集個資；若使用者自行輸入或上傳資料，即表示同意其資料僅用於系統運作與統計分析，不作其他用途。</p>
-        <p class="ag-disclaimer-text">若使用者於互動過程中輸入敏感或違法內容，系統將自動遮蔽或刪除，創作者不對此負擔任何法律義務。</p>
-        <p class="ag-disclaimer-text">Afterglow 依據 GDPR 與台灣個資法原則設計，保障使用者資料安全。</p>
+        <p class="ag-disclaimer-text">本站不要求登入。入口確認狀態暫存在瀏覽器 sessionStorage；網站傳送與必要技術紀錄依託管服務實際設定處理，詳見隱私權政策。</p>
+        <p class="ag-disclaimer-text">安全入口、依托咪酯即時安全、急救與求助頁可直接閱讀；ChemAid 與其他詳細工具需先完成 18+ 入口確認。這不是身分或實際年齡驗證。</p>
+        <p class="ag-disclaimer-text">若未來新增會處理、傳送或保存資料的功能，會依該功能的實際資料流另行告知與取得必要同意。</p>
       </div>
 
       <div class="ag-disclaimer-section">
         <div class="ag-disclaimer-title">四、緊急與安全聲明</div>
         <p class="ag-disclaimer-text">若使用者或其身邊有人出現身體不適、精神錯亂、呼吸困難、失去意識等情況，請立即撥打當地緊急醫療電話（台灣：119），而非依賴本平台。</p>
-        <p class="ag-disclaimer-text">本平台不提供即時通訊、急救指導、或任何緊急醫療行為。</p>
+        <p class="ag-disclaimer-text">本平台可提供一般性的急救與減害教育資訊，但不提供即時通訊，也不能取代 119 接線員、救護人員或醫療專業判斷。</p>
         <p class="ag-disclaimer-text">若使用者有精神困擾或自殺念頭，請撥打：1925 安心專線、1995 生命線、1980 張老師。</p>
       </div>
 
       <div class="ag-disclaimer-section">
         <div class="ag-disclaimer-title">五、著作與責任聲明</div>
         <p class="ag-disclaimer-text">Afterglow 為教育與公益性專案，所有內容受著作權保護，未經許可不得擷取或轉載。</p>
-        <p class="ag-disclaimer-text">使用本平台即代表使用者理解：Afterglow 的創作者及技術團隊僅提供教育性工具，不對內容的合法性、正確性、即時性或完整性提供任何明示或默示保證。</p>
+        <p class="ag-disclaimer-text">使用 18+ Afterglow 前，請理解：Afterglow 的創作者及技術團隊僅提供教育性工具，不對內容的合法性、正確性、即時性或完整性提供任何明示或默示保證。</p>
       </div>
 
     </div>
+
+    </details>
 
     <!-- Checkbox Group -->
     <div class="ag-checkbox-group">
@@ -227,9 +308,9 @@
     </div>
 
     <!-- Enter Button -->
-    <a href="#" id="enter-btn" class="ag-enter-button">
-      進入 Afterglow
-    </a>
+    <button type="button" id="enter-btn" class="ag-enter-button" disabled>進入 18+ Afterglow</button>
+    <p id="gate-error" role="status" hidden></p>
+    <noscript><p>詳細工具需要 JavaScript 才能完成入口確認。你仍可直接閱讀安全資訊。</p></noscript>
 
   </div>
 
@@ -252,50 +333,6 @@
     </div>
   </footer>
 
-  <script>
-    const checkboxes = document.querySelectorAll('.ag-consent-checkbox');
-    const enterBtn = document.getElementById('enter-btn');
-
-    // Check if already consented
-    if (sessionStorage.getItem('ag_consent') === 'true') {
-      window.location.href = '/home.html';
-    }
-
-    // FORCE UNREGISTER ALL SERVICE WORKERS TO FIX 404
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.getRegistrations().then(function(registrations) {
-        for(let registration of registrations) {
-          registration.unregister();
-          console.log('ServiceWorker unregistered');
-        }
-      });
-    }
-
-    function checkAllConsent() {
-      let allChecked = true;
-      checkboxes.forEach(cb => {
-        if (!cb.checked) allChecked = false;
-      });
-
-      if (allChecked) {
-        enterBtn.classList.add('active');
-      } else {
-        enterBtn.classList.remove('active');
-      }
-    }
-
-    checkboxes.forEach(cb => {
-      cb.addEventListener('change', checkAllConsent);
-    });
-
-    enterBtn.addEventListener('click', function(e) {
-      e.preventDefault();
-      if (enterBtn.classList.contains('active')) {
-        sessionStorage.setItem('ag_consent', 'true');
-        // Force reload to bypass cache
-        window.location.href = '/home.html?v=' + new Date().getTime();
-      }
-    });
-  </script>
+  <script src="/assets/entry-gate.js"></script>
 </body>
 </html>

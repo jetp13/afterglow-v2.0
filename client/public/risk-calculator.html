@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" data-age-pending>
 <head>
   <meta charset="UTF-8">
+  <style>html[data-age-pending] body > :not(noscript){display:none!important}
+.ag-capsule-btn { font-family:inherit; font-size:13px; line-height:1.35; text-align:center; appearance:none; min-height:44px!important; }
+.ag-capsule-btn:focus-visible { outline:2px solid #fff; outline-offset:4px; }
+.ag-page-title,.ag-page-subtitle,.ag-result-title { color:#b8b8b8; opacity:1; }
+@media(prefers-reduced-motion:reduce) { *,*::before,*::after { transition:none!important;animation:none!important; } }
+</style><script src="/assets/adult-gate.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>風險計算機｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
   <link rel="stylesheet" href="/assets/shared-emergency.css">
-  <script>
-    // Check for consent immediately
-    if (sessionStorage.getItem('ag_consent') !== 'true') {
-      window.location.href = '/index.html';
-    }
-  </script>
+  <!-- Public Safety Core: readable before general consent. -->
   <style>
     /* ── accent 色：風險混合器 — 語意亮洋紅（對齊入口色）── */
     :root {
@@ -406,13 +407,22 @@
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
-</head>
+  <noscript><style>body > :not(noscript){display:none!important}</style></noscript>
+<style>
+.ag-page-title,.ag-page-subtitle,.ag-risk-step-text,.ag-section-helper,.ag-tripsit-source { color:#b8b8b8; opacity:1; }
+.ag-page-title { font-size:14px; }
+.ag-page-subtitle,.ag-risk-step-text { font-size:12px; }
+.ag-back-button { opacity:1; animation:none; }
+.ag-capsule-btn { font-family:inherit; font-size:13px; line-height:1.35; text-align:center; appearance:none; min-height:44px!important; }
+.ag-capsule-btn:focus-visible { outline:2px solid white; outline-offset:4px; }
+</style><link rel="stylesheet" href="/assets/public-safety.css?v=20261015b"></head>
 <body class="ag-page">
+  <noscript><p>詳細工具需要 JavaScript 與 18+ 入口確認。<a href="/safety.html">返回公開安全資訊</a></p></noscript>
 
   <!-- Inner Header: Back + Logo -->
-  <header class="ag-inner-header">
-    <a href="/support-main.html" class="ag-back-button" aria-label="返回上一頁"></a>
-    <a href="/home.html" class="ag-site-logo" aria-label="返回首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
+  <header class="safety-header">
+    <a href="/support-main.html">返回成人工具</a>
+    <a href="/home.html" aria-label="返回首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
   </header>
   <div class="ag-page-title-block">
     <p class="ag-page-title">風險計算機 · Risk Calculator</p>
@@ -429,7 +439,7 @@
         </svg>
         <div class="ag-aid-context-text">
           <strong>物質交互風險評估</strong>
-          選擇正在使用或考慮併用的物質，查看組合風險與減害建議
+          查看已知組合風險；資料不足不能推定安全
         </div>
       </div>
       <!-- 首屏工具定位 -->
@@ -458,7 +468,7 @@
         </div>
         <div class="ag-harm-text">
           <span class="ag-harm-title">減害立場：</span>
-          我們理解物質使用是個人選擇。此工具旨在提供風險資訊，協助您做出更安全的決定，而非評判或禁止。如果您選擇使用，請了解風險並採取減害措施。
+          本工具提供一般風險資訊，不鼓勵物質使用，也不提供劑量或混用教學。資料不足不代表安全；出現嚴重不適時請先撥打 119。
         </div>
       </div>
 
@@ -469,12 +479,12 @@
         <!-- Buttons will be populated by JS -->
       </div>
 
-      <div id="result-container" class="ag-result-container">
+      <div id="result-container" class="ag-result-container" aria-hidden="true">
         <div class="ag-result-glow"></div>
         <div class="ag-result-text-layer" id="result-circle">?</div>
       </div>
 
-      <div class="ag-result-text-box" id="result-box">
+      <div class="ag-result-text-box" id="result-box" role="status" aria-live="polite">
         <div class="ag-result-title" id="result-title">請選擇物質</div>
         <div class="ag-result-desc" id="result-desc">至少需要兩種物質才能評估交互作用風險</div>
       </div>
@@ -586,7 +596,7 @@
       'ketamine+opioids': { level: 'deadly', desc: '極度危險！雙重呼吸抑制，致死風險高。' },
 
       'lsd+cannabis': { level: 'caution', desc: '需謹慎。大麻可能極大增強 LSD 的迷幻效果，容易引發焦慮、恐慌或 Bad Trip。' },
-      'lsd+mdma': { level: 'low', desc: 'Candy Flipping。協同效應強烈，建議減少兩者劑量，注意脫水。' },
+      'lsd+mdma': { level: 'low', desc: 'Candy Flipping。協同效應強烈，不代表安全，應避免混用。' },
       'lsd+lithium': { level: 'deadly', desc: '致命危險！鋰鹽與 LSD 混用已知會導致癲癇與昏迷。' },
 
       'mushrooms+cannabis': { level: 'caution', desc: '需謹慎。大麻可能增強迷幻體驗，容易引發焦慮或思緒混亂。' },
@@ -605,9 +615,9 @@
 
       // ── 以下組合資料參考 TripSit Drug Combinations（https://wiki.tripsit.me/wiki/Drug_combinations）──
       // Low Risk & Synergy
-      'lsd+mdma':          { level: 'low',     desc: 'Candy Flipping。LSD 與 MDMA 有強烈協同效應，建議兩者均減量使用，注意補水與體溫調節。（來源：TripSit）' },
-      'mushrooms+mdma':    { level: 'low',     desc: 'Hippie Flipping。迷幻蘑菇與 MDMA 有強烈協同效應，建議兩者均減量使用。（來源：TripSit）' },
-      'lsd+mushrooms':     { level: 'low',     desc: '兩種迷幻劑協同效應強烈，建議大幅減少兩者劑量，效果可能遠超預期。（來源：TripSit）' },
+      'lsd+mdma':          { level: 'low',     desc: 'Candy Flipping。LSD 與 MDMA 有強烈協同效應，不代表安全，應避免混用。（來源：TripSit）' },
+      'mushrooms+mdma':    { level: 'low',     desc: 'Hippie Flipping。迷幻蘑菇與 MDMA 有強烈協同效應，不代表安全，應避免混用。（來源：TripSit）' },
+      'lsd+mushrooms':     { level: 'low',     desc: '兩種迷幻劑協同效應強烈，應避免混用，效果可能遠超預期。（來源：TripSit）' },
       'cannabis+lsd':      { level: 'caution', desc: '大麻與 LSD 有出乎意料的強烈且難以預測的協同效應，容易引發焦慮、恐慌或 Bad Trip。（來源：TripSit）' },
       'cannabis+mushrooms':{ level: 'caution', desc: '大麻可能極大增強迷幻蘑菇的效果，容易引發焦慮或思緒混亂，需謹慎。（來源：TripSit）' },
       'cannabis+mdma':     { level: 'caution', desc: '大麻可能增強或改變 MDMA 的效果，部分人會感到焦慮加劇，需謹慎。（來源：TripSit）' },
@@ -630,14 +640,14 @@
       'ghb+cocaine':       { level: 'unsafe',  desc: '興奮劑可能掩蓋 GHB 的抑制效果，導致不知不覺過量，且增加心血管負擔。（來源：TripSit）' },
       'ghb+mdma':          { level: 'unsafe',  desc: 'GHB 與 MDMA 混用會增加嘔吐與失去意識的風險，且兩者都影響體溫調節。（來源：TripSit）' },
       'opioids+meth':      { level: 'unsafe',  desc: '興奮劑可能掩蓋鴉片類的抑制效果，導致過量風險。（來源：TripSit）' },
-      'opioids+cannabis':  { level: 'caution', desc: '大麻可能增強鴉片類的鎮靜效果，需謹慎控制劑量。（來源：TripSit）' },
+      'opioids+cannabis':  { level: 'caution', desc: '大麻可能增強鴉片類的鎮靜效果，應避免混用。（來源：TripSit）' },
       'benzos+meth':       { level: 'unsafe',  desc: '興奮劑可能掩蓋鎮靜劑的效果，導致用量過度，增加呼吸抑制風險。（來源：TripSit）' },
       'benzos+cocaine':    { level: 'unsafe',  desc: '興奮劑可能掩蓋鎮靜劑的效果，導致用量過度，增加呼吸抑制風險。（來源：TripSit）' },
 
       // ── 補充組合（TripSit + 藥理學依據）──
       // MDMA 相關
       'mdma+opioids':    { level: 'unsafe',  desc: '危險！MDMA 的興奮效果可能掩蓋鴉片類的抑制作用，導致不知不覺過量；且兩者皆影響血清素，增加血清素症候群風險。（來源：TripSit）' },
-      'mdma+benzos':     { level: 'caution', desc: '需謹慎。鎮靜劑會減弱 MDMA 的效果，但可用於緩解焦慮；混用會使兩者效果難以預測。（來源：TripSit）' },
+      'mdma+benzos':     { level: 'caution', desc: '需謹慎。鎮靜劑與 MDMA 混用可能掩蓋原有反應；混用會使兩者效果難以預測。（來源：TripSit）' },
       'mdma+ketamine':   { level: 'caution', desc: '需謹慎。兩者皆影響神經傳導，混用可能增加迷失方向感與心臟負擔，體驗難以預測。（來源：TripSit）' },
       'mdma+poppers':    { level: 'unsafe',  desc: '危險！MDMA 收縮血管，RUSH 擴張血管，兩者混用造成血壓劇烈波動，大幅增加心血管風險。（來源：TripSit）' },
 
@@ -661,7 +671,7 @@
 
       // 酒精 相關
       'alcohol+mushrooms':{ level: 'caution', desc: '需謹慎。酒精可能增強或改變迷幻蘑菇的效果，且兩者皆影響協調能力，增加意外風險。（來源：TripSit）' },
-      'alcohol+cannabis': { level: 'caution', desc: '需謹慎。兩者混用（Crossfading）可能導致強烈噁心、嘔吐與暈眩（Greening Out），需控制劑量。（來源：TripSit）' },
+      'alcohol+cannabis': { level: 'caution', desc: '需謹慎。兩者混用（Crossfading）可能導致強烈噁心、嘔吐與暈眩（Greening Out），應避免混用。（來源：TripSit）' },
       'alcohol+lsd':      { level: 'caution', desc: '需謹慎。酒精可能減弱 LSD 效果，但也可能增加焦慮與噁心；兩者皆影響協調能力。（來源：TripSit）' },
 
       // 鴉片類 相關
@@ -672,21 +682,21 @@
 
       // GHB 相關
       'ghb+mushrooms':    { level: 'caution', desc: '需謹慎。GHB 的抑制效果可能與迷幻蘑菇的體驗產生難以預測的交互作用。（來源：TripSit）' },
-      'ghb+cannabis':     { level: 'caution', desc: '需謹慎。大麻可能增強 GHB 的抑制效果，增加失去意識的風險，需嚴格控制 GHB 劑量。（來源：TripSit）' },
+      'ghb+cannabis':     { level: 'caution', desc: '需謹慎。大麻可能增強 GHB 的抑制效果，增加失去意識的風險，應避免混用。（來源：TripSit）' },
       'ghb+lsd':          { level: 'caution', desc: '需謹慎。GHB 的抑制效果與 LSD 的迷幻效果混用，體驗難以預測，且增加失去意識風險。（來源：TripSit）' },
       'ghb+poppers':      { level: 'deadly',  desc: '極度危險！兩者皆強烈降低血壓，混用可能導致血壓驟降、昏厥與死亡。（來源：TripSit）' },
       'ghb+viagra':       { level: 'unsafe',  desc: '危險！GHB 與威而鋼皆影響血壓，混用可能導致嚴重低血壓與心血管危象。（來源：TripSit）' },
 
       // 鎮靜劑 相關
-      'benzos+mushrooms': { level: 'caution', desc: '需謹慎。鎮靜劑可用於緩解迷幻蘑菇引起的焦慮，但也可能完全壓制體驗；混用需謹慎控制劑量。（來源：TripSit）' },
+      'benzos+mushrooms': { level: 'caution', desc: '需謹慎。鎮靜劑與迷幻蘑菇混用可能使意識與協調受損；混用應避免混用。（來源：TripSit）' },
       'benzos+cannabis':  { level: 'caution', desc: '需謹慎。兩者皆有鎮靜效果，混用可能導致過度鎮靜與協調能力下降。（來源：TripSit）' },
-      'benzos+lsd':       { level: 'caution', desc: '需謹慎。鎮靜劑可用於緩解 LSD 引起的焦慮，但也可能完全壓制體驗；混用需謹慎控制劑量。（來源：TripSit）' },
+      'benzos+lsd':       { level: 'caution', desc: '需謹慎。鎮靜劑與 LSD 混用可能使意識與協調受損；混用應避免混用。（來源：TripSit）' },
       'benzos+poppers':   { level: 'unsafe',  desc: '危險！鎮靜劑加上 RUSH 的血壓下降效果，可能導致嚴重低血壓與昏厥。（來源：TripSit）' },
       'benzos+viagra':    { level: 'caution', desc: '需謹慎。鎮靜劑可能增強威而鋼的血壓降低效果，需注意低血壓風險。' },
 
       // K 他命 相關
-      'ketamine+mushrooms':{ level: 'caution', desc: '需謹慎。兩種解離/迷幻物質混用，體驗可能極度強烈且難以預測，不建議初次嘗試者混用。（來源：TripSit）' },
-      'ketamine+lsd':     { level: 'caution', desc: '需謹慎。解離劑與迷幻劑混用，體驗可能極度強烈且難以預測，需大幅減少兩者劑量。（來源：TripSit）' },
+      'ketamine+mushrooms':{ level: 'caution', desc: '需謹慎。兩種解離/迷幻物質混用，體驗可能極度強烈且難以預測，應避免混用。（來源：TripSit）' },
+      'ketamine+lsd':     { level: 'caution', desc: '需謹慎。解離劑與迷幻劑混用，體驗可能極度強烈且難以預測，應避免混用。（來源：TripSit）' },
       'ketamine+poppers': { level: 'unsafe',  desc: '危險！K 他命影響協調能力與意識，RUSH 降低血壓，混用大幅增加昏厥與意外風險。（來源：TripSit）' },
       'ketamine+viagra':  { level: 'caution', desc: '需謹慎。K 他命影響協調能力，與威而鋼混用的心血管交互作用需注意。' },
 
@@ -779,10 +789,13 @@
         const s = substanceShapes[id];
         if (!s) return;
 
-        const btn = document.createElement('div');
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.setAttribute('aria-pressed','false');
+        btn.setAttribute('aria-label',sub.name);
         btn.className = 'ag-capsule-btn';
         // 換行文字用 innerHTML + <br>
-        btn.innerHTML = s.name.replace(/\n/g, '<br>');
+        btn.innerHTML = '<span>' + s.name.replace(/\n/g, '<br>') + '</span>';
         btn.dataset.id = sub.id;
         btn.dataset.cat = sub.category;
 
@@ -816,12 +829,13 @@
         // 取消選擇
         selectedSubstances.splice(index, 1);
         btn.classList.remove('active');
+        btn.setAttribute('aria-pressed','false');
         // 恢復原始旋轉角度
         const rot = parseFloat(btn.dataset.rot || 0);
         btn.style.transform = `rotate(${rot}deg)`;
         // 如果未選滿，恢復所有禁用狀態
         if (selectedSubstances.length < MAX_SELECT) {
-          document.querySelectorAll('.ag-capsule-btn.disabled').forEach(b => b.classList.remove('disabled'));
+          document.querySelectorAll('.ag-capsule-btn.disabled').forEach(b => { b.classList.remove('disabled'); b.disabled=false; });
         }
       } else {
         if (selectedSubstances.length >= MAX_SELECT) {
@@ -830,12 +844,13 @@
         }
         selectedSubstances.push(sub);
         btn.classList.add('active');
+        btn.setAttribute('aria-pressed','true');
         // active 時保留原始旋轉角度，只加強發光
         const rot = parseFloat(btn.dataset.rot || 0);
         btn.style.transform = `rotate(${rot}deg) scale(1.03)`;
         // 如果已選滿 MAX_SELECT 個，禁用其餘未選的
         if (selectedSubstances.length >= MAX_SELECT) {
-          document.querySelectorAll('.ag-capsule-btn:not(.active)').forEach(b => b.classList.add('disabled'));
+          document.querySelectorAll('.ag-capsule-btn:not(.active)').forEach(b => { b.classList.add('disabled'); b.disabled=true; });
         }
       }
 
@@ -903,11 +918,12 @@
 
       if (noPairFound.length > 0) {
         riskMessages.push(
-          `<span style="color:#555;font-size:12px;">— ${noPairFound.join('、')}：筆者資料庫尚無此組合資料，建議自行查詢 <a href="https://combo.tripsit.me/" target="_blank" rel="noopener" style="color:#666;text-decoration:underline;">TripSit</a></span>`
+          `<span style="color:#b8b8b8;font-size:13px;">— ${noPairFound.join('、')}：筆者資料庫尚無此組合資料，建議自行查詢 <a href="https://combo.tripsit.me/" target="_blank" rel="noopener" style="color:#b8b8b8;text-decoration:underline;">TripSit</a></span>`
         );
       }
 
-      updateResultUI(highestRisk, riskMessages);
+      updateResultUI(riskPairs.length ? highestRisk : 'unknown', riskMessages);
+      if (riskPairs.length && noPairFound.length) resultTitle.textContent = '資料不完整；已知最高風險：' + resultTitle.textContent;
     }
 
     function riskLevelBadge(level) {
@@ -933,9 +949,14 @@
       let color = '';
 
       switch (level) {
+        case 'unknown':
+          titleText = '資料不足，無法評估';
+          circleText = '？';
+          color = '#b8b8b8';
+          break;
         case 'low':
           resultContainer.classList.add('risk-low');
-          titleText = '低風險 / 協同效應';
+          titleText = '資料標示較低風險，仍不代表安全';
           circleText = '低';
           color = '#00ff88';
           break;
@@ -966,7 +987,7 @@
       if (messages.length > 0) {
         resultDesc.innerHTML = messages.join('<hr class="ag-result-pair-divider">');
       } else {
-        resultDesc.innerHTML = '<span style="color:#555;font-size:13px;">目前資料庫中無此組合的特定高風險警示，但仍請保持謹慎，少量測試。</span>';
+        resultDesc.innerHTML = '<span style="color:#b8b8b8;font-size:13px;">資料不足不能推定安全。請避免混用；已出現不適時應尋求醫療協助。</span>';
       }
     }
 
