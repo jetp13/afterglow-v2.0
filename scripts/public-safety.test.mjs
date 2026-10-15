@@ -3,8 +3,8 @@ import { readFileSync, existsSync } from 'node:fs';
 import vm from 'node:vm';
 import { execFileSync } from 'node:child_process';
 
-const read = file => readFileSync(new URL('../'+file,import.meta.url),'utf8');
-const baseline = file => execFileSync('git',['show','41c2445:'+file],{encoding:'utf8',maxBuffer:5e6});
+const read = file => readFileSync(new URL('../'+file,import.meta.url),'utf8').replace(/\r\n/g,'\n');
+const baseline = file => execFileSync('git',['show','41c2445:'+file],{encoding:'utf8',maxBuffer:5e6}).replace(/\r\n/g,'\n');
 let checks=0;
 const check = (result,message) => { assert.ok(result,message); checks++; };
 const adult = ['home','risk-calculator','rights','support-main','first-aid-details','breathing','voice','white-noise','menu','memoir'];
@@ -65,13 +65,35 @@ check(entry===read('client/public/index.html'),'both existing entry implementati
 check((entry.match(/href="\/safety.html"/g)||[]).length===1,'one safety CTA on landing');
 const originalFirstAid=baseline('client/public/first-aid.html');
 const detail=originalFirstAid.slice(originalFirstAid.indexOf('    <!-- GHB/GBL Accordion -->'),originalFirstAid.indexOf('    <!-- Footer Note -->'));
-check(read('client/public/first-aid-details.html').includes(detail),'existing detailed First Aid text relocated intact');
+check(read('client/public/first-aid-details.html').includes(detail.slice(0,detail.indexOf('    <!-- Legal Info Accordion -->'))),'all three original medical accordions retained exactly');
 check(!read('client/public/first-aid.html').includes('GHB / GBL'),'public First Aid excludes detailed substance section');
 const calculator=read('client/public/risk-calculator.html');
 const oldCalculator=baseline('client/public/risk-calculator.html');
-check(calculator.slice(calculator.lastIndexOf('<script>'))===oldCalculator.slice(oldCalculator.lastIndexOf('<script>')),'ChemAid interaction data and calculation behavior unchanged');
+function matrix(html) {
+ const script=html.slice(html.lastIndexOf('<script>')+8,html.lastIndexOf('</script>'));
+ return vm.runInNewContext(script+';JSON.stringify(interactions)',{document:{addEventListener(){}}});
+}
+const currentMatrix=JSON.parse(matrix(calculator)), oldMatrix=JSON.parse(matrix(oldCalculator));
+check(JSON.stringify(Object.keys(currentMatrix))===JSON.stringify(Object.keys(oldMatrix)),'all existing interaction pairs retained');
+for(const key of Object.keys(oldMatrix)) {
+ check(currentMatrix[key].level===oldMatrix[key].level,key+' risk level retained');
+ if(key.includes('etomidate')) check(JSON.stringify(currentMatrix[key])===JSON.stringify(oldMatrix[key]),key+' evidence text retained');
+}
+check(!/少量測試|均減量使用|需大幅減少兩者劑量/.test(calculator),'no experiment or dose optimisation instructions');
+const scenario = items => {
+ const node=()=>({textContent:'',innerHTML:'',style:{},classList:{add(){},remove(){}}});
+ const nodes={}; for(const id of ['result-circle','result-container','result-title','result-desc']) nodes[id]=node();
+ const script=calculator.slice(calculator.lastIndexOf('<script>')+8,calculator.lastIndexOf('</script>'));
+ const expression=`;resultCircle=document.getElementById('result-circle');resultContainer=document.getElementById('result-container');resultTitle=document.getElementById('result-title');resultDesc=document.getElementById('result-desc');selectedSubstances=${JSON.stringify(items)};calculateRisk();`;
+ vm.runInNewContext(script+expression,{document:{addEventListener(){},getElementById:id=>nodes[id]}});
+ return nodes;
+};
+check(scenario([{id:'unlisted-a',name:'A'},{id:'unlisted-b',name:'B'}])['result-title'].textContent==='資料不足，無法評估','unknown pairs never display low risk');
+check(scenario([{id:'ghb',name:'GHB'},{id:'alcohol',name:'酒精'}])['result-title'].textContent.includes('致命危險'),'known deadly result retained');
+check(scenario([{id:'ghb',name:'GHB'},{id:'alcohol',name:'酒精'},{id:'unlisted',name:'未知'}])['result-title'].textContent.includes('資料不完整；已知最高風險：致命危險'),'partial unknown preserves known danger and discloses missing data');
 const rights=read('client/public/rights.html');
-check(rights.slice(rights.indexOf('<header class="ag-inner-header">'),rights.lastIndexOf('</body>')).replace(/\s*$/,'')===baseline('client/public/rights.html').slice(baseline('client/public/rights.html').indexOf('<header class="ag-inner-header">'),baseline('client/public/rights.html').lastIndexOf('</body>')).replace(/\s*$/,''),'Rights body remains unchanged');
+check(rights.includes('法律內容核證中（UNKNOWN）'),'Rights remains explicitly unverified');
+check(!rights.includes('快篩陽性須經實驗室複驗始具法律效'),'blanket screening legal-effect claim removed');
 
 const sw=read('client/public/sw.js');let cached;const handlers={};
 vm.runInNewContext(sw,{URL,Response,self:{location:{origin:'https://example.test'},addEventListener:(name,fn)=>handlers[name]=fn,skipWaiting:()=>{},clients:{claim:()=>{}}},caches:{open:async()=>({addAll:async list=>{cached=Array.from(list);}})}});

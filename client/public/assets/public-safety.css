@@ -2,6 +2,8 @@
 :root { color-scheme:dark; }
 /* Same family as layout.css / home.html; safety content uses a larger readable body. */
 .safety-page {
+  --em-text-muted:#b8b8b8;
+  --em-text-dim:#b8b8b8;
   --safety-tube:#ff8bdc;
   --safety-tube-glow:0 0 2px #ff8bdc66,0 0 8px #ff8bdc26;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;
@@ -40,3 +42,14 @@
 .safety-page .rapid-kicker,.safety-page .rapid-alias,.safety-page .rapid-action span,.safety-page .rapid-note,.safety-page .rapid-boundary { color:#b8b8b8; }
 .safety-page .rapid-boundary { font-size:14px; }
 @media(prefers-reduced-motion:reduce) { .safety-page *, .safety-page *::before,.safety-page *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
+
+/* Legible text on black while preserving the existing neon borders. */
+.safety-page .ag-page-title { color:#b8b8b8; font-size:14px; font-weight:500; }
+.safety-page .ag-page-subtitle,.safety-page .ag-aid-context-text,.safety-page .ag-aid-context-text strong { color:#b8b8b8; }
+.safety-page .ag-section-title { color:#ff9b91; }
+.safety-page .ag-call-sub { color:#b8b8b8; }
+
+.safety-page .ag-page-subtitle { opacity:1; font-size:12px; }
+.safety-page .ag-btn-sublabel { color:#b8b8b8; }
+
+.safety-page .ag-btn-desc { color:#b8b8b8; font-size:12px; }

@@ -138,12 +138,18 @@
         font-size: 20px;
       }
     }
-  </style>
+
+.ag-doc-subtitle,.ag-doc-section-title,.ag-footer__link { color:#b8b8b8; }
+.ag-back-button { opacity:1; animation:none; }
+.ag-site-logo { position:absolute; }
+a:focus-visible { outline:2px solid #fff; outline-offset:4px; }
+@media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important;transition:none!important;opacity:1; } }
+.ag-doc-nav { display:flex;align-items:center;justify-content:space-between;gap:24px;padding:16px 24px;flex-shrink:0; } .ag-doc-nav a { display:flex;align-items:center;min-height:44px;color:#b8b8b8;font-size:14px;text-underline-offset:6px;text-decoration-color:#ff8bdc; } .ag-doc-nav img { width:108px;height:auto; } .ag-doc-container { padding-top:16px; } .ag-doc-quote p,.ag-doc-em { color:#ffd18a; }
+</style>
 </head>
 <body class="ag-page">
 
-  <a href="/index.html" class="ag-back-button" aria-label="返回入口"></a>
-  <a href="/index.html" class="ag-site-logo" aria-label="回到入口"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
+<header class="ag-doc-nav"><a href="/index.html">返回入口</a><a href="/index.html" aria-label="回到入口"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a></header>
 
   <div class="ag-main-scroll">
     <div class="ag-doc-container">
@@ -180,14 +186,12 @@
       </section>
 
       <section class="ag-doc-section">
-        <p class="ag-doc-section-title">法律責任排除</p>
+        <p class="ag-doc-section-title">權利與責任</p>
         <p class="ag-doc-body">
-          Afterglow 的創作者不對使用者因誤用資訊、誤解內容、
-          或個人行為導致的任何法律、醫療、心理或社會後果負責。
+          本站資訊不能取代專業判斷；個案權利與責任依適用法令及事實判斷，不因本站聲明而當然免除。
         </p>
         <p class="ag-doc-body">
-          使用者若於使用期間進行任何違反法令之行為，
-          法律責任完全由使用者本人承擔，與本計畫無涉。
+          本站不鼓勵違法行為，也不保證使用資訊後的醫療或法律結果。
         </p>
       </section>
 
