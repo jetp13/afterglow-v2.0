@@ -151,7 +151,7 @@
       justify-content: center;
     }
   </style>
-<link rel="stylesheet" href="/assets/public-safety.css?v=20261015b">
+<link rel="stylesheet" href="/assets/public-safety.css?v=20261028a">
 </head>
 <body class="ag-page safety-page">
 
@@ -192,20 +192,44 @@
         </a>
       </div>
 
+      <!-- P0: Layperson triage follows Taiwan public CPR/AED guidance. -->
+      <section class="ag-aid-triage" aria-labelledby="ag-aid-triage-title">
+        <h2 id="ag-aid-triage-title">叫不醒？先確認反應與呼吸</h2>
+        <p>先確認現場安全。叫他的名字、輕拍肩膀；如果沒有反應，<strong>立即打 119、開擴音</strong>，不要等他自己醒來。</p>
+        <div class="ag-aid-triage-path ag-aid-triage-path--urgent">
+          <h3>沒有正常呼吸、只剩偶爾喘氣，或無法確認</h3>
+          <p><strong>立即依 119 指示開始胸外按壓</strong>；請旁人取得 AED，依設備語音指示操作。</p>
+        </div>
+        <div class="ag-aid-triage-path">
+          <h3>確定仍有正常呼吸</h3>
+          <p>依 119 指示協助採復原姿勢（側躺），持續觀察呼吸；若呼吸變得不正常，立即告訴 119 並轉入急救。</p>
+        </div>
+        <p class="ag-aid-triage-note">一般民眾不需要先摸脈搏。拿不準呼吸狀況，直接告訴 119。</p>
+      </section>
+
+      <!-- P0: Native disclosure works by touch, keyboard, and without JavaScript. -->
+      <details class="ag-119-script">
+        <summary>不知道怎麼說？119 照著念</summary>
+        <div class="ag-119-script-body">
+          <p>「你好，我需要救護車。<br>我在＿＿＿＿。<br>這裡有人＿＿＿＿。<br>請告訴我現在怎麼做。」</p>
+          <p class="ag-119-script-note">先報位置與症狀，接線員提問時先回答。已知的物質、時間與呼吸狀況請如實告知；不知道就說不知道，不必念完才求救。</p>
+        </div>
+      </details>
+
       <!-- 119 Process (Always Visible) -->
       <div class="ag-section-title">撥打 119：標準流程</div>
       <div class="ag-process-step">
         <div class="ag-step-num">1</div>
         <div class="ag-step-content">
           <h4>說明位置與狀況</h4>
-          <p>提供精確地址、地標、患者狀況與意識、呼吸、脈搏。</p>
+          <p>先說地址、樓層或房號，再說對方有沒有反應、是否正常呼吸；不知道就說不知道。</p>
         </div>
       </div>
       <div class="ag-process-step">
         <div class="ag-step-num">2</div>
         <div class="ag-step-content">
           <h4>依指示行動</h4>
-          <p>保持通話，遵循接線員指示進行初步處置（如側臥、清理口鼻）。</p>
+          <p>保持通話、開擴音，依上方呼吸分流及 119 指示行動，不要為了讀完網頁而延誤施救。</p>
         </div>
       </div>
       <div class="ag-process-step">
@@ -229,6 +253,7 @@
         <div class="ag-accordion-content">
           <div class="ag-substance-card">
             <div class="ag-sub-text">
+              <p>僅適用於叫不醒、但確定仍有正常呼吸的情況；沒有正常呼吸或無法確認時，請依 119 指示開始胸外按壓。</p>
               <ol class="ag-pl-20 ag-mb-15">
                 <li>確認環境安全</li>
                 <li>檢查反應與呼吸</li>
