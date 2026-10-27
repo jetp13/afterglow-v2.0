@@ -67,6 +67,16 @@ const originalFirstAid=baseline('client/public/first-aid.html');
 const detail=originalFirstAid.slice(originalFirstAid.indexOf('    <!-- GHB/GBL Accordion -->'),originalFirstAid.indexOf('    <!-- Footer Note -->'));
 check(read('client/public/first-aid-details.html').includes(detail.slice(0,detail.indexOf('    <!-- Legal Info Accordion -->'))),'all three original medical accordions retained exactly');
 check(!read('client/public/first-aid.html').includes('GHB / GBL'),'public First Aid excludes detailed substance section');
+const firstAid = read('client/public/first-aid.html');
+check(firstAid.includes('href="tel:119"') && firstAid.includes('叫不醒？先確認反應與呼吸'),'P0 first aid keeps emergency call and visible triage');
+check(firstAid.indexOf('href="tel:119"') < firstAid.indexOf('ag-aid-triage-title'),'119 CTA precedes breathing triage');
+check(firstAid.includes('沒有正常呼吸、只剩偶爾喘氣，或無法確認') && firstAid.includes('立即依 119 指示開始胸外按壓'),'uncertain/abnormal breathing leads to CPR');
+check(firstAid.includes('確定仍有正常呼吸') && firstAid.includes('復原姿勢（側躺）'),'recovery position gated on normal breathing');
+check(firstAid.includes('一般民眾不需要先摸脈搏') && !firstAid.includes('意識、呼吸、脈搏'),'no lay pulse check prerequisite');
+check(firstAid.includes('<details class="ag-119-script">') && firstAid.includes('<summary>不知道怎麼說？119 照著念</summary>'),'119 reading aid native disclosure');
+check(firstAid.includes('我在＿＿＿＿') && firstAid.includes('請告訴我現在怎麼做'),'119 script provides address and dispatch guidance');
+check(firstAid.includes('不知道就說不知道') && firstAid.includes('不必念完才求救'),'script never delays emergency call');
+
 const calculator=read('client/public/risk-calculator.html');
 const oldCalculator=baseline('client/public/risk-calculator.html');
 function matrix(html) {
@@ -95,7 +105,9 @@ const rights=read('client/public/rights.html');
 check(rights.includes('法律內容核證中（UNKNOWN）'),'Rights remains explicitly unverified');
 check(!rights.includes('快篩陽性須經實驗室複驗始具法律效'),'blanket screening legal-effect claim removed');
 
-const sw=read('client/public/sw.js');let cached;const handlers={};
+const sw=read('client/public/sw.js');
+check(sw.includes('afterglow-v7-public-safety'),'P0 offline cache update');
+let cached;const handlers={};
 vm.runInNewContext(sw,{URL,Response,self:{location:{origin:'https://example.test'},addEventListener:(name,fn)=>handlers[name]=fn,skipWaiting:()=>{},clients:{claim:()=>{}}},caches:{open:async()=>({addAll:async list=>{cached=Array.from(list);}})}});
 let install;handlers.install({waitUntil:p=>install=p});await install;
 for(const name of adult)check(!cached.includes('/'+name+'.html'),'no adult precache '+name);
