@@ -1,4 +1,4 @@
-const CACHE_NAME = 'afterglow-v6-public-safety';
+const CACHE_NAME = 'afterglow-v7-public-safety';
 // Public visits must not prefetch detailed adult tools or unverified Rights content.
 const ASSETS_TO_CACHE = ['/', '/index.html', '/safety.html', '/etomidate-safety.html',
   '/first-aid.html', '/help.html', '/privacy.html', '/terms.html', '/legal.html', '/about.html',
