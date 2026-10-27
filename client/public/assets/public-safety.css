@@ -53,3 +53,17 @@
 .safety-page .ag-btn-sublabel { color:#b8b8b8; }
 
 .safety-page .ag-btn-desc { color:#b8b8b8; font-size:12px; }
+
+/* First Aid P0: short, always-visible breathing triage and optional 119 reading aid. */
+.safety-page .ag-aid-triage { margin:20px 0 16px; padding:16px; border:1px solid #8b6060; border-radius:12px; background:#140e10; }
+.safety-page .ag-aid-triage h2 { margin:0 0 10px; color:#fff; font-size:20px; line-height:1.45; font-weight:600; }
+.safety-page .ag-aid-triage p { margin:0 0 12px; color:#f0e6e6; line-height:1.65; font-size:15px; }
+.safety-page .ag-aid-triage-path { margin:12px 0; border-top:1px solid #615151; padding-top:12px; }
+.safety-page .ag-aid-triage-path h3 { margin:0 0 6px; font-size:16px; font-weight:600; color:#fff; line-height:1.5; }
+.safety-page .ag-aid-triage-path--urgent h3 { color:#ffada5; }
+.safety-page .ag-aid-triage .ag-aid-triage-note { color:#d1bebe; font-size:13px; margin-bottom:0; }
+.safety-page .ag-119-script { margin:0 0 22px; border:1px solid #777; border-radius:10px; padding:0 14px; background:#141414; }
+.safety-page .ag-119-script summary { cursor:pointer; padding:14px 4px; min-height:48px; box-sizing:border-box; color:#fff; font-size:16px; font-weight:600; line-height:1.5; }
+.safety-page .ag-119-script-body { border-top:1px solid #555; padding:12px 4px 16px; }
+.safety-page .ag-119-script-body p { font-size:17px; line-height:1.9; margin:0 0 8px; color:#fff; }
+.safety-page .ag-119-script-body .ag-119-script-note { font-size:13px; line-height:1.65; color:#ccc; margin:0; }
