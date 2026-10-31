@@ -28,7 +28,6 @@ body[data-color-role] {
 }
 body[data-color-role] .safety-header a,body[data-color-role] .ag-doc-nav a { text-decoration-color:rgb(var(--ag-section)/.8); }
 body[data-color-role] .safety-app-nav a[aria-current="page"] { border-bottom-color:rgb(var(--ag-section));text-shadow:0 0 8px rgb(var(--ag-section)/.28); }
-body .ag-footer-standard .ag-footer__link[href="/legal.html"] { color:#8db5ff;text-decoration:underline;text-decoration-color:rgb(var(--ag-rights)/.8);text-underline-offset:5px; }
 body[data-color-role="legal"] .ag-doc-title,body[data-color-role="legal"] .ag-doc-section-title { color:#bcd2ff; }
 body[data-color-role] .rapid-119,body[data-color-role] .ag-emergency-box .ag-phone-large,body[data-color-role] .ag-btn-119 {
   border-color:rgb(var(--ag-aid)/.9);
