@@ -5,7 +5,7 @@ const code=fs.readFileSync('client/public/assets/safety-capsules.js','utf8');
 function setup(reduced=false, observe=false) {
  const events={},docEvents={},timers=new Map(),nav=[];
  const classes=()=>({values:new Set(),add(x){this.values.add(x)},remove(x){this.values.delete(x)},has(x){return this.values.has(x)}});
- const pills=['/first-aid.html','/index.html?from=/risk-calculator.html','/index.html?from=/rights.html','/help.html'].map(href=>({href,classList:classes(),addEventListener(type,fn){this[type]=fn}}));
+ const pills=['/first-aid.html','/index.html?from=/risk-calculator.html','/rights.html','/help.html'].map(href=>({href,classList:classes(),addEventListener(type,fn){this[type]=fn}}));
  const group={classList:classes(),querySelectorAll:()=>pills};
  let id=0;
  const window={clearTimeout:n=>timers.delete(n),setTimeout(fn,ms){timers.set(++id,{fn,ms});return id},matchMedia:()=>({matches:reduced}),location:{assign:p=>nav.push(p)},addEventListener:(type,fn)=>events[type]=fn};
