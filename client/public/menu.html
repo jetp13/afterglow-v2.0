@@ -8,12 +8,6 @@
   <meta name="theme-color" content="#000000">
   <link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
   <link rel="stylesheet" href="/assets/layout.css">
-  <script>
-    // Check for consent immediately
-    if (sessionStorage.getItem('ag_consent') !== 'true') {
-      window.location.href = '/index.html';
-    }
-  </script>
   <style>
     html, body {
       height: 100%;
@@ -218,12 +212,12 @@
       <p class="ag-menu-subtitle">選一個現在能進去的方式</p>
 
       <div class="ag-menu-list">
-        <a href="/breathing.html" class="ag-menu-item breathing">
+        <a href="/breathing.html?v=20261016-public" class="ag-menu-item breathing">
           <span class="ag-item-title">呼吸練習</span>
           <span class="ag-item-desc">只要跟著吸氣、吐氣</span>
         </a>
 
-        <a href="/voice.html" class="ag-menu-item voice">
+        <a href="/voice.html?v=20261016-public" class="ag-menu-item voice">
           <span class="ag-item-title">語音引導</span>
           <span class="ag-item-desc">跟著聲音，把注意力收回來</span>
         </a>
@@ -232,7 +226,7 @@
         <details class="ag-menu-details">
           <summary class="ag-menu-summary">更多模式</summary>
           <div class="ag-menu-sublist">
-            <a href="/white-noise.html" class="ag-menu-item">
+            <a href="/white-noise.html?v=20261016-public" class="ag-menu-item">
               <span class="ag-item-title">白噪音</span>
               <span class="ag-item-desc">降低干擾，先讓環境安靜一點</span>
             </a>

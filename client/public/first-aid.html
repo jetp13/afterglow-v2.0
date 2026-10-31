@@ -6,12 +6,7 @@
   <title>緊急醫療與減害支援｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
   <link rel="stylesheet" href="/assets/shared-emergency.css">
-  <script>
-    // Check for consent immediately
-    if (sessionStorage.getItem('ag_consent') !== 'true') {
-      window.location.href = '/index.html';
-    }
-  </script>
+  <!-- Public Safety Core: readable before general consent. -->
   <style>
     /* ── accent 色：急救指引 — 語意暖紅（對齊入口色）── */
     :root {
@@ -156,16 +151,17 @@
       justify-content: center;
     }
   </style>
+<link rel="stylesheet" href="/assets/public-safety.css?v=20261015-type4">
 </head>
-<body class="ag-page">
+<body class="ag-page safety-page" data-color-role="aid">
 
   <!-- Inner Header: Back + Logo -->
-  <header class="ag-inner-header">
-    <a href="/support-main.html" class="ag-back-button" aria-label="返回上一頁"></a>
-    <a href="/home.html" class="ag-site-logo" aria-label="返回首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
+  <header class="safety-header">
+    <a href="/safety.html">返回安全資訊</a>
+    <a href="/index.html" aria-label="返回入口"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
   </header>
   <div class="ag-page-title-block">
-    <p class="ag-page-title">急救指引 · Emergency Guide v1.2</p>
+    <h1 class="ag-page-title">急救指引</h1>
     <p class="ag-page-subtitle">現場急救 · 減害應對 · 撥打流程</p>
   </div>
 
@@ -196,20 +192,44 @@
         </a>
       </div>
 
+      <!-- P0: Layperson triage follows Taiwan public CPR/AED guidance. -->
+      <section class="ag-aid-triage" aria-labelledby="ag-aid-triage-title">
+        <h2 id="ag-aid-triage-title">叫不醒？先確認反應與呼吸</h2>
+        <p>先確認現場安全。叫他的名字、輕拍肩膀；如果沒有反應，<strong>立即打 119、開擴音</strong>，不要等他自己醒來。</p>
+        <div class="ag-aid-triage-path ag-aid-triage-path--urgent">
+          <h3>沒有正常呼吸、只剩偶爾喘氣，或無法確認</h3>
+          <p><strong>立即依 119 指示開始胸外按壓</strong>；請旁人取得 AED，依設備語音指示操作。</p>
+        </div>
+        <div class="ag-aid-triage-path">
+          <h3>確定仍有正常呼吸</h3>
+          <p>依 119 指示協助採復原姿勢（側躺），持續觀察呼吸；若呼吸變得不正常，立即告訴 119 並轉入急救。</p>
+        </div>
+        <p class="ag-aid-triage-note">一般民眾不需要先摸脈搏。拿不準呼吸狀況，直接告訴 119。</p>
+      </section>
+
+      <!-- P0: Native disclosure works by touch, keyboard, and without JavaScript. -->
+      <details class="ag-119-script">
+        <summary>不知道怎麼說？119 照著念</summary>
+        <div class="ag-119-script-body">
+          <p>「你好，我需要救護車。<br>我在＿＿＿＿。<br>這裡有人＿＿＿＿。<br>請告訴我現在怎麼做。」</p>
+          <p class="ag-119-script-note">先報位置與症狀，接線員提問時先回答。已知的物質、時間與呼吸狀況請如實告知；不知道就說不知道，不必念完才求救。</p>
+        </div>
+      </details>
+
       <!-- 119 Process (Always Visible) -->
-      <div class="ag-section-title">撥打 119：標準流程</div>
+      <h2 class="ag-section-title">撥打 119：標準流程</h2>
       <div class="ag-process-step">
         <div class="ag-step-num">1</div>
         <div class="ag-step-content">
           <h4>說明位置與狀況</h4>
-          <p>提供精確地址、地標、患者狀況與意識、呼吸、脈搏。</p>
+          <p>先說地址、樓層或房號，再說對方有沒有反應、是否正常呼吸；不知道就說不知道。</p>
         </div>
       </div>
       <div class="ag-process-step">
         <div class="ag-step-num">2</div>
         <div class="ag-step-content">
           <h4>依指示行動</h4>
-          <p>保持通話，遵循接線員指示進行初步處置（如側臥、清理口鼻）。</p>
+          <p>保持通話、開擴音，依上方呼吸分流及 119 指示行動，不要為了讀完網頁而延誤施救。</p>
         </div>
       </div>
       <div class="ag-process-step">
@@ -220,7 +240,7 @@
         </div>
       </div>
 
-      <div class="ag-section-title">急救與減害指引</div>
+      <h2 class="ag-section-title">急救與減害指引</h2>
 
       <!-- Recovery Position Accordion -->
       <div class="ag-accordion-item">
@@ -233,6 +253,7 @@
         <div class="ag-accordion-content">
           <div class="ag-substance-card">
             <div class="ag-sub-text">
+              <p>僅適用於叫不醒、但確定仍有正常呼吸的情況；沒有正常呼吸或無法確認時，請依 119 指示開始胸外按壓。</p>
               <ol class="ag-pl-20 ag-mb-15">
                 <li>確認環境安全</li>
                 <li>檢查反應與呼吸</li>
@@ -280,121 +301,7 @@
       </div>
     </div>
 
-    <!-- GHB/GBL Accordion -->
-    <div class="ag-accordion-item">
-      <div class="ag-accordion-header" onclick="toggleAccordion(this)">
-        <div class="ag-accordion-title">
-          <span class="ag-text-magenta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span> GHB / GBL
-        </div>
-        <div class="ag-accordion-icon">▼</div>
-      </div>
-      <div class="ag-accordion-content">
-        <div class="ag-substance-card">
-          <div class="ag-sub-header">
-            <div class="ag-sub-title">GHB / GBL</div>
-            <div class="ag-sub-tag">重點注意</div>
-          </div>
-          <div class="ag-sub-section">
-            <span class="ag-sub-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:5px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>警訊</span>
-            <div class="ag-sub-text">極度嗜睡或無反應、呼吸變慢或規律異常、嘔吐、抽搐。</div>
-          </div>
-          <div class="ag-sub-section">
-            <span class="ag-sub-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:5px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>減害應對</span>
-            <ul class="ag-sub-text ag-pl-20">
-              <li>絕對避免與酒精、苯二氮平類混用。</li>
-              <li>不清楚劑量時不要追加。</li>
-              <li>如出現嗜睡或呼吸變慢，立即撥 119，採側臥保持氣道。</li>
-              <li><strong>不要催吐，不要留單。</strong></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Ketamine Accordion -->
-    <div class="ag-accordion-item">
-      <div class="ag-accordion-header" onclick="toggleAccordion(this)">
-        <div class="ag-accordion-title">
-          <span class="ag-text-magenta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span> K 他命
-        </div>
-        <div class="ag-accordion-icon">▼</div>
-      </div>
-      <div class="ag-accordion-content">
-        <div class="ag-substance-card">
-          <div class="ag-sub-header">
-            <div class="ag-sub-title">K 他命</div>
-            <div class="ag-sub-tag">修正版</div>
-          </div>
-          <div class="ag-sub-section">
-            <span class="ag-sub-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:5px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>危險徵象</span>
-            <div class="ag-sub-text">持續嘔吐、無法喚醒、呼吸不規律、體溫異常、暴力或嚴重迷失。</div>
-          </div>
-          <div class="ag-sub-section">
-            <span class="ag-sub-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:5px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>應對</span>
-            <div class="ag-sub-text">安置在安全環境、避免刺激，必要時側臥；若有呼吸困難、抽搐或無反應，立即撥 119。</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Alcohol Mix Accordion -->
-    <div class="ag-accordion-item">
-      <div class="ag-accordion-header" onclick="toggleAccordion(this)">
-        <div class="ag-accordion-title">
-          <span class="ag-text-magenta"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span> 酒精混用
-        </div>
-        <div class="ag-accordion-icon">▼</div>
-      </div>
-      <div class="ag-accordion-content">
-        <div class="ag-substance-card">
-          <div class="ag-sub-header">
-            <div class="ag-sub-title">酒精混用</div>
-          </div>
-          <div class="ag-sub-section">
-            <div class="ag-sub-text">與鎮靜劑（含 GHB/GBL、苯二氮平類）混用會顯著增加呼吸抑制風險。</div>
-          </div>
-          <div class="ag-sub-section">
-            <span class="ag-sub-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:5px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>減害</span>
-            <div class="ag-sub-text">避免同時使用；若已混用，切勿單獨留下同伴，密切監測呼吸與意識，一有異常即撥 119。</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Legal Info Accordion -->
-    <div class="ag-accordion-item">
-      <div class="ag-accordion-header" onclick="toggleAccordion(this)">
-        <div class="ag-accordion-title">
-          <span class="ag-rights-accent"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-2px"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span> 法律與權益 (TW)
-        </div>
-        <div class="ag-accordion-icon">▼</div>
-      </div>
-      <div class="ag-accordion-content">
-        <div class="ag-legal-box">
-          <div class="ag-legal-title">法律與保密</div>
-          <div class="ag-legal-text">
-            <ul class="ag-pl-20">
-              <li>119 接線與救護流程以救護與醫療處置為優先；實際通報與紀錄處理仍依現場狀況與相關法規辦理。</li>
-              <li>醫療秘密義務：醫療機構對個人資料有保密義務，除非涉及重大刑案偵查需求之合法程序。</li>
-              <li>若現場涉及明確刑案線索，警方可依法處置；求助者之急救優先。</li>
-            </ul>
-          </div>
-        </div>
-
-        <div class="ag-legal-box ag-mt-20">
-          <div class="ag-legal-title">自動求治 §21（要點）</div>
-          <div class="ag-legal-text">
-            「撥 119」不等同啟動毒防條例之「自動求治」程序。需依規定向指定單位辦理。
-          </div>
-        </div>
-
-        <div class="ag-rights-cta">
-          <p class="ag-rights-cta-text">更完整的權利資訊、就醫／求助前的基本提醒。</p>
-          <a href="/rights.html" class="ag-rights-cta-button">前往權利知識</a>
-        </div>
-      </div>
-    </div>
-
+    <section class="ag-legal-box"><h2>詳細減害與權利資訊</h2><p>詳細減害與權利資訊可直接閱讀；物質混合器需先完成 18+ 入口確認。緊急狀況請先打 119。</p><a class="ag-action-btn" href="/first-aid-details.html">查看詳細減害資訊 →</a></section>
     <!-- Footer Note -->
     <div class="ag-seal-section">
       <div class="ag-version-info">
@@ -436,5 +343,6 @@
       }
     }
   </script>
-</body>
+<script src="/assets/safety-accessibility.js"></script>
+<nav class="safety-app-nav" aria-label="安全資訊功能"><a href="/safety.html">安全</a><a href="/first-aid.html" aria-current="page">急救</a><a href="/etomidate-safety.html">依托提醒</a><a href="/help.html">求助</a></nav><script src="/assets/public-safety-shell.js"></script></body>
 </html>

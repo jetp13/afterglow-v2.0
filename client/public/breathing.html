@@ -5,11 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>呼吸練習｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
-  <script>
-    if (sessionStorage.getItem('ag_consent') !== 'true') {
-      window.location.href = '/index.html';
-    }
-  </script>
   <style>
     /* ── Inner header (matches voice / white-noise) ── */
     .ag-inner-header {
@@ -108,7 +103,7 @@
 
   <!-- Header with back button (matches voice / white-noise) -->
   <header class="ag-inner-header">
-    <a href="/menu.html" class="ag-back-button" aria-label="返回選單"></a>
+    <a href="/menu.html?v=20261016-public" class="ag-back-button" aria-label="返回選單"></a>
   </header>
 
   <!-- Page title block -->
@@ -125,7 +120,7 @@
     <!-- Synced subtitle -->
     <p class="ag-breathing-subtitle" id="breathing-subtitle">吸氣，跟著圓圈慢慢放大</p>
 
-    <a href="/menu.html" class="ag-mt-40 ag-text-gray ag-link-clean">← 結束練習</a>
+    <a href="/menu.html?v=20261016-public" class="ag-mt-40 ag-text-gray ag-link-clean">← 結束練習</a>
   </div>
 
   <footer class="ag-footer-standard">

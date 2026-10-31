@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>急救與安全｜Afterglow</title>
+  <link rel="stylesheet" href="/assets/layout.css">
+  <link rel="stylesheet" href="/assets/shared-emergency.css">
+  <!-- Public Safety Core: readable before general consent. -->
+  <style>
+    /* ── accent 色：緊急支援選單 — 冷白冰藍 ── */
+    :root {
+      --em-accent:      rgba(220, 245, 255, 0.80);
+      --em-accent-glow: rgba(220, 245, 255, 0.22);
+    }
+    .ag-page-title-block {
+      padding: calc(88px + env(safe-area-inset-top, 0px)) 20px 4px;
+      flex-shrink: 0;
+      box-sizing: border-box;
+    }
+    .ag-page-title { font-size: 12px; color: rgba(255,255,255,0.35); letter-spacing: 0.10em; text-transform: uppercase; margin: 0; }
+
+    .ag-main-scroll {
+      flex: 1;
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 16px 20px 20px;
+      box-sizing: border-box;
+    }
+
+    .ag-support-inner {
+      width: 100%;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .ag-capsule-list {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      width: 100%;
+      padding: 0 4px;
+      /* 景深空間：讓 translateZ 有透視效果 */
+      perspective: 700px;
+      perspective-origin: 50% 50%;
+    }
+
+    /* 共用膠囊基底：對齊首頁藥丸視覺語言 */
+    .ag-menu-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 999px;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.10em;
+      color: #fff;
+      text-decoration: none;
+      white-space: nowrap;
+      position: relative;
+      /* 優雅浮現：慢起步、輕落地 */
+      transition:
+        transform 0.65s cubic-bezier(0.16, 1, 0.30, 1),
+        box-shadow 0.65s cubic-bezier(0.16, 1, 0.30, 1),
+        filter 0.55s ease,
+        opacity 0.70s ease;
+    }
+
+    /* 急救指引 — 最細最短，靠右，微小轉角 */
+    .ag-menu-button:nth-child(1) {
+      height: 44px;
+      width: clamp(160px, 52%, 240px);
+      align-self: flex-end;
+      margin-right: 5%;
+      margin-bottom: 22px;
+      transform: rotate(-1.8deg);
+    }
+    /* 風險計算機 — 最寬最高，靠左，視覺重心 */
+    .ag-menu-button:nth-child(2) {
+      height: 56px;
+      width: clamp(240px, 84%, 380px);
+      align-self: flex-start;
+      margin-left: 2%;
+      margin-bottom: 18px;
+      transform: rotate(1.4deg);
+    }
+    /* 權利知識 — 中等，靠右，略低 */
+    .ag-menu-button:nth-child(3) {
+      height: 48px;
+      width: clamp(190px, 64%, 290px);
+      align-self: flex-end;
+      margin-right: 7%;
+      margin-bottom: 20px;
+      transform: rotate(-1.0deg) translateY(2px);
+    }
+    /* 求助資源 — 偏寬，靠左，收尾 */
+    .ag-menu-button:nth-child(4) {
+      height: 52px;
+      width: clamp(210px, 74%, 340px);
+      align-self: flex-start;
+      margin-left: 4%;
+      margin-bottom: 0;
+      transform: rotate(1.8deg) translateY(-1px);
+    }
+
+    /* ──────────────────────────────────────────
+       景深互動：選到哪顆，哪顆浮上前景
+       其他藥丸退後模糊，製造鏡頭對焦感
+       技術：CSS :has() + translateZ
+       相容：iOS Safari 15.4+, Chrome 105+
+    ────────────────────────────────────────── */
+
+    /* 有任何藥丸被 hover/focus 時，其他藥丸大幅退後——前後對比更強烈 */
+    .ag-capsule-list:has(.ag-menu-button:hover) .ag-menu-button,
+    .ag-capsule-list:has(.ag-menu-button:focus) .ag-menu-button {
+      filter: blur(3.5px) brightness(0.22);
+      opacity: 0.20;
+    }
+    /* 被選中的那顆明顯衝出前景：放大 + 往上位移 + 增亮 */
+    .ag-capsule-list:has(.ag-menu-button:hover) .ag-menu-button:hover,
+    .ag-capsule-list:has(.ag-menu-button:focus) .ag-menu-button:focus {
+      filter: blur(0px) brightness(1.30);
+      opacity: 1;
+      z-index: 10;
+    }
+    /* Touch 裝置補強：JS 切換 .is-active */
+    .ag-capsule-list:has(.ag-menu-button.is-active) .ag-menu-button {
+      filter: blur(3.5px) brightness(0.22);
+      opacity: 0.20;
+    }
+    .ag-capsule-list:has(.ag-menu-button.is-active) .ag-menu-button.is-active {
+      filter: blur(0px) brightness(1.30);
+      opacity: 1;
+      z-index: 10;
+    }
+
+    /* ──────────────────────────────────────────
+       急救指引 — 語意暖紅（緊急 · 警報）
+    ────────────────────────────────────────── */
+    .ag-menu-button--first-aid {
+      border: 2px solid rgba(255, 61, 46, 0.80);
+      background: radial-gradient(ellipse at center, rgba(255,61,46,0.10) 0%, transparent 70%);
+      box-shadow:
+        0 0 14px rgba(255,61,46,0.60),
+        0 0 36px rgba(255,61,46,0.24),
+        inset 0 0 12px rgba(255,61,46,0.12);
+      color: rgba(255, 215, 210, 0.95);
+      animation: ag-breathe-red 4.5s ease-in-out infinite;
+    }
+    .ag-menu-button--first-aid:hover,
+    .ag-menu-button--first-aid:active,
+    .ag-menu-button--first-aid.is-active {
+      box-shadow:
+        0 0 28px rgba(255,61,46,0.88),
+        0 0 60px rgba(255,61,46,0.44),
+        0 0 110px rgba(255,61,46,0.18),
+        inset 0 0 18px rgba(255,61,46,0.24);
+      transform: rotate(-1.8deg) translateY(-12px) scale(1.20);
+      animation: none;
+    }
+
+    /* ──────────────────────────────────────────
+       風險計算機 — 語意亮洋紅（迷幻 · 工具感）
+    ────────────────────────────────────────── */
+    .ag-menu-button--risk {
+      border: 2px solid rgba(224, 64, 251, 0.78);
+      background: radial-gradient(ellipse at center, rgba(224,64,251,0.10) 0%, transparent 70%);
+      box-shadow:
+        0 0 14px rgba(224,64,251,0.58),
+        0 0 34px rgba(224,64,251,0.22),
+        inset 0 0 12px rgba(224,64,251,0.10);
+      color: rgba(248, 215, 255, 0.95);
+      animation: ag-breathe-magenta 3.8s ease-in-out infinite;
+    }
+    .ag-menu-button--risk:hover,
+    .ag-menu-button--risk:active,
+    .ag-menu-button--risk.is-active {
+      box-shadow:
+        0 0 28px rgba(224,64,251,0.86),
+        0 0 58px rgba(224,64,251,0.42),
+        0 0 105px rgba(224,64,251,0.18),
+        inset 0 0 18px rgba(224,64,251,0.22);
+      transform: rotate(1.4deg) translateY(-12px) scale(1.20);
+      animation: none;
+    }
+
+    /* ──────────────────────────────────────────
+       權利知識 — 語意電藍（制度 · 秩序）
+    ────────────────────────────────────────── */
+    .ag-menu-button--rights {
+      border: 2px solid rgba(41, 121, 255, 0.78);
+      background: radial-gradient(ellipse at center, rgba(41,121,255,0.10) 0%, transparent 70%);
+      box-shadow:
+        0 0 14px rgba(41,121,255,0.58),
+        0 0 34px rgba(41,121,255,0.22),
+        inset 0 0 12px rgba(41,121,255,0.10);
+      color: rgba(205, 222, 255, 0.95);
+      animation: ag-breathe-blue 5s ease-in-out infinite;
+    }
+    .ag-menu-button--rights:hover,
+    .ag-menu-button--rights:active,
+    .ag-menu-button--rights.is-active {
+      box-shadow:
+        0 0 26px rgba(41,121,255,0.84),
+        0 0 55px rgba(41,121,255,0.40),
+        0 0 100px rgba(41,121,255,0.18),
+        inset 0 0 16px rgba(41,121,255,0.22);
+      transform: rotate(-1.0deg) translateY(-12px) scale(1.20);
+      animation: none;
+    }
+
+    /* ──────────────────────────────────────────
+       求助資源 — 語意翠綠（出口 · 接住）
+    ────────────────────────────────────────── */
+    .ag-menu-button--help {
+      border: 2px solid rgba(0, 230, 118, 0.78);
+      background: radial-gradient(ellipse at center, rgba(0,230,118,0.10) 0%, transparent 70%);
+      box-shadow:
+        0 0 14px rgba(0,230,118,0.60),
+        0 0 36px rgba(0,230,118,0.24),
+        inset 0 0 12px rgba(0,230,118,0.12);
+      color: rgba(195, 255, 228, 0.95);
+      animation: ag-breathe-green 4.8s ease-in-out infinite;
+    }
+    .ag-menu-button--help:hover,
+    .ag-menu-button--help:active,
+    .ag-menu-button--help.is-active {
+      box-shadow:
+        0 0 28px rgba(0,230,118,0.88),
+        0 0 60px rgba(0,230,118,0.44),
+        0 0 110px rgba(0,230,118,0.20),
+        inset 0 0 18px rgba(0,230,118,0.24);
+      transform: rotate(1.8deg) translateY(-12px) scale(1.20);
+      animation: none;
+    }
+
+    /* ── 呼吸動畫 — 各色自己的節奏略有差異 ── */
+    @keyframes ag-breathe-red {
+      0%, 100% { box-shadow: 0 0 14px rgba(255,61,46,0.60), 0 0 36px rgba(255,61,46,0.24), inset 0 0 12px rgba(255,61,46,0.12); }
+      50%       { box-shadow: 0 0 22px rgba(255,61,46,0.82), 0 0 52px rgba(255,61,46,0.38), inset 0 0 18px rgba(255,61,46,0.20); }
+    }
+    @keyframes ag-breathe-magenta {
+      0%, 100% { box-shadow: 0 0 14px rgba(224,64,251,0.58), 0 0 34px rgba(224,64,251,0.22), inset 0 0 12px rgba(224,64,251,0.10); }
+      50%       { box-shadow: 0 0 22px rgba(224,64,251,0.80), 0 0 50px rgba(224,64,251,0.36), inset 0 0 16px rgba(224,64,251,0.18); }
+    }
+    @keyframes ag-breathe-blue {
+      0%, 100% { box-shadow: 0 0 14px rgba(41,121,255,0.58), 0 0 34px rgba(41,121,255,0.22), inset 0 0 12px rgba(41,121,255,0.10); }
+      50%       { box-shadow: 0 0 22px rgba(41,121,255,0.80), 0 0 50px rgba(41,121,255,0.36), inset 0 0 16px rgba(41,121,255,0.18); }
+    }
+    @keyframes ag-breathe-green {
+      0%, 100% { box-shadow: 0 0 14px rgba(0,230,118,0.60), 0 0 36px rgba(0,230,118,0.24), inset 0 0 12px rgba(0,230,118,0.12); }
+      50%       { box-shadow: 0 0 22px rgba(0,230,118,0.82), 0 0 52px rgba(0,230,118,0.38), inset 0 0 18px rgba(0,230,118,0.20); }
+    }
+  </style>
+  <link rel="stylesheet" href="/assets/safety-hub.css?v=20261020-night1">
+</head>
+<body class="ag-page">
+
+  <a href="/home.html" class="ag-back-button" aria-label="返回上一頁"></a>
+
+  <a href="/home.html" class="ag-site-logo" aria-label="返回首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
+
+  <div class="ag-page-title-block">
+    <h1 class="ag-page-title">緊急支援 · Emergency Support</h1>
+  </div>
+
+  <main class="ag-main-scroll">
+    <div class="ag-support-inner">
+      <section class="safety-now" aria-label="立即求救">
+        <p>有人叫不醒或呼吸異常？</p>
+        <a class="safety-call" href="tel:119">撥打 119</a>
+      </section>
+      <nav class="ag-capsule-list" aria-label="安全資訊入口">
+        <a href="/first-aid.html" class="ag-menu-button ag-menu-button--first-aid">急救指引</a>
+        <a href="/index.html?from=/risk-calculator.html" class="ag-menu-button ag-menu-button--risk">風險計算機</a>
+        <a href="/rights.html" class="ag-menu-button ag-menu-button--rights">權利知識</a>
+        <a href="/help.html" class="ag-menu-button ag-menu-button--help">求助資源</a>
+      </nav>
+      <p class="safety-current"><a href="/etomidate-safety.html"><span class="safety-current-label">近期提醒：</span><span class="safety-current-title">依托咪酯安全 →</span></a></p>
+
+    </div>
+  </main>
+
+  <footer class="ag-footer-standard">
+    <div class="ag-footer__inner">
+      <nav class="ag-footer__links" aria-label="Legal and info links">
+        <a href="/privacy.html" class="ag-footer__link">隱私權政策</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/legal.html" class="ag-footer__link">法律免責</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/terms.html" class="ag-footer__link">使用條款</a>
+        <span class="ag-footer__separator">•</span>
+        <a href="/about.html" class="ag-footer__link">關於 Afterglow</a>
+      </nav>
+      <p class="ag-footer__copyright">© 2026 Afterglow. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script src="/assets/safety-capsules.js?v=20261020-night1"></script>
+</body>
+</html>
