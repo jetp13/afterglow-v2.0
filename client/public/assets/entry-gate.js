@@ -1,11 +1,14 @@
 (() => {
   const destinations = {
     '/first-aid-details.html': '詳細減害資訊', '/home.html': 'Afterglow 首頁', '/risk-calculator.html': 'ChemAid 混用風險工具',
-    '/rights.html': 'Rights 完整權利資訊', '/support-main.html': '18+ 支援工具',
-    '/breathing.html': '呼吸練習', '/voice.html': '聲音陪伴',
-    '/white-noise.html': '白噪音', '/menu.html': '工具選單', '/memoir.html': 'Memoir'
+    '/rights.html': '權利資訊', '/support-main.html': '18+ 支援工具',
+    '/memoir.html': 'Memoir'
   };
   const requested = new URLSearchParams(window.location.search).get('from');
+  if (['/menu.html','/breathing.html','/voice.html','/white-noise.html'].includes(requested)) {
+    window.location.replace(requested + '?v=20261016-public');
+    return;
+  }
   const target = Object.hasOwn(destinations, requested) ? requested : '/home.html';
   const button = document.getElementById('enter-btn');
   const checkboxes = document.querySelectorAll('.ag-consent-checkbox');

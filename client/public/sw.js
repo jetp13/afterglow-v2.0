@@ -1,9 +1,9 @@
-const CACHE_NAME = 'afterglow-v7-public-safety';
+const CACHE_NAME = 'afterglow-v18-public-safety';
 // Public visits must not prefetch detailed adult tools or unverified Rights content.
-const ASSETS_TO_CACHE = ['/', '/index.html', '/safety.html', '/etomidate-safety.html',
+const ASSETS_TO_CACHE = ['/', '/index.html', '/home.html', '/menu.html', '/breathing.html', '/voice.html', '/white-noise.html', '/safety.html', '/etomidate-safety.html',
   '/first-aid.html', '/help.html', '/privacy.html', '/terms.html', '/legal.html', '/about.html',
-  '/assets/layout.css', '/assets/shared-emergency.css', '/assets/public-safety.css',
-  '/assets/entry-gate.js', '/assets/safety-accessibility.js', '/assets/logo-new.png',
+  '/assets/layout.css', '/assets/semantic-colors.css', '/assets/shared-emergency.css', '/assets/public-safety.css',
+  '/assets/home-safety-entry.css', '/assets/safety-hub.css', '/assets/safety-capsules.js', '/assets/ag-player.css', '/assets/ag-player.js', '/assets/entry-motion.js', '/assets/public-safety-shell.js', '/assets/entry-gate.js', '/assets/safety-accessibility.js', '/assets/logo-new.png',
   '/assets/logo-handwritten-nobg.png', '/manifest.json'];
 self.addEventListener('install', event => event.waitUntil(
   caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS_TO_CACHE)).then(() => self.skipWaiting())

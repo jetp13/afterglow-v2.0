@@ -1,8 +1,7 @@
 <!DOCTYPE html>
-<html lang="zh-Hant" data-age-pending>
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
-  <style>html[data-age-pending] body > :not(noscript){display:none!important}</style><script src="/assets/adult-gate.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Afterglow｜讓夜裡的光有方向</title>
   <link rel="manifest" href="/manifest.json">
@@ -407,20 +406,16 @@
       .ag-btn { height: 44px; font-size: 14px; }
     }
   </style>
-  <noscript><style>body > :not(noscript){display:none!important}</style></noscript>
+  <link rel="stylesheet" href="/assets/home-safety-entry.css?v=20261016-original3">
 </head>
 <body>
-  <noscript><p>詳細工具需要 JavaScript 與 18+ 入口確認。<a href="/safety.html">返回公開安全資訊</a></p></noscript>
 
   <!-- Hero：Logo 偏左出血 -->
   <section class="ag-hero" aria-label="品牌識別">
     <img
       src="/assets/logo-handwritten-nobg.png"
       alt="Afterglow"
-      class="ag-logo ag-logo--igniting"
-      role="button"
-      tabindex="0"
-      aria-label="Afterglow 首頁"
+      class="ag-logo ag-logo--igniting" role="button" tabindex="0" aria-label="Afterglow 首頁"
     />
     <!-- 副標：靠右，在 Logo 下方 -->
     <div class="ag-text">
@@ -443,8 +438,8 @@
 
   <!-- CTA：微錯落，主左次右 -->
   <nav class="ag-cta" aria-label="主要功能入口">
-    <a href="/menu.html" class="ag-btn ag-btn--primary">我需要重新開機</a>
-    <a href="/support-main.html" class="ag-btn ag-btn--secondary">我需要緊急協助</a>
+    <a href="/menu.html?v=20261016-public" class="ag-btn ag-btn--primary">我需要重新開機</a>
+    <a href="/safety.html?v=20261016-lean" class="ag-btn ag-btn--secondary">我需要緊急協助</a>
   </nav>
 
   <!-- Spacer：把 Footer 推到底部 -->
@@ -466,7 +461,66 @@
     </div>
   </footer>
 
-  <script>
+  <dialog class="entry-confirmation-content" id="entry-confirmation-content" aria-labelledby="adult-title">
+      <form method="dialog" class="entry-dialog-back"><button type="submit" autofocus>返回入口</button></form>
+      <h2 id="adult-title">進站前，先確認</h2>
+      <p id="gate-destination">站內含詳細物質與混用資訊，目前需完成 18+ 確認。</p>
+    <details class="ag-entry-notice">
+      <summary>閱讀入口聲明與使用邊界</summary>
+    <!-- Disclaimer Box -->
+    <div class="ag-disclaimer-box" tabindex="0" aria-label="入口聲明內容">
+
+      <div class="ag-disclaimer-section">
+        <div class="ag-disclaimer-title">一、總體定位聲明</div>
+        <p class="ag-disclaimer-text">Afterglow 為健康教育與風險減害平台，其目的在於提供公共衛教與自我照護資訊，協助使用者了解身心健康與安全相關議題。</p>
+        <p class="ag-disclaimer-text">平台內容僅供教育、心理健康、自我覺察用途，絕不鼓勵、推廣或美化任何形式的非法藥物使用、性行為或風險行為。</p>
+        <p class="ag-disclaimer-text">18+ Afterglow 的詳細工具限年滿 18 歲者使用；公開安全資訊不以此確認為前提。Afterglow 不提供醫療、心理治療或即時緊急救援服務。</p>
+      </div>
+
+      <div class="ag-disclaimer-section">
+        <div class="ag-disclaimer-title">二、法律與風險免責</div>
+        <p class="ag-disclaimer-text">本站資訊不能取代專業判斷；個案權利與責任依適用法令及事實判斷，不因本站聲明而當然免除。</p>
+        <p class="ag-disclaimer-text">平台所提供的任何藥物、心理或身體健康資訊，均屬一般性教育資料，並非個別診斷或處方建議。若有醫療需求，請立即諮詢專業醫師或藥師。</p>
+        <p class="ag-disclaimer-text">本站目前沒有案件輸入、檔案上傳或帳號功能。不要透過外部連結傳送不必要的敏感資料。</p>
+      </div>
+
+      <div class="ag-disclaimer-section">
+        <div class="ag-disclaimer-title">三、資料與隱私聲明</div>
+        <p class="ag-disclaimer-text">本站不要求登入。入口確認狀態暫存在瀏覽器 sessionStorage；網站傳送與必要技術紀錄依託管服務實際設定處理，詳見隱私權政策。</p>
+        <p class="ag-disclaimer-text">安全入口、依托咪酯即時安全、急救與求助頁可直接閱讀；ChemAid 與其他詳細工具需先完成 18+ 入口確認。這不是身分或實際年齡驗證。</p>
+        <p class="ag-disclaimer-text">若未來新增會處理、傳送或保存資料的功能，會依該功能的實際資料流另行告知與取得必要同意。</p>
+      </div>
+
+      <div class="ag-disclaimer-section">
+        <div class="ag-disclaimer-title">四、緊急與安全聲明</div>
+        <p class="ag-disclaimer-text">若使用者或其身邊有人出現身體不適、精神錯亂、呼吸困難、失去意識等情況，請立即撥打當地緊急醫療電話（台灣：119），而非依賴本平台。</p>
+        <p class="ag-disclaimer-text">本平台可提供一般性的急救與減害教育資訊，但不提供即時通訊，也不能取代 119 接線員、救護人員或醫療專業判斷。</p>
+        <p class="ag-disclaimer-text">若使用者有精神困擾或自殺念頭，請撥打：1925 安心專線、1995 生命線、1980 張老師。</p>
+      </div>
+
+      <div class="ag-disclaimer-section">
+        <div class="ag-disclaimer-title">五、著作與責任聲明</div>
+        <p class="ag-disclaimer-text">Afterglow 為教育與公益性專案，所有內容受著作權保護，未經許可不得擷取或轉載。</p>
+        <p class="ag-disclaimer-text">使用 18+ Afterglow 前，請理解：Afterglow 的創作者及技術團隊僅提供教育性工具，不對內容的合法性、正確性、即時性或完整性提供任何明示或默示保證。</p>
+      </div>
+
+    </div>
+
+    </details>
+
+    <!-- Checkbox Group -->
+    <div class="ag-checkbox-group">
+      <label class="ag-consent-label">
+        <input type="checkbox" class="ag-consent-checkbox" data-required="true">
+        我已年滿 18 歲，且已詳閱並同意上述所有聲明
+      </label>
+    </div>
+
+    <!-- Enter Button -->
+    <button type="button" id="enter-btn" class="ag-enter-button" disabled>進入 18+ Afterglow</button>
+    <p id="gate-error" role="status" hidden></p>
+      </dialog>
+<script>
     (function () {
       var logo = document.querySelector('.ag-logo');
       if (!logo) return;
@@ -486,5 +540,7 @@
       });
     })();
   </script>
+  <script src="/assets/entry-gate.js?v=20261016-rights-label"></script>
+  <script src="/assets/entry-motion.js?v=20261016-public-meditation"></script>
 </body>
 </html>

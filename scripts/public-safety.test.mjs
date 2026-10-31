@@ -7,8 +7,8 @@ const read = file => readFileSync(new URL('../'+file,import.meta.url),'utf8').re
 const baseline = file => execFileSync('git',['show','41c2445:'+file],{encoding:'utf8',maxBuffer:5e6}).replace(/\r\n/g,'\n');
 let checks=0;
 const check = (result,message) => { assert.ok(result,message); checks++; };
-const adult = ['home','risk-calculator','rights','support-main','first-aid-details','breathing','voice','white-noise','menu','memoir'];
-const publics = ['safety','etomidate-safety','first-aid','help','privacy','terms','legal','about'];
+const adult = ['risk-calculator','rights','support-main','first-aid-details','memoir'];
+const publics = ['menu','breathing','voice','white-noise','home','safety','etomidate-safety','first-aid','help','privacy','terms','legal','about'];
 const guard = read('client/public/assets/adult-gate.js');
 const gate = read('client/public/assets/entry-gate.js');
 
@@ -18,7 +18,7 @@ function simulateAdult(path,consent,blocked=false) {
   vm.runInNewContext(guard,context);
   return {context,navigations,events};
 }
-for(const name of adult) {
+for(const name of adult.filter(name=>name!=='rights')) {
   const html=read('client/public/'+name+'.html');
   check(html.includes('<script src="/assets/adult-gate.js"></script>'), name+' protected');
   check(!html.includes("window.location.href = '/index.html'"),name+' no destination loss');
@@ -62,7 +62,12 @@ check(!blocked.error.hidden&&blocked.nav.length===0,'blocked storage shows recov
 
 const entry=read('client/index.html');
 check(entry===read('client/public/index.html'),'both existing entry implementations aligned');
-check((entry.match(/href="\/safety.html"/g)||[]).length===1,'one safety CTA on landing');
+check(entry===read('client/public/home.html'),'legacy home and canonical entry are the same public homepage');
+check(entry.includes('讓夜裡的光有方向')&&entry.includes('Stay Safe · Care for Yourself · Seek Help'),'original brand subtitles preserved');
+check(entry.includes('href="/menu.html?v=20261016-public" class="ag-btn ag-btn--primary"'),'original reset route retained');
+check(entry.includes('href="/safety.html?v=20261016-lean" class="ag-btn ag-btn--secondary">我需要緊急協助'),'original emergency capsule reaches public safety directly');
+check(!entry.includes('進入 Afterglow</span>')&&!entry.includes('entry-choices'),'no additional outer capsule selection');
+check((entry.match(/href="\/safety.html(?:\?[^"]*)?"/g)||[]).length===1,'one safety CTA on landing');
 const originalFirstAid=baseline('client/public/first-aid.html');
 const detail=originalFirstAid.slice(originalFirstAid.indexOf('    <!-- GHB/GBL Accordion -->'),originalFirstAid.indexOf('    <!-- Footer Note -->'));
 check(read('client/public/first-aid-details.html').includes(detail.slice(0,detail.indexOf('    <!-- Legal Info Accordion -->'))),'all three original medical accordions retained exactly');
@@ -102,12 +107,11 @@ check(scenario([{id:'unlisted-a',name:'A'},{id:'unlisted-b',name:'B'}])['result-
 check(scenario([{id:'ghb',name:'GHB'},{id:'alcohol',name:'酒精'}])['result-title'].textContent.includes('致命危險'),'known deadly result retained');
 check(scenario([{id:'ghb',name:'GHB'},{id:'alcohol',name:'酒精'},{id:'unlisted',name:'未知'}])['result-title'].textContent.includes('資料不完整；已知最高風險：致命危險'),'partial unknown preserves known danger and discloses missing data');
 const rights=read('client/public/rights.html');
-check(rights.includes('法律內容核證中（UNKNOWN）'),'Rights remains explicitly unverified');
+check(rights.includes("sessionStorage.getItem('ag_consent') !== 'true'")&&rights.includes("window.location.href = '/index.html'"),'retained production Rights keeps its existing inline consent guard');
+check(rights===execFileSync('git',['show','origin/main:client/public/rights.html'],{encoding:'utf8'}).replace(/\r\n/g,'\n'),'Owner-approved production Rights retained byte-for-byte after newline normalization');
 check(!rights.includes('快篩陽性須經實驗室複驗始具法律效'),'blanket screening legal-effect claim removed');
 
-const sw=read('client/public/sw.js');
-check(sw.includes('afterglow-v7-public-safety'),'P0 offline cache update');
-let cached;const handlers={};
+const sw=read('client/public/sw.js');let cached;const handlers={};
 vm.runInNewContext(sw,{URL,Response,self:{location:{origin:'https://example.test'},addEventListener:(name,fn)=>handlers[name]=fn,skipWaiting:()=>{},clients:{claim:()=>{}}},caches:{open:async()=>({addAll:async list=>{cached=Array.from(list);}})}});
 let install;handlers.install({waitUntil:p=>install=p});await install;
 for(const name of adult)check(!cached.includes('/'+name+'.html'),'no adult precache '+name);
@@ -127,3 +131,22 @@ for(const name of changed) {
 }
 console.log('PASS: '+checks+' assertions (gate transitions, hostile targets, failure fallback, content invariants, SW boundary, internal files).');
 console.log('NOT COVERED: browser visual state, screen reader, mobile timed usability, actual SW lifecycle, external URLs or legal compliance.');
+
+// A direct protected-tool request shows consent on the existing homepage, not another landing.
+function homeConsent(from, confirmed, blocked=false) {
+ let opened=0;
+ vm.runInNewContext(read('client/public/assets/entry-motion.js'),{URLSearchParams,document:{getElementById:()=>({showModal(){opened++;}})},window:{location:{search:from?'?from='+encodeURIComponent(from):''}},sessionStorage:{getItem(){if(blocked)throw Error('blocked');return confirmed;}}});
+ return opened;
+}
+check(homeConsent(null,null)===0,'public home does not open consent automatically');
+check(homeConsent('/risk-calculator.html',null)===1,'protected tool request opens consent on original home');
+check(homeConsent('/risk-calculator.html','true')===0,'confirmed tool request does not reopen consent');
+check(homeConsent('/risk-calculator.html',null,true)===1,'blocked storage still presents the safe confirmation fallback');
+console.log('PASS: original-home consent panel checks (4 assertions).');
+
+for(const path of ['/menu.html','/breathing.html','/voice.html','/white-noise.html']) {
+ check(simulateEntry(path,null).nav[0]===path+'?v=20261016-public','legacy public meditation gate link returns directly '+path);
+ check(homeConsent(path,null)===0,'meditation never opens consent panel '+path);
+}
+check(!read('client/public/safety.html').includes('ag-section-title'),'safety hub uses compact original menu instead of stacked article sections');
+console.log('PASS: public meditation and lean safety routing checks.');

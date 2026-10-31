@@ -1,0 +1,23 @@
+/* Preserve home.html's original logo/subtitle and two-route composition. */
+html { overflow:hidden; }
+body { overflow:hidden; }
+a:focus-visible,button:focus-visible,summary:focus-visible,input:focus-visible { outline:2px dashed #ddd;outline-offset:6px; }
+#gate-error { color:#ffb5e7;line-height:1.8; }
+.entry-confirmation-content { position:fixed;margin:auto;width:calc(100% - 32px);max-width:512px;max-height:calc(100dvh - 32px);padding:24px;border:1px solid #555;border-radius:16px;background:#000;color:#eee;overflow-y:auto;overscroll-behavior:contain; }
+.entry-confirmation-content::backdrop { background:#000d; }
+.entry-dialog-back { margin-bottom:24px; }
+.entry-dialog-back button { min-height:44px;padding:8px 0;border:0;background:none;color:#b8b8b8;font:inherit;font-size:14px;text-decoration:underline;text-underline-offset:5px;cursor:pointer; }
+.entry-confirmation-content h2 { margin:0 0 12px;font-size:20px;font-weight:500;line-height:1.5; }
+.entry-confirmation-content p { font-size:14px;line-height:1.85;color:#b8b8b8; }
+.ag-entry-notice { margin:20px 0; }
+.ag-entry-notice summary { min-height:44px;padding:10px 0;cursor:pointer;color:#eee;font-size:14px;line-height:1.7; }
+.ag-disclaimer-box { margin:12px 0 24px;padding:20px;border:1px solid #555;border-radius:12px;background:#000; }
+.ag-disclaimer-section + .ag-disclaimer-section { margin-top:28px; }
+.ag-disclaimer-title { font-size:16px;font-weight:500;line-height:1.6;margin-bottom:12px;color:#eee; }
+.ag-checkbox-group { margin:24px 0; }
+.ag-consent-label { display:flex;align-items:flex-start;gap:12px;min-height:48px;padding:8px 0;font-size:15px;line-height:1.8;cursor:pointer; }
+.ag-consent-checkbox { width:22px;height:22px;flex-shrink:0;accent-color:#ff6bd9;margin-top:3px; }
+.ag-enter-button { width:100%;min-height:52px;padding:12px 20px;border:1px solid #555;border-radius:999px;background:#000;color:#aaa;font:inherit;font-size:16px;cursor:not-allowed; }
+.ag-enter-button.active { border-color:#ff8bdc;color:#fff;cursor:pointer;box-shadow:0 0 14px #ff6bd936; }
+
+@media(prefers-reduced-motion:reduce) { *,*::before,*::after { animation:none!important;transition:none!important; } .ag-btn--primary,.ag-btn--secondary,.ag-context__title,.ag-context__hint { opacity:1;filter:none; } }

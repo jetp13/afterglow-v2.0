@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html lang="zh-Hant" data-age-pending>
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>權利知識｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
   <link rel="stylesheet" href="/assets/shared-emergency.css">
-  <style>html[data-age-pending] body > :not(noscript){display:none!important}</style><script src="/assets/adult-gate.js"></script>
+  <script>
+    // Check for consent immediately
+    if (sessionStorage.getItem('ag_consent') !== 'true') {
+      window.location.href = '/index.html';
+    }
+  </script>
   <style>
     /* ── accent 色：權利支援 — 語意電藍（對齊入口色）── */
     :root {
@@ -105,11 +110,26 @@
       .ag-dodont-container { grid-template-columns: 1fr 1fr; }
       .ag-resources-list   { grid-template-columns: 1fr 1fr; }
     }
+    /* 本頁情境展開：沿用既有顏色、字級與間距。 */
+    .ag-rights-content { color: var(--em-text-secondary); font-size: var(--em-font-body); line-height: 1.65; }
+    .ag-rights-content p { margin: 0 0 var(--em-space-md); }
+    .ag-rights-intro { color: var(--em-text-primary); font-size: var(--em-font-h2); font-weight: 500; line-height: 1.5; margin: 0 0 var(--em-space-md); }
+    .ag-rights-content a { color: rgba(175, 205, 235, 0.95); text-decoration: underline; text-underline-offset: 3px; overflow-wrap: anywhere; }
+    .ag-rights-content a:focus-visible, .ag-rights-detail summary:focus-visible { outline: 2px solid rgba(175, 205, 235, 0.95); outline-offset: 4px; border-radius: 4px; }
+    .ag-rights-content .ag-quote-box { margin: var(--em-space-sm) 0 var(--em-space-md); }
+    .ag-rights-content .ag-principle-header { font-size: inherit; margin: 0; }
+    .ag-rights-content .ag-principles-grid { margin-bottom: var(--em-space-md); }
+    .ag-rights-help { padding: var(--em-space-lg); border: 1px solid var(--em-accent-border); border-radius: var(--em-radius-md); background: var(--em-surface-1); }
+    .ag-rights-content .ag-rights-call { display: block; padding: var(--em-space-md); margin-bottom: var(--em-space-md); border: 1px solid var(--em-accent-border); border-radius: var(--em-radius-sm); text-align: center; text-decoration: none; background: rgba(41, 121, 255, 0.12); }
+    .ag-rights-detail { border-bottom: 1px solid var(--em-border-subtle); scroll-margin-top: var(--em-space-md); }
+    .ag-rights-detail summary { cursor: pointer; color: var(--em-text-primary); padding: var(--em-space-md) 0; min-height: 44px; }
+    .ag-rights-detail-body { padding: 0 0 var(--em-space-md); overflow-wrap: anywhere; }
+    .ag-rights-detail-body ol { padding-left: 1.6em; margin-bottom: var(--em-space-md); }
+    .ag-rights-detail-body li { margin-bottom: var(--em-space-sm); }
+    .ag-rights-note { font-size: var(--em-font-small, 14px); }
   </style>
-  <noscript><style>body > :not(noscript){display:none!important}</style></noscript>
 </head>
 <body class="ag-page">
-  <noscript><p>詳細工具需要 JavaScript 與 18+ 入口確認。<a href="/safety.html">返回公開安全資訊</a></p></noscript>
   
   <!-- Inner Header: Back + Logo -->
   <header class="ag-inner-header">
@@ -121,13 +141,124 @@
     <p class="ag-page-subtitle">臨檢應對 · 權利主張 · 法律資源</p>
   </div>
 
-  <main class="ag-main-scroll"><div style="max-width:560px;margin:0 auto;padding:24px;line-height:1.8;color:#ddd">
-    <h1 style="font-size:26px;font-weight:500;margin-bottom:20px">權利資訊核證中</h1>
-    <p>法律內容核證中（UNKNOWN），尚未完成發布驗收。完整法律內容暫不提供，以免未核證說法造成誤解。</p>
-    <p style="margin-top:20px">個案法律問題請諮詢律師；若有人失去意識、呼吸異常或持續抽搐，請先撥打 119。</p>
-    <p style="margin-top:24px"><a href="/safety.html" style="color:#fff;text-underline-offset:6px;text-decoration-color:#ff8bdc">返回公開安全資訊 →</a></p>
-    <p style="margin-top:24px"><a href="/help.html" style="color:#fff;text-underline-offset:6px;text-decoration-color:#ff8bdc">查看求助資源 →</a></p>
-  </div></main>
+  <main class="ag-main-scroll" id="rights-main">
+    <div class="ag-container-sm ag-rights-content">
+      <header class="ag-section">
+        <h1 class="ag-rights-intro">先穩住，再把事情問清楚。</h1>
+        <p>遇到盤查或搜索，不需要當場背法條。<br>你可以確認依據、表達不同意，也可以尋求律師協助。</p>
+      </header>
+
+      <section class="ag-section" aria-labelledby="principles-title">
+        <h2 class="ag-section-title" id="principles-title">先記這三件事</h2>
+        <div class="ag-principles-grid">
+          <div class="ag-principle-card">
+            <h3 class="ag-principle-header"><span class="ag-principle-number">1</span><span class="ag-principle-title">先問清楚</span></h3>
+            <blockquote class="ag-quote-box">「請問現在是查證身分，還是犯罪調查？理由是什麼？」</blockquote>
+          </div>
+          <div class="ag-principle-card">
+            <h3 class="ag-principle-header"><span class="ag-principle-number">2</span><span class="ag-principle-title">不急著說明案情</span></h3>
+            <p class="ag-principle-text">若你被當作犯罪嫌疑人詢問：</p>
+            <blockquote class="ag-quote-box">「基本資料我會配合。關於案情，我選擇保持緘默，希望聯繫律師。」</blockquote>
+          </div>
+          <div class="ag-principle-card">
+            <h3 class="ag-principle-header"><span class="ag-principle-number">3</span><span class="ag-principle-title">不要肢體對抗</span></h3>
+            <blockquote class="ag-quote-box">「我對這個程序有異議，請把我的理由記錄下來。」</blockquote>
+          </div>
+        </div>
+        <p><strong>警方依法執行時，單說不同意，不一定能阻止。</strong><br>先確認依據、保留異議，避免在現場推擠或搶奪器材。</p>
+      </section>
+
+      <section class="ag-section ag-rights-help" aria-labelledby="lawyer-title">
+        <h2 class="ag-section-title" id="lawyer-title">現在需要律師陪同偵訊？</h2>
+        <a class="ag-rights-call" href="tel:0225592119">撥打法扶陪訊申請專線<br><strong>02-2559-2119</strong></a>
+        <p>由法扶確認資格與安排，不保證所有申請均可指派。</p>
+        <p>一般法扶服務：<a href="tel:024128518">412-8518（手機加 02）</a>。<a href="https://www.laf.org.tw/tel-ext" target="_blank" rel="noopener noreferrer">官方服務說明</a></p>
+      </section>
+
+      <section class="ag-section" aria-labelledby="scenarios-title">
+        <h2 class="ag-section-title" id="scenarios-title">選擇你遇到的情況</h2>
+        <p>點開情境，看可以怎麼說、哪些條件要確認。</p>
+      <details class="ag-rights-detail" id="identity">
+        <summary>路邊或場所盤查：先確認身分與事由</summary>
+        <div class="ag-rights-detail-body"><p>警察行使職權時，應著制服或出示證件表明身分，並告知事由。</p>
+<p>合法查證身分時，配合提供基本資料；若不清楚為何攔查，可以先問：</p>
+<blockquote class="ag-quote-box">「請問您是哪個單位？這次查證身分的理由是什麼？」</blockquote>
+<p>詢問姓名、出生年月日等資料，和追問案情，是不同的事情。</p>
+<p>例如：</p>
+<blockquote class="ag-quote-box">「你叫什麼名字？」是在查身分。<br>「這包東西是誰的？你剛剛有沒有用？」已涉及案情。</blockquote>
+<p>若你是被當作犯罪嫌疑人詢問，可以表達保持緘默並聯繫律師。若以其他身分接受詢問，適用規則可能不同，先確認自己的程序身分。</p>
+<p>法源：《警察職權行使法》第 4、6、7 條；《刑事訴訟法》第 95 條、第 100 條之 2。<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=D0080145" target="_blank" rel="noopener noreferrer">警職法</a>、<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=C0010001" target="_blank" rel="noopener noreferrer">刑訴法</a>。</p></div>
+      </details>
+      <details class="ag-rights-detail" id="search">
+        <summary>要求翻包、搜身或搜車：不同意自願搜索，可以說清楚</summary>
+        <div class="ag-rights-detail-body"><p>搜索原則上要有法官核發的搜索票，但有法定例外，例如依法逮捕時的附帶搜索、符合條件的急迫搜索。</p>
+<p>可以說：</p>
+<blockquote class="ag-quote-box">「我不同意自願搜索。請出示搜索票；如果依法不用票，請說明理由和搜索範圍。」</blockquote>
+<p>「配合一下，很快就好」，還沒有說明搜索依據。你可以追問，但不要肢體阻擋。</p>
+<p>安全檢查與刑事搜索也不同。若有明顯事實足認攜帶可能自傷或傷人的物品，警方可在必要範圍內進行檢查。</p>
+<p>有前科或被列管，不代表警方可以任意搜你；也不能只憑這些身分，就跳過具體法律依據。</p>
+<p>法源：《刑事訴訟法》第 128、130、131、131 條之 1；《警察職權行使法》第 7 條第 1 項第 4 款。<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=C0010001" target="_blank" rel="noopener noreferrer">刑訴法</a>、<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=D0080145" target="_blank" rel="noopener noreferrer">警職法</a>。</p></div>
+      </details>
+      <details class="ag-rights-detail" id="phone">
+        <summary>要求解鎖手機：查身分，不等於同意翻聊天紀錄</summary>
+        <div class="ag-rights-detail-body"><p>你可以不同意自願解鎖、提供密碼或讓警方翻閱內容，並請警方說明取證依據與範圍。</p>
+<blockquote class="ag-quote-box">「我不同意自願解鎖或提供密碼。請說明法律依據、要取用哪些資料，並讓我聯繫律師。」</blockquote>
+<p>若依法執行取證，單靠一句不同意，不一定能阻止。密碼、指紋或臉部解鎖的具體要求，涉及不同法律問題，請盡快讓律師確認。</p>
+<p>法源：《刑事訴訟法》第 128 條第 2 項第 3 款、第 131 條之 1、第 133 條。這些規定不代表所有解鎖方式都一律可拒絕或一律可強制。<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=C0010001" target="_blank" rel="noopener noreferrer">法源</a>。</p></div>
+      </details>
+      <details class="ag-rights-detail" id="sampling">
+        <summary>要求採尿或抽血：先問依據，再確認檢體流程</summary>
+        <div class="ag-rights-detail-body"><p>採尿和抽血適用的程序不同；不是警方一要求就都必須接受，也不是不同意就一定不能採驗。</p>
+<p>可以問：</p>
+<blockquote class="ag-quote-box">「這次採驗依據哪項規定？請出示依法應有的許可文件，讓我確認檢體編號、封緘與紀錄。」</blockquote>
+<p>列管或保護管束中的特定人員，可能依法需要接受尿液採驗。定期通知與犯罪調查程序不同，不要只憑有沒有通知書判斷。</p>
+<p>收到合法採驗通知後，有正當理由不能到場，應立即聯繫通知機關處理。</p>
+<p>對採樣或封緘有疑問，可以當場提出並要求記錄。你也可以提出錄影要求，但不是所有情境都有警方必須錄影的規定。</p>
+<p>法源：《毒品危害防制條例》第 25 條；《採驗尿液實施辦法》第 2、9 至 13、17 條；《刑事訴訟法》第 205 條之 1、第 205 條之 2、第 205 條之 3。<a href="https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=C0000008&amp;flno=25" target="_blank" rel="noopener noreferrer">毒防條例</a>、<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=I0030029" target="_blank" rel="noopener noreferrer">採驗辦法</a>、<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=C0010001" target="_blank" rel="noopener noreferrer">刑訴法</a>。</p></div>
+      </details>
+      <details class="ag-rights-detail" id="screening">
+        <summary>快篩陽性，是不是就已經確定？</summary>
+        <div class="ag-rights-detail-body"><p>尿液初步篩檢與確認檢驗，是不同階段。</p>
+<p>初步篩檢陽性或有疑義，應依規定進行確認檢驗；不能直接把初驗結果說成已完成確認。案件怎麼認定，仍要看適用程序與其他證據。</p>
+<p>可以問：</p>
+<blockquote class="ag-quote-box">「這是初步篩檢，還是確認檢驗？檢體編號是什麼？後續會送哪裡檢驗？」</blockquote>
+<p>「確認檢驗」與對檢驗結果有疑義時的「複驗」也不同。有疑問時，保留文件並向律師確認後續處理。</p>
+<p>法源：《濫用藥物尿液檢驗作業準則》第 3、11、18、23 條。<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=L0030044" target="_blank" rel="noopener noreferrer">法源</a>。</p></div>
+      </details>
+      <details class="ag-rights-detail" id="station">
+        <summary>被帶到派出所：先問現在是什麼程序</summary>
+        <div class="ag-rights-detail-body"><p>如果是為了查證身分而帶回勤務處所，時間從攔停起算，不得超過三小時；不是進派出所才開始算。</p>
+<p>可以問：</p>
+<blockquote class="ag-quote-box">「我從幾點被攔停？現在是查證身分，還是已經依法逮捕？請告知理由，並通知我指定的親友或律師。」</blockquote>
+<p>這個三小時限制針對身分查證，不是所有拘提、逮捕或其他處置的共同上限。</p>
+<p>簽文件前先看清楚，不懂就請人解釋；若內容與你說的不同，要求更正並記錄異議。涉及案情時，盡快聯繫律師。</p>
+<p>法源：《警察職權行使法》第 7 條第 2 項；《刑事訴訟法》第 95 條、第 100 條之 2。<a href="https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=D0080145&amp;flno=7" target="_blank" rel="noopener noreferrer">警職法</a>、<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=C0010001" target="_blank" rel="noopener noreferrer">刑訴法</a>。</p></div>
+      </details>
+      <details class="ag-rights-detail" id="warrant">
+        <summary>警方持搜索票到住處：先核對這五件事</summary>
+        <div class="ag-rights-detail-body"><ol><li><strong>案由：</strong>為了什麼案件搜索。</li><li><strong>對象或扣押物：</strong>要搜索誰、找什麼；嫌疑人不明時，依法可能不記載姓名。</li><li><strong>搜索範圍：</strong>哪些處所、身體、物件或電磁紀錄。</li><li><strong>有效期間：</strong>是否仍在可以執行的時間內。</li><li><strong>法官簽名：</strong>搜索票應由法官簽名。</li></ol>
+<p>另可確認執行人員的單位與身分。搜索票不必列出每一位執行警員的姓名。</p>
+<p>可以說：</p>
+<blockquote class="ag-quote-box">「請出示搜索票，讓我確認案由、範圍與有效期間。有疑問的地方，請一併記錄。」</blockquote>
+<p>住處也有依法不用搜索票的例外。對範圍有疑問，表達異議、保留紀錄，不要自行阻擋。</p>
+<p>法源：《刑事訴訟法》第 128 條、第 128 條之 2、第 131 條、第 145 條。<a href="https://law.moj.gov.tw/LawClass/LawAll.aspx?pcode=C0010001" target="_blank" rel="noopener noreferrer">法源</a>。</p></div>
+      </details>
+      <details class="ag-rights-detail" id="objection">
+        <summary>覺得程序不對，當下可以做什麼？</summary>
+        <div class="ag-rights-detail-body"><p>先用短句說明你不同意的地方：</p>
+<blockquote class="ag-quote-box">「我認為這個程序有問題。我的異議是○○，請製作紀錄並交付給我。」</blockquote>
+<p>在安全、不妨礙執行且不侵害他人隱私的前提下，保存時間、地點、人員身分與相關紀錄。</p>
+<p>不要推擠、搶奪器材或以肢體阻擋。現場無法解決的問題，把證據留好，交由律師協助判斷救濟方式。</p>
+<p>法源：《警察職權行使法》第 29 條。<a href="https://law.moj.gov.tw/LawClass/LawSingle.aspx?pcode=D0080145&amp;flno=29" target="_blank" rel="noopener noreferrer">法源</a>。刑事程序的異議與救濟，另須依適用程序處理。</p></div>
+      </details>
+      </section>
+
+      <section class="ag-section" aria-label="閱讀提醒">
+        <p>你不需要在現場證明自己懂法律。先問清楚、保留紀錄，需要時讓律師接手。</p>
+        <p class="ag-rights-note">本頁為一般權利資訊，具體案件仍須依事實與程序判斷。<br>有人需要急救時，請先<a href="tel:119">撥打 119</a>，或查看<a href="/first-aid.html">急救指引</a>。</p>
+      </section>
+    </div>
+  </main><!-- /ag-main-scroll -->
 
   <!-- Footer -->
   <footer class="ag-footer-standard">

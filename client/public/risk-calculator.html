@@ -226,56 +226,56 @@
     }
 
     .risk-low .ag-result-glow {
-      background: radial-gradient(circle, rgba(0, 255, 157, 0.2) 0%, rgba(0, 255, 157, 0) 70%);
-      box-shadow: 0 0 40px rgba(0, 255, 157, 0.3);
-      border-color: rgba(0, 255, 157, 0.3);
+      background: radial-gradient(circle, rgba(var(--ag-risk-low-rgb), 0.2) 0%, rgba(var(--ag-risk-low-rgb), 0) 70%);
+      box-shadow: 0 0 40px rgba(var(--ag-risk-low-rgb), 0.3);
+      border-color: rgba(var(--ag-risk-low-rgb), 0.3);
       animation: breathe-calm 4s infinite ease-in-out;
     }
-    .risk-low .ag-result-text-layer { color: #00ff9d; }
+    .risk-low .ag-result-text-layer { color: var(--ag-risk-low); }
 
     .risk-medium .ag-result-glow {
-      background: radial-gradient(circle, rgba(255, 213, 0, 0.2) 0%, rgba(255, 213, 0, 0) 70%);
-      box-shadow: 0 0 40px rgba(255, 213, 0, 0.3);
-      border-color: rgba(255, 213, 0, 0.3);
+      background: radial-gradient(circle, rgba(var(--ag-risk-caution-rgb), 0.2) 0%, rgba(var(--ag-risk-caution-rgb), 0) 70%);
+      box-shadow: 0 0 40px rgba(var(--ag-risk-caution-rgb), 0.3);
+      border-color: rgba(var(--ag-risk-caution-rgb), 0.3);
       animation: breathe-caution 3s infinite ease-in-out;
     }
-    .risk-medium .ag-result-text-layer { color: #ffd500; }
+    .risk-medium .ag-result-text-layer { color: var(--ag-risk-caution); }
 
     .risk-high .ag-result-glow {
-      background: radial-gradient(circle, rgba(255, 107, 0, 0.2) 0%, rgba(255, 107, 0, 0) 70%);
-      box-shadow: 0 0 50px rgba(255, 107, 0, 0.4);
-      border-color: rgba(255, 107, 0, 0.4);
+      background: radial-gradient(circle, rgba(var(--ag-risk-unsafe-rgb), 0.2) 0%, rgba(var(--ag-risk-unsafe-rgb), 0) 70%);
+      box-shadow: 0 0 50px rgba(var(--ag-risk-unsafe-rgb), 0.4);
+      border-color: rgba(var(--ag-risk-unsafe-rgb), 0.4);
       animation: breathe-unsafe 2s infinite ease-in-out;
     }
-    .risk-high .ag-result-text-layer { color: #ff6b00; }
+    .risk-high .ag-result-text-layer { color: var(--ag-risk-unsafe); }
 
     .risk-deadly .ag-result-glow {
-      background: radial-gradient(circle, rgba(255, 0, 60, 0.3) 0%, rgba(255, 0, 60, 0) 70%);
-      box-shadow: 0 0 60px rgba(255, 0, 60, 0.6);
-      border-color: rgba(255, 0, 60, 0.6);
+      background: radial-gradient(circle, rgba(var(--ag-risk-deadly-rgb), 0.3) 0%, rgba(var(--ag-risk-deadly-rgb), 0) 70%);
+      box-shadow: 0 0 60px rgba(var(--ag-risk-deadly-rgb), 0.6);
+      border-color: rgba(var(--ag-risk-deadly-rgb), 0.6);
       animation: pulse-deadly 0.8s infinite ease-in-out;
     }
-    .risk-deadly .ag-result-text-layer { color: #ff003c; }
+    .risk-deadly .ag-result-text-layer { color: var(--ag-risk-deadly); }
 
     @keyframes breathe-calm {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(0, 255, 157, 0.3); }
-      50% { transform: scale(1.1); box-shadow: 0 0 60px rgba(0, 255, 157, 0.5); }
+      0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(var(--ag-risk-low-rgb), 0.3); }
+      50% { transform: scale(1.1); box-shadow: 0 0 60px rgba(var(--ag-risk-low-rgb), 0.5); }
     }
 
     @keyframes breathe-caution {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(255, 213, 0, 0.3); }
-      50% { transform: scale(1.15); box-shadow: 0 0 60px rgba(255, 213, 0, 0.5); }
+      0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(var(--ag-risk-caution-rgb), 0.3); }
+      50% { transform: scale(1.15); box-shadow: 0 0 60px rgba(var(--ag-risk-caution-rgb), 0.5); }
     }
 
     @keyframes breathe-unsafe {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 50px rgba(255, 107, 0, 0.4); }
-      50% { transform: scale(1.2); box-shadow: 0 0 80px rgba(255, 107, 0, 0.6); }
+      0%, 100% { transform: scale(1); box-shadow: 0 0 50px rgba(var(--ag-risk-unsafe-rgb), 0.4); }
+      50% { transform: scale(1.2); box-shadow: 0 0 80px rgba(var(--ag-risk-unsafe-rgb), 0.6); }
     }
 
     @keyframes pulse-deadly {
-      0% { transform: scale(1); box-shadow: 0 0 60px rgba(255, 0, 60, 0.6); }
-      50% { transform: scale(1.3); box-shadow: 0 0 100px rgba(255, 0, 60, 0.9); }
-      100% { transform: scale(1); box-shadow: 0 0 60px rgba(255, 0, 60, 0.6); }
+      0% { transform: scale(1); box-shadow: 0 0 60px rgba(var(--ag-risk-deadly-rgb), 0.6); }
+      50% { transform: scale(1.3); box-shadow: 0 0 100px rgba(var(--ag-risk-deadly-rgb), 0.9); }
+      100% { transform: scale(1); box-shadow: 0 0 60px rgba(var(--ag-risk-deadly-rgb), 0.6); }
     }
 
     .ag-result-text-box {
@@ -314,15 +314,15 @@
     }
 
     .ag-warning-box {
-      border: 1px solid #ffc800;
-      background: rgba(255, 200, 0, 0.05);
+      border: 1px solid var(--ag-risk-caution);
+      background: rgba(var(--ag-risk-caution-rgb), 0.05);
       border-radius: 12px;
       padding: 20px;
       margin-top: 40px;
     }
 
     .ag-warning-title {
-      color: #ffc800;
+      color: var(--ag-risk-caution);
       font-weight: bold;
       margin-bottom: 12px;
       display: flex;
@@ -415,8 +415,8 @@
 .ag-back-button { opacity:1; animation:none; }
 .ag-capsule-btn { font-family:inherit; font-size:13px; line-height:1.35; text-align:center; appearance:none; min-height:44px!important; }
 .ag-capsule-btn:focus-visible { outline:2px solid white; outline-offset:4px; }
-</style><link rel="stylesheet" href="/assets/public-safety.css?v=20261015b"></head>
-<body class="ag-page">
+</style><link rel="stylesheet" href="/assets/public-safety.css?v=20261015-type4"><script src="/assets/public-safety-shell.js" defer></script></head>
+<body class="ag-page safety-page risk-page" data-color-role="risk">
   <noscript><p>詳細工具需要 JavaScript 與 18+ 入口確認。<a href="/safety.html">返回公開安全資訊</a></p></noscript>
 
   <!-- Inner Header: Back + Logo -->
@@ -425,7 +425,7 @@
     <a href="/home.html" aria-label="返回首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
   </header>
   <div class="ag-page-title-block">
-    <p class="ag-page-title">風險計算機 · Risk Calculator</p>
+    <h1 class="ag-page-title">風險計算機 · Risk Calculator</h1>
     <p class="ag-page-subtitle">選擇物質 · 評估交互風險 · 參考減害建議</p>
   </div>
 
@@ -472,7 +472,7 @@
         </div>
       </div>
 
-      <div class="ag-section-label">選擇您正在使用或考慮併用的物質</div>
+      <h2 class="ag-section-label ag-section-title">選擇您正在使用或考慮併用的物質</h2>
       <div class="ag-section-helper" id="selection-counter">已選 0 種（最少 2 種，最多 4 種）</div>
 
       <div class="ag-capsule-grid" id="capsule-grid">
@@ -491,8 +491,8 @@
 
       <!-- TripSit 來源標註（授權要求） -->
       <div style="text-align:center; margin: 16px 0 8px; padding: 0 8px;">
-        <p style="font-size:11px; color:#555; line-height:1.6; margin:0;">
-          風險分類資料部分參考 <a href="https://wiki.tripsit.me/wiki/Drug_combinations" target="_blank" rel="noopener noreferrer" style="color:#888; text-decoration:underline;">TripSit Drug Combinations</a>（非商業用途引用）。本工具僅供快速參考，使用前請自行深入研究。
+        <p class="ag-tripsit-source" style="margin:0;">
+          風險分類資料部分參考 <a href="https://wiki.tripsit.me/wiki/Drug_combinations" target="_blank" rel="noopener noreferrer" style="color:inherit; text-decoration:underline;">TripSit Drug Combinations</a>（非商業用途引用）。本工具僅供快速參考，使用前請自行深入研究。
         </p>
       </div>
 
@@ -876,7 +876,7 @@
       if (selectedSubstances.length < 2) {
         resultCircle.textContent = '?';
         resultTitle.textContent = selectedSubstances.length === 0 ? '請選擇物質' : '請再選擇一種物質';
-        resultTitle.style.color = '#666';
+        resultTitle.style.color = riskLevelColor('unknown');
         resultDesc.textContent = '至少需要兩種物質才能評估交互作用風險';
         return;
       }
@@ -913,12 +913,12 @@
       // 組合訊息：有資料的對 + 無資料的對
       let riskMessages = riskPairs.map(p => {
         const badge = riskLevelBadge(p.level);
-        return `<span style="color:${riskLevelColor(p.level)};font-weight:500;">${badge} ${p.label}</span><br><span style="color:#aaa;font-size:13px;line-height:1.6;display:block;margin-top:4px;">${p.desc}</span>`;
+        return `<span style="color:${riskLevelColor(p.level)};font-weight:500;">${badge} ${p.label}</span><br><span style="color:#b8b8b8;display:block;margin-top:8px;">${p.desc}</span>`;
       });
 
       if (noPairFound.length > 0) {
         riskMessages.push(
-          `<span style="color:#b8b8b8;font-size:13px;">— ${noPairFound.join('、')}：筆者資料庫尚無此組合資料，建議自行查詢 <a href="https://combo.tripsit.me/" target="_blank" rel="noopener" style="color:#b8b8b8;text-decoration:underline;">TripSit</a></span>`
+          `<span style="color:#b8b8b8;">— ${noPairFound.join('、')}：筆者資料庫尚無此組合資料，建議自行查詢 <a href="https://combo.tripsit.me/" target="_blank" rel="noopener" style="color:#b8b8b8;text-decoration:underline;">TripSit</a></span>`
         );
       }
 
@@ -932,8 +932,8 @@
     }
 
     function riskLevelColor(level) {
-      const colors = { low: '#00ff88', caution: '#ffc800', unsafe: '#ff6b00', deadly: '#ff003c' };
-      return colors[level] || '#aaa';
+      const colors = { low: 'var(--ag-risk-low)', caution: 'var(--ag-risk-caution)', unsafe: 'var(--ag-risk-unsafe)', deadly: 'var(--ag-risk-deadly)' };
+      return colors[level] || 'var(--ag-risk-unknown)';
     }
 
     function riskLevelValue(level) {
@@ -946,48 +946,42 @@
 
       let titleText = '';
       let circleText = '';
-      let color = '';
 
       switch (level) {
         case 'unknown':
           titleText = '資料不足，無法評估';
           circleText = '？';
-          color = '#b8b8b8';
           break;
         case 'low':
           resultContainer.classList.add('risk-low');
           titleText = '資料標示較低風險，仍不代表安全';
           circleText = '低';
-          color = '#00ff88';
           break;
         case 'caution':
           resultContainer.classList.add('risk-medium');
           titleText = '需謹慎 (Caution)';
           circleText = '慎';
-          color = '#ffc800';
           break;
         case 'unsafe':
           resultContainer.classList.add('risk-high');
           titleText = '不安全 (Unsafe)';
           circleText = '危';
-          color = '#ff4444';
           break;
         case 'deadly':
           resultContainer.classList.add('risk-deadly');
           titleText = '致命危險 (Deadly)';
           circleText = '凶';
-          color = '#ff0000';
           break;
       }
 
       resultCircle.textContent = circleText;
       resultTitle.textContent = titleText;
-      resultTitle.style.color = color;
+      resultTitle.style.color = riskLevelColor(level);
 
       if (messages.length > 0) {
         resultDesc.innerHTML = messages.join('<hr class="ag-result-pair-divider">');
       } else {
-        resultDesc.innerHTML = '<span style="color:#b8b8b8;font-size:13px;">資料不足不能推定安全。請避免混用；已出現不適時應尋求醫療協助。</span>';
+        resultDesc.innerHTML = '<span style="color:#b8b8b8;">資料不足不能推定安全。請避免混用；已出現不適時應尋求醫療協助。</span>';
       }
     }
 

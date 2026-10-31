@@ -5,6 +5,11 @@
   --em-text-muted:#b8b8b8;
   --em-text-dim:#b8b8b8;
   --safety-tube:#ff8bdc;
+  --safety-title-size:26px;
+  --safety-section-size:20px;
+  --safety-card-size:18px;
+  --safety-body-size:15px;
+  --safety-meta-size:12px;
   --safety-tube-glow:0 0 2px #ff8bdc66,0 0 8px #ff8bdc26;
   font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;
 }
@@ -21,7 +26,7 @@
 .safety-page .ag-text-dark-gray { color:#b8b8b8; }
 .safety-content { width:100%; max-width:560px; margin:0 auto; padding:36px 24px 64px; }
 .safety-kicker { color:#aaa; font-size:12px; letter-spacing:.12em; margin-bottom:12px; }
-.safety-content h1 { font-size:clamp(26px,7vw,32px); font-weight:500; line-height:1.4; letter-spacing:.04em; text-wrap:balance; margin-bottom:16px; }
+.safety-content h1 { font-size:var(--safety-title-size); font-weight:500; line-height:1.4; letter-spacing:.04em; text-wrap:balance; margin-bottom:16px; }
 .safety-content h2 { font-size:20px; line-height:1.5; font-weight:500; letter-spacing:.025em; text-wrap:balance; margin-bottom:10px; }
 .safety-content p { color:#b8b8b8; font-size:15px; line-height:1.8; margin-bottom:14px; overflow-wrap:break-word; }
 .safety-section { padding:24px 0; border-top:1px solid #555; }
@@ -32,7 +37,7 @@
 .safety-header a { display:flex; align-items:center; min-height:44px; color:#b8b8b8; font-size:14px; letter-spacing:.04em; text-underline-offset:6px; text-decoration-color:#ff8bdc; }
 .safety-header img { width:108px; height:auto; }
 .safety-page .rapid-page { max-width:560px; padding:24px 24px 64px; }
-.safety-page .rapid-title { font-size:clamp(26px,7vw,32px); font-weight:500; line-height:1.4; letter-spacing:.04em; text-wrap:balance; }
+.safety-page .rapid-title { font-size:var(--safety-title-size); font-weight:500; line-height:1.4; letter-spacing:.04em; text-wrap:balance; }
 .safety-page .rapid-primary h2 { font-size:clamp(24px,6.8vw,30px); line-height:1.4; font-weight:600; letter-spacing:.025em; }
 .safety-page .rapid-primary,.safety-page .rapid-emergency,.safety-page .rapid-action { border-radius:0; background:none; box-shadow:none; }
 .safety-page .rapid-primary { padding:20px 0; border:0; border-top:1px solid #555; }
@@ -44,15 +49,118 @@
 @media(prefers-reduced-motion:reduce) { .safety-page *, .safety-page *::before,.safety-page *::after { animation:none!important; transition:none!important; scroll-behavior:auto!important; } }
 
 /* Legible text on black while preserving the existing neon borders. */
-.safety-page .ag-page-title { color:#b8b8b8; font-size:14px; font-weight:500; }
+.safety-page .ag-page-title { color:#f5f5f5; font-size:var(--safety-title-size); font-weight:500; line-height:1.45; letter-spacing:.025em; text-transform:none; margin:0 0 10px; }
 .safety-page .ag-page-subtitle,.safety-page .ag-aid-context-text,.safety-page .ag-aid-context-text strong { color:#b8b8b8; }
 .safety-page .ag-section-title { color:#ff9b91; }
 .safety-page .ag-call-sub { color:#b8b8b8; }
 
-.safety-page .ag-page-subtitle { opacity:1; font-size:12px; }
+.safety-page .ag-page-subtitle { opacity:1; font-size:var(--safety-meta-size); line-height:1.7; font-weight:400; letter-spacing:.035em; }
 .safety-page .ag-btn-sublabel { color:#b8b8b8; }
 
 .safety-page .ag-btn-desc { color:#b8b8b8; font-size:12px; }
+
+/* Continuity pass: use the original rounded neon tubes, with readable content rhythm. */
+.safety-header { flex-shrink:0; padding:16px 24px 12px; }
+.safety-content { padding-top:28px; }
+.safety-section { padding:32px 0; border-color:#333; }
+.safety-action {
+  --tube-rgb:255,107,217;
+  min-height:48px;
+  padding:10px 22px;
+  margin-top:16px;
+  border:1.5px solid rgba(var(--tube-rgb),.88);
+  border-radius:999px;
+  background:#000;
+  box-shadow:0 0 5px rgba(var(--tube-rgb),.42),0 0 16px rgba(var(--tube-rgb),.19),inset 0 0 9px rgba(var(--tube-rgb),.13);
+  font-size:15px;
+  text-decoration:none;
+  transition:border-color 180ms ease,box-shadow 180ms ease;
+}
+.safety-action:hover { border-color:rgb(var(--tube-rgb)); box-shadow:0 0 7px rgba(var(--tube-rgb),.6),0 0 22px rgba(var(--tube-rgb),.24),inset 0 0 10px rgba(var(--tube-rgb),.18); }
+.safety-action[href="/first-aid.html"],.safety-119 { --tube-rgb:255,61,46; }
+.safety-action[href="/etomidate-safety.html"] { --tube-rgb:255,190,110; }
+.safety-action[href="/help.html"] { --tube-rgb:0,230,118; }
+.safety-action[href*="from=/risk-calculator.html"] { --tube-rgb:224,64,251; }
+.safety-page .ag-container-sm { max-width:560px; padding:24px 24px 48px; }
+.safety-page .ag-help-container { max-width:560px; padding:24px 24px 48px; }
+.safety-page .ag-page-title-block { padding:8px 24px 12px; }
+.safety-page .ag-aid-context { padding:0; margin-bottom:28px; border:0; border-radius:0; background:none; align-items:flex-start; }
+.safety-page .ag-aid-context-text { font-size:14px; line-height:1.8; }
+.safety-page .ag-aid-context-text strong { font-size:15px; margin-bottom:8px; color:#eee; }
+.safety-page .ag-emergency-grid { gap:16px; margin-bottom:36px; }
+.safety-page .ag-emergency-btn { border-radius:999px; padding:14px 12px; }
+.safety-page .ag-btn-119 { border:1.5px solid #ff6052; box-shadow:0 0 6px #ff3d2e80,0 0 20px #ff3d2e38,inset 0 0 12px #ff3d2e24; }
+.safety-page .ag-process-step { display:grid; grid-template-columns:28px minmax(0,1fr); gap:16px; margin-bottom:28px; align-items:start; }
+.safety-page .ag-step-num { margin-top:3px; }
+.safety-page .ag-step-content h4 { margin:0 0 8px; font-size:16px; line-height:1.6; }
+.safety-page .ag-step-content p,.safety-page .ag-resource-desc { font-size:15px; line-height:1.85; }
+.safety-page .ag-section-title { margin:36px 0 24px; padding-bottom:12px; font-size:var(--safety-section-size); font-weight:500; line-height:1.5; letter-spacing:.025em; text-transform:none; color:#e5e5e5; text-shadow:none; }
+.safety-page .ag-section-title::before { background:var(--em-accent); box-shadow:0 0 6px var(--em-accent-glow); }
+.safety-page .ag-resource-card { padding:24px 20px; margin-bottom:24px; background:#000; }
+.safety-page .ag-legal-box { max-width:512px; margin:16px auto 32px; padding:24px; }
+.safety-page .ag-legal-box h2 { font-size:20px; font-weight:500; margin-bottom:12px; }
+.safety-page .ag-legal-box p { font-size:15px; line-height:1.85; margin-bottom:20px; }
+.safety-page .rapid-119 { border-radius:999px; border:1.5px solid #ff6052; box-shadow:0 0 6px #ff3d2e80,0 0 20px #ff3d2e38,inset 0 0 12px #ff3d2e24; }
+.safety-page .rapid-primary,.safety-page .rapid-emergency { padding:28px 0; }
+.safety-page .rapid-action { padding:18px 0; }
+@media(min-width:700px) { .safety-page .ag-container-sm,.safety-page .ag-help-container { padding-top:32px; } }
+
+.safety-page .ag-main-scroll { min-height:0; }
+.safety-app-nav { display:grid;grid-template-columns:repeat(4,minmax(0,1fr));flex-shrink:0;padding:0 12px env(safe-area-inset-bottom,0px);border-top:1px solid #333;background:#000; }
+.safety-app-nav a { display:flex;justify-content:center;align-items:center;min-height:56px;padding:8px 4px;color:#b8b8b8;font-size:13px;letter-spacing:.04em;text-decoration:none;border-bottom:2px solid transparent; }
+.safety-app-nav a[aria-current="page"] { color:#fff;border-bottom-color:#ff6bd9;text-shadow:0 0 8px #ff6bd966; }
+.safety-page .safety-meta { position:static;width:auto;margin:24px;padding:24px 0 12px;border-top:1px solid #333;background:none; }
+.safety-page .safety-meta .ag-footer__links { flex-wrap:wrap;gap:4px 16px;font-size:12px;white-space:normal; }
+.safety-page .safety-meta .ag-footer__separator { display:none; }
+.safety-content nav[aria-label="公開說明"] { display:flex;flex-wrap:wrap;gap:0 18px;margin-top:32px;border-top:1px solid #333;padding-top:16px; }
+.safety-content nav[aria-label="公開說明"] .safety-action { margin:0;padding:0;min-height:44px;border:0;border-radius:0;box-shadow:none;color:#b8b8b8;font-size:12px; }
+.safety-header,.safety-app-nav { width:100%;max-width:560px;margin-inline:auto; }
+.safety-page .ag-emergency-box { padding:24px 20px;margin-bottom:32px;background:#000;border-color:#ff3d2e55; }
+.safety-page .ag-emergency-desc { line-height:1.8;margin-bottom:20px; }
+.safety-page .ag-emergency-box .ag-phone-large { display:flex;align-items:center;justify-content:center;width:fit-content;min-height:48px;margin:0 auto;padding:8px 30px;font-size:24px;border:1.5px solid #ff6052;border-radius:999px;box-shadow:0 0 6px #ff3d2e80,0 0 20px #ff3d2e38,inset 0 0 12px #ff3d2e24; }
+
+/* Reading hierarchy: shared across the public screens; neon stays on actions. */
+.safety-page .ag-page-title-block { width:100%; max-width:560px; margin-inline:auto; }
+.safety-page .ag-resource-header { margin:0 0 20px; align-items:flex-start; }
+.safety-page .ag-resource-header > div { min-width:0; }
+.safety-page .ag-resource-name { margin:0 0 14px; font-size:var(--safety-card-size); font-weight:500; line-height:1.55; letter-spacing:.02em; color:#f5f5f5; }
+.safety-page .ag-resource-tags { gap:8px; margin:0; }
+.safety-page .ag-tag { padding:4px 10px; font-size:var(--safety-meta-size); font-weight:400; line-height:1.6; letter-spacing:.025em; background:transparent; color:#b8b8b8; border-color:#555; text-shadow:none; }
+.safety-page .ag-resource-desc { margin:0 0 24px; font-size:var(--safety-body-size); font-weight:400; line-height:1.9; letter-spacing:.015em; }
+.safety-page .ag-resource-actions { gap:12px; }
+.safety-page .ag-action-note { width:100%; font-size:var(--safety-meta-size); font-weight:400; line-height:1.75; color:#b8b8b8; }
+.safety-page .ag-resource-list { gap:24px; }
+.safety-page .ag-resource-card { margin-bottom:0; padding:28px 22px; }
+.safety-page .ag-section-note { margin:-12px 0 28px; font-size:var(--safety-meta-size); font-weight:400; line-height:1.75; color:#b8b8b8; }
+.safety-page .ag-step-content h4 { font-size:var(--safety-card-size); font-weight:500; line-height:1.55; }
+.safety-page .ag-step-content p { font-weight:400; line-height:1.9; }
+.safety-page .rapid-section h2,.safety-page .rapid-emergency-title { font-size:var(--safety-section-size); font-weight:500; line-height:1.5; letter-spacing:.025em; }
+.safety-page .rapid-primary p,.safety-page .rapid-emergency p { font-size:var(--safety-body-size); font-weight:400; line-height:1.9; }
+.safety-page .ag-emergency-title { font-size:var(--safety-section-size); font-weight:500; line-height:1.5; }
+.safety-page .ag-emergency-desc { font-size:var(--safety-body-size); font-weight:400; line-height:1.9; }
+
+/* Etomidate follows the existing public interior components and semantic colors. */
+.etomidate-page { --em-accent:rgba(255,190,110,.9); --em-accent-glow:rgba(255,190,110,.28); --em-accent-border:rgba(255,190,110,.32); }
+.etomidate-page .rapid-page { padding-top:24px; }
+.etomidate-page .rapid-title { font-size:26px; font-weight:500; line-height:1.45; letter-spacing:.015em; text-wrap:initial; }
+.etomidate-page .rapid-alias { margin:0; font-size:14px; line-height:1.8; }
+.etomidate-page .rapid-primary { margin:0 0 24px; padding:24px 20px; border:1px solid var(--em-accent-border); border-radius:var(--em-radius-md); }
+.etomidate-page .rapid-primary h2 { font-size:var(--safety-section-size); font-weight:500; line-height:1.5; letter-spacing:.025em; }
+.etomidate-page .rapid-primary p { margin-top:16px; }
+.etomidate-page .rapid-emergency { margin:0 0 32px; padding:24px 20px; border:1px solid #ff3d2e55; border-radius:var(--em-radius-lg); box-shadow:0 0 8px #ff3d2e0d; }
+.etomidate-page .rapid-emergency-title { margin-bottom:12px; color:rgba(255,180,180,.95); }
+.etomidate-page .rapid-119 { width:fit-content; min-width:152px; padding:8px 30px; margin:20px auto 0; font-size:24px; font-weight:500; letter-spacing:.04em; }
+.etomidate-page .rapid-section { margin-top:28px; }
+.etomidate-page .rapid-section h2 { margin-bottom:16px; }
+.etomidate-page .rapid-action { padding:20px 0; border-color:#333; }
+.etomidate-page .rapid-action strong { margin-bottom:8px; font-size:18px; font-weight:500; line-height:1.55; letter-spacing:.015em; }
+.etomidate-page .rapid-action span { font-size:14px; line-height:1.8; }
+.etomidate-page .rapid-note,.etomidate-page .rapid-boundary { font-size:14px; line-height:1.85; }
+.etomidate-page .rapid-actions { gap:24px; }
+.etomidate-page .rapid-tool .safety-action { margin:0 0 12px; font-weight:400; }
+.etomidate-page .rapid-tool .safety-action[href*="from=/rights.html"] { --tube-rgb:41,121,255; }
+.etomidate-page .rapid-tool p { margin:0; color:#b8b8b8; font-size:14px; line-height:1.85; }
+.etomidate-page .rapid-section .ag-section-title { margin-top:32px; margin-bottom:24px; }
 
 /* First Aid P0: short, always-visible breathing triage and optional 119 reading aid. */
 .safety-page .ag-aid-triage { margin:20px 0 16px; padding:16px; border:1px solid #8b6060; border-radius:12px; background:#140e10; }
