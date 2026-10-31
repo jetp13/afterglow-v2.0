@@ -7,8 +7,8 @@ const read = file => readFileSync(new URL('../'+file,import.meta.url),'utf8').re
 const baseline = file => execFileSync('git',['show','41c2445:'+file],{encoding:'utf8',maxBuffer:5e6}).replace(/\r\n/g,'\n');
 let checks=0;
 const check = (result,message) => { assert.ok(result,message); checks++; };
-const adult = ['risk-calculator','rights','support-main','first-aid-details','memoir'];
-const publics = ['menu','breathing','voice','white-noise','home','safety','etomidate-safety','first-aid','help','privacy','terms','legal','about'];
+const adult = ['risk-calculator'];
+const publics = ['rights','support-main','first-aid-details','memoir','menu','breathing','voice','white-noise','home','safety','etomidate-safety','first-aid','help','privacy','terms','legal','about'];
 const guard = read('client/public/assets/adult-gate.js');
 const gate = read('client/public/assets/entry-gate.js');
 
@@ -18,7 +18,7 @@ function simulateAdult(path,consent,blocked=false) {
   vm.runInNewContext(guard,context);
   return {context,navigations,events};
 }
-for(const name of adult.filter(name=>name!=='rights')) {
+for(const name of adult) {
   const html=read('client/public/'+name+'.html');
   check(html.includes('<script src="/assets/adult-gate.js"></script>'), name+' protected');
   check(!html.includes("window.location.href = '/index.html'"),name+' no destination loss');
@@ -51,7 +51,7 @@ for(const name of adult) {
   check(result.nav[0]===path&&result.getStored()==='true','gate roundtrip '+name);
   check(simulateEntry(path,'true').nav[0]===path,'confirmed direct gate '+name);
 }
-for(const value of ['//evil.example','/\\evil.example','https://evil.example','/index.html','/safety.html','/risk-calculator.html?next=bad','/__proto__','/not-found.html']) {
+for(const value of ['//evil.example','/\\evil.example','https://evil.example','/index.html','/risk-calculator.html?next=bad','/__proto__','/not-found.html']) {
   const result=simulateEntry(value,null);result.checkbox.checked=true;result.events.change();result.events.click();
   check(result.nav[0]==='/home.html','unsafe or unknown return rejected '+value);
 }
@@ -107,8 +107,8 @@ check(scenario([{id:'unlisted-a',name:'A'},{id:'unlisted-b',name:'B'}])['result-
 check(scenario([{id:'ghb',name:'GHB'},{id:'alcohol',name:'酒精'}])['result-title'].textContent.includes('致命危險'),'known deadly result retained');
 check(scenario([{id:'ghb',name:'GHB'},{id:'alcohol',name:'酒精'},{id:'unlisted',name:'未知'}])['result-title'].textContent.includes('資料不完整；已知最高風險：致命危險'),'partial unknown preserves known danger and discloses missing data');
 const rights=read('client/public/rights.html');
-check(rights.includes("sessionStorage.getItem('ag_consent') !== 'true'")&&rights.includes("window.location.href = '/index.html'"),'retained production Rights keeps its existing inline consent guard');
-check(rights===execFileSync('git',['show','5ed3c49e406b96e35a1f0650147cf58ba2327c4f:client/public/rights.html'],{encoding:'utf8'}).replace(/\r\n/g,'\n'),'Owner-approved production Rights retained byte-for-byte after newline normalization');
+const rightsBaseline=execFileSync('git',['show','5ed3c49e406b96e35a1f0650147cf58ba2327c4f:client/public/rights.html'],{encoding:'utf8'}).replace(/\r\n/g,'\n');
+check(rights===rightsBaseline.replace(/  <script>\s*\/\/ Check for consent immediately[\s\S]*?<\/script>\n/,''),'production Rights unchanged apart from Owner-authorized guard removal');
 check(!rights.includes('快篩陽性須經實驗室複驗始具法律效'),'blanket screening legal-effect claim removed');
 
 const sw=read('client/public/sw.js');let cached;const handlers={};
@@ -145,8 +145,21 @@ check(homeConsent('/risk-calculator.html',null,true)===1,'blocked storage still 
 console.log('PASS: original-home consent panel checks (4 assertions).');
 
 for(const path of ['/menu.html','/breathing.html','/voice.html','/white-noise.html']) {
- check(simulateEntry(path,null).nav[0]===path+'?v=20261016-public','legacy public meditation gate link returns directly '+path);
+ check(simulateEntry(path,null).nav[0]===path,'legacy public meditation gate link returns directly '+path);
  check(homeConsent(path,null)===0,'meditation never opens consent panel '+path);
 }
 check(!read('client/public/safety.html').includes('ag-section-title'),'safety hub uses compact original menu instead of stacked article sections');
 console.log('PASS: public meditation and lean safety routing checks.');
+
+// Only the named mixer may request age confirmation. Public legacy gate links return directly.
+for(const name of publics) {
+ const path='/'+name+'.html';
+ check(simulateEntry(path,null).nav[0]===path,'public legacy redirect '+name);
+ check(simulateEntry(path,null,{readBlocked:true,writeBlocked:true}).nav[0]===path,'public bypass does not access storage '+name);
+ check(homeConsent(path,null)===0,'public page never opens age confirmation '+name);
+}
+for(const name of [...publics,'index']) {
+ const html=read('client/public/'+name+'.html');
+ for(const [,target] of html.matchAll(/href="\/index.html\?from=([^"&]*)"/g)) check(target==='/risk-calculator.html','only mixer links via gate '+name);
+}
+console.log('PASS: mixer-only gate, public storage failure and legacy links.');

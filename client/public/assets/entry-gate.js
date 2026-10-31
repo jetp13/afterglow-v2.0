@@ -1,12 +1,8 @@
 (() => {
-  const destinations = {
-    '/first-aid-details.html': '詳細減害資訊', '/home.html': 'Afterglow 首頁', '/risk-calculator.html': 'ChemAid 混用風險工具',
-    '/rights.html': '權利資訊', '/support-main.html': '18+ 支援工具',
-    '/memoir.html': 'Memoir'
-  };
+  const destinations = { '/risk-calculator.html': 'ChemAid 物質混合器' };
   const requested = new URLSearchParams(window.location.search).get('from');
-  if (['/menu.html','/breathing.html','/voice.html','/white-noise.html'].includes(requested)) {
-    window.location.replace(requested + '?v=20261016-public');
+  if (["/home.html","/menu.html","/breathing.html","/voice.html","/white-noise.html","/safety.html","/etomidate-safety.html","/first-aid.html","/help.html","/privacy.html","/terms.html","/legal.html","/about.html","/rights.html","/first-aid-details.html","/support-main.html","/memoir.html"].includes(requested)) {
+    window.location.replace(requested);
     return;
   }
   const target = Object.hasOwn(destinations, requested) ? requested : '/home.html';
