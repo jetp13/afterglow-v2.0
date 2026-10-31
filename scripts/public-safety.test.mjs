@@ -108,7 +108,7 @@ check(scenario([{id:'ghb',name:'GHB'},{id:'alcohol',name:'酒精'}])['result-tit
 check(scenario([{id:'ghb',name:'GHB'},{id:'alcohol',name:'酒精'},{id:'unlisted',name:'未知'}])['result-title'].textContent.includes('資料不完整；已知最高風險：致命危險'),'partial unknown preserves known danger and discloses missing data');
 const rights=read('client/public/rights.html');
 check(rights.includes("sessionStorage.getItem('ag_consent') !== 'true'")&&rights.includes("window.location.href = '/index.html'"),'retained production Rights keeps its existing inline consent guard');
-check(rights===execFileSync('git',['show','origin/main:client/public/rights.html'],{encoding:'utf8'}).replace(/\r\n/g,'\n'),'Owner-approved production Rights retained byte-for-byte after newline normalization');
+check(rights===execFileSync('git',['show','5ed3c49e406b96e35a1f0650147cf58ba2327c4f:client/public/rights.html'],{encoding:'utf8'}).replace(/\r\n/g,'\n'),'Owner-approved production Rights retained byte-for-byte after newline normalization');
 check(!rights.includes('快篩陽性須經實驗室複驗始具法律效'),'blanket screening legal-effect claim removed');
 
 const sw=read('client/public/sw.js');let cached;const handlers={};
