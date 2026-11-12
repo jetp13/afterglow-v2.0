@@ -6,11 +6,7 @@
   <title>求助資源｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
   <link rel="stylesheet" href="/assets/shared-emergency.css">
-  <script>
-    if (sessionStorage.getItem('ag_consent') !== 'true') {
-      window.location.href = '/index.html';
-    }
-  </script>
+  <!-- Public Safety Core: readable before general consent. -->
   <style>
     /* ── accent 色：求助支援 — 語意翠綠（對齊入口色）── */
     :root {
@@ -45,16 +41,17 @@
       margin-top: -4px;
     }
   </style>
+<link rel="stylesheet" href="/assets/public-safety.css?v=20261015-type4">
 </head>
-<body class="ag-page">
-  <header class="ag-inner-header">
-    <a href="/support-main.html" class="ag-back-button" aria-label="返回上一頁"></a>
-    <a href="/home.html" class="ag-site-logo" aria-label="返回首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
+<body class="ag-page safety-page" data-color-role="help">
+  <header class="safety-header">
+    <a href="/safety.html">返回安全資訊</a>
+    <a href="/index.html" aria-label="返回入口"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
   </header>
 
   <div class="ag-page-title-block">
-    <p class="ag-page-title">求助資源 · Help Resources</p>
-    <p class="ag-page-subtitle">緊急求助 · 專業資源 · 心理支援</p>
+    <h1 class="ag-page-title">求助資源</h1>
+    <p class="ag-page-subtitle">HELP RESOURCES · 緊急求助與心理支援</p>
   </div>
 
   <main class="ag-main-scroll">
@@ -81,7 +78,8 @@
       </div>
 
       <!-- 2. 藥愛與減害專業資源 -->
-      <div class="ag-section-title">藥愛與減害專業資源（保密與通報依各機構說明）</div>
+      <h2 class="ag-section-title">藥愛與減害專業資源</h2>
+      <p class="ag-section-note">保密與通報依各機構說明</p>
       <div class="ag-resource-list">
         
         <!-- 露德協會 -->
@@ -99,8 +97,8 @@
             專注於愛滋與藥癮減害服務，理解 Chemsex 場景，提供不評判的諮詢與同儕支持。
           </p>
           <div class="ag-resource-actions">
-            <a href="tel:02-2585-0773" class="ag-action-btn ag-action-btn--phone">撥打電話：02-2585-0773</a>
-            <div class="ag-action-note">服務時間：週一至週五 13:00–21:00</div>
+            <a href="tel:02-2371-1406" class="ag-action-btn ag-action-btn--phone">撥打電話：02-2371-1406</a>
+            <div class="ag-action-note">服務時間：請以露德協會最新公告為準</div>
           </div>
         </div>
 
@@ -120,7 +118,7 @@
           </p>
           <div class="ag-resource-actions">
             <a href="tel:02-2392-1970" class="ag-action-btn ag-action-btn--phone">撥打電話：02-2392-1970</a>
-            <div class="ag-action-note">服務時間：週二 18:00–21:00、週四 14:00–17:00</div>
+            <div class="ag-action-note">服務時間：週一、四、五、六、日 19:00–21:00（以官方公告為準）</div>
           </div>
         </div>
 
@@ -139,9 +137,9 @@
             位於高雄市民生醫院，提供藥愛相關的醫療、心理與減害整合服務。
           </p>
           <div class="ag-resource-actions">
-            <a href="https://line.me/R/ti/p/@166dftrx" target="_blank" class="ag-action-btn ag-action-btn--line">LINE 諮詢：@166dftrx</a>
-            <a href="tel:07-751-1131" class="ag-action-btn ag-action-btn--phone">撥打電話：07-751-1131 轉 8010</a>
-            <div class="ag-action-note">服務時間：週一至週五 12:00–21:00，週六 12:00–18:00</div>
+            <a href="https://kmsh.kcg.gov.tw/News_Content.aspx?n=1B9F85765AB97E07&amp;s=65DA8BEFBCCBE0D8&amp;sms=7FF4435907648B9F" target="_blank" class="ag-action-btn ag-action-btn--line">民生醫院 HERO 官方資訊</a>
+            <a href="tel:07-751-1131" class="ag-action-btn ag-action-btn--phone">撥打電話：07-751-1131 （請總機協助轉接 HERO 中心）</a>
+            <div class="ag-action-note">服務時間：請以民生醫院最新公告為準</div>
           </div>
         </div>
 
@@ -161,14 +159,14 @@
           </p>
           <div class="ag-resource-actions">
             <a href="tel:07-235-1010" class="ag-action-btn ag-action-btn--phone">撥打電話：07-235-1010</a>
-            <div class="ag-action-note">服務時間：週一至週六 14:00–22:00（週三公休）</div>
+            <div class="ag-action-note">服務時間：請以愛之希望協會最新公告為準</div>
           </div>
         </div>
 
       </div>
 
       <!-- 3. 官方與一般心理資源 -->
-      <div class="ag-section-title">官方與一般心理資源</div>
+      <h2 class="ag-section-title">官方與一般心理資源</h2>
       <div class="ag-resource-list">
         
         <!-- 毒防中心 -->
@@ -210,11 +208,11 @@
           </div>
         </div>
 
-        <!-- 同志健康諮詢專線 -->
+        <!-- 同志健康諮詢資源 -->
         <div class="ag-resource-card">
           <div class="ag-resource-header">
             <div>
-              <h3 class="ag-resource-name">同志健康諮詢專線</h3>
+              <h3 class="ag-resource-name">同志健康諮詢資源</h3>
               <div class="ag-resource-tags">
                 <span class="ag-tag ag-tag--blue">官方資源</span>
                 <span class="ag-tag">同志友善</span>
@@ -222,11 +220,11 @@
             </div>
           </div>
           <p class="ag-resource-desc">
-            衛福部設立的免付費同志健康諮詢專線，提供 HIV 預防、心理健康與性別相關諮詢。
+            可從同志諮詢熱線的心理健康專區查詢支持資源；服務方式與時間請以該機構公告為準。
           </p>
           <div class="ag-resource-actions">
-            <a href="tel:0800-010-569" class="ag-action-btn ag-action-btn--phone">撥打專線：0800-010-569</a>
-            <div class="ag-action-note">服務時間：週一至週五 09:00–17:00</div>
+            <a href="https://hotline.org.tw/mental-health" class="ag-action-btn ag-action-btn--phone">查看同志心理健康資源</a>
+            <div class="ag-action-note">服務時間：請以各資源最新公告為準</div>
           </div>
         </div>
 
@@ -246,7 +244,7 @@
           </p>
           <div class="ag-resource-actions">
             <a href="tel:0958-630-478" class="ag-action-btn ag-action-btn--phone">撥打專線：0958-630-478</a>
-            <div class="ag-action-note">服務時間：週三 19:00–22:00、週六 14:00–17:00</div>
+            <div class="ag-action-note">服務時間：週三 19:00–22:00（以官方公告為準）</div>
           </div>
         </div>
 
@@ -269,5 +267,6 @@
       <p class="ag-footer__copyright">© 2026 Afterglow. All rights reserved.</p>
     </div>
   </footer>
-</body>
+<script src="/assets/safety-accessibility.js"></script>
+<nav class="safety-app-nav" aria-label="安全資訊功能"><a href="/safety.html">安全</a><a href="/first-aid.html">急救</a><a href="/etomidate-safety.html">依托提醒</a><a href="/help.html" aria-current="page">求助</a></nav><script src="/assets/public-safety-shell.js"></script></body>
 </html>

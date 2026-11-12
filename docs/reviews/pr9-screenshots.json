@@ -1,0 +1,137 @@
+{
+  "capturedDate": "2026-10-15",
+  "source": "http://127.0.0.1:4175",
+  "cssViewport": {
+    "width": 390,
+    "height": 844
+  },
+  "folder": "https://drive.google.com/drive/folders/1TRBxUpy4q9p2NXef4jVwruJq3FMgzx6v",
+  "images": [
+    {
+      "file": "03-etomidate-mobile.jpg",
+      "id": "1liovrPLM1-V6a_1FjcEQHCjquIy1-NDQ",
+      "url": "https://drive.google.com/file/d/1liovrPLM1-V6a_1FjcEQHCjquIy1-NDQ/view",
+      "verifiedParent": true,
+      "size": "34620"
+    },
+    {
+      "file": "01-landing-mobile.jpg",
+      "id": "1mVyschvl1JVLCqM2so6uBF0f4_n7ZW1N",
+      "url": "https://drive.google.com/file/d/1mVyschvl1JVLCqM2so6uBF0f4_n7ZW1N/view?usp=drivesdk",
+      "verifiedParent": true,
+      "size": "38438"
+    },
+    {
+      "file": "02-public-safety-mobile.jpg",
+      "id": "1uVCgrw6h5c2FdZnpmV46zf9p_loUOPDn",
+      "url": "https://drive.google.com/file/d/1uVCgrw6h5c2FdZnpmV46zf9p_loUOPDn/view?usp=drivesdk",
+      "verifiedParent": true,
+      "size": "33609"
+    },
+    {
+      "file": "04-first-aid-mobile.jpg",
+      "id": "1RwF-jLXk0H8KX70EdayKlH2LLxfwraU9",
+      "url": "https://drive.google.com/file/d/1RwF-jLXk0H8KX70EdayKlH2LLxfwraU9/view?usp=drivesdk",
+      "verifiedParent": true,
+      "size": "35745"
+    },
+    {
+      "file": "04b-first-aid-keyboard-mobile.jpg",
+      "id": "1IRm8whu12vVh0dyrt2ngIn5_g7uH7EXn",
+      "url": "https://drive.google.com/file/d/1IRm8whu12vVh0dyrt2ngIn5_g7uH7EXn/view?usp=drivesdk",
+      "verifiedParent": true,
+      "size": "39436"
+    },
+    {
+      "file": "05-help-mobile.jpg",
+      "id": "1cxn39knYqRVl9R6HUnqZuqh1Apu4vbyJ",
+      "url": "https://drive.google.com/file/d/1cxn39knYqRVl9R6HUnqZuqh1Apu4vbyJ/view?usp=drivesdk",
+      "verifiedParent": true,
+      "size": "35619"
+    },
+    {
+      "file": "06-gate-mobile.jpg",
+      "id": "11ck7YCZPW1-E4RQ_SDFk_IIH9VqzTW5N",
+      "url": "https://drive.google.com/file/d/11ck7YCZPW1-E4RQ_SDFk_IIH9VqzTW5N/view?usp=drivesdk",
+      "verifiedParent": true,
+      "size": "39097"
+    },
+    {
+      "file": "07-chemaid-mobile.jpg",
+      "id": "1juJDhBraLraqqtoCSIMZ6tWrccRcebzD",
+      "url": "https://drive.google.com/file/d/1juJDhBraLraqqtoCSIMZ6tWrccRcebzD/view?usp=drivesdk",
+      "verifiedParent": true,
+      "size": "31490"
+    },
+    {
+      "file": "08-chemaid-result-mobile.jpg",
+      "id": "1mFiVTbQabPOfsPWt-BaOofRpjJKWBftD",
+      "url": "https://drive.google.com/file/d/1mFiVTbQabPOfsPWt-BaOofRpjJKWBftD/view?usp=drivesdk",
+      "verifiedParent": true,
+      "size": "33942"
+    },
+    {
+      "file": "13-safety-reduced-motion-mobile.jpg",
+      "id": "1iBx5GCRtZ3u1RYC120Krz2ZZdkJLqqmm",
+      "url": "https://drive.google.com/file/d/1iBx5GCRtZ3u1RYC120Krz2ZZdkJLqqmm/view?usp=drivesdk",
+      "verifiedParent": true,
+      "size": "33609"
+    },
+    {
+      "file": "09-privacy-mobile.jpg",
+      "id": "1DvtMTcg8ziX39mRxAnWBZmSNeH4BBDB6",
+      "url": "https://drive.google.com/file/d/1DvtMTcg8ziX39mRxAnWBZmSNeH4BBDB6/view?usp=drivesdk",
+      "verifiedParent": true,
+      "note": "頁首擷取不完整，不能作完整視覺 PASS 證據",
+      "size": "43447"
+    },
+    {
+      "file": "10-terms-mobile.jpg",
+      "id": "1kcbsEfv3JKUt-6eW73HHFQn4NerPylEJ",
+      "url": "https://drive.google.com/file/d/1kcbsEfv3JKUt-6eW73HHFQn4NerPylEJ/view?usp=drivesdk",
+      "verifiedParent": true,
+      "note": "頁首擷取不完整，不能作完整視覺 PASS 證據",
+      "size": "46333"
+    },
+    {
+      "file": "11-legal-mobile.jpg",
+      "id": "1Kj8QvunSAAJNNUvuyZ894TfySHJEHcR0",
+      "url": "https://drive.google.com/file/d/1Kj8QvunSAAJNNUvuyZ894TfySHJEHcR0/view?usp=drivesdk",
+      "verifiedParent": true,
+      "note": "實際本機手機畫面",
+      "size": "40729"
+    },
+    {
+      "file": "12-about-mobile.jpg",
+      "id": "1JVJ9AbK2Nt9_8XqXG4begRfLzj952Bb0",
+      "url": "https://drive.google.com/file/d/1JVJ9AbK2Nt9_8XqXG4begRfLzj952Bb0/view?usp=drivesdk",
+      "verifiedParent": true,
+      "note": "實際本機手機畫面",
+      "size": "35939"
+    },
+    {
+      "file": "14-safety-offline-mobile.jpg",
+      "id": "1xo4Z13uqGggw9M6Sw34OKj7R45FEpzCU",
+      "url": "https://drive.google.com/file/d/1xo4Z13uqGggw9M6Sw34OKj7R45FEpzCU/view?usp=drivesdk",
+      "verifiedParent": true,
+      "note": "實際本機手機畫面",
+      "size": "33609"
+    },
+    {
+      "file": "15-rights-pending-mobile.jpg",
+      "id": "1Mgh3unGY9yvy8L6v4Wc84Ir3swJUFaU3",
+      "url": "https://drive.google.com/file/d/1Mgh3unGY9yvy8L6v4Wc84Ir3swJUFaU3/view?usp=drivesdk",
+      "verifiedParent": true,
+      "note": "實際本機手機畫面",
+      "size": "29210"
+    },
+    {
+      "file": "16-chemaid-keyboard-mobile.jpg",
+      "id": "1u-JUedyixSUCCyki9YLo_yOHfyDmrepv",
+      "url": "https://drive.google.com/file/d/1u-JUedyixSUCCyki9YLo_yOHfyDmrepv/view?usp=drivesdk",
+      "verifiedParent": true,
+      "note": "頁首擷取不完整，不能作完整視覺 PASS 證據",
+      "size": "39757"
+    }
+  ]
+}

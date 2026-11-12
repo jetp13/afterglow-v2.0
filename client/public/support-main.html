@@ -2,15 +2,12 @@
 <html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>緊急支援選單｜Afterglow</title>
   <link rel="stylesheet" href="/assets/layout.css">
   <link rel="stylesheet" href="/assets/shared-emergency.css">
-  <script>
-    if (sessionStorage.getItem('ag_consent') !== 'true') {
-      window.location.href = '/index.html';
-    }
-  </script>
+  <!-- Public Safety Core: readable before general consent. -->
   <style>
     /* ── accent 色：緊急支援選單 — 冷白冰藍 ── */
     :root {
@@ -260,8 +257,10 @@
       50%       { box-shadow: 0 0 22px rgba(0,230,118,0.82), 0 0 52px rgba(0,230,118,0.38), inset 0 0 18px rgba(0,230,118,0.20); }
     }
   </style>
+
 </head>
 <body class="ag-page">
+
 
   <a href="/home.html" class="ag-back-button" aria-label="返回上一頁"></a>
 
