@@ -586,7 +586,6 @@
       'ketamine+opioids': { level: 'deadly', desc: '極度危險！雙重呼吸抑制，致死風險高。' },
 
       'lsd+cannabis': { level: 'caution', desc: '需謹慎。大麻可能極大增強 LSD 的迷幻效果，容易引發焦慮、恐慌或 Bad Trip。' },
-      'lsd+mdma': { level: 'low', desc: 'Candy Flipping。協同效應強烈，建議減少兩者劑量，注意脫水。' },
       'lsd+lithium': { level: 'deadly', desc: '致命危險！鋰鹽與 LSD 混用已知會導致癲癇與昏迷。' },
 
       'mushrooms+cannabis': { level: 'caution', desc: '需謹慎。大麻可能增強迷幻體驗，容易引發焦慮或思緒混亂。' },
@@ -867,7 +866,8 @@
       }
 
       // 計算所有兩兩對（C(n,2)）
-      let highestRisk = 'low';
+      // 無資料時不得把未知風險當成 low；只對有資料的配對取最高等級。
+      let highestRisk = null;
       let riskPairs = []; // { level, label, desc }
       let noPairFound = [];
 
@@ -895,6 +895,12 @@
       // 依風險等級由高到低排序
       riskPairs.sort((a, b) => riskLevelValue(b.level) - riskLevelValue(a.level));
 
+      // 即使未來新增物質或資料遺漏，未知配對也不能自動降為 low。
+      if (riskPairs.length === 0) {
+        updateUnknownResultUI(noPairFound);
+        return;
+      }
+
       // 組合訊息：有資料的對 + 無資料的對
       let riskMessages = riskPairs.map(p => {
         const badge = riskLevelBadge(p.level);
@@ -902,12 +908,21 @@
       });
 
       if (noPairFound.length > 0) {
-        riskMessages.push(
-          `<span style="color:#555;font-size:12px;">— ${noPairFound.join('、')}：筆者資料庫尚無此組合資料，建議自行查詢 <a href="https://combo.tripsit.me/" target="_blank" rel="noopener" style="color:#666;text-decoration:underline;">TripSit</a></span>`
+        riskMessages.unshift(
+          `<span style="color:#ffc800;font-size:13px;display:block;">【部分配對資料不足】${noPairFound.join('、')}。以下分級只涵蓋已有資料的配對，不能推定其他配對是低風險或安全；請避免自行混用。</span>`
         );
       }
 
       updateResultUI(highestRisk, riskMessages);
+    }
+
+    // unknown 是資料完整性狀態，不是新增第五級醫學風險等級。
+    function updateUnknownResultUI(noPairFound) {
+      resultContainer.classList.remove('risk-low', 'risk-medium', 'risk-high', 'risk-deadly');
+      resultCircle.textContent = '?';
+      resultTitle.textContent = '資料不足（無法分級）';
+      resultTitle.style.color = '#ffc800';
+      resultDesc.textContent = `目前缺少 ${noPairFound.length} 組配對的交互作用資料。資料不足不代表低風險或安全；請避免自行混用。`;
     }
 
     function riskLevelBadge(level) {
@@ -966,7 +981,7 @@
       if (messages.length > 0) {
         resultDesc.innerHTML = messages.join('<hr class="ag-result-pair-divider">');
       } else {
-        resultDesc.innerHTML = '<span style="color:#555;font-size:13px;">目前資料庫中無此組合的特定高風險警示，但仍請保持謹慎，少量測試。</span>';
+        resultDesc.innerHTML = '<span style="color:#ffc800;font-size:13px;">目前沒有足夠的配對資料可供判定；資料不足不代表低風險，請避免自行混用。</span>';
       }
     }
 
