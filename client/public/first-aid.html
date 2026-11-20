@@ -141,19 +141,90 @@
       transform: translateY(-1px);
     }
 
-    /* ── 頁面特定：復甦姿勢圖格 ── */
-    .ag-recovery-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: var(--em-space-sm);
-      margin-top: var(--em-space-sm);
+    /* 急救分流與操作說明保持展開；沿用本頁色彩與字級。 */
+    .ag-container-sm { padding-top: 0; }
+    .ag-aid-triage,
+    .ag-aid-cpr,
+    .ag-aid-sources {
+      margin-bottom: var(--em-space-md);
+      color: var(--em-text-secondary);
+      font-size: 15px;
+      line-height: 1.75;
+      overflow-wrap: anywhere;
+      scroll-margin-top: 16px;
     }
-    .ag-illustration {
-      background: rgba(0, 0, 0, 0.25);
+    .ag-aid-triage h2,
+    .ag-aid-cpr h2 {
+      color: var(--em-text-primary);
+      font-size: 18px;
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .ag-aid-triage h3 {
+      color: var(--em-text-primary);
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 6px;
+    }
+    .ag-aid-triage p,
+    .ag-aid-cpr p,
+    .ag-aid-sources p { margin-bottom: 12px; }
+    .ag-aid-triage strong,
+    .ag-aid-cpr strong,
+    .ag-aid-recovery strong { color: var(--em-text-primary); }
+    .ag-aid-branch {
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px solid var(--em-border-default);
       border-radius: var(--em-radius-md);
-      padding: var(--em-space-sm);
-      display: flex;
-      justify-content: center;
+      background: var(--em-surface-1);
+    }
+    .ag-aid-branch--urgent { border-color: var(--em-accent-border); }
+    .ag-aid-branch p:last-child { margin-bottom: 0; }
+    .ag-aid-note { color: var(--em-text-secondary); font-size: 14px; }
+    .ag-aid-steps { padding-left: 24px; margin: 12px 0; }
+    .ag-aid-steps li { margin-bottom: 12px; }
+    .ag-aid-link,
+    .ag-aid-sources a {
+      color: var(--em-text-primary);
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+    .ag-aid-link { display: inline-block; padding: 10px 0; }
+    .ag-aid-script {
+      border: 1px solid var(--em-border-default);
+      border-radius: var(--em-radius-md);
+      margin-bottom: var(--em-space-md);
+      color: var(--em-text-secondary);
+      font-size: 15px;
+      line-height: 1.75;
+    }
+    .ag-aid-script summary {
+      cursor: pointer;
+      padding: 16px;
+      color: var(--em-text-primary);
+      font-weight: 600;
+    }
+    .ag-aid-script-body { padding: 0 16px 16px; }
+    .ag-aid-script-body p + p { margin-top: 12px; }
+    .ag-aid-recovery { scroll-margin-top: 16px; }
+    .ag-aid-recovery .ag-sub-text { font-size: 15px; line-height: 1.75; }
+    .ag-aid-recovery p { margin-bottom: 12px; }
+    .ag-aid-sources { font-size: 14px; }
+    .ag-aid-sources h3 { font-size: 15px; margin: 16px 0 8px; }
+    .ag-aid-sources ul { padding-left: 20px; }
+    .ag-aid-sources li { margin-bottom: 12px; }
+    .ag-accordion-content[hidden] { display: none; }
+    .ag-accordion-item.active .ag-accordion-content { max-height: none; }
+    .ag-main-scroll :focus-visible {
+      outline: 2px solid var(--em-text-primary);
+      outline-offset: -3px;
+    }
+    @media (max-width: 480px) {
+      .ag-main-scroll { padding-left: 16px; padding-right: 16px; }
+      .ag-container-sm { padding-left: 0; padding-right: 0; }
+      .ag-accordion-header,
+      .ag-accordion-item.active .ag-accordion-content { padding: 16px; }
     }
   </style>
 </head>
@@ -165,8 +236,8 @@
     <a href="/home.html" class="ag-site-logo" aria-label="返回首頁"><img src="/assets/logo-handwritten-nobg.png" alt="Afterglow"></a>
   </header>
   <div class="ag-page-title-block">
-    <p class="ag-page-title">急救指引 · Emergency Guide v1.2</p>
-    <p class="ag-page-subtitle">現場急救 · 減害應對 · 撥打流程</p>
+    <h1 class="ag-page-title">急救指引 · Emergency Guide</h1>
+    <p class="ag-page-subtitle">台灣成人急救 · 減害應對 · 撥打流程</p>
   </div>
 
   <div class="ag-main-scroll">
@@ -180,7 +251,7 @@
         </svg>
         <div class="ag-aid-context-text">
           <strong>現場急救 · 減害應對</strong>
-          現場有人需要協助時，先撥 119，再依症狀往下查閱
+          緊急狀況先撥 119、開擴音，依接線員指示行動。
         </div>
       </div>
 
@@ -196,86 +267,93 @@
         </a>
       </div>
 
+      <!-- 成人呼吸分流與 CPR 保持可見，不需先展開其他內容。 -->
+      <section class="ag-aid-triage" id="breathing-check" aria-labelledby="breathing-title">
+        <h2 id="breathing-title">叫不醒？先看反應與呼吸</h2>
+        <p>先確認現場安全，呼叫對方、輕拍肩膀。<strong>沒有反應就立即撥 119、開擴音</strong>；請旁人拿 AED（自動體外心臟電擊去顫器）。</p>
+        <div class="ag-aid-branch ag-aid-branch--urgent">
+          <h3>沒有反應，而且沒有正常呼吸或無法確定</h3>
+          <p>沒有呼吸、幾乎沒有呼吸，或只剩斷續喘息，都要<strong>立即開始胸外按壓</strong>，同時依 119 指示操作。不要等 AED 到場才開始。</p>
+          <p><a class="ag-aid-link" href="#adult-cpr">查看成人 CPR／AED 步驟</a></p>
+        </div>
+        <div class="ag-aid-branch">
+          <h3>沒有反應，但仍有正常呼吸</h3>
+          <p>沒有外傷疑慮時，可協助側臥，保持呼吸道通暢，留在身旁持續觀察。</p>
+          <p>若曾跌倒撞擊，或懷疑頭頸、背部受傷，先告訴 119，避免不必要的翻動，依指示處理。<strong>維持呼吸道通暢與必要的 CPR 仍優先。</strong></p>
+          <p><a class="ag-aid-link" href="#recovery-position" data-open-recovery>查看側臥姿勢步驟</a></p>
+        </div>
+        <p class="ag-aid-note">一般民眾不需先摸脈搏。沒有反應，又無法確定是否正常呼吸時，立即開始按壓，讓 119 協助判斷。</p>
+      </section>
+
+      <section class="ag-aid-cpr" id="adult-cpr" aria-labelledby="cpr-title">
+        <h2 id="cpr-title">成人 CPR／AED：立即按壓，接上電擊器</h2>
+        <ol class="ag-aid-steps">
+          <li><strong>患者沒有反應，也沒有正常呼吸或無法確定時，讓他平躺，立即按壓。</strong>雙手交疊，掌根放在胸部中央、胸骨下半部，手臂伸直。不要為了搬到地板而延誤按壓。</li>
+          <li><strong>每分鐘 100–120 下，深度 5–6 公分。</strong>每次按壓後讓胸部完全回彈；盡量不中斷，必要中斷不超過 10 秒。</li>
+          <li><strong>受過訓練、有能力且願意吹氣：按壓 30 下、吹氣 2 次。</strong>不會或無法吹氣時，持續胸外按壓，依 119 指示操作。</li>
+          <li><strong>AED 到場就開機，依圖示將貼片貼在裸露胸部。</strong>分析心律與電擊時，所有人都不要碰患者；完成電擊或設備提示不需電擊後，立即依語音提示恢復 CPR。</li>
+        </ol>
+        <p><strong>持續施救，直到救護人員接手或指示停止。</strong>若患者恢復正常呼吸或明顯清醒（例如能說話），暫停按壓並重新評估，告訴 119。若仍沒有反應且呼吸不正常或無法確定，立即繼續按壓。</p>
+        <p class="ag-aid-note">以上為成人步驟；兒童、嬰兒請立即由 119 指導。若現場變得危險或已無力繼續，告訴 119，請旁人協助接手。</p>
+      </section>
+
+      <details class="ag-aid-script">
+        <summary>不知道怎麼說？119 照著念</summary>
+        <div class="ag-aid-script-body">
+          <p>「這裡是＿＿（地址、樓層或房號），有人需要救護。他現在＿＿（叫得醒／叫不醒），呼吸＿＿（正常／不正常／無法確定）。我已開擴音，請告訴我現在要怎麼做。」</p>
+          <p class="ag-aid-note">先報位置，接線員提問時先回答。已知的物質與使用時間請如實告知；不知道就說不知道，不必念完才求救。</p>
+        </div>
+      </details>
+
       <!-- 119 Process (Always Visible) -->
-      <div class="ag-section-title">撥打 119：標準流程</div>
+      <h2 class="ag-section-title">撥打 119：標準流程</h2>
       <div class="ag-process-step">
         <div class="ag-step-num">1</div>
         <div class="ag-step-content">
           <h4>說明位置與狀況</h4>
-          <p>提供精確地址、地標、患者狀況與意識、呼吸、脈搏。</p>
+          <p>先說地址、樓層或房號，再說患者有沒有反應、是否正常呼吸；無法確定就直接告訴接線員。</p>
         </div>
       </div>
       <div class="ag-process-step">
         <div class="ag-step-num">2</div>
         <div class="ag-step-content">
           <h4>依指示行動</h4>
-          <p>保持通話，遵循接線員指示進行初步處置（如側臥、清理口鼻）。</p>
+          <p>保持通話、開擴音，依上方呼吸分流與 119 指示行動，不要為了讀完網頁而延誤施救。</p>
         </div>
       </div>
       <div class="ag-process-step">
         <div class="ag-step-num">3</div>
         <div class="ag-step-content">
           <h4>迎接救護</h4>
-          <p>派人到路口引導救護車，準備大門與電梯。</p>
+          <p>有旁人在場時，請他開門、引導救護車；施救者留在患者身旁，直到救護人員接手。</p>
         </div>
       </div>
 
-      <div class="ag-section-title">急救與減害指引</div>
+      <h2 class="ag-section-title">側臥姿勢與減害指引</h2>
 
       <!-- Recovery Position Accordion -->
-      <div class="ag-accordion-item">
+      <div class="ag-accordion-item ag-aid-recovery" id="recovery-position">
         <div class="ag-accordion-header" onclick="toggleAccordion(this)">
           <div class="ag-accordion-title">
-            復甦姿勢 (Recovery Position)
+            側臥姿勢（復甦姿勢）
           </div>
           <div class="ag-accordion-icon">▼</div>
         </div>
         <div class="ag-accordion-content">
           <div class="ag-substance-card">
             <div class="ag-sub-text">
-              <ol class="ag-pl-20 ag-mb-15">
-                <li>確認環境安全</li>
-                <li>檢查反應與呼吸</li>
-                <li>將對側手臂橫過胸前</li>
-                <li>將遠側膝蓋屈起</li>
-                <li>由遠側翻向近側，讓患者側臥</li>
-                <li>打開氣道、保持口鼻通暢並持續監測</li>
+              <p><strong>只適用於沒有反應，但仍有正常呼吸的人。</strong>若曾跌倒撞擊或懷疑頭頸、背部受傷，先告訴 119，避免不必要的翻動，依指示處理；維持呼吸道通暢與必要的 CPR 仍優先。</p>
+              <ol class="ag-aid-steps">
+                <li>跪在患者身旁，將靠近你的手臂向外放，手肘彎曲、手掌朝上。</li>
+                <li>把另一隻手臂帶過胸前，讓手背貼住患者靠近你這側的臉頰，並用手扶住。</li>
+                <li>彎起遠側膝蓋，讓腳掌踩在地面。</li>
+                <li>一手持續托住臉頰，另一手拉住彎起的膝蓋，讓患者朝你翻成側臥。</li>
+                <li>調整上方的腿以穩定姿勢，輕輕將頭後仰、抬起下巴，保持呼吸道通暢。</li>
+                <li>留在身旁，持續觀察反應與呼吸，等候救護人員。</li>
               </ol>
+              <p><strong>如果仍沒有反應，而呼吸變得不正常或無法確定，立即讓他平躺並開始胸外按壓，同時告訴 119。</strong></p>
+              <a class="ag-aid-link" href="#adult-cpr">回到成人 CPR／AED 步驟</a>
             </div>
-            
-            <div class="ag-recovery-grid">
-              <div class="ag-illustration">
-                <!-- SVG: Recovery Position Step 1 -->
-                <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="rgba(200,230,240,0.70)" stroke-width="2">
-                  <path d="M60 80 L140 80" stroke="#333" />
-                  <circle cx="80" cy="70" r="10" />
-                  <path d="M80 80 L130 80" />                <path d="M80 80 L70 60" /> <!-- Arm Up -->
-                <path d="M130 80 L140 90" />
-                <text x="10" y="20" fill="#ddd" font-size="12" stroke="none">1. 手臂舉高</text>
-              </svg>
-            </div>
-            <div class="ag-illustration">
-              <!-- SVG: Recovery Position Step 2 -->
-              <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="rgba(200,230,240,0.70)" stroke-width="2">
-                <path d="M60 80 L140 80" stroke="#333" />
-                <circle cx="90" cy="75" r="10" />
-                <path d="M90 85 L130 85" />
-                <path d="M130 85 L120 65" /> <!-- Leg Bent -->
-                <text x="10" y="20" fill="#ddd" font-size="12" stroke="none">2. 另一腳彎曲</text>
-              </svg>
-            </div>
-            <div class="ag-illustration">
-              <!-- SVG: Recovery Position Final -->
-              <svg width="200" height="100" viewBox="0 0 200 100" fill="none" stroke="rgba(200,230,240,0.70)" stroke-width="2">
-                <path d="M60 80 L140 80" stroke="#333" />
-                <circle cx="100" cy="75" r="10" />
-                <path d="M100 85 L130 85" />
-                <path d="M100 85 L90 95" /> <!-- Arm Support -->
-                <path d="M130 85 L120 95" /> <!-- Leg Support -->
-                <text x="10" y="20" fill="rgba(200,230,240,0.70)" font-size="12" stroke="none" font-weight="bold">3. 側翻固定</text>
-              </svg>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -303,7 +381,9 @@
             <ul class="ag-sub-text ag-pl-20">
               <li>絕對避免與酒精、苯二氮平類混用。</li>
               <li>不清楚劑量時不要追加。</li>
-              <li>如出現嗜睡或呼吸變慢，立即撥 119，採側臥保持氣道。</li>
+              <li>如出現極度嗜睡、叫不醒或呼吸異常，立即撥 119、開擴音。</li>
+              <li>沒有反應，而且沒有正常呼吸或無法確定是否正常呼吸時，立即開始胸外按壓；請旁人拿 AED。</li>
+              <li>沒有反應但仍有正常呼吸時，依 119 指示處理；沒有外傷疑慮才協助側臥，持續觀察。<a class="ag-aid-link" href="#breathing-check">查看完整呼吸分流</a></li>
               <li><strong>不要催吐，不要留單。</strong></li>
             </ul>
           </div>
@@ -331,7 +411,12 @@
           </div>
           <div class="ag-sub-section">
             <span class="ag-sub-label"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align:-1px;margin-right:5px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>應對</span>
-            <div class="ag-sub-text">安置在安全環境、避免刺激，必要時側臥；若有呼吸困難、抽搐或無反應，立即撥 119。</div>
+            <div class="ag-sub-text">
+              <p>保持周圍安全、減少刺激；若有呼吸困難、抽搐或無反應，立即撥 119、開擴音。</p>
+              <p>沒有反應，而且沒有正常呼吸或無法確定是否正常呼吸時，立即開始胸外按壓；請旁人拿 AED。若正在抽搐，抽搐停止後立即檢查反應與呼吸，依 119 指示行動。</p>
+              <p>沒有反應但仍有正常呼吸時，依 119 指示處理；沒有外傷疑慮才協助側臥，持續觀察。</p>
+              <a class="ag-aid-link" href="#breathing-check">查看完整呼吸分流</a>
+            </div>
           </div>
         </div>
       </div>
@@ -395,6 +480,24 @@
       </div>
     </div>
 
+    <section class="ag-aid-sources" aria-labelledby="aid-sources-title">
+      <h2 class="ag-section-title" id="aid-sources-title">成人急救流程來源</h2>
+      <p>台灣的求救電話與成人 CPR 步驟以衛生福利部民眾版指引為主；側臥細節、外傷提醒與重新評估條件另參考下列國際指引。現場處置優先依 119 指示。</p>
+      <h3>台灣主要依據</h3>
+      <ul>
+        <li><a href="https://dep.mohw.gov.tw/doma/fp-2710-7586-106.html" target="_blank" rel="noopener noreferrer">衛福部：2021 年版民眾版心肺復甦術參考指引</a> — 呼吸判斷、按壓、人工呼吸與 AED 流程。</li>
+        <li><a href="https://www.nfa.gov.tw/cht/index.php?article_id=905&amp;code=list&amp;flag=detail&amp;ids=21" target="_blank" rel="noopener noreferrer">消防署：民眾版心肺復甦術宣導</a> — 119、擴音求救及操作說明（頁面更新：2022-06-24）。</li>
+        <li><a href="https://prepare.mnd.gov.tw/casualty-care-procedures" target="_blank" rel="noopener noreferrer">全民防衛動員署：傷患救護程序</a> — 正常呼吸與側臥分流、避免不必要搬動。</li>
+      </ul>
+      <h3>國際補充</h3>
+      <ul>
+        <li><a href="https://www.resus.org.uk/professional-library/2025-resuscitation-guidelines/adult-basic-life-support-guidelines" target="_blank" rel="noopener noreferrer">Resuscitation Council UK：2025 成人基本救命術</a> — 異常呼吸、按壓與 AED 操作。</li>
+        <li><a href="https://www.resus.org.uk/professional-library/2025-resuscitation-guidelines/first-aid-guidelines" target="_blank" rel="noopener noreferrer">Resuscitation Council UK：2025 急救指引</a> — 側臥條件、外傷限制及施救期間重新評估。</li>
+        <li><a href="https://www.sja.org.uk/first-aid-advice/recovery-position/" target="_blank" rel="noopener noreferrer">St John Ambulance：Recovery position</a> — 側臥操作步驟（專業審閱日期：2025-04-28）。</li>
+      </ul>
+      <p>國際補充不代表台灣已採用為官方規範；本頁為教育用途整理。來源核對日期：<time datetime="2026-11-21">2026-11-21</time>。</p>
+    </section>
+
     <!-- Footer Note -->
     <div class="ag-seal-section">
       <div class="ag-version-info">
@@ -421,19 +524,52 @@
   </footer>
 
   <script>
+    const accordionItems = document.querySelectorAll('.ag-accordion-item');
+
+    function setAccordionState(item, expanded) {
+      item.classList.toggle('active', expanded);
+      item.querySelector('.ag-accordion-header').setAttribute('aria-expanded', String(expanded));
+      item.querySelector('.ag-accordion-content').hidden = !expanded;
+    }
+
     function toggleAccordion(header) {
       const item = header.parentElement;
       const isActive = item.classList.contains('active');
-      
-      // Close all other items
-      document.querySelectorAll('.ag-accordion-item').forEach(i => {
-        i.classList.remove('active');
+      accordionItems.forEach(other => setAccordionState(other, other === item && !isActive));
+    }
+
+    accordionItems.forEach((item, index) => {
+      const header = item.querySelector('.ag-accordion-header');
+      const content = item.querySelector('.ag-accordion-content');
+      header.id = `aid-accordion-trigger-${index}`;
+      content.id = `aid-accordion-panel-${index}`;
+      header.setAttribute('role', 'button');
+      header.tabIndex = 0;
+      header.setAttribute('aria-controls', content.id);
+      content.setAttribute('role', 'region');
+      content.setAttribute('aria-labelledby', header.id);
+      item.querySelector('.ag-accordion-icon').setAttribute('aria-hidden', 'true');
+      setAccordionState(item, item.classList.contains('active'));
+      header.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          toggleAccordion(header);
+        }
       });
-      
-      // Toggle current item
-      if (!isActive) {
-        item.classList.add('active');
-      }
+    });
+
+    function openRecoveryPosition() {
+      const recovery = document.getElementById('recovery-position');
+      accordionItems.forEach(item => setAccordionState(item, item === recovery));
+      recovery.querySelector('.ag-accordion-header').focus({ preventScroll: true });
+    }
+
+    document.querySelector('[data-open-recovery]').addEventListener('click', openRecoveryPosition);
+    window.addEventListener('hashchange', () => {
+      if (window.location.hash === '#recovery-position') openRecoveryPosition();
+    });
+    if (window.location.hash === '#recovery-position') {
+      openRecoveryPosition();
     }
   </script>
 </body>
